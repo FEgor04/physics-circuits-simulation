@@ -1,3 +1,4 @@
+// eslint-disable-next-line @conarti/feature-sliced/public-api
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
