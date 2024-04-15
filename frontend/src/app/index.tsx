@@ -6,8 +6,6 @@ import { Button } from "@/shared/ui/button";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Button>
-      Hi
-    </Button>
+    <Button>Hi</Button>
   </React.StrictMode>,
 );
