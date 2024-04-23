@@ -1,0 +1,23 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    name: ${POSTGRES_DB}
+    url: jdbc:postgresql://${HOST}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driverClassName: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+security:
+  jwt:
+    secret: ${securityJwtSecret}
+    access: ${securityJwtAccess}
+    refresh: ${securityJwtRefresh}
+  admin:
+    data:
+      key: ${adminDataKey}
+      adminUsername: ${adminUsername}
+      adminPassword: ${adminPassword}
+      adminName: ${adminName}
