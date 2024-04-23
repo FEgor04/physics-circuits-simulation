@@ -3,7 +3,7 @@ spring:
     import: optional:file:.env[.properties]
   datasource:
     name: ${POSTGRES_DB}
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://${HOST}/${POSTGRES_DB}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
     driverClassName: org.postgresql.Driver

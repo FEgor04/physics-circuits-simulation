@@ -10,8 +10,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "Forum Engine",
-                description = "Sample API of the Forum/Message Board engine", version = "1.0.0",
+                title = "Physics circuits simulation Engine",
+                description = "Sample API of the Physics project engine", version = "1.0.0",
                 contact = @Contact(
                         name = "Karabanov Andrey",
                         email = "deskpa@yandex.ru"
