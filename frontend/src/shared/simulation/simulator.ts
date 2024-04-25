@@ -2,10 +2,8 @@ import { CircuitSimulator } from "./interface";
 import { ElectricalComponent } from "./types";
 
 export class SimpleSimulator implements CircuitSimulator {
-  addComponent(_component: ElectricalComponent): void {
-  }
-  deleteComponent(_component: ElectricalComponent): void {
-  }
+  addComponent(_component: ElectricalComponent): void {}
+  deleteComponent(_component: ElectricalComponent): void {}
   getAllComponents(): ElectricalComponent[] {
     return [
       {
@@ -30,9 +28,8 @@ export class SimpleSimulator implements CircuitSimulator {
         _type: "wire",
         a: { x: 0, y: 5 },
         b: { x: 0, y: 0 },
-      }
-    ]
+      },
+    ];
   }
-  setComponents(_components: ElectricalComponent[]): void {
-  }
+  setComponents(_components: ElectricalComponent[]): void {}
 }

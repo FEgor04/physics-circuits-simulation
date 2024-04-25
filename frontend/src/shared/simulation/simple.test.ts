@@ -2,11 +2,11 @@ import { expect, test } from "vitest";
 import { SimpleSimulator } from "./simulator";
 import { Ampermeter } from "./types";
 
-test.skip('simple scheme with voltmeter only', () => {
-  const u = 220
-  const r = 110
+test.skip("simple scheme with voltmeter only", () => {
+  const u = 220;
+  const r = 110;
 
-  const simulator = new SimpleSimulator()
+  const simulator = new SimpleSimulator();
   // Источник, у которого плюс расположен в точке (0, 0).
   // Минус -- в точке (-1, 0)
   simulator.addComponent({
@@ -27,15 +27,15 @@ test.skip('simple scheme with voltmeter only', () => {
     a: { x: -1, y: 5 },
     b: { x: 0, y: 5 },
     currency: "unknown",
-  })
+  });
   simulator.addComponent({
     _type: "wire",
     a: { x: 0, y: 5 },
     b: { x: 0, y: 0 },
-  })
+  });
 
-  const ampermeter = simulator.getAllComponents()
-    .find(it => it._type == "ampermeter") as Ampermeter
-  expect(ampermeter.currency).toBe(u / r)
-})
-
+  const ampermeter = simulator
+    .getAllComponents()
+    .find((it) => it._type == "ampermeter") as Ampermeter;
+  expect(ampermeter.currency).toBe(u / r);
+});
