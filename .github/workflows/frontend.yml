@@ -6,7 +6,7 @@ jobs:
   test:
     defaults:
       run:
-        working-directory: frontend
+        working-directory: ./frontend
     runs-on: ubuntu-latest
     
     permissions:
@@ -24,7 +24,7 @@ jobs:
     - name: Lint
       run: pnpm run lint
     - name: Test
-      run: pnpm run test
+      run: pnpm run test --coverage
     - name: 'Report Coverage'
       # Set if: always() to also generate the report if tests are failing
       # Only works if you set `reportOnFailure: true` in your vite config as specified above
