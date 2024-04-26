@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { CircuitSimulator } from "./interface";
 import { ElectricalComponent } from "./types";
 
