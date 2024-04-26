@@ -1,6 +1,6 @@
 name: 'Frontend Linters & Tests'
 on: 
-  pull-request: 
+  pull_request: 
 
 jobs:
   test:
