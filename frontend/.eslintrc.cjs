@@ -6,8 +6,9 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "plugin:react-hooks/recommended",
     "plugin:@conarti/feature-sliced/recommended",
+    "prettier",
   ],
-  ignorePatterns: ["dist", ".eslintrc.cjs"],
+  ignorePatterns: ["dist", ".eslintrc.cjs", "src/shared/api/*"],
   parser: "@typescript-eslint/parser",
   plugins: ["react-refresh"],
   rules: {
