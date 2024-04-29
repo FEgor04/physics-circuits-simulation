@@ -1,12 +1,39 @@
 version: '3.0'
 
+networks:
+  physics-circuits:
+    driver: bridge
+
+volumes:
+  db-data:
+    driver: local
+
 services:
   postgres:
     image: 'postgres:15.1-alpine'
     ports:
       - "5432:5432"
+    env_file:
+      - .env
+    networks:
+      - physics-circuits
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: ./backend
+    container_name: physics-container
+    env_file: ./backend/.env
+    networks:
+      - physics-circuits
+    depends_on:
+      - postgres
     environment:
-      POSTGRES_DB: mydb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      - HOST=postgres:5432
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '8080:8080'  
 
