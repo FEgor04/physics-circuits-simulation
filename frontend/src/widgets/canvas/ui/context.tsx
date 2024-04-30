@@ -7,8 +7,22 @@ type CanvasParams = {
   height: number;
 };
 
+type SelectedComponent = {
+  type: "component";
+  id: number;
+};
+
+type SelectedPoint = {
+  type: "point";
+  point: Point;
+};
+
 export type CanvasState = {
   canvasParams: CanvasParams;
+  /**
+   * ID выбранного компонента или координаты выбранной точки
+   **/
+  selected: SelectedComponent | SelectedPoint | undefined;
 };
 
 export const CanvasContext = createContext<CanvasState | undefined>(undefined);
@@ -24,4 +38,8 @@ export const useTransformVirtualToCanvas = () => {
   return (point: Point) => {
     return transformVirtualToCanvas(point, canvasParams);
   };
+};
+
+export const useSelectedElement = () => {
+  return useContext(CanvasContext)!.selected;
 };

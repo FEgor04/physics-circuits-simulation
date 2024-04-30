@@ -21,6 +21,13 @@ export function Canvas({ components }: Props) {
           width: canvasRef.current?.clientWidth,
           height: canvasRef.current?.clientHeight,
         },
+        selected: {
+          type: "point",
+          point: {
+            x: 0,
+            y: 0,
+          },
+        },
       });
     }
   }, [canvasRef]);
