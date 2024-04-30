@@ -10,15 +10,13 @@ export type Point = {
  */
 export type Node = {
   _type: "node";
-  id: number;
   loc: Point;
-
 };
 
 export type Branch = {
   id: number;
-  a: Point;
-  b: Point;
+  a: Node;
+  b: Node;
   components: ElectricalComponent[];
 };
 /**
