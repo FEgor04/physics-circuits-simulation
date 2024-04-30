@@ -1,16 +1,10 @@
 import { ElectricalComponent } from "@/shared/simulation";
 import { useEffect, useRef, useState } from "react";
+import { schemeHeight, schemeWidth, transformVirtualToCanvas } from "../lib";
 
 type Props = {
   components: Array<ElectricalComponent>;
 };
-
-/**
- * Ширина и высота сетки компонентов
- * Измеряется в количетсве точек, доступных для установки компонентов
- **/
-const schemeWidth = 20;
-const schemeHeight = 20;
 
 export function Canvas({ components }: Props) {
   const canvasRef = useRef<SVGSVGElement>(null);
@@ -36,25 +30,17 @@ export function Canvas({ components }: Props) {
   );
 }
 
-function CanvasDots({ width, height }: { width: number; height: number }) {
-  const coefficientX = width / schemeWidth;
-  const coefficientY = height / schemeHeight;
-  const offsetX = coefficientX / 2;
-  const offsetY = coefficientY / 2;
-  console.log(coefficientX, coefficientY);
+function CanvasDots(params: { width: number; height: number }) {
   const coords = new Array(schemeWidth)
     .fill(0)
     .flatMap((_, x) =>
-      new Array(schemeHeight).fill(0).map((_, y) => ({ x, y })),
-    );
+      new Array(schemeHeight).fill(0).map((_, y) => ({ x: x - 10, y: y - 10 })),
+    )
+    .map((point) => transformVirtualToCanvas(point, params));
   return (
     <>
       {coords.map(({ x, y }) => (
-        <circle
-          cx={x * coefficientX + offsetX}
-          cy={y * coefficientY + offsetY}
-          r={5}
-        />
+        <circle cx={x} cy={y} r={5} />
       ))}
     </>
   );
