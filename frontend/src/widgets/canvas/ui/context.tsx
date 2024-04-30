@@ -45,5 +45,5 @@ export const useSelectedElement = () => {
 };
 
 export const useOnSelectElement = () => {
-  return useContext(CanvasContext)?.onSelect;
+  return useContext(CanvasContext)!.onSelect;
 };
