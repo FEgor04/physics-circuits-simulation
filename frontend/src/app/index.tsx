@@ -4,6 +4,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { routeTree } from "@/routeTree.gen";
+// eslint-disable-next-line import/order
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();

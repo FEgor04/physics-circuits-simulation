@@ -1,10 +1,10 @@
-import { getCurrentUser, GetCurrentUserResult } from "@/shared/api";
-import { Principal } from "../model";
 import {
   queryOptions,
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
+import { getCurrentUser, GetCurrentUserResult } from "@/shared/api";
+import { Principal } from "../model";
 
 async function getPrincipalQueryFn(): Promise<Principal> {
   const response: GetCurrentUserResult = await getCurrentUser();
