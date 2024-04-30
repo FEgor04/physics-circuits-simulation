@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ElectricalComponent } from "@/shared/simulation";
 import { CanvasContext, CanvasState } from "./context";
 import { GenericRenderer } from "./generic-renderer";
@@ -6,33 +6,46 @@ import { CanvasGrid } from "./grid";
 
 type Props = {
   components: Array<ElectricalComponent>;
+  onAddComponent: (component: ElectricalComponent) => void;
 };
 
-export function Canvas({ components }: Props) {
+export function Canvas({ components, onAddComponent }: Props) {
   const canvasRef = useRef<SVGSVGElement>(null);
   const [canvasState, setCanvasState] = useState<CanvasState | undefined>(
     undefined,
   );
 
+  const onSelectComponent = useCallback(
+    (selected: CanvasState["selected"]): void => {
+      console.log(canvasState?.selected, selected);
+      if (canvasState?.selected?.type == "point" && selected?.type == "point") {
+        console.log("adding new wire", canvasState.selected, selected.point);
+        onAddComponent({
+          _type: "wire",
+          a: canvasState.selected.point,
+          b: selected.point,
+        });
+        return onSelectComponent(undefined);
+      }
+      console.log(selected);
+      setCanvasState((prev) => ({ ...prev!, selected }));
+    },
+    [canvasState?.selected, onAddComponent],
+  );
+
   useEffect(() => {
     if (canvasRef.current) {
-      setCanvasState({
-        canvasParams: {
-          width: canvasRef.current?.clientWidth,
-          height: canvasRef.current?.clientHeight,
-        },
-        selected: {
-          type: "point",
-          point: {
-            x: 0,
-            y: 0,
-          },
-        },
-        onSelect: (selected) =>
-          setCanvasState((prev) => ({ ...prev!, selected })),
-      });
+      const canvasParams = {
+        width: canvasRef.current.clientWidth,
+        height: canvasRef.current.clientHeight,
+      };
+      setCanvasState((prev) => ({
+        ...prev!,
+        canvasParams,
+        onSelect: onSelectComponent,
+      }));
     }
-  }, [canvasRef]);
+  }, [canvasRef, onSelectComponent]);
 
   return (
     <div className="h-[90vh] w-full">
