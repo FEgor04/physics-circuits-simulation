@@ -4,7 +4,7 @@ import { ElectricalComponent } from "@/shared/simulation";
 import { Canvas } from "./canvas";
 
 describe("adding new wire", () => {
-  it.skip("adds new wire if you select two dots", () => {
+  it("adds new wire if you select two dots", () => {
     const schema: Array<ElectricalComponent> = [];
     render(
       <Canvas

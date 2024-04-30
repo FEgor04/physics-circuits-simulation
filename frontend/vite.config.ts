@@ -20,5 +20,8 @@ export default defineConfig({
     coverage: {
       reporter: ["json-summary", "json"],
     },
+    environment: "jsdom",
+    globals: true,
+    setupFiles: "./tests/setup.ts",
   },
 });
