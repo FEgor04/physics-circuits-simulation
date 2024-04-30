@@ -1,4 +1,11 @@
-import { Point, Wire, Resistor, Source, Voltmeter, Ampermeter, ElectricalComponent } from './types';
+import {
+  Point,
+  Wire,
+  Resistor,
+  Source,
+  Voltmeter,
+  ElectricalComponent,
+} from "./types";
 
 class GraphNode {
   id: string;
@@ -34,8 +41,8 @@ class ElectricalGraph {
       nodeMap.set(nodeId, node);
     });
 
-    this.nodes.forEach(node => {
-      if ('a' in node.component && 'b' in node.component) {
+    this.nodes.forEach((node) => {
+      if ("a" in node.component && "b" in node.component) {
         const neighborA = this.findNodeByPoint(nodeMap, node.component.a);
         const neighborB = this.findNodeByPoint(nodeMap, node.component.b);
         if (neighborA) {
@@ -48,12 +55,15 @@ class ElectricalGraph {
     });
   }
 
-  private findNodeByPoint(nodeMap: Map<string, GraphNode>, point: Point): GraphNode | undefined {
+  private findNodeByPoint(
+    nodeMap: Map<string, GraphNode>,
+    point: Point,
+  ): GraphNode | undefined {
     for (const [_, node] of nodeMap.entries()) {
-      if ('a' in node.component && 'b' in node.component) {
+      if ("a" in node.component && "b" in node.component) {
         if (
-            (node.component.a.x === point.x && node.component.a.y === point.y) ||
-            (node.component.b.x === point.x && node.component.b.y === point.y)
+          (node.component.a.x === point.x && node.component.a.y === point.y) ||
+          (node.component.b.x === point.x && node.component.b.y === point.y)
         ) {
           return node;
         }
@@ -66,10 +76,32 @@ class ElectricalGraph {
 // Пример использования
 const wire1: Wire = { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 1 } };
 const wire2: Wire = { _type: "wire", a: { x: 0, y: 1 }, b: { x: 1, y: 1 } };
-const resistor: Resistor = { _type: "resistor", a: { x: 1, y: 1 }, b: { x: 2, y: 1 }, resistance: 100 };
-const source: Source = { _type: "source", plus: { x: 2, y: 1 }, minus: { x: 2, y: 0 }, electromotiveForce: 10, internalResistance: 5 };
-const voltmeter: Voltmeter = { _type: "voltmeter", a: { x: 2, y: 1 }, b: { x: 3, y: 1 }, voltage: "unknown" };
-const components: ElectricalComponent[] = [wire1, wire2, resistor, source, voltmeter];
+const resistor: Resistor = {
+  _type: "resistor",
+  a: { x: 1, y: 1 },
+  b: { x: 2, y: 1 },
+  resistance: 100,
+};
+const source: Source = {
+  _type: "source",
+  plus: { x: 2, y: 1 },
+  minus: { x: 2, y: 0 },
+  electromotiveForce: 10,
+  internalResistance: 5,
+};
+const voltmeter: Voltmeter = {
+  _type: "voltmeter",
+  a: { x: 2, y: 1 },
+  b: { x: 3, y: 1 },
+  voltage: "unknown",
+};
+const components: ElectricalComponent[] = [
+  wire1,
+  wire2,
+  resistor,
+  source,
+  voltmeter,
+];
 
 const electricalGraph = new ElectricalGraph(components);
 console.log(electricalGraph.nodes);
