@@ -15,6 +15,7 @@ export function CanvasGrid() {
         <CanvasDot
           x={x}
           y={y}
+          key={x * schemeWidth + y}
           isSelected={
             selected?.type == "point" &&
             selected.point.x == x &&
