@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ElectricalComponent } from "@/shared/simulation";
-import { CanvasContext } from "./context";
+import { CanvasContext, CanvasState } from "./context";
 import { GenericRenderer } from "./generic-renderer";
 import { CanvasGrid } from "./grid";
 
@@ -10,15 +10,17 @@ type Props = {
 
 export function Canvas({ components }: Props) {
   const canvasRef = useRef<SVGSVGElement>(null);
-  const [canvasParams, setCanvasParams] = useState<
-    { width: number; height: number } | undefined
-  >(undefined);
+  const [canvasState, setCanvasState] = useState<CanvasState | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
     if (canvasRef.current) {
-      setCanvasParams({
-        width: canvasRef.current?.clientWidth,
-        height: canvasRef.current?.clientHeight,
+      setCanvasState({
+        canvasParams: {
+          width: canvasRef.current?.clientWidth,
+          height: canvasRef.current?.clientHeight,
+        },
       });
     }
   }, [canvasRef]);
@@ -26,8 +28,8 @@ export function Canvas({ components }: Props) {
   return (
     <div className="h-[90vh] w-full">
       <svg ref={canvasRef} className="mx-auto h-full w-full">
-        {canvasParams && (
-          <CanvasContext.Provider value={{ canvasParams: canvasParams }}>
+        {canvasState && (
+          <CanvasContext.Provider value={canvasState}>
             <CanvasGrid />
             {components.map((it, ind) => (
               <GenericRenderer key={ind} component={it} />

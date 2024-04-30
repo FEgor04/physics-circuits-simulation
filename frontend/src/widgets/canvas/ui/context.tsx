@@ -7,13 +7,11 @@ type CanvasParams = {
   height: number;
 };
 
-type CanvasContextValue = {
+export type CanvasState = {
   canvasParams: CanvasParams;
 };
 
-export const CanvasContext = createContext<CanvasContextValue | undefined>(
-  undefined,
-);
+export const CanvasContext = createContext<CanvasState | undefined>(undefined);
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useCanvasParams = () => {
