@@ -56,24 +56,18 @@ export const getLoginResponseMock = (
 export const getGetUserByIdResponseMock = (
   overrideResponse: any = {},
 ): GetUserResponse => ({
-  email: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-  id: faker.helpers.arrayElement([
-    faker.number.int({ min: undefined, max: undefined }),
-    undefined,
-  ]),
-  name: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+  email: faker.word.sample(),
+  id: faker.number.int({ min: undefined, max: undefined }),
+  name: faker.word.sample(),
   ...overrideResponse,
 });
 
 export const getGetCurrentUserResponseMock = (
   overrideResponse: any = {},
 ): GetUserResponse => ({
-  email: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-  id: faker.helpers.arrayElement([
-    faker.number.int({ min: undefined, max: undefined }),
-    undefined,
-  ]),
-  name: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+  email: faker.word.sample(),
+  id: faker.number.int({ min: undefined, max: undefined }),
+  name: faker.word.sample(),
   ...overrideResponse,
 });
 

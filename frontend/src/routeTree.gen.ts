@@ -10,29 +10,39 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './app/routes/__root'
-import { Route as IndexImport } from './app/routes/index'
+import { Route as rootRoute } from "./app/routes/__root";
+import { Route as SignupImport } from "./app/routes/signup";
+import { Route as IndexImport } from "./app/routes/index";
 
 // Create/Update Routes
 
-const IndexRoute = IndexImport.update({
-  path: '/',
+const SignupRoute = SignupImport.update({
+  path: "/signup",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
+
+const IndexRoute = IndexImport.update({
+  path: "/",
+  getParentRoute: () => rootRoute,
+} as any);
 
 // Populate the FileRoutesByPath interface
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/': {
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
+    "/": {
+      preLoaderRoute: typeof IndexImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/signup": {
+      preLoaderRoute: typeof SignupImport;
+      parentRoute: typeof rootRoute;
+    };
   }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([IndexRoute])
+export const routeTree = rootRoute.addChildren([IndexRoute, SignupRoute]);
 
 /* prettier-ignore-end */
