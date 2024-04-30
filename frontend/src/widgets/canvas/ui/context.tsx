@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useContext, createContext } from "react";
 import { Point } from "@/shared/simulation/types";
 import { transformVirtualToCanvas } from "../lib";
@@ -28,12 +29,10 @@ export type CanvasState = {
 
 export const CanvasContext = createContext<CanvasState | undefined>(undefined);
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useCanvasParams = () => {
   return useContext(CanvasContext)?.canvasParams;
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useTransformVirtualToCanvas = () => {
   const canvasParams = useContext(CanvasContext)!.canvasParams;
   return (point: Point) => {
@@ -46,5 +45,5 @@ export const useSelectedElement = () => {
 };
 
 export const useOnSelectElement = () => {
-  return useContext(CanvasContext)!.onSelect;
+  return useContext(CanvasContext)?.onSelect;
 };
