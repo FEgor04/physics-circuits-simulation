@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, test as it } from "vitest";
-import { ElectricalComponent } from "@/shared/simulation";
+import { ElectricalComponent, Wire } from "@/shared/simulation";
 import { Canvas } from "./canvas";
+import { IndentIncreaseIcon } from "lucide-react";
 
 describe("adding new wire", () => {
   it("adds new wire if you select two dots", async () => {
@@ -38,5 +39,27 @@ describe("adding new wire", () => {
     await userEvent.click(screen.getByTestId(`canvas-dot-${a.x}-${a.y}`));
     await userEvent.click(screen.getByTestId(`canvas-dot-${a.x}-${a.y}`));
     expect(schema).toStrictEqual([]);
+  });
+
+  it("does not add new wire if it already exists", async () => {
+    const initialWire: Wire = {
+      _type: "wire",
+      a: { x: 5, y: 5 },
+      b: { x: 5, y: 6 },
+    };
+    const schema: Array<ElectricalComponent> = [initialWire];
+    render(
+      <Canvas
+        components={schema}
+        onAddComponent={(newComponent) => schema.push(newComponent)}
+      />,
+    );
+    await userEvent.click(
+      screen.getByTestId(`canvas-dot-${initialWire.a.x}-${initialWire.a.y}`),
+    );
+    await userEvent.click(
+      screen.getByTestId(`canvas-dot-${initialWire.b.x}-${initialWire.b.y}`),
+    );
+    expect(schema).toStrictEqual([initialWire]);
   });
 });

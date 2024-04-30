@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ElectricalComponent } from "@/shared/simulation";
+import { Point, Wire } from "@/shared/simulation/types";
 import { CanvasContext, CanvasState } from "./context";
 import { GenericRenderer } from "./generic-renderer";
 import { CanvasGrid } from "./grid";
@@ -8,6 +9,17 @@ type Props = {
   components: Array<ElectricalComponent>;
   onAddComponent: (component: ElectricalComponent) => void;
 };
+
+function pointsEqual(a: Point, b: Point): boolean {
+  return a.x == b.x && a.y == b.y;
+}
+
+function wireEqual(a: Wire, b: Wire): boolean {
+  return (
+    (pointsEqual(a.a, b.a) && pointsEqual(a.b, b.b)) ||
+    (pointsEqual(a.a, b.b) && pointsEqual(a.b, b.a))
+  );
+}
 
 export function Canvas({ components, onAddComponent }: Props) {
   const canvasRef = useRef<SVGSVGElement>(null);
@@ -18,16 +30,22 @@ export function Canvas({ components, onAddComponent }: Props) {
   const onSelectComponent = useCallback(
     (selected: CanvasState["selected"]): void => {
       if (canvasState?.selected?.type == "point" && selected?.type == "point") {
-        onAddComponent({
+        const newWire: Wire = {
           _type: "wire",
           a: canvasState.selected.point,
           b: selected.point,
-        });
+        };
+        const alreadyExists = components.find(
+          (it) => it._type == "wire" && wireEqual(newWire, it),
+        );
+        if (!alreadyExists) {
+          onAddComponent(newWire);
+        }
         return onSelectComponent(undefined);
       }
       setCanvasState((prev) => ({ ...prev!, selected }));
     },
-    [canvasState?.selected, onAddComponent],
+    [canvasState?.selected, components, onAddComponent],
   );
 
   useEffect(() => {
