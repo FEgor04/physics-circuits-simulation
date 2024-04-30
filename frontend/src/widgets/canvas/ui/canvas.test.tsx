@@ -3,7 +3,6 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, test as it } from "vitest";
 import { ElectricalComponent, Wire } from "@/shared/simulation";
 import { Canvas } from "./canvas";
-import { IndentIncreaseIcon } from "lucide-react";
 
 describe("adding new wire", () => {
   it("adds new wire if you select two dots", async () => {
