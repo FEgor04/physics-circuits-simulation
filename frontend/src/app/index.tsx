@@ -1,11 +1,10 @@
 // eslint-disable-next-line @conarti/feature-sliced/public-api
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { routeTree } from "@/routeTree.gen";
-// eslint-disable-next-line import/order
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
 
