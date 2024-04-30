@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
+import { AxiosError } from "axios";
 import { SignInForm, useSignInByEmailMutation } from "@/features/auth-by-email";
 import { Button } from "@/shared/ui/button.tsx";
 import {
@@ -10,7 +11,7 @@ import {
 } from "@/shared/ui/card.tsx";
 
 export function SignInPage() {
-  const { mutate } = useSignInByEmailMutation();
+  const { mutate, isError, error } = useSignInByEmailMutation();
   const navigate = useNavigate({});
 
   return (
@@ -31,6 +32,7 @@ export function SignInPage() {
           />
         </CardContent>
         <CardFooter className="space-x-4">
+          {isError && <ErrorMessage error={error} />}
           <Button type="submit" form="sign-in-form">
             Отправить
           </Button>
@@ -40,5 +42,22 @@ export function SignInPage() {
         </CardFooter>
       </Card>
     </div>
+  );
+}
+
+function ErrorMessage({ error }: { error: Error }) {
+  if (error instanceof AxiosError) {
+    if (error.response?.status == 401) {
+      return (
+        <p id="signin-card-form-error" className="text-destructive">
+          Неверный логин или пароль
+        </p>
+      );
+    }
+  }
+  return (
+    <p id="signin-card-form-error" className="text-destructive">
+      {error.message}
+    </p>
   );
 }
