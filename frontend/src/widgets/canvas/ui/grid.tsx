@@ -8,13 +8,13 @@ export function CanvasGrid() {
     .flatMap((_, x) =>
       new Array(schemeHeight).fill(0).map((_, y) => ({ x: x - 10, y: y - 10 })),
     );
-  console.log(selected);
+  const transform = useTransformVirtualToCanvas();
   return (
     <>
       {coords.map(({ x, y }) => (
         <CanvasDot
-          x={x}
-          y={y}
+          x={transform({ x, y }).x}
+          y={transform({ x, y }).y}
           key={x * schemeWidth + y}
           isSelected={
             selected?.type == "point" &&
@@ -39,12 +39,10 @@ function CanvasDot({
   isSelected: boolean;
   onSelect: () => void;
 }) {
-  const transform = useTransformVirtualToCanvas();
-  const point = transform({ x, y });
   return (
     <circle
-      cx={point.x}
-      cy={point.y}
+      cx={x}
+      cy={y}
       r={5}
       onClick={() => onSelect()}
       fill={isSelected ? "#ff0000" : "black"}
