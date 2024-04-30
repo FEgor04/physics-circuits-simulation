@@ -36,6 +36,7 @@ export function CanvasGrid() {
               },
             });
           }}
+          data-testid={`canvas-dot-${x}-${y}`}
         />
       ))}
     </>
@@ -47,11 +48,13 @@ function CanvasDot({
   y,
   isSelected,
   onSelect,
+  "data-testid": testId,
 }: {
   x: number;
   y: number;
   isSelected: boolean;
   onSelect: () => void;
+  "data-testid"?: string;
 }) {
   return (
     <circle
@@ -61,6 +64,7 @@ function CanvasDot({
       onClick={() => onSelect()}
       fill={isSelected ? "#ff0000" : "black"}
       className="cursor-pointer"
+      data-testid={testId}
     />
   );
 }
