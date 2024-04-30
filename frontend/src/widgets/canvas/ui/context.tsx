@@ -23,6 +23,7 @@ export type CanvasState = {
    * ID выбранного компонента или координаты выбранной точки
    **/
   selected: SelectedComponent | SelectedPoint | undefined;
+  onSelect: (component: SelectedComponent | SelectedPoint | undefined) => void;
 };
 
 export const CanvasContext = createContext<CanvasState | undefined>(undefined);
@@ -42,4 +43,8 @@ export const useTransformVirtualToCanvas = () => {
 
 export const useSelectedElement = () => {
   return useContext(CanvasContext)!.selected;
+};
+
+export const useOnSelectElement = () => {
+  return useContext(CanvasContext)!.onSelect;
 };

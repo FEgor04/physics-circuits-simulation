@@ -28,6 +28,8 @@ export function Canvas({ components }: Props) {
             y: 0,
           },
         },
+        onSelect: (selected) =>
+          setCanvasState((prev) => ({ ...prev!, selected })),
       });
     }
   }, [canvasRef]);
