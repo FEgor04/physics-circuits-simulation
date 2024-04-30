@@ -17,9 +17,7 @@ export function Canvas({ components, onAddComponent }: Props) {
 
   const onSelectComponent = useCallback(
     (selected: CanvasState["selected"]): void => {
-      console.log(canvasState?.selected, selected);
       if (canvasState?.selected?.type == "point" && selected?.type == "point") {
-        console.log("adding new wire", canvasState.selected, selected.point);
         onAddComponent({
           _type: "wire",
           a: canvasState.selected.point,
@@ -27,7 +25,6 @@ export function Canvas({ components, onAddComponent }: Props) {
         });
         return onSelectComponent(undefined);
       }
-      console.log(selected);
       setCanvasState((prev) => ({ ...prev!, selected }));
     },
     [canvasState?.selected, onAddComponent],

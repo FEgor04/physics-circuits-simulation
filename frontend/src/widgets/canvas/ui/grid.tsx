@@ -27,7 +27,13 @@ export function CanvasGrid() {
             selected.point.y == y
           }
           onSelect={() => {
-            console.log("Select point at", x, y);
+            if (
+              selected?.type == "point" &&
+              selected.point.x == x &&
+              selected.point.y == y
+            ) {
+              return;
+            }
             onSelect({
               type: "point",
               point: {

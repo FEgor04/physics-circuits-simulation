@@ -19,10 +19,24 @@ describe("adding new wire", () => {
     await userEvent.click(screen.getByTestId(`canvas-dot-${b.x}-${b.y}`));
     expect(schema).toStrictEqual([
       {
-        type: "wire",
+        _type: "wire",
         a,
         b,
       },
     ]);
+  });
+
+  it("does not add new wire if you select the same dot twice", async () => {
+    const schema: Array<ElectricalComponent> = [];
+    render(
+      <Canvas
+        components={schema}
+        onAddComponent={(newComponent) => schema.push(newComponent)}
+      />,
+    );
+    const a = { x: 5, y: 5 };
+    await userEvent.click(screen.getByTestId(`canvas-dot-${a.x}-${a.y}`));
+    await userEvent.click(screen.getByTestId(`canvas-dot-${a.x}-${a.y}`));
+    expect(schema).toStrictEqual([]);
   });
 });
