@@ -4,7 +4,7 @@ import {
   Resistor,
   Source,
   Voltmeter,
-  ElectricalComponent,
+  ElectricalComponent
 } from "./types";
 
 class GraphNode {
@@ -57,7 +57,7 @@ class ElectricalGraph {
 
   private findNodeByPoint(
     nodeMap: Map<string, GraphNode>,
-    point: Point,
+    point: Point
   ): GraphNode | undefined {
     for (const [_, node] of nodeMap.entries()) {
       if ("a" in node.component && "b" in node.component) {
@@ -80,27 +80,27 @@ const resistor: Resistor = {
   _type: "resistor",
   a: { x: 1, y: 1 },
   b: { x: 2, y: 1 },
-  resistance: 100,
+  resistance: 100
 };
 const source: Source = {
   _type: "source",
   plus: { x: 2, y: 1 },
   minus: { x: 2, y: 0 },
   electromotiveForce: 10,
-  internalResistance: 5,
+  internalResistance: 5
 };
 const voltmeter: Voltmeter = {
   _type: "voltmeter",
   a: { x: 2, y: 1 },
   b: { x: 3, y: 1 },
-  voltage: "unknown",
+  voltage: "unknown"
 };
 const components: ElectricalComponent[] = [
   wire1,
   wire2,
   resistor,
   source,
-  voltmeter,
+  voltmeter
 ];
 
 const electricalGraph = new ElectricalGraph(components);
