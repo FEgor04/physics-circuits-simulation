@@ -21,4 +21,9 @@ export default defineConfig({
       reporter: ["json-summary", "json"],
     },
   },
+  server: {
+    proxy: {
+      "/api": "http://localhost:8080",
+    },
+  },
 });

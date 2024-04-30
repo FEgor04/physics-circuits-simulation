@@ -72,7 +72,7 @@ export const getGetCurrentUserResponseMock = (
 });
 
 export const getRegisterMockHandler = (overrideResponse?: JwtResponse) => {
-  return http.post("*/auth/register", async () => {
+  return http.post("*/api/auth/register", async () => {
     await delay(1000);
     return new HttpResponse(
       JSON.stringify(
@@ -89,7 +89,7 @@ export const getRegisterMockHandler = (overrideResponse?: JwtResponse) => {
 };
 
 export const getRegisterAdminMockHandler = (overrideResponse?: JwtResponse) => {
-  return http.post("*/auth/register/admin", async () => {
+  return http.post("*/api/auth/register/admin", async () => {
     await delay(1000);
     return new HttpResponse(
       JSON.stringify(
@@ -106,7 +106,7 @@ export const getRegisterAdminMockHandler = (overrideResponse?: JwtResponse) => {
 };
 
 export const getRefreshMockHandler = (overrideResponse?: JwtResponse) => {
-  return http.post("*/auth/refresh", async () => {
+  return http.post("*/api/auth/refresh", async () => {
     await delay(1000);
     return new HttpResponse(
       JSON.stringify(
@@ -123,7 +123,7 @@ export const getRefreshMockHandler = (overrideResponse?: JwtResponse) => {
 };
 
 export const getLoginMockHandler = (overrideResponse?: JwtResponse) => {
-  return http.post("*/auth/login", async () => {
+  return http.post("*/api/auth/login", async () => {
     await delay(1000);
     return new HttpResponse(
       JSON.stringify(
@@ -142,7 +142,7 @@ export const getLoginMockHandler = (overrideResponse?: JwtResponse) => {
 export const getGetUserByIdMockHandler = (
   overrideResponse?: GetUserResponse,
 ) => {
-  return http.get("*/users/:id", async () => {
+  return http.get("*/api/users/:id", async () => {
     await delay(1000);
     return new HttpResponse(
       JSON.stringify(
@@ -161,7 +161,7 @@ export const getGetUserByIdMockHandler = (
 export const getGetCurrentUserMockHandler = (
   overrideResponse?: GetUserResponse,
 ) => {
-  return http.get("*/users/me", async () => {
+  return http.get("*/api/users/me", async () => {
     await delay(1000);
     return new HttpResponse(
       JSON.stringify(
