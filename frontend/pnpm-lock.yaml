@@ -6983,6 +6983,7 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+
   /react-hook-form@7.51.3(react@18.2.0):
     resolution:
       {
@@ -6994,6 +6995,14 @@ packages:
     dependencies:
       react: 18.2.0
     dev: false
+
+  /react-is@17.0.2:
+    resolution:
+      {
+        integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==,
+      }
+    dev: true
+
   /react-is@18.2.0:
     resolution:
       {
