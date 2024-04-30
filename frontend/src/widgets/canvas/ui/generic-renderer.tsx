@@ -1,5 +1,5 @@
 import { ElectricalComponent } from "@/shared/simulation";
-import { CanvasParams } from "../lib";
+import { ResistorRenderer } from "./resistor";
 import { WireRenderer } from "./wire";
 
 export function GenericRenderer({
@@ -9,5 +9,8 @@ export function GenericRenderer({
 }) {
   if (component._type == "wire") {
     return <WireRenderer component={component} />;
+  }
+  if (component._type == "resistor") {
+    return <ResistorRenderer component={component} />;
   }
 }

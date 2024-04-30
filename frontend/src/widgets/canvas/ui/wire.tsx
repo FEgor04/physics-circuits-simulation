@@ -1,5 +1,4 @@
 import { Wire } from "@/shared/simulation";
-import { CanvasParams, transformVirtualToCanvas } from "../lib";
 import { useTransformVirtualToCanvas } from "./context";
 
 export function WireRenderer({ component }: { component: Wire }) {
