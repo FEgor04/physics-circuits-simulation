@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ElectricalComponent } from "@/shared/simulation";
 import { schemeHeight, schemeWidth, transformVirtualToCanvas } from "../lib";
+import { CanvasContext } from "./context";
 import { GenericRenderer } from "./generic-renderer";
 
 type Props = {
@@ -25,11 +26,14 @@ export function Canvas({ components }: Props) {
   return (
     <div className="h-[90vh] w-full">
       <svg ref={canvasRef} className="mx-auto h-full w-full">
-        {canvasParams && <CanvasDots {...canvasParams} />}
-        {canvasParams &&
-          components.map((it, ind) => (
-            <GenericRenderer key={ind} component={it} params={canvasParams} />
-          ))}
+        {canvasParams && (
+          <CanvasContext.Provider value={{ canvasParams: canvasParams }}>
+            <CanvasDots {...canvasParams} />
+            {components.map((it, ind) => (
+              <GenericRenderer key={ind} component={it} />
+            ))}
+          </CanvasContext.Provider>
+        )}
       </svg>
     </div>
   );

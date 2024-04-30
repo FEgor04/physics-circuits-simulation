@@ -4,12 +4,10 @@ import { WireRenderer } from "./wire";
 
 export function GenericRenderer({
   component,
-  params,
 }: {
   component: ElectricalComponent;
-  params: CanvasParams;
 }) {
   if (component._type == "wire") {
-    return <WireRenderer component={component} params={params} />;
+    return <WireRenderer component={component} />;
   }
 }

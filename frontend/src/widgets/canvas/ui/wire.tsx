@@ -1,15 +1,11 @@
 import { Wire } from "@/shared/simulation";
 import { CanvasParams, transformVirtualToCanvas } from "../lib";
+import { useTransformVirtualToCanvas } from "./context";
 
-export function WireRenderer({
-  component,
-  params,
-}: {
-  component: Wire;
-  params: CanvasParams;
-}) {
-  const aTransformed = transformVirtualToCanvas(component.a, params);
-  const bTransformed = transformVirtualToCanvas(component.b, params);
+export function WireRenderer({ component }: { component: Wire }) {
+  const transformer = useTransformVirtualToCanvas();
+  const aTransformed = transformer(component.a);
+  const bTransformed = transformer(component.b);
   return (
     <line
       x1={aTransformed.x}
