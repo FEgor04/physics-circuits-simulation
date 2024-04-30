@@ -1,5 +1,5 @@
-import { ElectricalComponent } from "@/shared/simulation";
 import { useEffect, useRef, useState } from "react";
+import { ElectricalComponent } from "@/shared/simulation";
 import { schemeHeight, schemeWidth, transformVirtualToCanvas } from "../lib";
 
 type Props = {
