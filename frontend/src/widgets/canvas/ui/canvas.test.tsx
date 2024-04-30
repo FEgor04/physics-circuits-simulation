@@ -5,7 +5,7 @@ import { Canvas } from "./canvas";
 
 describe("adding new wire", () => {
   it.skip("adds new wire if you select two dots", () => {
-    let schema: Array<ElectricalComponent> = [];
+    const schema: Array<ElectricalComponent> = [];
     render(
       <Canvas
         components={schema}
