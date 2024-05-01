@@ -23,11 +23,7 @@ export function SignUpForm({ onSubmit }: Props) {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4"
-        id="sign-up-form"
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" id="sign-up-form">
         <FormField
           control={form.control}
           name="email"

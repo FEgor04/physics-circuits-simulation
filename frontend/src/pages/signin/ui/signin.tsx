@@ -2,13 +2,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { AxiosError } from "axios";
 import { SignInForm, useSignInByEmailMutation } from "@/features/auth-by-email";
 import { Button } from "@/shared/ui/button.tsx";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/shared/ui/card.tsx";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/shared/ui/card.tsx";
 
 export function SignInPage() {
   const { mutate, isError, error } = useSignInByEmailMutation();

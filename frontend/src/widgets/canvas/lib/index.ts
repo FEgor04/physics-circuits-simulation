@@ -12,10 +12,7 @@ export type CanvasParams = {
   height: number;
 };
 
-export function transformVirtualToCanvas(
-  point: Point,
-  params: CanvasParams,
-): Point {
+export function transformVirtualToCanvas(point: Point, params: CanvasParams): Point {
   const coefficientX = params.width / schemeWidth;
   const coefficientY = params.height / schemeWidth;
   return {

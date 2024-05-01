@@ -15,17 +15,12 @@ function pointsEqual(a: Point, b: Point): boolean {
 }
 
 function wireEqual(a: Wire, b: Wire): boolean {
-  return (
-    (pointsEqual(a.a, b.a) && pointsEqual(a.b, b.b)) ||
-    (pointsEqual(a.a, b.b) && pointsEqual(a.b, b.a))
-  );
+  return (pointsEqual(a.a, b.a) && pointsEqual(a.b, b.b)) || (pointsEqual(a.a, b.b) && pointsEqual(a.b, b.a));
 }
 
 export function Canvas({ components, onAddComponent }: Props) {
   const canvasRef = useRef<SVGSVGElement>(null);
-  const [canvasState, setCanvasState] = useState<CanvasState | undefined>(
-    undefined,
-  );
+  const [canvasState, setCanvasState] = useState<CanvasState | undefined>(undefined);
 
   const onSelectComponent = useCallback(
     (selected: CanvasState["selected"]): void => {
@@ -35,9 +30,7 @@ export function Canvas({ components, onAddComponent }: Props) {
           a: canvasState.selected.point,
           b: selected.point,
         };
-        const alreadyExists = components.find(
-          (it) => it._type == "wire" && wireEqual(newWire, it),
-        );
+        const alreadyExists = components.find((it) => it._type == "wire" && wireEqual(newWire, it));
         if (!alreadyExists) {
           onAddComponent(newWire);
         }
@@ -67,10 +60,10 @@ export function Canvas({ components, onAddComponent }: Props) {
       <svg ref={canvasRef} className="mx-auto h-full w-full">
         {canvasState && (
           <CanvasContext.Provider value={canvasState}>
-            <CanvasGrid />
             {components.map((it, ind) => (
               <GenericRenderer key={ind} component={it} />
             ))}
+            <CanvasGrid />
           </CanvasContext.Provider>
         )}
       </svg>
