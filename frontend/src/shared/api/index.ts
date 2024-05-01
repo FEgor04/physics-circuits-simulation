@@ -23,7 +23,7 @@ export const register = <TData = AxiosResponse<JwtResponse>>(
   signUpRequest: SignUpRequest,
   options?: AxiosRequestConfig,
 ): Promise<TData> => {
-  return axios.default.post(`/auth/register`, signUpRequest, options);
+  return axios.default.post(`/api/auth/register`, signUpRequest, options);
 };
 
 /**
@@ -35,7 +35,7 @@ export const registerAdmin = <TData = AxiosResponse<JwtResponse>>(
   options?: AxiosRequestConfig,
 ): Promise<TData> => {
   return axios.default.post(
-    `/auth/register/admin`,
+    `/api/auth/register/admin`,
     signUpAdminRequest,
     options,
   );
@@ -49,7 +49,7 @@ export const refresh = <TData = AxiosResponse<JwtResponse>>(
   refreshBody: string,
   options?: AxiosRequestConfig,
 ): Promise<TData> => {
-  return axios.default.post(`/auth/refresh`, refreshBody, options);
+  return axios.default.post(`/api/auth/refresh`, refreshBody, options);
 };
 
 /**
@@ -60,7 +60,7 @@ export const login = <TData = AxiosResponse<JwtResponse>>(
   signInRequest: SignInRequest,
   options?: AxiosRequestConfig,
 ): Promise<TData> => {
-  return axios.default.post(`/auth/login`, signInRequest, options);
+  return axios.default.post(`/api/auth/login`, signInRequest, options);
 };
 
 /**
@@ -71,7 +71,7 @@ export const getUserById = <TData = AxiosResponse<GetUserResponse>>(
   id: number,
   options?: AxiosRequestConfig,
 ): Promise<TData> => {
-  return axios.default.get(`/users/${id}`, options);
+  return axios.default.get(`/api/users/${id}`, options);
 };
 
 /**
@@ -81,7 +81,7 @@ export const getUserById = <TData = AxiosResponse<GetUserResponse>>(
 export const getCurrentUser = <TData = AxiosResponse<GetUserResponse>>(
   options?: AxiosRequestConfig,
 ): Promise<TData> => {
-  return axios.default.get(`/users/me`, options);
+  return axios.default.get(`/api/users/me`, options);
 };
 
 export type RegisterResult = AxiosResponse<JwtResponse>;
