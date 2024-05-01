@@ -14,10 +14,6 @@ type Props = {
 export function SignInForm({ onSubmit }: Props) {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      email: "superman@gmail.com",
-      password: "super1234",
-    },
   });
 
   return (

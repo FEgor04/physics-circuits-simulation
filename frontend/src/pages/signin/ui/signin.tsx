@@ -54,6 +54,13 @@ function ErrorMessage({ error }: { error: Error }) {
         </p>
       );
     }
+    if (error.response?.status == 500) {
+      return (
+        <p id="signin-card-form-error" className="text-destructive">
+          Сервер недоступен
+        </p>
+      );
+    }
   }
   return (
     <p id="signin-card-form-error" className="text-destructive">
