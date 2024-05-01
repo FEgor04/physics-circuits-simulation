@@ -15,7 +15,7 @@ export const Route = createFileRoute("/")({
       },
     ]);
     return (
-      <div className="container mx-auto mt-8 border">
+      <div className="container mx-auto mt-8">
         <Canvas
           components={schema}
           onAddComponent={(newComponent) =>

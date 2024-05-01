@@ -67,10 +67,10 @@ export function Canvas({ components, onAddComponent }: Props) {
       <svg ref={canvasRef} className="mx-auto h-full w-full">
         {canvasState && (
           <CanvasContext.Provider value={canvasState}>
-            <CanvasGrid />
             {components.map((it, ind) => (
               <GenericRenderer key={ind} component={it} />
             ))}
+            <CanvasGrid />
           </CanvasContext.Provider>
         )}
       </svg>
