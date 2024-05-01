@@ -52,6 +52,8 @@ public class AuthController {
     @Operation(summary = "User registration",
             description = "Registers a new user with provided details and generates JWT token",
             operationId = "register")
+    @ApiResponses({
+            @ApiResponse(responseCode = "409", description = "", content = {@Content(schema = @Schema(implementation = ErrorMessage.class), mediaType = "application/json")})})
     public JwtResponse register(@Valid @RequestBody final SignUpRequest request) {
         var user = userService.create(new UserDto(null, request.name(), request.email(), request.password()));
         return authService.login(new JwtRequest(user.getEmail(), request.password()));
