@@ -15,8 +15,6 @@ describe("trasnformation function", () => {
       x: containerParams.width / 2,
       y: containerParams.height / 2,
     };
-    expect(transformVirtualToCanvas(virtual, containerParams)).toStrictEqual(
-      expected,
-    );
+    expect(transformVirtualToCanvas(virtual, containerParams)).toStrictEqual(expected);
   });
 });

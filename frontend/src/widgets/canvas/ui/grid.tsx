@@ -1,18 +1,12 @@
 import { schemeHeight, schemeWidth } from "../lib";
-import {
-  useOnSelectElement,
-  useSelectedElement,
-  useTransformVirtualToCanvas,
-} from "./context";
+import { useOnSelectElement, useSelectedElement, useTransformVirtualToCanvas } from "./context";
 
 export function CanvasGrid() {
   const selected = useSelectedElement();
   const onSelect = useOnSelectElement();
   const coords = new Array(schemeWidth)
     .fill(0)
-    .flatMap((_, x) =>
-      new Array(schemeHeight).fill(0).map((_, y) => ({ x: x - 10, y: y - 10 })),
-    );
+    .flatMap((_, x) => new Array(schemeHeight).fill(0).map((_, y) => ({ x: x - 10, y: y - 10 })));
   const transform = useTransformVirtualToCanvas();
   return (
     <>
@@ -21,17 +15,9 @@ export function CanvasGrid() {
           x={transform({ x, y }).x}
           y={transform({ x, y }).y}
           key={x * schemeWidth + y}
-          isSelected={
-            selected?.type == "point" &&
-            selected.point.x == x &&
-            selected.point.y == y
-          }
+          isSelected={selected?.type == "point" && selected.point.x == x && selected.point.y == y}
           onSelect={() => {
-            if (
-              selected?.type == "point" &&
-              selected.point.x == x &&
-              selected.point.y == y
-            ) {
+            if (selected?.type == "point" && selected.point.x == x && selected.point.y == y) {
               return;
             }
             onSelect({

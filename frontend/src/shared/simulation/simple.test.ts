@@ -34,8 +34,6 @@ test.skip("simple scheme with voltmeter only", () => {
     b: { x: 0, y: 0 },
   });
 
-  const ampermeter = simulator
-    .getAllComponents()
-    .find((it) => it._type == "ampermeter") as Ampermeter;
+  const ampermeter = simulator.getAllComponents().find((it) => it._type == "ampermeter") as Ampermeter;
   expect(ampermeter.currency).toBe(u / r);
 });
