@@ -10,11 +10,11 @@
  */
 export interface GetUserResponse {
   /** User email */
-  readonly email?: string;
+  readonly email: string;
   /** User ID */
-  readonly id?: number;
+  readonly id: number;
   /** User name */
-  readonly name?: string;
+  readonly name: string;
 }
 
 export interface SignInRequest {
