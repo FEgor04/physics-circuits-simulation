@@ -12,6 +12,7 @@ export function WireRenderer({ component }: { component: Wire }) {
       x2={bTransformed.x}
       y2={bTransformed.y}
       stroke="black"
+      strokeWidth={"3px"}
     />
   );
 }

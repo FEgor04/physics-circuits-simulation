@@ -63,14 +63,22 @@ function CanvasDot({
   "data-testid"?: string;
 }) {
   return (
-    <circle
-      cx={x}
-      cy={y}
-      r={5}
-      onClick={() => onSelect()}
-      fill={isSelected ? "#ff0000" : "black"}
-      className="cursor-pointer"
-      data-testid={testId}
-    />
+    <>
+      <circle // visible circle
+        cx={x}
+        cy={y}
+        r={isSelected ? 5 : 3}
+        fill={isSelected ? "#A81BE4" : "#9A97A3"}
+      />
+      <circle // invisible clickable circle
+        cx={x}
+        cy={y}
+        r={15}
+        onClick={() => onSelect()}
+        opacity={0}
+        className="cursor-pointer"
+        data-testid={testId}
+      />
+    </>
   );
 }
