@@ -65,10 +65,10 @@ function CanvasDot({
   return (
     <>
       <circle // visible circle
-          cx={x}
-          cy={y}
-          r={isSelected ? 5 : 3}
-          fill={isSelected ? "#A81BE4" : "#9A97A3"}
+        cx={x}
+        cy={y}
+        r={isSelected ? 5 : 3}
+        fill={isSelected ? "#A81BE4" : "#9A97A3"}
       />
       <circle // invisible clickable circle
         cx={x}
