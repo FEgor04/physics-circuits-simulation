@@ -5,13 +5,7 @@ import { login, register } from "@/shared/api";
 export function useSignInByEmailMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({
-      email,
-      password,
-    }: {
-      email: string;
-      password: string;
-    }) => {
+    mutationFn: async ({ email, password }: { email: string; password: string }) => {
       const response = await login({
         email,
         password,
@@ -34,15 +28,7 @@ export function useSignInByEmailMutation() {
 export function useSignUpByEmailMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({
-      email,
-      password,
-      name,
-    }: {
-      email: string;
-      password: string;
-      name: string;
-    }) => {
+    mutationFn: async ({ email, password, name }: { email: string; password: string; name: string }) => {
       const response = await register({
         name,
         email,
