@@ -5,9 +5,18 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  "@hookform/resolvers":
+    specifier: ^3.3.4
+    version: 3.3.4(react-hook-form@7.51.3)
+  "@radix-ui/react-label":
+    specifier: ^2.0.2
+    version: 2.0.2(@types/react-dom@18.2.25)(@types/react@18.2.78)(react-dom@18.2.0)(react@18.2.0)
   "@radix-ui/react-slot":
     specifier: ^1.0.2
     version: 1.0.2(@types/react@18.2.78)(react@18.2.0)
+  "@tanstack/react-query":
+    specifier: ^5.32.0
+    version: 5.32.0(react@18.2.0)
   "@tanstack/react-query-devtools":
     specifier: ^5.32.0
     version: 5.32.0(@tanstack/react-query@5.32.0)(react@18.2.0)
@@ -32,12 +41,18 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
+  react-hook-form:
+    specifier: ^7.51.3
+    version: 7.51.3(react@18.2.0)
   tailwind-merge:
     specifier: ^2.2.2
     version: 2.2.2
   tailwindcss-animate:
     specifier: ^1.0.7
     version: 1.0.7(tailwindcss@3.4.3)
+  zod:
+    specifier: ^3.23.5
+    version: 3.23.5
 
 devDependencies:
   "@conarti/eslint-plugin-feature-sliced":
@@ -1313,6 +1328,17 @@ packages:
     engines: { node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: ">=6.14.13" }
     dev: true
 
+  /@hookform/resolvers@3.3.4(react-hook-form@7.51.3):
+    resolution:
+      {
+        integrity: sha512-o5cgpGOuJYrd+iMKvkttOclgwRW86EsWJZZRC23prf0uU2i48Htq4PuT73AVb9ionFyZrwYEITuOFGF+BydEtQ==,
+      }
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.51.3(react@18.2.0)
+    dev: false
+
   /@humanwhocodes/config-array@0.11.14:
     resolution:
       {
@@ -1759,6 +1785,54 @@ packages:
       "@babel/runtime": 7.24.4
       "@types/react": 18.2.78
       react: 18.2.0
+    dev: false
+
+  /@radix-ui/react-label@2.0.2(@types/react-dom@18.2.25)(@types/react@18.2.78)(react-dom@18.2.0)(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-N5ehvlM7qoTLx7nWPodsPYPgMzA5WM8zZChQg8nyFJKnDO5WHdba1vv5/H6IO5LtJMfD2Q3wh1qHFGNtK0w3bQ==,
+      }
+    peerDependencies:
+      "@types/react": "*"
+      "@types/react-dom": "*"
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      "@types/react":
+        optional: true
+      "@types/react-dom":
+        optional: true
+    dependencies:
+      "@babel/runtime": 7.24.4
+      "@radix-ui/react-primitive": 1.0.3(@types/react-dom@18.2.25)(@types/react@18.2.78)(react-dom@18.2.0)(react@18.2.0)
+      "@types/react": 18.2.78
+      "@types/react-dom": 18.2.25
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@radix-ui/react-primitive@1.0.3(@types/react-dom@18.2.25)(@types/react@18.2.78)(react-dom@18.2.0)(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-yi58uVyoAcK/Nq1inRY56ZSjKypBNKTa/1mcL8qdl6oJeEaDbOldlzrGn7P6Q3Id5d+SYNGc5AJgc4vGhjs5+g==,
+      }
+    peerDependencies:
+      "@types/react": "*"
+      "@types/react-dom": "*"
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      "@types/react":
+        optional: true
+      "@types/react-dom":
+        optional: true
+    dependencies:
+      "@babel/runtime": 7.24.4
+      "@radix-ui/react-slot": 1.0.2(@types/react@18.2.78)(react@18.2.0)
+      "@types/react": 18.2.78
+      "@types/react-dom": 18.2.25
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /@radix-ui/react-slot@1.0.2(@types/react@18.2.78)(react@18.2.0):
@@ -2350,7 +2424,7 @@ packages:
     engines: { node: ">=12" }
     dependencies:
       prettier: 3.2.5
-      zod: 3.22.4
+      zod: 3.23.5
     dev: true
 
   /@tanstack/router-vite-plugin@1.26.21(vite@5.2.8):
@@ -2375,7 +2449,7 @@ packages:
       "@types/babel__template": 7.4.4
       "@types/babel__traverse": 7.20.5
       "@vitejs/plugin-react": 4.2.1(vite@5.2.8)
-      zod: 3.22.4
+      zod: 3.23.5
     transitivePeerDependencies:
       - supports-color
       - vite
@@ -2584,7 +2658,6 @@ packages:
       }
     dependencies:
       "@types/react": 18.2.78
-    dev: true
 
   /@types/react@18.2.78:
     resolution:
@@ -6911,6 +6984,18 @@ packages:
       react: 18.2.0
       scheduler: 0.23.0
 
+  /react-hook-form@7.51.3(react@18.2.0):
+    resolution:
+      {
+        integrity: sha512-cvJ/wbHdhYx8aviSWh28w9ImjmVsb5Y05n1+FW786vEZQJV5STNM0pW6ujS+oiBecb0ARBxJFyAnXj9+GHXACQ==,
+      }
+    engines: { node: ">=12.22.0" }
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /react-is@17.0.2:
     resolution:
       {
@@ -8498,9 +8583,8 @@ packages:
     engines: { node: ">=12.20" }
     dev: true
 
-  /zod@3.22.4:
+  /zod@3.23.5:
     resolution:
       {
-        integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==,
+        integrity: sha512-fkwiq0VIQTksNNA131rDOsVJcns0pfVUjHzLrNBiF/O/Xxb5lQyEXkhZWcJ7npWsYlvs+h0jFWXXy4X46Em1JA==,
       }
-    dev: true

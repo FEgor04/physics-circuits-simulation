@@ -24,4 +24,9 @@ export default defineConfig({
     globals: true,
     setupFiles: "./tests/setup.ts",
   },
+  server: {
+    proxy: {
+      "/api": "http://localhost:8080",
+    },
+  },
 });
