@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CircuitSimulator } from "./interface";
-import { getComponentContacts } from "./lib";
+import { getComponentContacts, pointsEqual } from "./lib";
 import { Branch, ElectricalComponent, Node, Point } from "./types";
 
 export class SimpleSimulator implements CircuitSimulator {
   components: ElectricalComponent[];
-  nodes: Node[];
+  // global state, нужен чтобы избежать ада проброски нод в функции
+  private nodes: Node[];
 
   constructor(_component: ElectricalComponent[]) {
     this.components = _component;
@@ -19,42 +20,10 @@ export class SimpleSimulator implements CircuitSimulator {
   deleteComponent(_component: ElectricalComponent): void {}
 
   getAllComponents(): ElectricalComponent[] {
-    return [
-      {
-        _type: "source",
-        plus: { x: 0, y: 0 },
-        minus: { x: -1, y: 0 },
-        electromotiveForce: 220,
-        internalResistance: 110,
-      },
-      {
-        _type: "wire",
-        a: { x: -1, y: 0 },
-        b: { x: -1, y: 5 },
-      },
-      {
-        _type: "ampermeter",
-        a: { x: -1, y: 5 },
-        b: { x: 0, y: 5 },
-        currency: "unknown",
-      },
-      {
-        _type: "wire",
-        a: { x: 0, y: 5 },
-        b: { x: 0, y: 0 },
-      },
-    ];
+    return this.components;
   }
 
   setComponents(_components: ElectricalComponent[]): void {}
-
-  printComp(): void {
-    console.log(this.components);
-  }
-
-  printNodes(): void {
-    console.log(this.nodes);
-  }
 
   findNodes(): Array<Point> {
     const nodes: Array<Point> = [];
@@ -84,6 +53,17 @@ export class SimpleSimulator implements CircuitSimulator {
   }
 
   findBranches(): Array<Branch> {
+    const nodes = this.findNodes();
+    return [];
+  }
+
+  private findComponentsAtPoint(point: Point): Array<ElectricalComponent> {
+    return this.components.filter(
+      (component) => getComponentContacts(component).find((contact) => pointsEqual(contact, point)) !== undefined,
+    );
+  }
+
+  findBranchesStartingInPoint(root: Point, startingNode: Point): Array<Branch> {
     return [];
   }
 }

@@ -11,5 +11,9 @@ export function getComponentContacts(component: ElectricalComponent): Array<Poin
   } else if (component._type === "source") {
     return [component.plus, component.minus];
   }
-  throw new Error("not all cases are covered")
+  throw new Error("not all cases are covered");
+}
+
+export function pointsEqual(a: Point, b: Point) {
+  return a.x == b.x && a.y == b.y;
 }
