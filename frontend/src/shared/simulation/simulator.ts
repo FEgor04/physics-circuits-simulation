@@ -58,7 +58,7 @@ export class SimpleSimulator implements CircuitSimulator {
 
   findNodes(): Array<Point> {
     const nodes: Array<Point> = [];
-    const nodeMap: { [key: string]: { count: number; loc: Point } } = {};
+    const nodeMap: Record<string, { count: number; loc: Point }> = {};
 
     // Проходимся по всем компонентам и считаем, сколько раз каждая точка встречается
     this.components.forEach((component) => {
