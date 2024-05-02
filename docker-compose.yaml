@@ -3,6 +3,8 @@ version: '3.0'
 networks:
   physics-circuits:
     driver: bridge
+  physics-front:
+    driver: bridge
 
 volumes:
   db-data:
@@ -14,9 +16,10 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - .env
+      - backend/.env
     networks:
       - physics-circuits
+      - physics-front
     volumes:
       - db-data:/var/lib/postgresql/data
 
@@ -36,4 +39,13 @@ services:
       - POSTGRES_PASSWORD=postgres
     ports:
       - '8080:8080'  
+
+  front:
+    build:
+      context: ./frontend
+    networks:
+      - physics-front
+    ports:
+      - "80:80"
+
 
