@@ -1,4 +1,4 @@
-version: '3.0'
+version: '3.9'
 
 networks:
   backend:
@@ -47,5 +47,4 @@ services:
     ports:
       - "80:80"
     restart: always
-
 
