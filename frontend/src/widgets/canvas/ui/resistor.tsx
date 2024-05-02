@@ -2,7 +2,7 @@ import resistorSvg from "@/shared/assets/circuit/resistor.svg";
 import { Resistor } from "@/shared/simulation";
 import { useTransformVirtualToCanvas } from "./context";
 
-export function ResistorRenderer({ component }: { component: Resistor }) {
+export function ResistorRenderer({ component, onClick }: { component: Resistor; onClick: () => void }) {
   const transformer = useTransformVirtualToCanvas();
   const aTransformed = transformer(component.a);
   const bTransformed = transformer(component.b);
@@ -14,6 +14,7 @@ export function ResistorRenderer({ component }: { component: Resistor }) {
       width={bTransformed.x - aTransformed.x}
       height={resistorHeight}
       href={resistorSvg}
+      onClick={onClick}
     />
   );
 }

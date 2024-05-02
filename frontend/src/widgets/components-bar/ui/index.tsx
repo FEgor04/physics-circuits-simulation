@@ -26,8 +26,8 @@ export function ComponentsBar() {
     <div className="grid grid-cols-2 place-content-baseline justify-items-center border-r-4 bg-white">
       {components.map((object, i) => {
         return (
-          <div className="flex h-20 cursor-pointer items-center justify-center">
-            <img src={object} key={i} alt={""} className="w-14" />
+          <div className="flex h-20 cursor-pointer items-center justify-center" key={i}>
+            <img src={object} alt={""} className="w-14" />
           </div>
         );
       })}

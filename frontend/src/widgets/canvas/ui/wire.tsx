@@ -1,7 +1,7 @@
 import { Wire } from "@/shared/simulation";
 import { useTransformVirtualToCanvas } from "./context";
 
-export function WireRenderer({ component }: { component: Wire }) {
+export function WireRenderer({ component, onClick }: { component: Wire; onClick: () => void }) {
   const transformer = useTransformVirtualToCanvas();
   const aTransformed = transformer(component.a);
   const bTransformed = transformer(component.b);
@@ -13,6 +13,7 @@ export function WireRenderer({ component }: { component: Wire }) {
       y2={bTransformed.y}
       stroke="black"
       strokeWidth={"3px"}
+      onClick={onClick}
     />
   );
 }

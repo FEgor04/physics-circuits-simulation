@@ -8,6 +8,7 @@ import { CanvasGrid } from "./grid";
 type Props = {
   components: Array<ElectricalComponent>;
   onAddComponent: (component: ElectricalComponent) => void;
+  onSelectComponent: (i: ElectricalComponent) => void;
 };
 
 function pointsEqual(a: Point, b: Point): boolean {
@@ -18,11 +19,11 @@ function wireEqual(a: Wire, b: Wire): boolean {
   return (pointsEqual(a.a, b.a) && pointsEqual(a.b, b.b)) || (pointsEqual(a.a, b.b) && pointsEqual(a.b, b.a));
 }
 
-export function Canvas({ components, onAddComponent }: Props) {
+export function Canvas({ components, onAddComponent, onSelectComponent }: Props) {
   const canvasRef = useRef<SVGSVGElement>(null);
   const [canvasState, setCanvasState] = useState<CanvasState | undefined>(undefined);
 
-  const onSelectComponent = useCallback(
+  const onSelectPoint = useCallback(
     (selected: CanvasState["selected"]): void => {
       if (canvasState?.selected?.type == "point" && selected?.type == "point") {
         const newWire: Wire = {
@@ -34,7 +35,7 @@ export function Canvas({ components, onAddComponent }: Props) {
         if (!alreadyExists) {
           onAddComponent(newWire);
         }
-        return onSelectComponent(undefined);
+        return onSelectPoint(undefined);
       }
       setCanvasState((prev) => ({ ...prev!, selected }));
     },
@@ -50,10 +51,10 @@ export function Canvas({ components, onAddComponent }: Props) {
       setCanvasState((prev) => ({
         ...prev!,
         canvasParams,
-        onSelect: onSelectComponent,
+        onSelect: onSelectPoint,
       }));
     }
-  }, [canvasRef, onSelectComponent]);
+  }, [canvasRef, onSelectPoint]);
 
   return (
     <div className="h-[90vh] w-full">
@@ -61,7 +62,7 @@ export function Canvas({ components, onAddComponent }: Props) {
         {canvasState && (
           <CanvasContext.Provider value={canvasState}>
             {components.map((it, ind) => (
-              <GenericRenderer key={ind} component={it} />
+              <GenericRenderer key={ind} component={it} onClick={() => onSelectComponent(it)} />
             ))}
             <CanvasGrid />
           </CanvasContext.Provider>
