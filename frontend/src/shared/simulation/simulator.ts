@@ -85,7 +85,7 @@ export class SimpleSimulator implements CircuitSimulator {
 
     const components = this.findComponentsAtPoint(root);
     const branches = components.flatMap((component) => {
-      const nextPoints = getComponentContacts(component).filter((it) => this.was.has(`${it.x}-${it.y}`));
+      const nextPoints = getComponentContacts(component).filter((it) => !this.was.has(`${it.x}-${it.y}`));
       return nextPoints.flatMap((nextPoint) => {
         this.was.add(`${nextPoint.x}-${nextPoint.y}`);
         return this.findBranchesStartingInPoint(nextPoint, startingNode, [...componentsOnWay, component]);
