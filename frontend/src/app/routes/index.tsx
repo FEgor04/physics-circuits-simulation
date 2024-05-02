@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Canvas } from "@/widgets/canvas";
+import { CanvasPanel } from "@/widgets/canvas";
 import { ComponentChooseBar } from "@/widgets/component-choose-bar";
 import { ComponentSettingsBar } from "@/widgets/component-settings-bar";
 import { ComponentValuesBar } from "@/widgets/component-values-bar";
@@ -41,7 +41,7 @@ export const Route = createFileRoute("/")({
         <ResizablePanelGroup direction="horizontal">
           {state == "editing" ? <ComponentChooseBar /> : <ComponentValuesBar />}
           <ResizableHandle />
-          <Canvas
+          <CanvasPanel
             components={schema}
             onSelectComponent={updateSelectedComponentIndex}
             onAddComponent={(newComponent) => setSchema((old) => [...old, newComponent])}

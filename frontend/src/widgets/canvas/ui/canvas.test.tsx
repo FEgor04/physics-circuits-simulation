@@ -7,7 +7,13 @@ import { Canvas } from "./canvas";
 describe("adding new wire", () => {
   it("adds new wire if you select two dots", async () => {
     const schema: Array<ElectricalComponent> = [];
-    render(<Canvas components={schema} onAddComponent={(newComponent) => schema.push(newComponent)} />);
+    render(
+      <Canvas
+        components={schema}
+        onAddComponent={(newComponent) => schema.push(newComponent)}
+        onSelectComponent={() => {}}
+      />,
+    );
     const a = { x: 5, y: 5 };
     const b = { x: 6, y: 6 };
     await userEvent.click(screen.getByTestId(`canvas-dot-${a.x}-${a.y}`));

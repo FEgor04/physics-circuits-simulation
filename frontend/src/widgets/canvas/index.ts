@@ -1,1 +1,1 @@
-export { Canvas } from "./ui/canvas";
+export { CanvasPanel } from "./ui/canvas-panel.tsx";
