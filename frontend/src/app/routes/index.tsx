@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Canvas } from "@/widgets/canvas";
+import { ComponentChooseBar } from "@/widgets/component-choose-bar";
 import { ComponentSettingsBar } from "@/widgets/component-settings-bar";
 import { ComponentValuesBar } from "@/widgets/component-values-bar";
-import { ComponentChooseBar } from "src/widgets/component-choose-bar";
+import { StateButton } from "@/widgets/state-button";
 import { ElectricalComponent } from "@/shared/simulation";
 
 type SimulationState = "simulation" | "editing";
@@ -31,6 +32,8 @@ export const Route = createFileRoute("/")({
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { state } = Route.useSearch();
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const navigate = Route.useNavigate();
 
     return (
       <div className="grid grid-cols-[minmax(200px,_1fr)_6fr_minmax(250px,_1fr)] grid-rows-1 gap-0">
@@ -43,6 +46,10 @@ export const Route = createFileRoute("/")({
           />
         </div>
         {state == "editing" ? <ComponentSettingsBar selectedComponent={selectedComponent} /> : <></>}
+        <StateButton
+          state={state == "simulation"}
+          onChange={() => navigate({ search: () => ({ state: state == "simulation" ? "editing" : "simulation" }) })}
+        />
       </div>
     );
   },
