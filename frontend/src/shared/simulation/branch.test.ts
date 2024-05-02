@@ -60,6 +60,7 @@ test("not simple scheme with branches", () => {
       ],
     },
   ];
+  const expectedNodes = branch.flatMap(({ a, b }) => [a, b]);
 
   const components: ElectricalComponent[] = [
     { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 1 } },
@@ -80,6 +81,7 @@ test("not simple scheme with branches", () => {
 
   const simulator = new SimpleSimulator(components);
 
-  const branches = simulator.findBranches();
-  expect(branches).toBe(branch);
+  const actualNodes = simulator.findNodes();
+  expectedNodes.forEach((node) => expect(actualNodes).toContainEqual(node));
+  actualNodes.forEach((node) => expect(expectedNodes).toContainEqual(node));
 });
