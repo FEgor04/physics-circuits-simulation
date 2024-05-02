@@ -2,8 +2,15 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Canvas } from "@/widgets/canvas";
 import { ComponentSettingsBar } from "@/widgets/component-settings-bar";
-import { ComponentsBar } from "@/widgets/components-bar";
+import { ComponentValuesBar } from "@/widgets/component-values-bar";
+import { ComponentChooseBar } from "src/widgets/component-choose-bar";
 import { ElectricalComponent } from "@/shared/simulation";
+
+type SimulationState = "simulation" | "editing";
+
+type RootSearch = {
+  state: SimulationState;
+};
 
 export const Route = createFileRoute("/")({
   component: () => {
@@ -21,9 +28,13 @@ export const Route = createFileRoute("/")({
     const updateSelectedComponentIndex = (i: ElectricalComponent) => {
       setSelectedComponent(i == selectedComponent ? null : i);
     };
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { state } = Route.useSearch();
+
     return (
       <div className="grid grid-cols-[minmax(200px,_1fr)_6fr_minmax(250px,_1fr)] grid-rows-1 gap-0">
-        <ComponentsBar />
+        {state == "editing" ? <ComponentChooseBar /> : <ComponentValuesBar />}
         <div className="container mx-auto mt-8">
           <Canvas
             components={schema}
@@ -31,8 +42,13 @@ export const Route = createFileRoute("/")({
             onAddComponent={(newComponent) => setSchema((old) => [...old, newComponent])}
           />
         </div>
-        <ComponentSettingsBar selectedComponent={selectedComponent} />
+        {state == "editing" ? <ComponentSettingsBar selectedComponent={selectedComponent} /> : <></>}
       </div>
     );
+  },
+  validateSearch: (search: Record<string, unknown>): RootSearch => {
+    return {
+      state: (search.state as SimulationState) || "editing",
+    };
   },
 });

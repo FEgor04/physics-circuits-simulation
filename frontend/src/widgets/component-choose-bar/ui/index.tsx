@@ -9,7 +9,7 @@ import ledSvg from "@/shared/assets/circuit/led.svg";
 import resistorSvg from "@/shared/assets/circuit/resistor.svg";
 import voltmeterSvg from "@/shared/assets/circuit/voltmeter.svg";
 
-export function ComponentsBar() {
+export function ComponentChooseBar() {
   const components = [
     voltmeterSvg,
     AC_sourceSvg,

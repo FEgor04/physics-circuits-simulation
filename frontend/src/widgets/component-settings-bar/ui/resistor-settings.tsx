@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Resistor } from "@/shared/simulation";
 import { Button } from "@/shared/ui/button.tsx";
+import { Slider } from "@/shared/ui/slider";
 
 export function ResistorSettings({ component }: { component: Resistor }) {
   const [resistance, setResistance] = useState(component.resistance);
@@ -10,16 +11,14 @@ export function ResistorSettings({ component }: { component: Resistor }) {
       <label htmlFor="resistanceSlider" className="block w-full">
         Сопротивление: <span className="float-right">{resistance} Ом</span>
       </label>
-      <input
-        type="range"
-        min="1"
-        max="500"
-        value={resistance}
-        onChange={(event) => {
-          setResistance(Number(event.target.value));
-          component.resistance = Number(event.target.value);
-          console.log(component.resistance);
+      <Slider
+        defaultValue={[resistance]}
+        onValueChange={(value: number[]) => {
+          setResistance(value[0]);
+          component.resistance = value[0];
         }}
+        min={1}
+        max={500}
         id="resistanceSlider"
       />
       <Button>Удалить!</Button>
