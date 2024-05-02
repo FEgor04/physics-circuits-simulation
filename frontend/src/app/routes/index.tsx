@@ -6,6 +6,7 @@ import { ComponentSettingsBar } from "@/widgets/component-settings-bar";
 import { ComponentValuesBar } from "@/widgets/component-values-bar";
 import { StateButton } from "@/widgets/state-button";
 import { ElectricalComponent } from "@/shared/simulation";
+import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 
 type SimulationState = "simulation" | "editing";
 
@@ -36,16 +37,24 @@ export const Route = createFileRoute("/")({
     const navigate = Route.useNavigate();
 
     return (
-      <div className="grid grid-cols-[minmax(200px,_1fr)_6fr_minmax(250px,_1fr)] grid-rows-1 gap-0">
-        {state == "editing" ? <ComponentChooseBar /> : <ComponentValuesBar />}
-        <div className="container mx-auto mt-8">
+      <div className="h-screen">
+        <ResizablePanelGroup direction="horizontal">
+          {state == "editing" ? <ComponentChooseBar /> : <ComponentValuesBar />}
+          <ResizableHandle />
           <Canvas
             components={schema}
             onSelectComponent={updateSelectedComponentIndex}
             onAddComponent={(newComponent) => setSchema((old) => [...old, newComponent])}
           />
-        </div>
-        {state == "editing" ? <ComponentSettingsBar selectedComponent={selectedComponent} /> : <></>}
+          {state == "editing" ? (
+            <>
+              <ResizableHandle />
+              <ComponentSettingsBar selectedComponent={selectedComponent} />
+            </>
+          ) : (
+            <></>
+          )}
+        </ResizablePanelGroup>
         <StateButton
           state={state == "simulation"}
           onChange={() => navigate({ search: () => ({ state: state == "simulation" ? "editing" : "simulation" }) })}

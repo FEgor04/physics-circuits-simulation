@@ -1,4 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer } from "recharts";
+import { ResizablePanel } from "@/shared/ui/resizable.tsx";
 
 export function ComponentValuesBar() {
   const data = [
@@ -36,7 +37,7 @@ export function ComponentValuesBar() {
     },
   ];
   return (
-    <div className="w-full border-r-4 bg-white">
+    <ResizablePanel className="w-full border-r-4 bg-white" minSize={15} maxSize={50} defaultSize={15} order={1}>
       <ResponsiveContainer width="100%" height="35%">
         <LineChart
           width={200}
@@ -57,6 +58,6 @@ export function ComponentValuesBar() {
           <Line type="monotone" dataKey="v2" stroke="#82ca9d" dot={false} strokeWidth={4} />
         </LineChart>
       </ResponsiveContainer>
-    </div>
+    </ResizablePanel>
   );
 }

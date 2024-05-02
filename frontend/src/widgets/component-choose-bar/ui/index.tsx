@@ -8,6 +8,7 @@ import keySvg from "@/shared/assets/circuit/key.svg";
 import ledSvg from "@/shared/assets/circuit/led.svg";
 import resistorSvg from "@/shared/assets/circuit/resistor.svg";
 import voltmeterSvg from "@/shared/assets/circuit/voltmeter.svg";
+import { ResizablePanel } from "@/shared/ui/resizable.tsx";
 
 export function ComponentChooseBar() {
   const components = [
@@ -23,7 +24,13 @@ export function ComponentChooseBar() {
     capacitorSvg,
   ];
   return (
-    <div className="grid grid-cols-2 place-content-baseline justify-items-center border-r-4 bg-white">
+    <ResizablePanel
+      className="grid grid-cols-2 place-content-baseline justify-items-center border-r-4 bg-white"
+      minSize={9}
+      maxSize={50}
+      defaultSize={15}
+      order={1}
+    >
       {components.map((object, i) => {
         return (
           <div className="flex h-20 cursor-pointer items-center justify-center" key={i}>
@@ -31,6 +38,6 @@ export function ComponentChooseBar() {
           </div>
         );
       })}
-    </div>
+    </ResizablePanel>
   );
 }

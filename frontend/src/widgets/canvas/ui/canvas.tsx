@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ElectricalComponent } from "@/shared/simulation";
 import { Point, Wire } from "@/shared/simulation/types";
+import { ResizablePanel } from "@/shared/ui/resizable.tsx";
 import { CanvasContext, CanvasState } from "./context";
 import { GenericRenderer } from "./generic-renderer";
 import { CanvasGrid } from "./grid";
@@ -22,6 +23,7 @@ function wireEqual(a: Wire, b: Wire): boolean {
 export function Canvas({ components, onAddComponent, onSelectComponent }: Props) {
   const canvasRef = useRef<SVGSVGElement>(null);
   const [canvasState, setCanvasState] = useState<CanvasState | undefined>(undefined);
+  const [canvasSize, setCanvasSize] = useState<number>(65);
 
   const onSelectPoint = useCallback(
     (selected: CanvasState["selected"]): void => {
@@ -54,10 +56,10 @@ export function Canvas({ components, onAddComponent, onSelectComponent }: Props)
         onSelect: onSelectPoint,
       }));
     }
-  }, [canvasRef, onSelectPoint]);
+  }, [canvasRef, onSelectPoint, canvasSize]);
 
   return (
-    <div className="h-[90vh] w-full">
+    <ResizablePanel onResize={setCanvasSize} minSize={10} maxSize={90} defaultSize={canvasSize} order={2}>
       <svg ref={canvasRef} className="mx-auto h-full w-full">
         {canvasState && (
           <CanvasContext.Provider value={canvasState}>
@@ -68,6 +70,6 @@ export function Canvas({ components, onAddComponent, onSelectComponent }: Props)
           </CanvasContext.Provider>
         )}
       </svg>
-    </div>
+    </ResizablePanel>
   );
 }
