@@ -12,6 +12,7 @@ describe("adding new wire", () => {
         components={schema}
         onAddComponent={(newComponent) => schema.push(newComponent)}
         onSelectComponent={() => {}}
+        canvasSize={65}
       />,
     );
     const a = { x: 5, y: 5 };
@@ -29,7 +30,14 @@ describe("adding new wire", () => {
 
   it("does not add new wire if you select the same dot twice", async () => {
     const schema: Array<ElectricalComponent> = [];
-    render(<Canvas components={schema} onAddComponent={(newComponent) => schema.push(newComponent)} />);
+    render(
+      <Canvas
+        components={schema}
+        onAddComponent={(newComponent) => schema.push(newComponent)}
+        canvasSize={65}
+        onSelectComponent={() => {}}
+      />,
+    );
     const a = { x: 5, y: 5 };
     await userEvent.click(screen.getByTestId(`canvas-dot-${a.x}-${a.y}`));
     await userEvent.click(screen.getByTestId(`canvas-dot-${a.x}-${a.y}`));
@@ -43,7 +51,14 @@ describe("adding new wire", () => {
       b: { x: 5, y: 6 },
     };
     const schema: Array<ElectricalComponent> = [initialWire];
-    render(<Canvas components={schema} onAddComponent={(newComponent) => schema.push(newComponent)} />);
+    render(
+      <Canvas
+        components={schema}
+        onAddComponent={(newComponent) => schema.push(newComponent)}
+        canvasSize={65}
+        onSelectComponent={() => {}}
+      />,
+    );
     await userEvent.click(screen.getByTestId(`canvas-dot-${initialWire.a.x}-${initialWire.a.y}`));
     await userEvent.click(screen.getByTestId(`canvas-dot-${initialWire.b.x}-${initialWire.b.y}`));
     expect(schema).toStrictEqual([initialWire]);
