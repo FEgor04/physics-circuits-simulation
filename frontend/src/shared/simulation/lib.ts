@@ -1,0 +1,15 @@
+import { ElectricalComponent, Point } from "./types";
+
+export function getComponentContacts(component: ElectricalComponent): Array<Point> {
+  if (
+    component._type === "wire" ||
+    component._type === "resistor" ||
+    component._type === "voltmeter" ||
+    component._type === "ampermeter"
+  ) {
+    return [component.a, component.b];
+  } else if (component._type === "source") {
+    return [component.plus, component.minus];
+  }
+  throw new Error("not all cases are covered")
+}

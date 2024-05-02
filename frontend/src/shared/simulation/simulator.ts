@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CircuitSimulator } from "./interface";
+import { getComponentContact } from "./lib";
 import { Branch, ElectricalComponent, Node, Point } from "./types";
 
 export class SimpleSimulator implements CircuitSimulator {
@@ -61,17 +62,7 @@ export class SimpleSimulator implements CircuitSimulator {
 
     // Проходимся по всем компонентам и считаем, сколько раз каждая точка встречается
     this.components.forEach((component) => {
-      const points: Point[] = [];
-      if (
-        component._type === "wire" ||
-        component._type === "resistor" ||
-        component._type === "voltmeter" ||
-        component._type === "ampermeter"
-      ) {
-        points.push(component.a, component.b);
-      } else if (component._type === "source") {
-        points.push(component.plus, component.minus);
-      }
+      const points: Point[] = getComponentContact(component);
 
       points.forEach((point) => {
         const key = `${point.x},${point.y}`;
