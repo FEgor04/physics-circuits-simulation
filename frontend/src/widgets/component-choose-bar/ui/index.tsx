@@ -25,7 +25,7 @@ export function ComponentChooseBar() {
   ];
   return (
     <ResizablePanel
-      className="grid grid-cols-2 place-content-baseline justify-items-center border-r-4 bg-white"
+      className="flex flex-row flex-wrap content-start justify-around border-r-4 bg-white"
       minSize={9}
       maxSize={50}
       defaultSize={15}
@@ -33,7 +33,7 @@ export function ComponentChooseBar() {
     >
       {components.map((object, i) => {
         return (
-          <div className="flex h-20 cursor-pointer items-center justify-center" key={i}>
+          <div className="m-5 flex h-20 cursor-pointer items-center justify-center" key={i}>
             <img src={object} alt={""} className="w-14" />
           </div>
         );
