@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CircuitSimulator } from "./interface";
-import { ElectricalComponent, Node, Point } from "./types";
+import { Branch, ElectricalComponent, Node, Point } from "./types";
 
 export class SimpleSimulator implements CircuitSimulator {
   components: ElectricalComponent[];
@@ -90,7 +90,7 @@ export class SimpleSimulator implements CircuitSimulator {
     }
   }
 
-  findBranches(): void {
-    //Заглушка для реализации метода поиска ветвей
+  findBranches(): Array<Branch> {
+    return [];
   }
 }

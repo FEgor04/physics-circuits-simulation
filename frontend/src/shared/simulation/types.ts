@@ -15,8 +15,8 @@ export type Node = {
 
 export type Branch = {
   id: number;
-  a: Node;
-  b: Node;
+  a: Point;
+  b: Point;
   components: ElectricalComponent[];
 };
 /**

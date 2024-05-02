@@ -7,13 +7,7 @@
  */
 import * as axios from "axios";
 import type { AxiosRequestConfig, AxiosResponse } from "axios";
-import type {
-  GetUserResponse,
-  JwtResponse,
-  SignInRequest,
-  SignUpAdminRequest,
-  SignUpRequest,
-} from "./index.schemas";
+import type { GetUserResponse, JwtResponse, SignInRequest, SignUpAdminRequest, SignUpRequest } from "./index.schemas";
 
 /**
  * Registers a new user with provided details and generates JWT token
@@ -34,11 +28,7 @@ export const registerAdmin = <TData = AxiosResponse<JwtResponse>>(
   signUpAdminRequest: SignUpAdminRequest,
   options?: AxiosRequestConfig,
 ): Promise<TData> => {
-  return axios.default.post(
-    `/api/auth/register/admin`,
-    signUpAdminRequest,
-    options,
-  );
+  return axios.default.post(`/api/auth/register/admin`, signUpAdminRequest, options);
 };
 
 /**

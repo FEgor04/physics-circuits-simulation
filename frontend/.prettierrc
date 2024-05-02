@@ -1,5 +1,5 @@
 {
   "plugins": ["prettier-plugin-tailwindcss"],
-  "single-quote": false,
+  "singleQuote": false,
   "printWidth": 120
 }
