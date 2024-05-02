@@ -1,4 +1,4 @@
-import { ElectricalComponent, Point } from "./types";
+import { Branch, ElectricalComponent, Point } from "./types";
 
 export function getComponentContacts(component: ElectricalComponent): Array<Point> {
   if (
@@ -16,4 +16,13 @@ export function getComponentContacts(component: ElectricalComponent): Array<Poin
 
 export function pointsEqual(a: Point, b: Point) {
   return a.x == b.x && a.y == b.y;
+}
+
+export function branchFactory(start: Point, end: Point, components: Array<ElectricalComponent>): Branch {
+  return {
+    id: 0,
+    a: start,
+    b: end,
+    components,
+  };
 }

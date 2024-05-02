@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { start } from "repl";
 import { CircuitSimulator } from "./interface";
-import { getComponentContacts, pointsEqual } from "./lib";
+import { branchFactory, getComponentContacts, pointsEqual } from "./lib";
 import { Branch, ElectricalComponent, Node, Point } from "./types";
 
 export class SimpleSimulator implements CircuitSimulator {
   components: ElectricalComponent[];
   // global state, нужен чтобы избежать ада проброски нод в функции
-  private nodes: Node[];
+  private nodes: Array<Point>;
 
   constructor(_component: ElectricalComponent[]) {
     this.components = _component;
@@ -52,9 +53,15 @@ export class SimpleSimulator implements CircuitSimulator {
     return nodes;
   }
 
+  private was = new Set<string>();
+
   findBranches(): Array<Branch> {
     const nodes = this.findNodes();
-    return [];
+    return nodes.flatMap((node) => {
+      this.was.clear();
+      this.was.add(`${node.x}-${node.y}`);
+      return this.findBranchesStartingInPoint(node, node, []);
+    });
   }
 
   private findComponentsAtPoint(point: Point): Array<ElectricalComponent> {
@@ -63,7 +70,27 @@ export class SimpleSimulator implements CircuitSimulator {
     );
   }
 
-  findBranchesStartingInPoint(root: Point, startingNode: Point): Array<Branch> {
-    return [];
+  private pointIsNode(point: Point) {
+    return this.nodes.find((it) => pointsEqual(it, point)) !== undefined;
+  }
+
+  findBranchesStartingInPoint(
+    root: Point,
+    startingNode: Point,
+    componentsOnWay: Array<ElectricalComponent>,
+  ): Array<Branch> {
+    if (!pointsEqual(root, startingNode) && this.pointIsNode(root)) {
+      return [branchFactory(startingNode, root, componentsOnWay)];
+    }
+
+    const components = this.findComponentsAtPoint(root);
+    const branches = components.flatMap((component) => {
+      const nextPoints = getComponentContacts(component).filter((it) => this.was.has(`${it.x}-${it.y}`));
+      return nextPoints.flatMap((nextPoint) => {
+        this.was.add(`${nextPoint.x}-${nextPoint.y}`);
+        return this.findBranchesStartingInPoint(nextPoint, startingNode, [...componentsOnWay, component]);
+      });
+    });
+    return branches;
   }
 }
