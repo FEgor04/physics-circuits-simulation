@@ -55,7 +55,8 @@ export class SimpleSimulator implements CircuitSimulator {
     console.log(this.nodes);
   }
 
-  findNodes(): void {
+  findNodes(): Array<Point> {
+    const nodes: Array<Point> = [];
     const nodeMap: { [key: string]: { count: number; loc: Point } } = {};
 
     // Проходимся по всем компонентам и считаем, сколько раз каждая точка встречается
@@ -85,9 +86,10 @@ export class SimpleSimulator implements CircuitSimulator {
 
     for (const key in nodeMap) {
       if (nodeMap[key].count >= 3) {
-        this.nodes.push({ _type: "node", loc: nodeMap[key].loc });
+        nodes.push(nodeMap[key].loc);
       }
     }
+    return nodes;
   }
 
   findBranches(): Array<Branch> {
