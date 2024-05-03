@@ -46,7 +46,7 @@ export function Simulation() {
         )}
       </ResizablePanelGroup>
       <StateButton
-        state={state == "simulation"}
+        isSimulation={state == "simulation"}
         onChange={() => navigate({ search: () => ({ state: state == "simulation" ? "editing" : "simulation" }) })}
       />
     </div>
