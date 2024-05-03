@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { SimpleSimulator } from "./simulator";
 import { Branch, ElectricalComponent } from "./types";
-import { branchToString, branchesEqual, pointsEqual } from "./lib";
+import { branchesEqual } from "./lib";
 
 test("not simple scheme with branches", () => {
   const expectedBranches: Branch[] = [

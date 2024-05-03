@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { start } from "repl";
 import { CircuitSimulator } from "./interface";
 import { branchFactory, getComponentContacts, pointsEqual } from "./lib";
-import { Branch, ElectricalComponent, Node, Point } from "./types";
+import { Branch, ElectricalComponent, Point } from "./types";
 
 export class SimpleSimulator implements CircuitSimulator {
   components: ElectricalComponent[];
