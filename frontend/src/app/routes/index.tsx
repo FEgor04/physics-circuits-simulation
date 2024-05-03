@@ -1,17 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { z } from "zod";
 import { Simulation } from "@/pages/simulation";
 
-export type SimulationState = "simulation" | "editing";
-
-type RootSearch = {
-  state: SimulationState;
-};
+const rootSearchSchema = z.object({
+  state: z.enum(["simulation", "editing"]).catch("editing"),
+});
 
 export const Route = createFileRoute("/")({
   component: Simulation,
-  validateSearch: (search: Record<string, unknown>): RootSearch => {
-    return {
-      state: (search.state as SimulationState) || "editing",
-    };
-  },
+  validateSearch: rootSearchSchema,
 });
