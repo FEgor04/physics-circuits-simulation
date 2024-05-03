@@ -88,10 +88,15 @@ test("not simple scheme with branches", () => {
 
   const actualBranches = simulator.findBranches();
 
-  // test that starting / ending point are the same
+  expect(actualBranches.length).toBe(expectedBranches.length * 2);
+
   expectedBranches.forEach((branch) => {
-    console.log(`Trying to find branch`, branchToString(branch));
     const actualBranchWithSameStartingPoints = actualBranches.find((it) => branchesEqual(branch, it));
     expect(actualBranchWithSameStartingPoints).not.toBeUndefined();
+  });
+
+  actualBranches.forEach((branch) => {
+    const expectedBrach = expectedBranches.find((it) => branchesEqual(branch, it));
+    expect(expectedBrach).not.toBeUndefined();
   });
 });

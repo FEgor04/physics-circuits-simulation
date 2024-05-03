@@ -73,7 +73,6 @@ export class SimpleSimulator implements CircuitSimulator {
 
   private pointIsNode(point: Point) {
     const result = this.nodes.find((it) => pointsEqual(it, point)) !== undefined;
-    console.log(`point ${point.x} ${point.y} is a node?`, result);
     return result;
   }
 
@@ -96,7 +95,6 @@ export class SimpleSimulator implements CircuitSimulator {
         (it) => !this.pointsIsAlreadyVisited(it) || (this.pointIsNode(it) && !pointsEqual(it, startingNode)),
       );
       return nextPoints.flatMap((nextPoint) => {
-        console.log("going to point", nextPoint.x, nextPoint.y);
         this.was.add(`${nextPoint.x}-${nextPoint.y}`);
         return this.findBranchesStartingInPoint(nextPoint, startingNode, [...componentsOnWay, component]);
       });

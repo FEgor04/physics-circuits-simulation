@@ -23,7 +23,9 @@ export function branchesEqual(a: Branch, b: Branch) {
     if (a.components.length != b.components.length) {
       return false;
     }
-    return true;
+    return a.components
+      .map((element, idx) => componentsEqual(element, b.components[idx]))
+      .reduce((a, b) => a && b, true);
   }
   if (pointsEqual(a.a, b.b) && pointsEqual(b.a, a.b)) {
     if (a.components.length != b.components.length) {
@@ -45,4 +47,23 @@ export function branchFactory(start: Point, end: Point, components: Array<Electr
     b: end,
     components,
   };
+}
+
+export function componentsEqual(a: ElectricalComponent, b: ElectricalComponent): boolean {
+  if (a._type != b._type) {
+    return false;
+  }
+  const aContacts = getComponentContacts(a);
+  const bContacts = getComponentContacts(b);
+  aContacts.forEach((contact) => {
+    if (bContacts.find((it) => pointsEqual(it, contact)) === undefined) {
+      return false;
+    }
+  });
+  bContacts.forEach((contact) => {
+    if (aContacts.find((it) => pointsEqual(it, contact)) === undefined) {
+      return false;
+    }
+  });
+  return true;
 }
