@@ -56,6 +56,7 @@ export class SimpleSimulator implements CircuitSimulator {
   private was = new Set<string>();
 
   findBranches(): Array<Branch> {
+    this.nodes = this.findNodes();
     const nodes = this.findNodes();
     return nodes.flatMap((node) => {
       this.was.clear();
@@ -71,7 +72,13 @@ export class SimpleSimulator implements CircuitSimulator {
   }
 
   private pointIsNode(point: Point) {
-    return this.nodes.find((it) => pointsEqual(it, point)) !== undefined;
+    const result = this.nodes.find((it) => pointsEqual(it, point)) !== undefined;
+    console.log(`point ${point.x} ${point.y} is a node?`, result);
+    return result;
+  }
+
+  private pointsIsAlreadyVisited(point: Point) {
+    return this.was.has(`${point.x}-${point.y}`);
   }
 
   findBranchesStartingInPoint(
@@ -85,8 +92,11 @@ export class SimpleSimulator implements CircuitSimulator {
 
     const components = this.findComponentsAtPoint(root);
     const branches = components.flatMap((component) => {
-      const nextPoints = getComponentContacts(component).filter((it) => !this.was.has(`${it.x}-${it.y}`));
+      const nextPoints = getComponentContacts(component).filter(
+        (it) => !this.pointsIsAlreadyVisited(it) || (this.pointIsNode(it) && !pointsEqual(it, startingNode)),
+      );
       return nextPoints.flatMap((nextPoint) => {
+        console.log("going to point", nextPoint.x, nextPoint.y);
         this.was.add(`${nextPoint.x}-${nextPoint.y}`);
         return this.findBranchesStartingInPoint(nextPoint, startingNode, [...componentsOnWay, component]);
       });

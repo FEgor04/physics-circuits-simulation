@@ -1,9 +1,10 @@
 import { expect, test } from "vitest";
 import { SimpleSimulator } from "./simulator";
 import { Branch, ElectricalComponent } from "./types";
+import { branchToString, branchesEqual, pointsEqual } from "./lib";
 
 test("not simple scheme with branches", () => {
-  const branch: Branch[] = [
+  const expectedBranches: Branch[] = [
     {
       id: 0,
       a: { x: 0, y: 0 },
@@ -60,7 +61,7 @@ test("not simple scheme with branches", () => {
       ],
     },
   ];
-  const expectedNodes = branch.flatMap(({ a, b }) => [a, b]);
+  const expectedNodes = expectedBranches.flatMap(({ a, b }) => [a, b]);
 
   const components: ElectricalComponent[] = [
     { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 1 } },
@@ -84,4 +85,13 @@ test("not simple scheme with branches", () => {
   const actualNodes = simulator.findNodes();
   expectedNodes.forEach((node) => expect(actualNodes).toContainEqual(node));
   actualNodes.forEach((node) => expect(expectedNodes).toContainEqual(node));
+
+  const actualBranches = simulator.findBranches();
+
+  // test that starting / ending point are the same
+  expectedBranches.forEach((branch) => {
+    console.log(`Trying to find branch`, branchToString(branch));
+    const actualBranchWithSameStartingPoints = actualBranches.find((it) => branchesEqual(branch, it));
+    expect(actualBranchWithSameStartingPoints).not.toBeUndefined();
+  });
 });
