@@ -58,11 +58,16 @@ export class SimpleSimulator implements CircuitSimulator {
   findBranches(): Array<Branch> {
     this.nodes = this.findNodes();
     const nodes = this.findNodes();
-    return nodes.flatMap((node) => {
+    const branches = nodes.flatMap((node) => {
       this.was.clear();
       this.was.add(`${node.x}-${node.y}`);
       return this.findBranchesStartingInPoint(node, node, []);
     });
+    return this.deduplicateBranches(branches);
+  }
+
+  private deduplicateBranches(branches: Array<Branch>): Array<Branch> {
+    return branches;
   }
 
   private findComponentsAtPoint(point: Point): Array<ElectricalComponent> {
