@@ -18,7 +18,7 @@ export function pointsEqual(a: Point, b: Point) {
   return a.x == b.x && a.y == b.y;
 }
 
-export function branchesEqual(a: Branch, b: Branch) {
+export function branchesEqual(a: Branch, b: Branch, strictEqual: boolean = false) {
   if (pointsEqual(a.a, b.a) && pointsEqual(a.b, b.b)) {
     if (a.components.length != b.components.length) {
       return false;
@@ -27,11 +27,13 @@ export function branchesEqual(a: Branch, b: Branch) {
       .map((element, idx) => componentsEqual(element, b.components[idx]))
       .reduce((a, b) => a && b, true);
   }
-  if (pointsEqual(a.a, b.b) && pointsEqual(b.a, a.b)) {
+  if (pointsEqual(a.a, b.b) && pointsEqual(b.a, a.b) && !strictEqual) {
     if (a.components.length != b.components.length) {
       return false;
     }
-    return true;
+    return a.components
+      .map((element, idx) => componentsEqual(element, b.components[idx]))
+      .reduce((a, b) => a && b, true);
   }
   return false;
 }

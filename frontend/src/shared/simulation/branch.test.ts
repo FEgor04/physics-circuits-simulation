@@ -88,8 +88,7 @@ test("not simple scheme with branches", () => {
 
   const actualBranches = simulator.findBranches();
 
-  // TODO: implement deduplication
-  expect(actualBranches.length).toBe(expectedBranches.length * 2);
+  expect(actualBranches.length).toBe(expectedBranches.length);
 
   /**
    * Test that `actualBranches` contain all `expectedBranches`,
