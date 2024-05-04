@@ -1,4 +1,4 @@
-import { ElectricalComponent } from "./types.ts";
+import { ElectricalComponent } from "./types";
 
 export interface CircuitSimulator {
   /**
