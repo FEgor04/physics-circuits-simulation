@@ -6,11 +6,17 @@ export type Point = {
   y: number;
 };
 
+export type SelectedPoint = {
+  type: "point";
+  point: Point;
+};
+
 /**
  * Провод, соединяющий между собой две точки на стеке
  **/
 export type Wire = {
-  _type: "wire";
+  type: "wire";
+  id: number;
   a: Point;
   b: Point;
 };
@@ -18,26 +24,24 @@ export type Wire = {
 /**
  * Резистор между точками `a` и `b` с внутренним сопротивлением `resistance`
  **/
-export type Resistor = Omit<Wire, "_type"> & {
-  _type: "resistor";
+export type Resistor = Omit<Wire, "type"> & {
+  type: "resistor";
   resistance: number;
 };
 
-export type Source = {
-  _type: "source";
-  plus: Point;
-  minus: Point;
+export type Source = Omit<Wire, "type"> & {
+  type: "source";
   electromotiveForce: number;
   internalResistance: number;
 };
 
-export type Voltmeter = Omit<Wire, "_type"> & {
-  _type: "voltmeter";
+export type Voltmeter = Omit<Wire, "type"> & {
+  type: "voltmeter";
   voltage: number | "unknown";
 };
 
-export type Ampermeter = Omit<Wire, "_type"> & {
-  _type: "ampermeter";
+export type Ampermeter = Omit<Wire, "type"> & {
+  type: "ampermeter";
   currency: number | "unknown";
 };
 

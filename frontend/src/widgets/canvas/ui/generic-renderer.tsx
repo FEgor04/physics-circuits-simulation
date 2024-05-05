@@ -3,10 +3,10 @@ import { ResistorRenderer } from "./resistor";
 import { WireRenderer } from "./wire";
 
 export function GenericRenderer({ component }: { component: ElectricalComponent }) {
-  if (component._type == "wire") {
+  if (component.type == "wire") {
     return <WireRenderer component={component} />;
   }
-  if (component._type == "resistor") {
+  if (component.type == "resistor") {
     return <ResistorRenderer component={component} />;
   }
 }

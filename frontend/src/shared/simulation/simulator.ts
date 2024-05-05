@@ -8,25 +8,29 @@ export class SimpleSimulator implements CircuitSimulator {
   getAllComponents(): ElectricalComponent[] {
     return [
       {
-        _type: "source",
-        plus: { x: 0, y: 0 },
-        minus: { x: -1, y: 0 },
+        type: "source",
+        id: 0,
+        a: { x: 0, y: 0 },
+        b: { x: -1, y: 0 },
         electromotiveForce: 220,
         internalResistance: 110,
       },
       {
-        _type: "wire",
+        type: "wire",
+        id: 1,
         a: { x: -1, y: 0 },
         b: { x: -1, y: 5 },
       },
       {
-        _type: "ampermeter",
+        type: "ampermeter",
+        id: 2,
         a: { x: -1, y: 5 },
         b: { x: 0, y: 5 },
         currency: "unknown",
       },
       {
-        _type: "wire",
+        type: "wire",
+        id: 3,
         a: { x: 0, y: 5 },
         b: { x: 0, y: 0 },
       },

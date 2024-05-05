@@ -14,7 +14,8 @@ describe("adding new wire", () => {
     await userEvent.click(screen.getByTestId(`canvas-dot-${b.x}-${b.y}`));
     expect(schema).toStrictEqual([
       {
-        _type: "wire",
+        type: "wire",
+        id: 0,
         a,
         b,
       },
@@ -32,7 +33,8 @@ describe("adding new wire", () => {
 
   it("does not add new wire if it already exists", async () => {
     const initialWire: Wire = {
-      _type: "wire",
+      type: "wire",
+      id: 0,
       a: { x: 5, y: 5 },
       b: { x: 5, y: 6 },
     };

@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useContext, createContext } from "react";
-import { Point } from "@/shared/simulation/types";
+import { ElectricalComponent, Point, SelectedPoint } from "@/shared/simulation/types";
 import { transformVirtualToCanvas } from "../lib";
 
 type CanvasParams = {
@@ -8,23 +8,13 @@ type CanvasParams = {
   height: number;
 };
 
-type SelectedComponent = {
-  type: "component";
-  id: number;
-};
-
-type SelectedPoint = {
-  type: "point";
-  point: Point;
-};
-
 export type CanvasState = {
   canvasParams: CanvasParams;
   /**
    * ID выбранного компонента или координаты выбранной точки
    **/
-  selected: SelectedComponent | SelectedPoint | undefined;
-  onSelect: (component: SelectedComponent | SelectedPoint | undefined) => void;
+  selected: ElectricalComponent | SelectedPoint | undefined;
+  onSelect: (component: ElectricalComponent | SelectedPoint | undefined) => void;
 };
 
 export const CanvasContext = createContext<CanvasState | undefined>(undefined);

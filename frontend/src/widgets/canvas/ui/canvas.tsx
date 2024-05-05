@@ -24,13 +24,15 @@ export function Canvas({ components, onAddComponent }: Props) {
 
   const onSelectComponent = useCallback(
     (selected: CanvasState["selected"]): void => {
+      console.log(components);
       if (canvasState?.selected?.type == "point" && selected?.type == "point") {
         const newWire: Wire = {
-          _type: "wire",
+          id: components.length,
+          type: "wire",
           a: canvasState.selected.point,
           b: selected.point,
         };
-        const alreadyExists = components.find((it) => it._type == "wire" && wireEqual(newWire, it));
+        const alreadyExists = components.find((it) => it.type == "wire" && wireEqual(newWire, it));
         if (!alreadyExists) {
           onAddComponent(newWire);
         }

@@ -8,7 +8,8 @@ export const Route = createFileRoute("/")({
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [schema, setSchema] = useState<Array<ElectricalComponent>>([
       {
-        _type: "resistor",
+        type: "resistor",
+        id: 0,
         a: { x: 0, y: 0 },
         b: { x: 1, y: 0 },
         resistance: 500,
