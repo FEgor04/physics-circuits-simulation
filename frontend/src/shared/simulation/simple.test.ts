@@ -6,7 +6,7 @@ test.skip("simple scheme with voltmeter only", () => {
   const u = 220;
   const r = 110;
 
-  const simulator = new SimpleSimulator();
+  const simulator = new SimpleSimulator([]);
   // Источник, у которого плюс расположен в точке (0, 0).
   // Минус -- в точке (-1, 0)
   simulator.addComponent({

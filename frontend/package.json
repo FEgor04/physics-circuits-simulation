@@ -10,8 +10,7 @@
     "preview": "vite preview",
     "api-generate": "pnpm exec orval --config ./orval.config.ts --prettier",
     "prettier": "pnpm exec prettier . --write",
-    "test": "vitest",
-    "prepare": "echo -e \"#!/bin/bash\ncd frontend && pnpm exec lint-staged\" > ../.git/hooks/pre-commit && chmod +x ../.git/hooks/pre-commit"
+    "test": "vitest"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
