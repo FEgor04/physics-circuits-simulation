@@ -2,14 +2,14 @@ import { Branch, ElectricalComponent, Point } from "./types";
 
 export function getComponentContacts(component: ElectricalComponent): Array<Point> {
   if (
-    component._type === "wire" ||
-    component._type === "resistor" ||
-    component._type === "voltmeter" ||
-    component._type === "ampermeter"
+    component.type === "wire" ||
+    component.type === "resistor" ||
+    component.type === "voltmeter" ||
+    component.type === "ampermeter"
   ) {
     return [component.a, component.b];
-  } else if (component._type === "source") {
-    return [component.plus, component.minus];
+  } else if (component.type === "source") {
+    return [component.a, component.b];
   }
   throw new Error("not all cases are covered");
 }
@@ -52,7 +52,7 @@ export function branchFactory(start: Point, end: Point, components: Array<Electr
 }
 
 export function componentsEqual(a: ElectricalComponent, b: ElectricalComponent): boolean {
-  if (a._type != b._type) {
+  if (a.type != b.type) {
     return false;
   }
   const aContacts = getComponentContacts(a);
