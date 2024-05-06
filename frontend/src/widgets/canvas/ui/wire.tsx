@@ -1,8 +1,13 @@
 import { Wire } from "@/shared/simulation";
-import { useTransformVirtualToCanvas } from "./context";
+import { useOnSelectElement, useTransformVirtualToCanvas } from "./context";
 
-export function WireRenderer({ component, onClick }: { component: Wire; onClick: () => void }) {
+export function WireRenderer({ component }: { component: Wire }) {
   const transformer = useTransformVirtualToCanvas();
+  const onSelect = useOnSelectElement();
+  const selectedComponent = {
+    type: "component";
+    component
+  }
   const aTransformed = transformer(component.a);
   const bTransformed = transformer(component.b);
   return (
@@ -13,7 +18,7 @@ export function WireRenderer({ component, onClick }: { component: Wire; onClick:
       y2={bTransformed.y}
       stroke="black"
       strokeWidth={"3px"}
-      onClick={onClick}
+      onClick={el => onSelect()}
     />
   );
 }
