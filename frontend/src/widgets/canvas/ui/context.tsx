@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useContext, createContext } from "react";
-import { Point } from "@/shared/simulation/types";
+import { ElectricalComponent, Point } from "@/shared/simulation/types";
 import { transformVirtualToCanvas } from "../lib";
 
 type CanvasParams = {
@@ -10,7 +10,7 @@ type CanvasParams = {
 
 type SelectedComponent = {
   type: "component";
-  id: number;
+  component: ElectricalComponent;
 };
 
 type SelectedPoint = {

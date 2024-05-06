@@ -55,3 +55,7 @@ export type Ampermeter = Omit<Wire, "_type"> & {
 };
 
 export type ElectricalComponent = Wire | Resistor | Source | Voltmeter | Ampermeter;
+
+type ElectricalComponentID = number;
+
+export type ElectricalComponentWithId = ElectricalComponent & { id: ElectricalComponentID };
