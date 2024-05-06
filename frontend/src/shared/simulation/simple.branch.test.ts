@@ -3,18 +3,18 @@ import { branchesEqual } from "./lib";
 import { SimpleSimulator } from "./simulator";
 import { Branch, ElectricalComponent } from "./types";
 
-test.skip("simple scheme with branches", () => {
+test("simple scheme with branches", () => {
   const expectedBranches: Branch[] = [
     {
       id: 0,
       a: { x: 3, y: 3 },
       b: { x: 3, y: 0 },
       components: [
-        { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 3 } },
-        { _type: "wire", a: { x: 0, y: 3 }, b: { x: 1, y: 3 } },
-        { _type: "resistor", a: { x: 1, y: 3 }, b: { x: 2, y: 3 }, resistance: 10 },
-        { _type: "wire", a: { x: 2, y: 3 }, b: { x: 3, y: 3 } },
-        { _type: "wire", a: { x: 3, y: 0 }, b: { x: 0, y: 0 } },
+        { _type: "wire", a: { x: 3, y: 3 }, b: { x: 2, y: 3 } },
+        { _type: "resistor", a: { x: 2, y: 3 }, b: { x: 1, y: 3 }, resistance: 10 },
+        { _type: "wire", a: { x: 1, y: 3 }, b: { x: 0, y: 3 } },
+        { _type: "wire", a: { x: 0, y: 3 }, b: { x: 0, y: 0 } },
+        { _type: "wire", a: { x: 0, y: 0 }, b: { x: 3, y: 0 } },
       ],
     },
     {
@@ -94,7 +94,7 @@ test.skip("simple scheme with branches", () => {
    */
 });
 
-test.skip("simple scheme with branches 2", () => {
+test("simple scheme with branches 2", () => {
   const expectedBranches: Branch[] = [
     {
       id: 0,
@@ -125,10 +125,10 @@ test.skip("simple scheme with branches 2", () => {
       a: { x: 0, y: 3 },
       b: { x: 3, y: 0 },
       components: [
-        { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 1 } },
-        { _type: "resistor", a: { x: 0, y: 1 }, b: { x: 0, y: 2 }, resistance: 10 },
-        { _type: "wire", a: { x: 0, y: 2 }, b: { x: 0, y: 3 } },
-        { _type: "wire", a: { x: 3, y: 0 }, b: { x: 0, y: 0 } },
+        { _type: "wire", a: { x: 0, y: 3 }, b: { x: 0, y: 2 } },
+        { _type: "resistor", a: { x: 0, y: 2 }, b: { x: 0, y: 1 }, resistance: 10 },
+        { _type: "wire", a: { x: 0, y: 1 }, b: { x: 0, y: 0 } },
+        { _type: "wire", a: { x: 0, y: 0 }, b: { x: 3, y: 0 } },
       ],
     },
     {
@@ -146,20 +146,20 @@ test.skip("simple scheme with branches 2", () => {
       a: { x: 3, y: 0 },
       b: { x: 5, y: 3 },
       components: [
-        { _type: "wire", a: { x: 5, y: 3 }, b: { x: 5, y: 2 } },
-        { _type: "resistor", a: { x: 5, y: 2 }, b: { x: 5, y: 1 }, resistance: 10 },
-        { _type: "wire", a: { x: 5, y: 1 }, b: { x: 5, y: 0 } },
-        { _type: "wire", a: { x: 5, y: 0 }, b: { x: 3, y: 0 } },
+        { _type: "wire", a: { x: 3, y: 0 }, b: { x: 5, y: 0 } },
+        { _type: "wire", a: { x: 5, y: 0 }, b: { x: 5, y: 1 } },
+        { _type: "resistor", a: { x: 5, y: 1 }, b: { x: 5, y: 2 }, resistance: 10 },
+        { _type: "wire", a: { x: 5, y: 2 }, b: { x: 5, y: 3 } },
       ],
     },
     {
       id: 5,
-      a: { x: 0, y: 3 },
-      b: { x: 3, y: 0 },
+      a: { x: 3, y: 0 },
+      b: { x: 5, y: 3 },
       components: [
-        { _type: "wire", a: { x: 5, y: 3 }, b: { x: 4, y: 2 } },
-        { _type: "resistor", a: { x: 4, y: 2 }, b: { x: 3, y: 1 }, resistance: 10 },
-        { _type: "wire", a: { x: 3, y: 1 }, b: { x: 3, y: 0 } },
+        { _type: "wire", a: { x: 3, y: 0 }, b: { x: 3, y: 1 } },
+        { _type: "resistor", a: { x: 3, y: 1 }, b: { x: 4, y: 2 }, resistance: 10 },
+        { _type: "wire", a: { x: 4, y: 2 }, b: { x: 5, y: 3 } },
       ],
     },
   ];
@@ -200,6 +200,9 @@ test.skip("simple scheme with branches 2", () => {
   actualNodes.forEach((node) => expect(expectedNodes).toContainEqual(node));
 
   const actualBranches = simulator.findBranches();
+
+  console.log(actualNodes);
+  console.log(actualBranches);
 
   expect(actualBranches.length).toBe(expectedBranches.length);
 
@@ -348,6 +351,7 @@ test.skip("simple scheme with branches 3", () => {
   const simulator = new SimpleSimulator(components);
 
   const actualNodes = simulator.findNodes();
+  console.log(actualNodes);
   expectedNodes.forEach((node) => expect(actualNodes).toContainEqual(node));
   actualNodes.forEach((node) => expect(expectedNodes).toContainEqual(node));
 
