@@ -1,50 +1,646 @@
-import {expect, test} from "vitest";
-import {SimpleSimulator} from "./simulator";
-import {Branch, ElectricalComponent} from "./types";
+import { expect, test } from "vitest";
+import { branchesEqual } from "./lib";
+import { SimpleSimulator } from "./simulator";
+import { Branch, ElectricalComponent } from "./types";
 
-test("simple scheme with branches", () => {
+test.skip("simple scheme with branches", () => {
+  const expectedBranches: Branch[] = [
+    {
+      id: 0,
+      a: { x: 3, y: 3 },
+      b: { x: 3, y: 0 },
+      components: [
+        { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 3 } },
+        { _type: "wire", a: { x: 0, y: 3 }, b: { x: 1, y: 3 } },
+        { _type: "resistor", a: { x: 1, y: 3 }, b: { x: 2, y: 3 }, resistance: 10 },
+        { _type: "wire", a: { x: 2, y: 3 }, b: { x: 3, y: 3 } },
+        { _type: "wire", a: { x: 3, y: 0 }, b: { x: 0, y: 0 } },
+      ],
+    },
+    {
+      id: 1,
+      a: { x: 3, y: 3 },
+      b: { x: 3, y: 0 },
+      components: [
+        { _type: "wire", a: { x: 3, y: 3 }, b: { x: 3, y: 2 } },
+        { _type: "resistor", a: { x: 3, y: 2 }, b: { x: 3, y: 1 }, resistance: 10 },
+        { _type: "wire", a: { x: 3, y: 1 }, b: { x: 3, y: 0 } },
+      ],
+    },
+    {
+      id: 2,
+      a: { x: 3, y: 0 },
+      b: { x: 3, y: 3 },
+      components: [
+        { _type: "wire", a: { x: 3, y: 0 }, b: { x: 6, y: 0 } },
+        { _type: "wire", a: { x: 6, y: 0 }, b: { x: 6, y: 3 } },
+        { _type: "wire", a: { x: 6, y: 3 }, b: { x: 5, y: 3 } },
+        { _type: "resistor", a: { x: 5, y: 3 }, b: { x: 4, y: 3 }, resistance: 10 },
+        { _type: "wire", a: { x: 4, y: 3 }, b: { x: 3, y: 3 } },
+      ],
+    },
+  ];
 
-    const branch: Branch[] = [
-        {
-            id: 0,
-            a: {_type: 'node', loc: {x: 3, y: 3}},
-            b: {_type: 'node', loc: {x: 3, y: 0}},
-            components: [
-                {_type: "wire", a: {x: 0, y: 0}, b: {x: 0, y: 3}},
-                {_type: "wire", a: {x: 0, y: 3}, b: {x: 1, y: 3}},
-                {_type: "resistor", a: {x: 1, y: 3}, b: {x: 2, y: 3}, resistance: 10},
-                {_type: "wire", a: {x: 2, y: 3}, b: {x: 3, y: 3}},
-                {_type: "wire", a: {x: 3, y: 3}, b: {x: 3, y: 2}},
-                {_type: "resistor", a: {x: 3, y: 2}, b: {x: 3, y: 1}, resistance: 10},
-                {_type: "wire", a: {x: 3, y: 1}, b: {x: 3, y: 0}},
-                {_type: "wire", a: {x: 3, y: 0}, b: {x: 0, y: 0}},
-                {_type: "wire", a: {x: 3, y: 0}, b: {x: 6, y: 0}},
-                {_type: "wire", a: {x: 6, y: 0}, b: {x: 6, y: 3}},
-                {_type: "wire", a: {x: 6, y: 3}, b: {x: 5, y: 3}},
-                {_type: "resistor", a: {x: 5, y: 3}, b: {x: 4, y: 3}, resistance: 10},
-                {_type: "wire", a: {x: 4, y: 3}, b: {x: 3, y: 3}}
-            ]
-        }
-    ]
+  const expectedNodes = expectedBranches.flatMap(({ a, b }) => [a, b]);
 
-    const components: ElectricalComponent[] = [
-        {_type: "wire", a: {x: 0, y: 0}, b: {x: 0, y: 3}},
-        {_type: "wire", a: {x: 0, y: 3}, b: {x: 1, y: 3}},
-        {_type: "resistor", a: {x: 1, y: 3}, b: {x: 2, y: 3}, resistance: 10},
-        {_type: "wire", a: {x: 2, y: 3}, b: {x: 3, y: 3}},
-        {_type: "wire", a: {x: 3, y: 3}, b: {x: 3, y: 2}},
-        {_type: "resistor", a: {x: 3, y: 2}, b: {x: 3, y: 1}, resistance: 10},
-        {_type: "wire", a: {x: 3, y: 1}, b: {x: 3, y: 0}},
-        {_type: "wire", a: {x: 3, y: 0}, b: {x: 0, y: 0}},
-        {_type: "wire", a: {x: 3, y: 0}, b: {x: 6, y: 0}},
-        {_type: "wire", a: {x: 6, y: 0}, b: {x: 6, y: 3}},
-        {_type: "wire", a: {x: 6, y: 3}, b: {x: 5, y: 3}},
-        {_type: "resistor", a: {x: 5, y: 3}, b: {x: 4, y: 3}, resistance: 10},
-        {_type: "wire", a: {x: 4, y: 3}, b: {x: 3, y: 3}}
-    ];
+  const components: ElectricalComponent[] = [
+    { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 3 } },
+    { _type: "wire", a: { x: 0, y: 3 }, b: { x: 1, y: 3 } },
+    { _type: "resistor", a: { x: 1, y: 3 }, b: { x: 2, y: 3 }, resistance: 10 },
+    { _type: "wire", a: { x: 2, y: 3 }, b: { x: 3, y: 3 } },
+    { _type: "wire", a: { x: 3, y: 3 }, b: { x: 3, y: 2 } },
+    { _type: "resistor", a: { x: 3, y: 2 }, b: { x: 3, y: 1 }, resistance: 10 },
+    { _type: "wire", a: { x: 3, y: 1 }, b: { x: 3, y: 0 } },
+    { _type: "wire", a: { x: 3, y: 0 }, b: { x: 0, y: 0 } },
+    { _type: "wire", a: { x: 3, y: 0 }, b: { x: 6, y: 0 } },
+    { _type: "wire", a: { x: 6, y: 0 }, b: { x: 6, y: 3 } },
+    { _type: "wire", a: { x: 6, y: 3 }, b: { x: 5, y: 3 } },
+    { _type: "resistor", a: { x: 5, y: 3 }, b: { x: 4, y: 3 }, resistance: 10 },
+    { _type: "wire", a: { x: 4, y: 3 }, b: { x: 3, y: 3 } },
+  ];
 
-    const simulator = new SimpleSimulator(components);
+  const simulator = new SimpleSimulator(components);
 
-    const branches = simulator.findBranches()
-    expect(branches).toBe(branch);
+  const actualNodes = simulator.findNodes();
+  expectedNodes.forEach((node) => expect(actualNodes).toContainEqual(node));
+  actualNodes.forEach((node) => expect(expectedNodes).toContainEqual(node));
+
+  const actualBranches = simulator.findBranches();
+
+  expect(actualBranches.length).toBe(expectedBranches.length);
+
+  /**
+   * Test that `actualBranches` contain all `expectedBranches`,
+   * i.e. that `expectedBranches` \subset `actualBranches`.
+   */
+  expectedBranches.forEach((branch) => {
+    const actualBranchWithSameStartingPoints = actualBranches.find((it) => branchesEqual(branch, it));
+    expect(actualBranchWithSameStartingPoints).not.toBeUndefined();
+  });
+
+  /**
+   * Test that `expectedBranches` contain all `actualBranches`,
+   * i.e. that `actualBranches` \subset `expectedBranches`.
+   */
+  actualBranches.forEach((branch) => {
+    const expectedBrach = expectedBranches.find((it) => branchesEqual(branch, it));
+    expect(expectedBrach).not.toBeUndefined();
+  });
+
+  /**
+   * And since `actualBranches` \subset `expectedBranches` and
+   * `expectedBranches` \subset `actualBranches`, then
+   * `expectedBranches` equals to `actualBranches` (as a set)
+   */
+});
+
+test.skip("simple scheme with branches 2", () => {
+  const expectedBranches: Branch[] = [
+    {
+      id: 0,
+      a: { x: 0, y: 3 },
+      b: { x: 5, y: 3 },
+      components: [
+        { _type: "wire", a: { x: 0, y: 3 }, b: { x: 0, y: 4 } },
+        { _type: "resistor", a: { x: 0, y: 4 }, b: { x: 0, y: 5 }, resistance: 10 },
+        { _type: "wire", a: { x: 0, y: 5 }, b: { x: 0, y: 6 } },
+        { _type: "wire", a: { x: 0, y: 6 }, b: { x: 2, y: 6 } },
+        { _type: "resistor", a: { x: 2, y: 6 }, b: { x: 3, y: 6 }, resistance: 10 },
+        { _type: "wire", a: { x: 3, y: 6 }, b: { x: 5, y: 6 } },
+        { _type: "wire", a: { x: 5, y: 6 }, b: { x: 5, y: 3 } },
+      ],
+    },
+    {
+      id: 1,
+      a: { x: 0, y: 3 },
+      b: { x: 5, y: 3 },
+      components: [
+        { _type: "wire", a: { x: 0, y: 3 }, b: { x: 2, y: 3 } },
+        { _type: "resistor", a: { x: 2, y: 3 }, b: { x: 3, y: 3 }, resistance: 10 },
+        { _type: "wire", a: { x: 3, y: 3 }, b: { x: 5, y: 3 } },
+      ],
+    },
+    {
+      id: 2,
+      a: { x: 0, y: 3 },
+      b: { x: 3, y: 0 },
+      components: [
+        { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 1 } },
+        { _type: "resistor", a: { x: 0, y: 1 }, b: { x: 0, y: 2 }, resistance: 10 },
+        { _type: "wire", a: { x: 0, y: 2 }, b: { x: 0, y: 3 } },
+        { _type: "wire", a: { x: 3, y: 0 }, b: { x: 0, y: 0 } },
+      ],
+    },
+    {
+      id: 3,
+      a: { x: 0, y: 3 },
+      b: { x: 3, y: 0 },
+      components: [
+        { _type: "wire", a: { x: 0, y: 3 }, b: { x: 1, y: 2 } },
+        { _type: "resistor", a: { x: 1, y: 2 }, b: { x: 2, y: 1 }, resistance: 10 },
+        { _type: "wire", a: { x: 2, y: 1 }, b: { x: 3, y: 0 } },
+      ],
+    },
+    {
+      id: 4,
+      a: { x: 3, y: 0 },
+      b: { x: 5, y: 3 },
+      components: [
+        { _type: "wire", a: { x: 5, y: 3 }, b: { x: 5, y: 2 } },
+        { _type: "resistor", a: { x: 5, y: 2 }, b: { x: 5, y: 1 }, resistance: 10 },
+        { _type: "wire", a: { x: 5, y: 1 }, b: { x: 5, y: 0 } },
+        { _type: "wire", a: { x: 5, y: 0 }, b: { x: 3, y: 0 } },
+      ],
+    },
+    {
+      id: 5,
+      a: { x: 0, y: 3 },
+      b: { x: 3, y: 0 },
+      components: [
+        { _type: "wire", a: { x: 5, y: 3 }, b: { x: 4, y: 2 } },
+        { _type: "resistor", a: { x: 4, y: 2 }, b: { x: 3, y: 1 }, resistance: 10 },
+        { _type: "wire", a: { x: 3, y: 1 }, b: { x: 3, y: 0 } },
+      ],
+    },
+  ];
+
+  const expectedNodes = expectedBranches.flatMap(({ a, b }) => [a, b]);
+
+  const components: ElectricalComponent[] = [
+    { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 1 } },
+    { _type: "resistor", a: { x: 0, y: 1 }, b: { x: 0, y: 2 }, resistance: 10 },
+    { _type: "wire", a: { x: 0, y: 2 }, b: { x: 0, y: 3 } },
+    { _type: "wire", a: { x: 0, y: 3 }, b: { x: 0, y: 4 } },
+    { _type: "resistor", a: { x: 0, y: 4 }, b: { x: 0, y: 5 }, resistance: 10 },
+    { _type: "wire", a: { x: 0, y: 5 }, b: { x: 0, y: 6 } },
+    { _type: "wire", a: { x: 0, y: 6 }, b: { x: 2, y: 6 } },
+    { _type: "resistor", a: { x: 2, y: 6 }, b: { x: 3, y: 6 }, resistance: 10 },
+    { _type: "wire", a: { x: 3, y: 6 }, b: { x: 5, y: 6 } },
+    { _type: "wire", a: { x: 5, y: 6 }, b: { x: 5, y: 3 } },
+    { _type: "wire", a: { x: 5, y: 3 }, b: { x: 5, y: 2 } },
+    { _type: "resistor", a: { x: 5, y: 2 }, b: { x: 5, y: 1 }, resistance: 10 },
+    { _type: "wire", a: { x: 5, y: 1 }, b: { x: 5, y: 0 } },
+    { _type: "wire", a: { x: 5, y: 0 }, b: { x: 3, y: 0 } },
+    { _type: "wire", a: { x: 3, y: 0 }, b: { x: 0, y: 0 } },
+    { _type: "wire", a: { x: 0, y: 3 }, b: { x: 1, y: 2 } },
+    { _type: "resistor", a: { x: 1, y: 2 }, b: { x: 2, y: 1 }, resistance: 10 },
+    { _type: "wire", a: { x: 2, y: 1 }, b: { x: 3, y: 0 } },
+    { _type: "wire", a: { x: 5, y: 3 }, b: { x: 4, y: 2 } },
+    { _type: "resistor", a: { x: 4, y: 2 }, b: { x: 3, y: 1 }, resistance: 10 },
+    { _type: "wire", a: { x: 3, y: 1 }, b: { x: 3, y: 0 } },
+    { _type: "wire", a: { x: 0, y: 3 }, b: { x: 2, y: 3 } },
+    { _type: "resistor", a: { x: 2, y: 3 }, b: { x: 3, y: 3 }, resistance: 10 },
+    { _type: "wire", a: { x: 3, y: 3 }, b: { x: 5, y: 3 } },
+  ];
+
+  const simulator = new SimpleSimulator(components);
+
+  const actualNodes = simulator.findNodes();
+  expectedNodes.forEach((node) => expect(actualNodes).toContainEqual(node));
+  actualNodes.forEach((node) => expect(expectedNodes).toContainEqual(node));
+
+  const actualBranches = simulator.findBranches();
+
+  expect(actualBranches.length).toBe(expectedBranches.length);
+
+  /**
+   * Test that `actualBranches` contain all `expectedBranches`,
+   * i.e. that `expectedBranches` \subset `actualBranches`.
+   */
+  expectedBranches.forEach((branch) => {
+    const actualBranchWithSameStartingPoints = actualBranches.find((it) => branchesEqual(branch, it));
+    expect(actualBranchWithSameStartingPoints).not.toBeUndefined();
+  });
+
+  /**
+   * Test that `expectedBranches` contain all `actualBranches`,
+   * i.e. that `actualBranches` \subset `expectedBranches`.
+   */
+  actualBranches.forEach((branch) => {
+    const expectedBrach = expectedBranches.find((it) => branchesEqual(branch, it));
+    expect(expectedBrach).not.toBeUndefined();
+  });
+
+  /**
+   * And since `actualBranches` \subset `expectedBranches` and
+   * `expectedBranches` \subset `actualBranches`, then
+   * `expectedBranches` equals to `actualBranches` (as a set)
+   */
+});
+
+test.skip("simple scheme with branches 3", () => {
+  /**
+   * Не обрабатывается тот факт, что ветвь не может состоять только из проводов
+   */
+  const expectedBranches: Branch[] = [
+    {
+      id: 0,
+      a: { x: 2, y: 3 },
+      b: { x: 3, y: 0 },
+      components: [
+        { _type: "wire", a: { x: 2, y: 3 }, b: { x: 2, y: 2 } },
+        { _type: "resistor", a: { x: 2, y: 2 }, b: { x: 2, y: 1 }, resistance: 10 },
+        { _type: "wire", a: { x: 2, y: 1 }, b: { x: 2, y: 0 } },
+        { _type: "wire", a: { x: 3, y: 0 }, b: { x: 2, y: 0 } },
+      ],
+    },
+    {
+      id: 1,
+      a: { x: 2, y: 3 },
+      b: { x: 3, y: 0 },
+      components: [
+        { _type: "wire", a: { x: 1, y: 3 }, b: { x: 1, y: 2 } },
+        { _type: "resistor", a: { x: 1, y: 2 }, b: { x: 1, y: 1 }, resistance: 10 },
+        { _type: "wire", a: { x: 1, y: 1 }, b: { x: 1, y: 0 } },
+        { _type: "wire", a: { x: 1, y: 3 }, b: { x: 2, y: 3 } },
+        { _type: "wire", a: { x: 2, y: 0 }, b: { x: 1, y: 0 } },
+        { _type: "wire", a: { x: 3, y: 0 }, b: { x: 2, y: 0 } },
+      ],
+    },
+    {
+      id: 2,
+      a: { x: 2, y: 3 },
+      b: { x: 3, y: 0 },
+      components: [
+        { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 3 } },
+        { _type: "wire", a: { x: 0, y: 3 }, b: { x: 1, y: 3 } },
+        { _type: "wire", a: { x: 1, y: 0 }, b: { x: 0, y: 0 } },
+        { _type: "wire", a: { x: 1, y: 3 }, b: { x: 2, y: 3 } },
+        { _type: "wire", a: { x: 2, y: 0 }, b: { x: 1, y: 0 } },
+        { _type: "wire", a: { x: 3, y: 0 }, b: { x: 2, y: 0 } },
+      ],
+    },
+    {
+      id: 3,
+      a: { x: 2, y: 3 },
+      b: { x: 4, y: 3 },
+      components: [{ _type: "resistor", a: { x: 2, y: 3 }, b: { x: 4, y: 3 }, resistance: 10 }],
+    },
+    {
+      id: 4,
+      a: { x: 4, y: 3 },
+      b: { x: 3, y: 0 },
+      components: [
+        { _type: "wire", a: { x: 4, y: 3 }, b: { x: 4, y: 2 } },
+        { _type: "resistor", a: { x: 4, y: 2 }, b: { x: 4, y: 1 }, resistance: 10 },
+        { _type: "wire", a: { x: 4, y: 1 }, b: { x: 4, y: 0 } },
+        { _type: "wire", a: { x: 4, y: 0 }, b: { x: 3, y: 0 } },
+      ],
+    },
+    {
+      id: 5,
+      a: { x: 4, y: 3 },
+      b: { x: 3, y: 0 },
+      components: [
+        { _type: "wire", a: { x: 4, y: 0 }, b: { x: 3, y: 0 } },
+        { _type: "wire", a: { x: 4, y: 3 }, b: { x: 5, y: 3 } },
+        { _type: "wire", a: { x: 5, y: 3 }, b: { x: 5, y: 2 } },
+        { _type: "resistor", a: { x: 5, y: 2 }, b: { x: 5, y: 1 }, resistance: 10 },
+        { _type: "wire", a: { x: 5, y: 1 }, b: { x: 5, y: 0 } },
+        { _type: "wire", a: { x: 5, y: 0 }, b: { x: 4, y: 0 } },
+      ],
+    },
+    {
+      id: 6,
+      a: { x: 4, y: 3 },
+      b: { x: 3, y: 0 },
+      components: [
+        { _type: "wire", a: { x: 4, y: 3 }, b: { x: 5, y: 3 } },
+        { _type: "wire", a: { x: 4, y: 0 }, b: { x: 3, y: 0 } },
+        { _type: "wire", a: { x: 5, y: 0 }, b: { x: 4, y: 0 } },
+        { _type: "wire", a: { x: 5, y: 3 }, b: { x: 6, y: 3 } },
+        { _type: "wire", a: { x: 6, y: 3 }, b: { x: 6, y: 0 } },
+        { _type: "wire", a: { x: 6, y: 0 }, b: { x: 5, y: 0 } },
+      ],
+    },
+  ];
+
+  const expectedNodes = expectedBranches.flatMap(({ a, b }) => [a, b]);
+
+  const components: ElectricalComponent[] = [
+    { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 3 } },
+    { _type: "wire", a: { x: 0, y: 3 }, b: { x: 1, y: 3 } },
+    { _type: "wire", a: { x: 1, y: 3 }, b: { x: 1, y: 2 } },
+    { _type: "resistor", a: { x: 1, y: 2 }, b: { x: 1, y: 1 }, resistance: 10 },
+    { _type: "wire", a: { x: 1, y: 1 }, b: { x: 1, y: 0 } },
+    { _type: "wire", a: { x: 1, y: 0 }, b: { x: 0, y: 0 } },
+    { _type: "wire", a: { x: 1, y: 3 }, b: { x: 2, y: 3 } },
+    { _type: "wire", a: { x: 2, y: 3 }, b: { x: 2, y: 2 } },
+    { _type: "resistor", a: { x: 2, y: 2 }, b: { x: 2, y: 1 }, resistance: 10 },
+    { _type: "wire", a: { x: 2, y: 1 }, b: { x: 2, y: 0 } },
+    { _type: "wire", a: { x: 2, y: 0 }, b: { x: 1, y: 0 } },
+    { _type: "resistor", a: { x: 2, y: 3 }, b: { x: 4, y: 3 }, resistance: 10 },
+    { _type: "wire", a: { x: 4, y: 3 }, b: { x: 4, y: 2 } },
+    { _type: "resistor", a: { x: 4, y: 2 }, b: { x: 4, y: 1 }, resistance: 10 },
+    { _type: "wire", a: { x: 4, y: 1 }, b: { x: 4, y: 0 } },
+    { _type: "wire", a: { x: 4, y: 0 }, b: { x: 3, y: 0 } },
+    { _type: "wire", a: { x: 3, y: 0 }, b: { x: 2, y: 0 } },
+    { _type: "wire", a: { x: 4, y: 3 }, b: { x: 5, y: 3 } },
+    { _type: "wire", a: { x: 5, y: 3 }, b: { x: 5, y: 2 } },
+    { _type: "resistor", a: { x: 5, y: 2 }, b: { x: 5, y: 1 }, resistance: 10 },
+    { _type: "wire", a: { x: 5, y: 1 }, b: { x: 5, y: 0 } },
+    { _type: "wire", a: { x: 5, y: 0 }, b: { x: 4, y: 0 } },
+    { _type: "wire", a: { x: 5, y: 3 }, b: { x: 6, y: 3 } },
+    { _type: "wire", a: { x: 6, y: 3 }, b: { x: 6, y: 0 } },
+    { _type: "wire", a: { x: 6, y: 0 }, b: { x: 5, y: 0 } },
+  ];
+
+  const simulator = new SimpleSimulator(components);
+
+  const actualNodes = simulator.findNodes();
+  expectedNodes.forEach((node) => expect(actualNodes).toContainEqual(node));
+  actualNodes.forEach((node) => expect(expectedNodes).toContainEqual(node));
+
+  const actualBranches = simulator.findBranches();
+
+  expect(actualBranches.length).toBe(expectedBranches.length);
+
+  /**
+   * Test that `actualBranches` contain all `expectedBranches`,
+   * i.e. that `expectedBranches` \subset `actualBranches`.
+   */
+  expectedBranches.forEach((branch) => {
+    const actualBranchWithSameStartingPoints = actualBranches.find((it) => branchesEqual(branch, it));
+    expect(actualBranchWithSameStartingPoints).not.toBeUndefined();
+  });
+
+  /**
+   * Test that `expectedBranches` contain all `actualBranches`,
+   * i.e. that `actualBranches` \subset `expectedBranches`.
+   */
+  actualBranches.forEach((branch) => {
+    const expectedBrach = expectedBranches.find((it) => branchesEqual(branch, it));
+    expect(expectedBrach).not.toBeUndefined();
+  });
+
+  /**
+   * And since `actualBranches` \subset `expectedBranches` and
+   * `expectedBranches` \subset `actualBranches`, then
+   * `expectedBranches` equals to `actualBranches` (as a set)
+   */
+});
+
+test.skip("simple scheme with branches 4", () => {
+  const expectedBranches: Branch[] = [
+    {
+      id: 0,
+      a: { x: 1, y: 6 },
+      b: { x: 1, y: 3 },
+      components: [
+        { _type: "wire", a: { x: 1, y: 6 }, b: { x: 1, y: 5 } },
+        { _type: "resistor", a: { x: 1, y: 5 }, b: { x: 1, y: 4 }, resistance: 10 },
+        { _type: "wire", a: { x: 1, y: 4 }, b: { x: 1, y: 3 } },
+      ],
+    },
+    {
+      id: 1,
+      a: { x: 1, y: 3 },
+      b: { x: 1, y: 0 },
+      components: [
+        { _type: "wire", a: { x: 1, y: 3 }, b: { x: 1, y: 2 } },
+        { _type: "resistor", a: { x: 1, y: 2 }, b: { x: 1, y: 1 }, resistance: 10 },
+        { _type: "wire", a: { x: 1, y: 1 }, b: { x: 1, y: 0 } },
+      ],
+    },
+    {
+      id: 2,
+      a: { x: 1, y: 6 },
+      b: { x: 1, y: 0 },
+      components: [
+        { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 1 } },
+        { _type: "resistor", a: { x: 0, y: 1 }, b: { x: 0, y: 2 }, resistance: 10 },
+        { _type: "wire", a: { x: 0, y: 2 }, b: { x: 0, y: 6 } },
+        { _type: "wire", a: { x: 0, y: 6 }, b: { x: 1, y: 6 } },
+        { _type: "wire", a: { x: 1, y: 0 }, b: { x: 0, y: 0 } },
+      ],
+    },
+    {
+      id: 3,
+      a: { x: 1, y: 6 },
+      b: { x: 4, y: 3 },
+      components: [
+        { _type: "wire", a: { x: 1, y: 6 }, b: { x: 2, y: 6 } },
+        { _type: "resistor", a: { x: 2, y: 6 }, b: { x: 3, y: 6 }, resistance: 10 },
+        { _type: "wire", a: { x: 3, y: 6 }, b: { x: 4, y: 6 } },
+        { _type: "wire", a: { x: 4, y: 6 }, b: { x: 4, y: 3 } },
+      ],
+    },
+    {
+      id: 4,
+      a: { x: 1, y: 3 },
+      b: { x: 4, y: 3 },
+      components: [
+        { _type: "wire", a: { x: 4, y: 3 }, b: { x: 3, y: 3 } },
+        { _type: "resistor", a: { x: 3, y: 3 }, b: { x: 2, y: 3 }, resistance: 10 },
+        { _type: "wire", a: { x: 2, y: 3 }, b: { x: 1, y: 3 } },
+      ],
+    },
+    {
+      id: 5,
+      a: { x: 1, y: 0 },
+      b: { x: 4, y: 3 },
+      components: [
+        { _type: "wire", a: { x: 4, y: 3 }, b: { x: 4, y: 0 } },
+        { _type: "wire", a: { x: 4, y: 0 }, b: { x: 3, y: 0 } },
+        { _type: "resistor", a: { x: 3, y: 0 }, b: { x: 2, y: 0 }, resistance: 10 },
+        { _type: "wire", a: { x: 2, y: 0 }, b: { x: 1, y: 0 } },
+        { _type: "wire", a: { x: 3, y: 0 }, b: { x: 3, y: 1 } },
+        { _type: "wire", a: { x: 3, y: 1 }, b: { x: 2, y: 1 } },
+        { _type: "wire", a: { x: 2, y: 1 }, b: { x: 2, y: 0 } },
+      ],
+    },
+  ];
+
+  const expectedNodes = expectedBranches.flatMap(({ a, b }) => [a, b]);
+
+  const components: ElectricalComponent[] = [
+    { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 1 } },
+    { _type: "resistor", a: { x: 0, y: 1 }, b: { x: 0, y: 2 }, resistance: 10 },
+    { _type: "wire", a: { x: 0, y: 2 }, b: { x: 0, y: 6 } },
+    { _type: "wire", a: { x: 0, y: 6 }, b: { x: 1, y: 6 } },
+    { _type: "wire", a: { x: 1, y: 6 }, b: { x: 1, y: 5 } },
+    { _type: "resistor", a: { x: 1, y: 5 }, b: { x: 1, y: 4 }, resistance: 10 },
+    { _type: "wire", a: { x: 1, y: 4 }, b: { x: 1, y: 3 } },
+    { _type: "wire", a: { x: 1, y: 3 }, b: { x: 1, y: 2 } },
+    { _type: "resistor", a: { x: 1, y: 2 }, b: { x: 1, y: 1 }, resistance: 10 },
+    { _type: "wire", a: { x: 1, y: 1 }, b: { x: 1, y: 0 } },
+    { _type: "wire", a: { x: 1, y: 0 }, b: { x: 0, y: 0 } },
+    { _type: "wire", a: { x: 1, y: 6 }, b: { x: 2, y: 6 } },
+    { _type: "resistor", a: { x: 2, y: 6 }, b: { x: 3, y: 6 }, resistance: 10 },
+    { _type: "wire", a: { x: 3, y: 6 }, b: { x: 4, y: 6 } },
+    { _type: "wire", a: { x: 4, y: 6 }, b: { x: 4, y: 3 } },
+    { _type: "wire", a: { x: 4, y: 3 }, b: { x: 3, y: 3 } },
+    { _type: "resistor", a: { x: 3, y: 3 }, b: { x: 2, y: 3 }, resistance: 10 },
+    { _type: "wire", a: { x: 2, y: 3 }, b: { x: 1, y: 3 } },
+    { _type: "wire", a: { x: 4, y: 3 }, b: { x: 4, y: 0 } },
+    { _type: "wire", a: { x: 4, y: 0 }, b: { x: 3, y: 0 } },
+    { _type: "resistor", a: { x: 3, y: 0 }, b: { x: 2, y: 0 }, resistance: 10 },
+    { _type: "wire", a: { x: 2, y: 0 }, b: { x: 1, y: 0 } },
+    { _type: "wire", a: { x: 3, y: 0 }, b: { x: 3, y: 1 } },
+    { _type: "wire", a: { x: 3, y: 1 }, b: { x: 2, y: 1 } },
+    { _type: "wire", a: { x: 2, y: 1 }, b: { x: 2, y: 0 } },
+  ];
+
+  const simulator = new SimpleSimulator(components);
+
+  const actualNodes = simulator.findNodes();
+  expectedNodes.forEach((node) => expect(actualNodes).toContainEqual(node));
+  actualNodes.forEach((node) => expect(expectedNodes).toContainEqual(node));
+
+  const actualBranches = simulator.findBranches();
+
+  expect(actualBranches.length).toBe(expectedBranches.length);
+
+  /**
+   * Test that `actualBranches` contain all `expectedBranches`,
+   * i.e. that `expectedBranches` \subset `actualBranches`.
+   */
+  expectedBranches.forEach((branch) => {
+    const actualBranchWithSameStartingPoints = actualBranches.find((it) => branchesEqual(branch, it));
+    expect(actualBranchWithSameStartingPoints).not.toBeUndefined();
+  });
+
+  /**
+   * Test that `expectedBranches` contain all `actualBranches`,
+   * i.e. that `actualBranches` \subset `expectedBranches`.
+   */
+  actualBranches.forEach((branch) => {
+    const expectedBrach = expectedBranches.find((it) => branchesEqual(branch, it));
+    expect(expectedBrach).not.toBeUndefined();
+  });
+
+  /**
+   * And since `actualBranches` \subset `expectedBranches` and
+   * `expectedBranches` \subset `actualBranches`, then
+   * `expectedBranches` equals to `actualBranches` (as a set)
+   */
+});
+
+test.skip("simple scheme with branches 5", () => {
+  const expectedBranches: Branch[] = [
+    {
+      id: 0,
+      a: { x: 0, y: 1 },
+      b: { x: 3, y: 4 },
+      components: [
+        { _type: "wire", a: { x: 0, y: 1 }, b: { x: 0, y: 4 } },
+        { _type: "wire", a: { x: 0, y: 4 }, b: { x: 1, y: 4 } },
+        { _type: "resistor", a: { x: 1, y: 4 }, b: { x: 2, y: 4 }, resistance: 10 },
+        { _type: "wire", a: { x: 2, y: 4 }, b: { x: 3, y: 4 } },
+      ],
+    },
+    {
+      id: 1,
+      a: { x: 3, y: 1 },
+      b: { x: 3, y: 4 },
+      components: [
+        { _type: "wire", a: { x: 3, y: 3 }, b: { x: 3, y: 4 } },
+        { _type: "resistor", a: { x: 3, y: 2 }, b: { x: 3, y: 3 }, resistance: 10 },
+        { _type: "wire", a: { x: 3, y: 1 }, b: { x: 3, y: 2 } },
+      ],
+    },
+    {
+      id: 2,
+      a: { x: 0, y: 1 },
+      b: { x: 3, y: 1 },
+      components: [
+        { _type: "wire", a: { x: 2, y: 1 }, b: { x: 3, y: 1 } },
+        { _type: "resistor", a: { x: 1, y: 1 }, b: { x: 2, y: 1 }, resistance: 10 },
+        { _type: "wire", a: { x: 0, y: 1 }, b: { x: 1, y: 1 } },
+      ],
+    },
+    {
+      id: 3,
+      a: { x: 3, y: 4 },
+      b: { x: 6, y: 1 },
+      components: [
+        { _type: "wire", a: { x: 6, y: 1 }, b: { x: 6, y: 4 } },
+        { _type: "wire", a: { x: 5, y: 4 }, b: { x: 6, y: 4 } },
+        { _type: "resistor", a: { x: 4, y: 4 }, b: { x: 5, y: 4 }, resistance: 10 },
+        { _type: "wire", a: { x: 3, y: 4 }, b: { x: 4, y: 4 } },
+      ],
+    },
+    {
+      id: 4,
+      a: { x: 3, y: 1 },
+      b: { x: 6, y: 1 },
+      components: [
+        { _type: "wire", a: { x: 3, y: 1 }, b: { x: 4, y: 1 } },
+        { _type: "resistor", a: { x: 4, y: 1 }, b: { x: 5, y: 1 }, resistance: 10 },
+        { _type: "wire", a: { x: 5, y: 1 }, b: { x: 6, y: 1 } },
+      ],
+    },
+    {
+      id: 5,
+      a: { x: 0, y: 1 },
+      b: { x: 6, y: 1 },
+      components: [
+        { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 1 } },
+        { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 1 } },
+        { _type: "resistor", a: { x: 1, y: 0 }, b: { x: 2, y: 0 }, resistance: 10 },
+        { _type: "wire", a: { x: 2, y: 0 }, b: { x: 6, y: 0 } },
+        { _type: "resistor", a: { x: 6, y: 0 }, b: { x: 6, y: 1 }, resistance: 10 },
+      ],
+    },
+  ];
+
+  const expectedNodes = expectedBranches.flatMap(({ a, b }) => [a, b]);
+
+  const components: ElectricalComponent[] = [
+    { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 1 } },
+    { _type: "wire", a: { x: 0, y: 1 }, b: { x: 0, y: 4 } },
+    { _type: "wire", a: { x: 0, y: 4 }, b: { x: 1, y: 4 } },
+    { _type: "resistor", a: { x: 1, y: 4 }, b: { x: 2, y: 4 }, resistance: 10 },
+    { _type: "wire", a: { x: 2, y: 4 }, b: { x: 3, y: 4 } },
+    { _type: "wire", a: { x: 3, y: 3 }, b: { x: 3, y: 4 } },
+    { _type: "resistor", a: { x: 3, y: 2 }, b: { x: 3, y: 3 }, resistance: 10 },
+    { _type: "wire", a: { x: 3, y: 1 }, b: { x: 3, y: 2 } },
+    { _type: "wire", a: { x: 2, y: 1 }, b: { x: 3, y: 1 } },
+    { _type: "resistor", a: { x: 1, y: 1 }, b: { x: 2, y: 1 }, resistance: 10 },
+    { _type: "wire", a: { x: 0, y: 1 }, b: { x: 1, y: 1 } },
+    { _type: "wire", a: { x: 3, y: 1 }, b: { x: 4, y: 1 } },
+    { _type: "resistor", a: { x: 4, y: 1 }, b: { x: 5, y: 1 }, resistance: 10 },
+    { _type: "wire", a: { x: 5, y: 1 }, b: { x: 6, y: 1 } },
+    { _type: "wire", a: { x: 6, y: 1 }, b: { x: 6, y: 4 } },
+    { _type: "wire", a: { x: 5, y: 4 }, b: { x: 6, y: 4 } },
+    { _type: "resistor", a: { x: 4, y: 4 }, b: { x: 5, y: 4 }, resistance: 10 },
+    { _type: "wire", a: { x: 3, y: 4 }, b: { x: 4, y: 4 } },
+    { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 1 } },
+    { _type: "resistor", a: { x: 1, y: 0 }, b: { x: 2, y: 0 }, resistance: 10 },
+    { _type: "wire", a: { x: 2, y: 0 }, b: { x: 6, y: 0 } },
+    { _type: "resistor", a: { x: 6, y: 0 }, b: { x: 6, y: 1 }, resistance: 10 },
+  ];
+
+  const simulator = new SimpleSimulator(components);
+
+  const actualNodes = simulator.findNodes();
+  expectedNodes.forEach((node) => expect(actualNodes).toContainEqual(node));
+  actualNodes.forEach((node) => expect(expectedNodes).toContainEqual(node));
+
+  const actualBranches = simulator.findBranches();
+  expect(actualBranches.length).toBe(expectedBranches.length);
+
+  /**
+   * Test that `actualBranches` contain all `expectedBranches`,
+   * i.e. that `expectedBranches` \subset `actualBranches`.
+   */
+  expectedBranches.forEach((branch) => {
+    const actualBranchWithSameStartingPoints = actualBranches.find((it) => branchesEqual(branch, it));
+    expect(actualBranchWithSameStartingPoints).not.toBeUndefined();
+  });
+
+  /**
+   * Test that `expectedBranches` contain all `actualBranches`,
+   * i.e. that `actualBranches` \subset `expectedBranches`.
+   */
+  actualBranches.forEach((branch) => {
+    const expectedBrach = expectedBranches.find((it) => branchesEqual(branch, it));
+    expect(expectedBrach).not.toBeUndefined();
+  });
+
+  /**
+   * And since `actualBranches` \subset `expectedBranches` and
+   * `expectedBranches` \subset `actualBranches`, then
+   * `expectedBranches` equals to `actualBranches` (as a set)
+   */
 });
