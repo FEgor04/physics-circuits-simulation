@@ -7,8 +7,8 @@ test("simple scheme with branches", () => {
     const branch: Branch[] = [
         {
             id: 0,
-            a: {_type: 'node', loc: {x: 3, y: 3}},
-            b: {_type: 'node', loc: {x: 3, y: 0}},
+            a:  {x: 3, y: 3},
+            b:  {x: 3, y: 0},
             components: [
                 {_type: "wire", a: {x: 0, y: 0}, b: {x: 0, y: 3}},
                 {_type: "wire", a: {x: 0, y: 3}, b: {x: 1, y: 3}},
