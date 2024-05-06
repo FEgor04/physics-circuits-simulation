@@ -20,7 +20,7 @@ function wireEqual(a: Wire, b: Wire): boolean {
   return (pointsEqual(a.a, b.a) && pointsEqual(a.b, b.b)) || (pointsEqual(a.a, b.b) && pointsEqual(a.b, b.a));
 }
 
-export function Canvas({ components, onAddComponent, onSelectComponent, canvasSize }: Props) {
+export function Canvas({ components, onAddComponent, canvasSize }: Props) {
   const canvasRef = useRef<SVGSVGElement>(null);
   const [canvasState, setCanvasState] = useState<CanvasState | undefined>(undefined);
 
@@ -62,7 +62,7 @@ export function Canvas({ components, onAddComponent, onSelectComponent, canvasSi
       {canvasState && (
         <CanvasContext.Provider value={canvasState}>
           {components.map((it, ind) => (
-            <GenericRenderer key={ind} component={it} onClick={() => onSelectComponent(it)} />
+            <GenericRenderer key={ind} component={it} />
           ))}
           <CanvasGrid />
         </CanvasContext.Provider>

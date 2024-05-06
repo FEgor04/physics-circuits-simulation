@@ -8,7 +8,7 @@ type CanvasParams = {
   height: number;
 };
 
-type SelectedComponent = {
+export type SelectedComponent = {
   type: "component";
   id: ElectricalComponentID;
 };

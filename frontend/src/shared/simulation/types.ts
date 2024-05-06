@@ -28,6 +28,8 @@ export type Wire = {
   b: Point;
 };
 
+export type WithID<T> = T & { id: ElectricalComponentID };
+
 /**
  * Резистор между точками `a` и `b` с внутренним сопротивлением `resistance`
  **/

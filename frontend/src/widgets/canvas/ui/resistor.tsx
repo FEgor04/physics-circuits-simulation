@@ -1,9 +1,15 @@
 import resistorSvg from "@/shared/assets/circuit/resistor.svg";
 import { Resistor } from "@/shared/simulation";
-import { useTransformVirtualToCanvas } from "./context";
+import { WithID } from "@/shared/simulation/types.ts";
+import { SelectedComponent, useOnSelectElement, useTransformVirtualToCanvas } from "./context";
 
-export function ResistorRenderer({ component, onClick }: { component: Resistor; onClick: () => void }) {
+export function ResistorRenderer({ component }: { component: WithID<Resistor> }) {
   const transformer = useTransformVirtualToCanvas();
+  const onSelect = useOnSelectElement();
+  const selectedComponent: SelectedComponent = {
+    type: "component",
+    id: component.id,
+  };
   const aTransformed = transformer(component.a);
   const bTransformed = transformer(component.b);
   const resistorHeight = 16;
@@ -14,7 +20,7 @@ export function ResistorRenderer({ component, onClick }: { component: Resistor; 
       width={bTransformed.x - aTransformed.x}
       height={resistorHeight}
       href={resistorSvg}
-      onClick={onClick}
+      onClick={() => onSelect(selectedComponent)}
     />
   );
 }
