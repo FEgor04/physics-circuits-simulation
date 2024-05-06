@@ -5,7 +5,20 @@ export type Point = {
   x: number;
   y: number;
 };
+/**
+ * Тип для узла
+ */
+export type Node = {
+  _type: "node";
+  loc: Point;
+};
 
+export type Branch = {
+  id: number;
+  a: Point;
+  b: Point;
+  components: ElectricalComponent[];
+};
 /**
  * Провод, соединяющий между собой две точки на стеке
  **/

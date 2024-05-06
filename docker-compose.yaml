@@ -1,8 +1,6 @@
-version: '3.0'
-
 networks:
-  physics-circuits:
-    driver: bridge
+  backend:
+  frontend:
 
 volumes:
   db-data:
@@ -14,21 +12,21 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - .env
+      - backend/.env
     networks:
-      - physics-circuits
+      - backend
     volumes:
       - db-data:/var/lib/postgresql/data
 
   app:
     build:
       context: ./backend
-    container_name: physics-container
     env_file: ./backend/.env
-    networks:
-      - physics-circuits
     depends_on:
       - postgres
+    networks:
+      - backend
+      - frontend
     environment:
       - HOST=postgres:5432
       - POSTGRES_DB=postgres
@@ -36,4 +34,15 @@ services:
       - POSTGRES_PASSWORD=postgres
     ports:
       - '8080:8080'  
+
+  front:
+    build:
+      context: ./frontend
+    networks:
+      - frontend
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+    restart: always
 
