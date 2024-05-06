@@ -8,8 +8,11 @@ type CanvasParams = {
   height: number;
 };
 
+type ElectricalComponentID = number;
+
 type SelectedComponent = {
   type: "component";
+  id: ElectricalComponentID;
   component: ElectricalComponent;
 };
 
