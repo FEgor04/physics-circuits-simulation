@@ -8,6 +8,8 @@ import { CanvasGrid } from "./grid";
 type Props = {
   components: Array<ElectricalComponent>;
   onAddComponent: (component: ElectricalComponent) => void;
+  onSelectComponent: (i: ElectricalComponent) => void;
+  canvasSize: number;
 };
 
 function pointsEqual(a: Point, b: Point): boolean {
@@ -18,11 +20,11 @@ function wireEqual(a: Wire, b: Wire): boolean {
   return (pointsEqual(a.a, b.a) && pointsEqual(a.b, b.b)) || (pointsEqual(a.a, b.b) && pointsEqual(a.b, b.a));
 }
 
-export function Canvas({ components, onAddComponent }: Props) {
+export function Canvas({ components, onAddComponent, canvasSize }: Props) {
   const canvasRef = useRef<SVGSVGElement>(null);
   const [canvasState, setCanvasState] = useState<CanvasState | undefined>(undefined);
 
-  const onSelectComponent = useCallback(
+  const onSelectPoint = useCallback(
     (selected: CanvasState["selected"]): void => {
       if (canvasState?.selected?.type == "point" && selected?.type == "point") {
         const newWire: Wire = {
@@ -34,7 +36,7 @@ export function Canvas({ components, onAddComponent }: Props) {
         if (!alreadyExists) {
           onAddComponent(newWire);
         }
-        return onSelectComponent(undefined);
+        return onSelectPoint(undefined);
       }
       setCanvasState((prev) => ({ ...prev!, selected }));
     },
@@ -50,23 +52,21 @@ export function Canvas({ components, onAddComponent }: Props) {
       setCanvasState((prev) => ({
         ...prev!,
         canvasParams,
-        onSelect: onSelectComponent,
+        onSelect: onSelectPoint,
       }));
     }
-  }, [canvasRef, onSelectComponent]);
+  }, [canvasRef, onSelectPoint, canvasSize]);
 
   return (
-    <div className="h-[90vh] w-full">
-      <svg ref={canvasRef} className="mx-auto h-full w-full">
-        {canvasState && (
-          <CanvasContext.Provider value={canvasState}>
-            {components.map((it, ind) => (
-              <GenericRenderer key={ind} component={it} />
-            ))}
-            <CanvasGrid />
-          </CanvasContext.Provider>
-        )}
-      </svg>
-    </div>
+    <svg ref={canvasRef} className="mx-auto h-full w-full">
+      {canvasState && (
+        <CanvasContext.Provider value={canvasState}>
+          {components.map((it, ind) => (
+            <GenericRenderer key={ind} component={it} />
+          ))}
+          <CanvasGrid />
+        </CanvasContext.Provider>
+      )}
+    </svg>
   );
 }

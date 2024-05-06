@@ -8,7 +8,7 @@ module.exports = {
     "plugin:@conarti/feature-sliced/recommended",
     "prettier",
   ],
-  ignorePatterns: ["dist", ".eslintrc.cjs", "src/shared/api/*"],
+  ignorePatterns: ["dist", ".eslintrc.cjs", "src/shared/api/*", "src/shared/ui/*"],
   parser: "@typescript-eslint/parser",
   plugins: ["react-refresh", "prettier"],
   rules: {
