@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
+import { useCombineActivators } from "@dnd-kit/core/dist/hooks/utilities";
 import { useContext, createContext } from "react";
-import { ElectricalComponentID, Point } from "@/shared/simulation/types";
+import { ElectricalComponentID, ElectricalComponentWithID, Point } from "@/shared/simulation/types";
 import { transformVirtualToCanvas } from "../lib";
 
 type CanvasParams = {

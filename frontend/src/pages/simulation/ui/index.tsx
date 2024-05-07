@@ -8,6 +8,44 @@ import { StateButton } from "@/widgets/state-button";
 import { ElectricalComponent, ElectricalComponentWithID } from "@/shared/simulation";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 
+function updateComponentCoords<T extends ElectricalComponent>(component: T, dx: number, dy: number): T {
+  if (
+    component._type == "resistor" ||
+    component._type == "wire" ||
+    component._type == "voltmeter" ||
+    component._type == "ampermeter"
+  ) {
+    const newA = {
+      x: component.a.x + dx,
+      y: component.a.y + dy,
+    };
+    const newB = {
+      x: component.b.x + dx,
+      y: component.b.y + dy,
+    };
+    return {
+      ...component,
+      a: newA,
+      b: newB,
+    };
+  }
+  if (component._type == "source") {
+    const newPlus = {
+      x: component.plus.x + dx,
+      y: component.plus.y + dy,
+    };
+    const newMinus = {
+      x: component.minus.x + dx,
+      y: component.minus.y + dy,
+    };
+    return {
+      ...component,
+      minus: newMinus,
+      plus: newPlus,
+    };
+  }
+}
+
 export function Simulation() {
   const [schema, setSchema] = useState<Array<ElectricalComponentWithID>>([
     {
@@ -47,6 +85,16 @@ export function Simulation() {
                     .reverse()[0] + 1,
               },
             ])
+          }
+          onUpdateComponent={(component) =>
+            setSchema((old) => [...old.filter((it) => it.id != component.id), component])
+          }
+          onUpdateComponentCoords={(id, dx, dy) =>
+            setSchema((old) => {
+              const oldComponent = old.find((it) => it.id == id)!;
+              const newComponent = updateComponentCoords(oldComponent, dx, dy);
+              return [...old.filter((it) => it.id != id), newComponent];
+            })
           }
         />
         {state == "editing" ? (

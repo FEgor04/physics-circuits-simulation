@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ElectricalComponent } from "@/shared/simulation";
-import { ElectricalComponentWithID, Point, Wire } from "@/shared/simulation/types";
+import { ElectricalComponentID, ElectricalComponentWithID, Point, Wire } from "@/shared/simulation/types";
 import { CanvasContext, CanvasState } from "./context";
 import { CanvasDndContext } from "./dnd";
 import { GenericRenderer } from "./generic-renderer";
@@ -9,6 +9,8 @@ import { CanvasGrid } from "./grid";
 type Props = {
   components: Array<ElectricalComponentWithID>;
   onAddComponent: (component: ElectricalComponent) => void;
+  onUpdateComponent: (component: ElectricalComponentWithID) => void;
+  onUpdateComponentCoords: (id: ElectricalComponentID, deltaX: number, deltaY: number) => void;
   onSelectComponent: (i: ElectricalComponentWithID) => void;
   canvasSize: number;
 };
@@ -21,7 +23,7 @@ function wireEqual(a: Wire, b: Wire): boolean {
   return (pointsEqual(a.a, b.a) && pointsEqual(a.b, b.b)) || (pointsEqual(a.a, b.b) && pointsEqual(a.b, b.a));
 }
 
-export function Canvas({ components, onAddComponent, canvasSize }: Props) {
+export function Canvas({ components, onAddComponent, canvasSize, onUpdateComponentCoords }: Props) {
   const canvasRef = useRef<SVGSVGElement>(null);
   const [canvasState, setCanvasState] = useState<CanvasState | undefined>(undefined);
 
@@ -62,7 +64,7 @@ export function Canvas({ components, onAddComponent, canvasSize }: Props) {
     <svg ref={canvasRef} className="mx-auto h-full w-full">
       {canvasState && (
         <CanvasContext.Provider value={canvasState}>
-          <CanvasDndContext>
+          <CanvasDndContext onUpdateComponentCoords={onUpdateComponentCoords}>
             {components.map((it, ind) => (
               <GenericRenderer key={ind} component={it} />
             ))}
