@@ -23,6 +23,7 @@ describe("adding new wire", () => {
     await userEvent.click(screen.getByTestId(`canvas-dot-${b.x}-${b.y}`));
     expect(schema).toStrictEqual([
       {
+        id: 2,
         _type: "wire",
         a,
         b,
