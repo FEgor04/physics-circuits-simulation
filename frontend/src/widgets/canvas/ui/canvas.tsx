@@ -1,14 +1,15 @@
+import { DndContext } from "@dnd-kit/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ElectricalComponent } from "@/shared/simulation";
-import { Point, Wire } from "@/shared/simulation/types";
+import { ElectricalComponentWithID, Point, Wire } from "@/shared/simulation/types";
 import { CanvasContext, CanvasState } from "./context";
 import { GenericRenderer } from "./generic-renderer";
 import { CanvasGrid } from "./grid";
 
 type Props = {
-  components: Array<ElectricalComponent>;
+  components: Array<ElectricalComponentWithID>;
   onAddComponent: (component: ElectricalComponent) => void;
-  onSelectComponent: (i: ElectricalComponent) => void;
+  onSelectComponent: (i: ElectricalComponentWithID) => void;
   canvasSize: number;
 };
 
@@ -61,9 +62,11 @@ export function Canvas({ components, onAddComponent, canvasSize }: Props) {
     <svg ref={canvasRef} className="mx-auto h-full w-full">
       {canvasState && (
         <CanvasContext.Provider value={canvasState}>
-          {components.map((it, ind) => (
-            <GenericRenderer key={ind} component={it} />
-          ))}
+          <DndContext onDragStart={console.log}>
+            {components.map((it, ind) => (
+              <GenericRenderer key={ind} component={it} />
+            ))}
+          </DndContext>
           <CanvasGrid />
         </CanvasContext.Provider>
       )}

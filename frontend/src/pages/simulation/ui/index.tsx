@@ -5,12 +5,13 @@ import { ComponentChooseBar } from "@/widgets/component-choose-bar";
 import { ComponentSettingsBar } from "@/widgets/component-settings-bar";
 import { ComponentValuesBar } from "@/widgets/component-values-bar";
 import { StateButton } from "@/widgets/state-button";
-import { ElectricalComponent } from "@/shared/simulation";
+import { ElectricalComponent, ElectricalComponentWithID } from "@/shared/simulation";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 
 export function Simulation() {
-  const [schema, setSchema] = useState<Array<ElectricalComponent>>([
+  const [schema, setSchema] = useState<Array<ElectricalComponentWithID>>([
     {
+      id: 1,
       _type: "resistor",
       a: { x: 0, y: 0 },
       b: { x: 1, y: 0 },
@@ -34,7 +35,19 @@ export function Simulation() {
         <CanvasPanel
           components={schema}
           onSelectComponent={updateSelectedComponentIndex}
-          onAddComponent={(newComponent) => setSchema((old) => [...old, newComponent])}
+          onAddComponent={(newComponent) =>
+            setSchema((old) => [
+              ...old,
+              {
+                ...newComponent,
+                id:
+                  old
+                    .map((it) => it.id)
+                    .sort()
+                    .reverse()[0] + 1,
+              },
+            ])
+          }
         />
         {state == "editing" ? (
           <>
