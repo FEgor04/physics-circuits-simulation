@@ -5,6 +5,7 @@ import { ElectricalComponentWithID, Point, Wire } from "@/shared/simulation/type
 import { CanvasContext, CanvasState } from "./context";
 import { GenericRenderer } from "./generic-renderer";
 import { CanvasGrid } from "./grid";
+import { CanvasDndContext } from "./dnd";
 
 type Props = {
   components: Array<ElectricalComponentWithID>;
@@ -62,11 +63,11 @@ export function Canvas({ components, onAddComponent, canvasSize }: Props) {
     <svg ref={canvasRef} className="mx-auto h-full w-full">
       {canvasState && (
         <CanvasContext.Provider value={canvasState}>
-          <DndContext onDragStart={console.log} modifiers={[]}>
+          <CanvasDndContext>
             {components.map((it, ind) => (
               <GenericRenderer key={ind} component={it} />
             ))}
-          </DndContext>
+          </CanvasDndContext>
           <CanvasGrid />
         </CanvasContext.Provider>
       )}

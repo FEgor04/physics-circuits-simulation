@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { useCanvasParams } from "./context";
+import { DndContext } from "@dnd-kit/core";
 
-function CanvasDndContext() {
+export function CanvasDndContext({ children }: React.PropsWithChildren) {
+  return <DndContext>{children}</DndContext>;
 }

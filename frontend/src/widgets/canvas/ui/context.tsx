@@ -40,7 +40,7 @@ function useCanvasContext<T>(selector: (state: CanvasState) => T) {
 export const useCanvasParams = () => useCanvasContext((state) => state.canvasParams);
 
 export const useTransformVirtualToCanvas = () => {
-  const canvasParams = useContext(CanvasContext)!.canvasParams;
+  const canvasParams = useCanvasParams();
   return (point: Point) => {
     return transformVirtualToCanvas(point, canvasParams);
   };
