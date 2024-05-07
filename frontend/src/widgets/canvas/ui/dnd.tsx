@@ -1,6 +1,5 @@
 import { DndContext, Modifier } from "@dnd-kit/core";
 import { ElectricalComponentID } from "@/shared/simulation";
-import { Point } from "@/shared/simulation/types";
 import { schemeHeight, schemeWidth } from "../lib";
 import { useCanvasParams } from "./context";
 

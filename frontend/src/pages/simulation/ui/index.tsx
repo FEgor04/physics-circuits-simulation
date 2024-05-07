@@ -36,9 +36,7 @@ export function Simulation() {
         <CanvasPanel
           components={schema}
           onSelectComponent={updateSelectedComponentIndex}
-          onAddComponent={(newComponent) =>
-            setSchema((old) => addComponentWithId(old, newComponent))
-          }
+          onAddComponent={(newComponent) => setSchema((old) => addComponentWithId(old, newComponent))}
           onUpdateComponent={(component) =>
             setSchema((old) => [...old.filter((it) => it.id != component.id), component])
           }
