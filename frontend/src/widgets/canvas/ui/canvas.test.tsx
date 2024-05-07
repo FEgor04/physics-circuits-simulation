@@ -11,8 +11,10 @@ describe("adding new wire", () => {
       <Canvas
         components={schema}
         onAddComponent={(newComponent) => schema.push({ ...newComponent, id: 2 })}
-        onSelectComponent={() => {}}
         canvasSize={65}
+        onSelectComponent={console.log}
+        onUpdateComponent={console.log}
+        onUpdateComponentCoords={console.log}
       />,
     );
     const a = { x: 5, y: 5 };
@@ -35,7 +37,9 @@ describe("adding new wire", () => {
         components={schema}
         onAddComponent={(newComponent) => schema.push({ ...newComponent, id: 2 })}
         canvasSize={65}
-        onSelectComponent={() => {}}
+        onSelectComponent={console.log}
+        onUpdateComponent={console.log}
+        onUpdateComponentCoords={console.log}
       />,
     );
     const a = { x: 5, y: 5 };
@@ -57,7 +61,9 @@ describe("adding new wire", () => {
         components={schema}
         onAddComponent={(newComponent) => schema.push({ ...newComponent, id: 2 })}
         canvasSize={65}
-        onSelectComponent={() => {}}
+        onSelectComponent={console.log}
+        onUpdateComponent={console.log}
+        onUpdateComponentCoords={console.log}
       />,
     );
     await userEvent.click(screen.getByTestId(`canvas-dot-${initialWire.a.x}-${initialWire.a.y}`));
