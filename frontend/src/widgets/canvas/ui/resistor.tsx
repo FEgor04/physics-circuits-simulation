@@ -5,7 +5,7 @@ import { WithID } from "@/shared/simulation/types.ts";
 import { SelectedComponent, useOnSelectElement, useTransformVirtualToCanvas } from "./context";
 
 export function ResistorRenderer({ component }: { component: WithID<Resistor> }) {
-  const { setNodeRef, transform, listeners, isDragging, attributes} = useDraggable({
+  const { setNodeRef, transform, listeners, isDragging, attributes } = useDraggable({
     id: component.id,
   });
   const transformer = useTransformVirtualToCanvas();

@@ -1,11 +1,10 @@
-import { DndContext } from "@dnd-kit/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ElectricalComponent } from "@/shared/simulation";
 import { ElectricalComponentWithID, Point, Wire } from "@/shared/simulation/types";
 import { CanvasContext, CanvasState } from "./context";
+import { CanvasDndContext } from "./dnd";
 import { GenericRenderer } from "./generic-renderer";
 import { CanvasGrid } from "./grid";
-import { CanvasDndContext } from "./dnd";
 
 type Props = {
   components: Array<ElectricalComponentWithID>;

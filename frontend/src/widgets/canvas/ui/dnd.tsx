@@ -12,7 +12,7 @@ export function CanvasDndContext({ children }: React.PropsWithChildren) {
       ...transform,
       x: Math.ceil(transform.x / gridSizeX) * gridSizeX,
       y: Math.ceil(transform.y / gridSizeY) * gridSizeY,
-    }
-  }
+    };
+  };
   return <DndContext modifiers={[snapToGridModifier]}>{children}</DndContext>;
 }
