@@ -62,7 +62,7 @@ export function Canvas({ components, onAddComponent, canvasSize }: Props) {
     <svg ref={canvasRef} className="mx-auto h-full w-full">
       {canvasState && (
         <CanvasContext.Provider value={canvasState}>
-          <DndContext onDragStart={console.log}>
+          <DndContext onDragStart={console.log} modifiers={[]}>
             {components.map((it, ind) => (
               <GenericRenderer key={ind} component={it} />
             ))}
