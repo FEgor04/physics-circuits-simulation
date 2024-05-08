@@ -8,7 +8,7 @@ export function getComponentContacts(component: ElectricalComponent): Array<Poin
     component._type === "ampermeter"
   ) {
     return [component.a, component.b];
-  } else if (component._type === "source") {
+  } else if (component._type === "source" || component._type === "sourceDC") {
     return [component.plus, component.minus];
   }
   throw new Error("not all cases are covered");

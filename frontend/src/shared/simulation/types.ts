@@ -46,6 +46,12 @@ export type Source = {
   internalResistance: number;
 };
 
+export type SourceDC = {
+  _type: "sourceDC";
+  plus: Point;
+  minus: Point;
+  electromotiveForce: number;
+};
 export type Voltmeter = Omit<Wire, "_type"> & {
   _type: "voltmeter";
   voltage: number | "unknown";
@@ -56,7 +62,7 @@ export type Ampermeter = Omit<Wire, "_type"> & {
   currency: number | "unknown";
 };
 
-export type ElectricalComponent = Wire | Resistor | Source | Voltmeter | Ampermeter;
+export type ElectricalComponent = Wire | Resistor | Source | Voltmeter | Ampermeter | SourceDC;
 
 export type ElectricalComponentID = number;
 

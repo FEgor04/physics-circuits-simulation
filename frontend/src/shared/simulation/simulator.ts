@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { CircuitSimulator } from "./interface";
 import { branchFactory, branchesEqual, getComponentContacts, pointsEqual } from "./lib";
 import { Branch, ElectricalComponent, Point } from "./types";
@@ -110,5 +111,75 @@ export class SimpleSimulator implements CircuitSimulator {
       });
     });
     return branches;
+  }
+
+  private sumResistanceOfBranch(branch: Branch): number {
+    if (branch === null) {
+      return 0;
+    }
+    let totalResistance = 0;
+
+    for (const component of branch.components) {
+      if (component._type === "resistor") {
+        totalResistance += component.resistance;
+      }
+      if (component._type === "sourceDC") {
+        return 0;
+      }
+    }
+
+    return totalResistance;
+  }
+  private pointsEqual(a: Point, b: Point): boolean {
+    return a.x == b.x && a.y == b.y;
+  }
+  private sumResistanceOfNode(node: Point, branches: Branch[]): number {
+    let totalResistance = 0;
+
+    for (const branch of branches) {
+      if (this.pointsEqual(branch.a, node) || this.pointsEqual(branch.b, node)) {
+        const resistance = this.sumResistanceOfBranch(branch);
+        if (resistance != 0) {
+          totalResistance += 1 / resistance;
+        }
+      }
+    }
+
+    return totalResistance;
+  }
+
+  private findResistanceBetweenNodes(node1: Point, node2: Point, branches: Branch[]): number {
+    let totalResistance = 0;
+
+    for (const branch of branches) {
+      if (
+        (pointsEqual(branch.a, node1) && pointsEqual(branch.b, node2)) ||
+        (pointsEqual(branch.b, node1) && pointsEqual(branch.a, node2))
+      ) {
+        const currentResistance = this.sumResistanceOfBranch(branch);
+        if (currentResistance != 0) {
+          totalResistance += 1 / this.sumResistanceOfBranch(branch);
+        }
+      }
+    }
+
+    return -totalResistance;
+  }
+
+  public buildGMatrix(nodes: Array<Point>, branches: Branch[]): number[][] {
+    const gMatrix: number[][] = [];
+    let line: number[] = [];
+    for (let i = 0; i < nodes.length - 1; i++) {
+      line = [];
+      for (let j = 0; j < nodes.length - 1; j++) {
+        if (i == j) {
+          line.push(this.sumResistanceOfNode(nodes[i], branches));
+        } else {
+          line.push(this.findResistanceBetweenNodes(nodes[i], nodes[j], branches));
+        }
+      }
+      gMatrix.push(line);
+    }
+    return gMatrix;
   }
 }
