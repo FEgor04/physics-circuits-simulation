@@ -138,9 +138,9 @@ export class SimpleSimulator implements CircuitSimulator {
 
     for (const branch of branches) {
       if (this.pointsEqual(branch.a, node) || this.pointsEqual(branch.b, node)) {
-        const resist = this.sumResistanceOfBranch(branch);
-        if (resist != 0) {
-          totalResistance += 1 / resist;
+        const resistance = this.sumResistanceOfBranch(branch);
+        if (resistance != 0) {
+          totalResistance += 1 / resistance;
         }
       }
     }
@@ -148,16 +148,16 @@ export class SimpleSimulator implements CircuitSimulator {
     return totalResistance;
   }
 
-  private findResistansBetweenNodes(node1: Point, node2: Point, branches: Branch[]): number {
+  private findResistanceBetweenNodes(node1: Point, node2: Point, branches: Branch[]): number {
     let totalResistance = 0;
 
     for (const branch of branches) {
       if (
-        (branch.a.x === node1.x && branch.a.y === node1.y && branch.b.x === node2.x && branch.b.y === node2.y) ||
-        (branch.b.x === node1.x && branch.b.y === node1.y && branch.a.x === node2.x && branch.a.y === node2.y)
+        (pointsEqual(branch.a, node1) && pointsEqual(branch.b, node2)) ||
+        (pointsEqual(branch.b, node1) && pointsEqual(branch.a, node2))
       ) {
-        const currResist = this.sumResistanceOfBranch(branch);
-        if (currResist != 0) {
+        const currentResistance = this.sumResistanceOfBranch(branch);
+        if (currentResistance != 0) {
           totalResistance += 1 / this.sumResistanceOfBranch(branch);
         }
       }
@@ -175,7 +175,7 @@ export class SimpleSimulator implements CircuitSimulator {
         if (i == j) {
           line.push(this.sumResistanceOfNode(nodes[i], branches));
         } else {
-          line.push(this.findResistansBetweenNodes(nodes[i], nodes[j], branches));
+          line.push(this.findResistanceBetweenNodes(nodes[i], nodes[j], branches));
         }
       }
       gMatrix.push(line);

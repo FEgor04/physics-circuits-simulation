@@ -108,9 +108,6 @@ test.skip("not simple scheme with branches", () => {
 
   expect(actualBranches.length).toBe(expectedBranches.length);
 
-  const actgMatrix = simulator.buildGMatrix(actualNodes, actualBranches);
-
-  console.log(actgMatrix);
   /**
    * Test that `actualBranches` contain all `expectedBranches`,
    * i.e. that `expectedBranches` \subset `actualBranches`.
