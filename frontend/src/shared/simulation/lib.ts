@@ -32,7 +32,7 @@ export function branchesEqual(a: Branch, b: Branch, strictEqual: boolean = false
       return false;
     }
     return a.components
-      .map((element, idx) => componentsEqual(element, b.components[idx]))
+      .map((element, idx) => componentsEqual(element, b.components[b.components.length - idx - 1]))
       .reduce((a, b) => a && b, true);
   }
   return false;
