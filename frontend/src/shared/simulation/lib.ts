@@ -57,16 +57,16 @@ export function componentsEqual(a: ElectricalComponent, b: ElectricalComponent):
   }
   const aContacts = getComponentContacts(a);
   const bContacts = getComponentContacts(b);
-  aContacts.forEach((contact) => {
+  for (const contact of aContacts) {
     if (bContacts.find((it) => pointsEqual(it, contact)) === undefined) {
       return false;
     }
-  });
-  bContacts.forEach((contact) => {
+  }
+  for (const contact of bContacts) {
     if (aContacts.find((it) => pointsEqual(it, contact)) === undefined) {
       return false;
     }
-  });
+  }
   return true;
 }
 
