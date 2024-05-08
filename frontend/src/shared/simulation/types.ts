@@ -12,7 +12,9 @@ export type Node = {
   _type: "node";
   loc: Point;
 };
-
+/**
+ * Компоненты лежать в порядке от a до b
+ */
 export type Branch = {
   id: number;
   a: Point;

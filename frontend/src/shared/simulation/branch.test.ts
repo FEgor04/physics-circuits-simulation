@@ -102,6 +102,7 @@ test.skip("not simple scheme with branches", () => {
 
   const actualNodes = simulator.findNodes();
   const actualBranches = simulator.findBranches();
+  console.log(actualNodes);
 
   expectedNodes.forEach((node) => expect(actualNodes).toContainEqual(node));
   actualNodes.forEach((node) => expect(expectedNodes).toContainEqual(node));
