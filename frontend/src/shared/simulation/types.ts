@@ -62,9 +62,7 @@ export type Ampermeter = Omit<Wire, "_type"> & {
   currency: number | "unknown";
 };
 
-
 export type ElectricalComponent = Wire | Resistor | Source | Voltmeter | Ampermeter | SourceDC;
-
 
 export type ElectricalComponentID = number;
 
