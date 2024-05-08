@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
-import { branchesEqual } from "../lib";
 import { SimpleSimulator } from "../simulator";
 import { Branch, ElectricalComponent } from "../types";
+import { expectBranchesToBe } from "./lib";
 
 test("simple scheme with branches", () => {
   const expectedBranches: Branch[] = [
@@ -52,32 +52,7 @@ test("simple scheme with branches", () => {
   actualNodes.forEach((node) => expect(expectedNodes).toContainEqual(node));
 
   const actualBranches = simulator.findBranches();
-
-  expect(actualBranches.length).toBe(expectedBranches.length);
-
-  /**
-   * Test that `actualBranches` contain all `expectedBranches`,
-   * i.e. that `expectedBranches` \subset `actualBranches`.
-   */
-  expectedBranches.forEach((branch) => {
-    const actualBranchWithSameStartingPoints = actualBranches.find((it) => branchesEqual(branch, it));
-    expect(actualBranchWithSameStartingPoints).not.toBeUndefined();
-  });
-
-  /**
-   * Test that `expectedBranches` contain all `actualBranches`,
-   * i.e. that `actualBranches` \subset `expectedBranches`.
-   */
-  actualBranches.forEach((branch) => {
-    const expectedBrach = expectedBranches.find((it) => branchesEqual(branch, it));
-    expect(expectedBrach).not.toBeUndefined();
-  });
-
-  /**
-   * And since `actualBranches` \subset `expectedBranches` and
-   * `expectedBranches` \subset `actualBranches`, then
-   * `expectedBranches` equals to `actualBranches` (as a set)
-   */
+  expectBranchesToBe(actualBranches, expectedBranches);
 });
 
 test.skip("simple scheme with branches 2", () => {
@@ -161,35 +136,7 @@ test.skip("simple scheme with branches 2", () => {
   actualNodes.forEach((node) => expect(expectedNodes).toContainEqual(node));
 
   const actualBranches = simulator.findBranches();
-
-  console.log(actualNodes);
-  console.log(actualBranches);
-
-  expect(actualBranches.length).toBe(expectedBranches.length);
-
-  /**
-   * Test that `actualBranches` contain all `expectedBranches`,
-   * i.e. that `expectedBranches` \subset `actualBranches`.
-   */
-  expectedBranches.forEach((branch) => {
-    const actualBranchWithSameStartingPoints = actualBranches.find((it) => branchesEqual(branch, it));
-    expect(actualBranchWithSameStartingPoints).not.toBeUndefined();
-  });
-
-  /**
-   * Test that `expectedBranches` contain all `actualBranches`,
-   * i.e. that `actualBranches` \subset `expectedBranches`.
-   */
-  actualBranches.forEach((branch) => {
-    const expectedBrach = expectedBranches.find((it) => branchesEqual(branch, it));
-    expect(expectedBrach).not.toBeUndefined();
-  });
-
-  /**
-   * And since `actualBranches` \subset `expectedBranches` and
-   * `expectedBranches` \subset `actualBranches`, then
-   * `expectedBranches` equals to `actualBranches` (as a set)
-   */
+  expectBranchesToBe(actualBranches, expectedBranches);
 });
 
 test.skip("simple scheme with branches 3", () => {
@@ -274,32 +221,7 @@ test.skip("simple scheme with branches 3", () => {
   actualNodes.forEach((node) => expect(expectedNodes).toContainEqual(node));
 
   const actualBranches = simulator.findBranches();
-
-  expect(actualBranches.length).toBe(expectedBranches.length);
-
-  /**
-   * Test that `actualBranches` contain all `expectedBranches`,
-   * i.e. that `expectedBranches` \subset `actualBranches`.
-   */
-  expectedBranches.forEach((branch) => {
-    const actualBranchWithSameStartingPoints = actualBranches.find((it) => branchesEqual(branch, it));
-    expect(actualBranchWithSameStartingPoints).not.toBeUndefined();
-  });
-
-  /**
-   * Test that `expectedBranches` contain all `actualBranches`,
-   * i.e. that `actualBranches` \subset `expectedBranches`.
-   */
-  actualBranches.forEach((branch) => {
-    const expectedBrach = expectedBranches.find((it) => branchesEqual(branch, it));
-    expect(expectedBrach).not.toBeUndefined();
-  });
-
-  /**
-   * And since `actualBranches` \subset `expectedBranches` and
-   * `expectedBranches` \subset `actualBranches`, then
-   * `expectedBranches` equals to `actualBranches` (as a set)
-   */
+  expectBranchesToBe(actualBranches, expectedBranches);
 });
 
 test.skip("simple scheme with branches 4", () => {
@@ -381,29 +303,5 @@ test.skip("simple scheme with branches 4", () => {
   actualNodes.forEach((node) => expect(expectedNodes).toContainEqual(node));
 
   const actualBranches = simulator.findBranches();
-  expect(actualBranches.length).toBe(expectedBranches.length);
-
-  /**
-   * Test that `actualBranches` contain all `expectedBranches`,
-   * i.e. that `expectedBranches` \subset `actualBranches`.
-   */
-  expectedBranches.forEach((branch) => {
-    const actualBranchWithSameStartingPoints = actualBranches.find((it) => branchesEqual(branch, it));
-    expect(actualBranchWithSameStartingPoints).not.toBeUndefined();
-  });
-
-  /**
-   * Test that `expectedBranches` contain all `actualBranches`,
-   * i.e. that `actualBranches` \subset `expectedBranches`.
-   */
-  actualBranches.forEach((branch) => {
-    const expectedBrach = expectedBranches.find((it) => branchesEqual(branch, it));
-    expect(expectedBrach).not.toBeUndefined();
-  });
-
-  /**
-   * And since `actualBranches` \subset `expectedBranches` and
-   * `expectedBranches` \subset `actualBranches`, then
-   * `expectedBranches` equals to `actualBranches` (as a set)
-   */
+  expectBranchesToBe(actualBranches, expectedBranches);
 });
