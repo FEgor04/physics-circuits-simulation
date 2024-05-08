@@ -1,3 +1,4 @@
+
 import {expect, test} from "vitest";
 import {branchesEqual} from "./lib";
 import {SimpleSimulator} from "./simulator";
@@ -148,4 +149,5 @@ test.skip("not simple scheme with branches", () => {
      * `expectedBranches` \subset `actualBranches`, then
      * `expectedBranches` equals to `actualBranches` (as a set)
      */
+
 });

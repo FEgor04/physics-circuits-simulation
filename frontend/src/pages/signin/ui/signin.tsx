@@ -19,7 +19,7 @@ export function SignInPage() {
             onSubmit={(values) => {
               mutate(values, {
                 onSuccess: () => {
-                  navigate({ to: "/" });
+                  navigate({ to: "/", search: { state: "editing" } });
                 },
               });
             }}
