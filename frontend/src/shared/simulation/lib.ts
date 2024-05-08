@@ -69,3 +69,13 @@ export function componentsEqual(a: ElectricalComponent, b: ElectricalComponent):
   });
   return true;
 }
+
+export function deduplicateArray<T>(array: ReadonlyArray<T>, equality: (a: T, b: T) => boolean): Array<T> {
+  const answer: Array<T> = [];
+  array.forEach((elem) => {
+    if (answer.find((it) => equality(it, elem)) === undefined) {
+      answer.push(elem);
+    }
+  });
+  return answer;
+}

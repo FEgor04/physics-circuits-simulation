@@ -55,7 +55,7 @@ test("simple scheme with branches", () => {
   expectBranchesToBe(actualBranches, expectedBranches);
 });
 
-test.skip("simple scheme with branches 2", () => {
+test("simple scheme with branches 2", () => {
   const expectedBranches: Branch[] = [
     {
       id: 0,

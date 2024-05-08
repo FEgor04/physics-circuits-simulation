@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CircuitSimulator } from "./interface";
-import { branchFactory, branchesEqual, getComponentContacts, pointsEqual } from "./lib";
+import { branchFactory, branchesEqual, deduplicateArray, getComponentContacts, pointsEqual } from "./lib";
 import { Branch, ElectricalComponent, Point } from "./types";
 
 export class SimpleSimulator implements CircuitSimulator {
@@ -66,13 +66,7 @@ export class SimpleSimulator implements CircuitSimulator {
   }
 
   private deduplicateBranches(branches: ReadonlyArray<Branch>): Array<Branch> {
-    const deduplicated: Array<Branch> = [];
-    branches.forEach((it) => {
-      if (deduplicated.find((deduplicatedBranch) => branchesEqual(it, deduplicatedBranch)) === undefined) {
-        deduplicated.push(it);
-      }
-    });
-    return deduplicated;
+    return deduplicateArray(branches, branchesEqual);
   }
 
   private findComponentsAtPoint(point: Point): Array<ElectricalComponent> {
