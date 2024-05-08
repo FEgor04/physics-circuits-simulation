@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
-import { SimpleSimulator } from "./simulator";
-import { Node, ElectricalComponent } from "./types";
+import { SimpleSimulator } from "../simulator";
+import { Node, ElectricalComponent } from "../types";
 
 test.skip("simple scheme with nodes", () => {
   const node: Node[] = [
