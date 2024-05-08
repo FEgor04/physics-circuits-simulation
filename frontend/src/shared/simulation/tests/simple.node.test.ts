@@ -1,11 +1,11 @@
 import { expect, test } from "vitest";
 import { SimpleSimulator } from "../simulator";
-import { Node, ElectricalComponent } from "../types";
+import { ElectricalComponent, Point } from "../types";
 
-test.skip("simple scheme with nodes", () => {
-  const node: Node[] = [
-    { _type: "node", loc: { x: 3, y: 3 } },
-    { _type: "node", loc: { x: 3, y: 0 } },
+test("simple scheme with nodes", () => {
+  const node: Point[] = [
+    { x: 3, y: 3 },
+    { x: 3, y: 0 },
   ];
 
   const components: ElectricalComponent[] = [
@@ -27,5 +27,5 @@ test.skip("simple scheme with nodes", () => {
   const simulator = new SimpleSimulator(components);
 
   const nodes = simulator.findNodes();
-  expect(nodes).toBe(node);
+  expect(nodes).toStrictEqual(node);
 });
