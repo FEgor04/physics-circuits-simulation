@@ -130,12 +130,14 @@ export class SimpleSimulator implements CircuitSimulator {
 
     return totalResistance;
   }
-
+  private pointsEqual(a: Point, b: Point): boolean {
+    return a.x == b.x && a.y == b.y;
+  }
   private sumResistanceOfNode(node: Point, branches: Branch[]): number {
     let totalResistance = 0;
 
     for (const branch of branches) {
-      if ((branch.a.x === node.x && branch.a.y === node.y) || (branch.b.x === node.x && branch.b.y === node.y)) {
+      if (this.pointsEqual(branch.a, node) || this.pointsEqual(branch.b, node)) {
         const resist = this.sumResistanceOfBranch(branch);
         if (resist != 0) {
           totalResistance += 1 / resist;
@@ -167,9 +169,9 @@ export class SimpleSimulator implements CircuitSimulator {
   public buildGMatrix(nodes: Array<Point>, branches: Branch[]): number[][] {
     const gMatrix: number[][] = [];
     let line: number[] = [];
-    for (let i = 0; i < nodes.length; i++) {
+    for (let i = 0; i < nodes.length - 1; i++) {
       line = [];
-      for (let j = 0; j < nodes.length; j++) {
+      for (let j = 0; j < nodes.length - 1; j++) {
         if (i == j) {
           line.push(this.sumResistanceOfNode(nodes[i], branches));
         } else {
