@@ -51,5 +51,4 @@ describe("components equality", () => {
     const result = componentsEqual(component1, component2);
     expect(result).toBe(false);
   });
-
 });
