@@ -59,7 +59,7 @@ function CanvasDot({
       <circle // invisible clickable circle
         cx={x}
         cy={y}
-        r={15}
+        r={10}
         onClick={() => onSelect()}
         opacity={0}
         className="cursor-pointer"

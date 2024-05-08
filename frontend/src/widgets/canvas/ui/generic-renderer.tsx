@@ -1,8 +1,8 @@
-import { ElectricalComponent } from "@/shared/simulation";
+import { ElectricalComponentWithID } from "@/shared/simulation/types.ts";
 import { ResistorRenderer } from "./resistor";
 import { WireRenderer } from "./wire";
 
-export function GenericRenderer({ component }: { component: ElectricalComponent }) {
+export function GenericRenderer({ component }: { component: ElectricalComponentWithID }) {
   if (component._type == "wire") {
     return <WireRenderer component={component} />;
   }

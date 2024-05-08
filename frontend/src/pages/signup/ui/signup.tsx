@@ -13,7 +13,7 @@ export function SignUpPage() {
     console.log(values);
     mutate(values, {
       onSuccess: () => {
-        void navigate({ to: "/" });
+        void navigate({ to: "/", search: { state: "editing" } });
       },
     });
   }

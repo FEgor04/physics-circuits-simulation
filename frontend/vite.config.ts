@@ -9,6 +9,8 @@ export default defineConfig({
     react(),
     TanStackRouterVite({
       routesDirectory: path.resolve(__dirname, "./src/app/routes"),
+      quoteStyle: "double",
+      semicolons: true,
     }),
   ],
   resolve: {

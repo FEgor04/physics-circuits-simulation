@@ -1,13 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ElectricalComponent } from "@/shared/simulation";
-import { Point, Wire } from "@/shared/simulation/types";
+import { ElectricalComponentID, ElectricalComponentWithID, Point, Wire } from "@/shared/simulation/types";
 import { CanvasContext, CanvasState } from "./context";
+import { CanvasDndContext } from "./dnd";
 import { GenericRenderer } from "./generic-renderer";
 import { CanvasGrid } from "./grid";
 
 type Props = {
-  components: Array<ElectricalComponent>;
+  components: Array<ElectricalComponentWithID>;
   onAddComponent: (component: ElectricalComponent) => void;
+  onUpdateComponent: (component: ElectricalComponentWithID) => void;
+  onUpdateComponentCoords: (id: ElectricalComponentID, deltaX: number, deltaY: number) => void;
+  onSelectComponent: (i: ElectricalComponentWithID) => void;
+  canvasSize: number;
 };
 
 function pointsEqual(a: Point, b: Point): boolean {
@@ -18,11 +23,11 @@ function wireEqual(a: Wire, b: Wire): boolean {
   return (pointsEqual(a.a, b.a) && pointsEqual(a.b, b.b)) || (pointsEqual(a.a, b.b) && pointsEqual(a.b, b.a));
 }
 
-export function Canvas({ components, onAddComponent }: Props) {
+export function Canvas({ components, onAddComponent, canvasSize, onUpdateComponentCoords }: Props) {
   const canvasRef = useRef<SVGSVGElement>(null);
   const [canvasState, setCanvasState] = useState<CanvasState | undefined>(undefined);
 
-  const onSelectComponent = useCallback(
+  const onSelectPoint = useCallback(
     (selected: CanvasState["selected"]): void => {
       if (canvasState?.selected?.type == "point" && selected?.type == "point") {
         const newWire: Wire = {
@@ -34,7 +39,7 @@ export function Canvas({ components, onAddComponent }: Props) {
         if (!alreadyExists) {
           onAddComponent(newWire);
         }
-        return onSelectComponent(undefined);
+        return onSelectPoint(undefined);
       }
       setCanvasState((prev) => ({ ...prev!, selected }));
     },
@@ -50,23 +55,23 @@ export function Canvas({ components, onAddComponent }: Props) {
       setCanvasState((prev) => ({
         ...prev!,
         canvasParams,
-        onSelect: onSelectComponent,
+        onSelect: onSelectPoint,
       }));
     }
-  }, [canvasRef, onSelectComponent]);
+  }, [canvasRef, onSelectPoint, canvasSize]);
 
   return (
-    <div className="h-[90vh] w-full">
-      <svg ref={canvasRef} className="mx-auto h-full w-full">
-        {canvasState && (
-          <CanvasContext.Provider value={canvasState}>
+    <svg ref={canvasRef} className="mx-auto h-full w-full">
+      {canvasState && (
+        <CanvasContext.Provider value={canvasState}>
+          <CanvasDndContext onUpdateComponentCoords={onUpdateComponentCoords}>
             {components.map((it, ind) => (
               <GenericRenderer key={ind} component={it} />
             ))}
-            <CanvasGrid />
-          </CanvasContext.Provider>
-        )}
-      </svg>
-    </div>
+          </CanvasDndContext>
+          <CanvasGrid />
+        </CanvasContext.Provider>
+      )}
+    </svg>
   );
 }
