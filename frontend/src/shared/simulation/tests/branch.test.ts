@@ -63,22 +63,7 @@ test("not simple scheme with branches", () => {
   ];
   const expectedNodes = expectedBranches.flatMap(({ a, b }) => [a, b]);
 
-  const components: ElectricalComponent[] = [
-    { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 1 } },
-    { _type: "resistor", a: { x: 0, y: 1 }, b: { x: 0, y: 2 }, resistance: 10 },
-    { _type: "wire", a: { x: 0, y: 2 }, b: { x: 0, y: 3 } },
-    { _type: "resistor", a: { x: 0, y: 3 }, b: { x: 0, y: 4 }, resistance: 10 },
-    { _type: "wire", a: { x: 0, y: 0 }, b: { x: 4, y: 0 } },
-    { _type: "wire", a: { x: 0, y: 0 }, b: { x: 1, y: 1 } },
-    { _type: "resistor", a: { x: 1, y: 1 }, b: { x: 3, y: 3 }, resistance: 10 },
-    { _type: "wire", a: { x: 3, y: 3 }, b: { x: 4, y: 4 } },
-    { _type: "wire", a: { x: 0, y: 4 }, b: { x: 4, y: 4 } },
-    { _type: "wire", a: { x: 4, y: 0 }, b: { x: 4, y: 4 } },
-    { _type: "wire", a: { x: 4, y: 4 }, b: { x: 8, y: 4 } },
-    { _type: "wire", a: { x: 4, y: 0 }, b: { x: 8, y: 4 } },
-    { _type: "wire", a: { x: 4, y: 0 }, b: { x: 8, y: 0 } },
-    { _type: "wire", a: { x: 8, y: 0 }, b: { x: 8, y: 4 } },
-  ];
+  const components: ElectricalComponent[] = expectedBranches.flatMap((it) => it.components);
 
   const simulator = new SimpleSimulator(components);
 
