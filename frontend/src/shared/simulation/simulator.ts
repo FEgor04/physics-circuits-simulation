@@ -8,13 +8,10 @@ export class SimpleSimulator implements CircuitSimulator {
   components: ElectricalComponent[];
   // global state, нужен чтобы избежать ада проброски нод в функции
   private nodes: Array<Point>;
-  // private branches: Branch[];
-  // private gMatrix: number[] = [];
 
   constructor(_component: ElectricalComponent[]) {
     this.components = _component;
     this.nodes = [];
-    // this.branches=[]
   }
 
   addComponent(_component: ElectricalComponent) {
@@ -116,7 +113,7 @@ export class SimpleSimulator implements CircuitSimulator {
     return branches;
   }
 
-  private sumResistanceOfBranch(branch: Branch | null): number {
+  private sumResistanceOfBranch(branch: Branch): number {
     if (branch === null) {
       return 0;
     }
