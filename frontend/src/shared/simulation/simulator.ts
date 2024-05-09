@@ -195,7 +195,7 @@ export class SimpleSimulator implements CircuitSimulator {
 
     for (const component of branch.components) {
       if (component._type === "source" || component._type === "sourceDC") {
-        if (component.plus.x == tempA.x && component.plus.y == tempA.y) {
+        if (pointsEqual(component.plus, tempA)) {
           return 1;
         } else {
           return -1;
@@ -207,10 +207,7 @@ export class SimpleSimulator implements CircuitSimulator {
     return commonDirect;
   }
 
-  private sumResistanceOfBranchForCurrentFOrse(branch: Branch | null): number {
-    if (branch === null) {
-      return 0;
-    }
+  private sumResistanceOfBranchForCurrentForse(branch: Branch): number {
     let totalResistance = 0;
 
     for (const component of branch.components) {
@@ -222,10 +219,7 @@ export class SimpleSimulator implements CircuitSimulator {
     return totalResistance;
   }
 
-  private findVoltageOfBranch(branch: Branch | null): number {
-    if (branch === null) {
-      return 0;
-    }
+  private findVoltageOfBranch(branch: Branch): number {
     let voltage = 0;
 
     for (const component of branch.components) {
@@ -250,7 +244,7 @@ export class SimpleSimulator implements CircuitSimulator {
       for (let j = 0; j < branches.length; j++) {
         const tempBranch = branches[j];
         if (branchesDirection[j] != 0) {
-          const resistance = this.sumResistanceOfBranchForCurrentFOrse(tempBranch);
+          const resistance = this.sumResistanceOfBranchForCurrentForse(tempBranch);
           const voltage = this.findVoltageOfBranch(tempBranch);
 
           if (branchesDirection[j] == 1) {
