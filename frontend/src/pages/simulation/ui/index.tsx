@@ -1,16 +1,20 @@
-import { getRouteApi, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { CanvasPanel } from "@/widgets/canvas";
 import { ComponentChooseBar } from "@/widgets/component-choose-bar";
 import { ComponentSettingsBar } from "@/widgets/component-settings-bar";
 import { ComponentValuesBar } from "@/widgets/component-values-bar";
 import { StateButton } from "@/widgets/state-button";
-import { ElectricalComponent, ElectricalComponentWithID } from "@/shared/simulation";
+import { SelectComponentProvider, SelectComponentState } from "@/features/select-component";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
-import { addComponentWithId, updateComponentCoords } from "../lib";
+import { useSimulationState } from "../model/state";
 
-export function Simulation() {
-  const [schema, setSchema] = useState<Array<ElectricalComponentWithID>>([
+type Props = {
+  mode: "simulation" | "editing";
+  setMode: (mode: "simulation" | "editing") => void;
+};
+
+export function Simulation({ mode, setMode }: Props) {
+  const { components, onAddComponent, onUpdateComponent, onUpdateComponentCoords } = useSimulationState([
     {
       id: 1,
       _type: "resistor",
@@ -19,48 +23,52 @@ export function Simulation() {
       resistance: 500,
     },
   ]);
-  const [selectedComponent, setSelectedComponent] = useState<ElectricalComponent | null>(null);
-  const updateSelectedComponentIndex = (i: ElectricalComponent) => {
-    setSelectedComponent(i == selectedComponent ? null : i);
-  };
-
-  const route = getRouteApi("/");
-  const { state } = route.useSearch();
-  const navigate = useNavigate({});
+  const [selected, setSelected] = useState<SelectComponentState["selected"]>(undefined);
+  const selectedComponent = useMemo(() => {
+    if (selected?.type == "component") {
+      return components.find((it) => it.id == selected.id);
+    }
+    return undefined;
+  }, [selected, components]);
 
   return (
     <div className="h-screen">
-      <ResizablePanelGroup direction="horizontal">
-        {state == "editing" ? <ComponentChooseBar /> : <ComponentValuesBar />}
-        <ResizableHandle />
-        <CanvasPanel
-          components={schema}
-          onSelectComponent={updateSelectedComponentIndex}
-          onAddComponent={(newComponent) => setSchema((old) => addComponentWithId(old, newComponent))}
-          onUpdateComponent={(component) =>
-            setSchema((old) => [...old.filter((it) => it.id != component.id), component])
-          }
-          onUpdateComponentCoords={(id, dx, dy) =>
-            setSchema((old) => {
-              const oldComponent = old.find((it) => it.id == id)!;
-              const newComponent = updateComponentCoords(oldComponent, dx, dy);
-              return [...old.filter((it) => it.id != id), newComponent];
-            })
-          }
+      <SelectComponentProvider
+        selected={selected}
+        onSelect={(selected) => {
+          setSelected((oldSelected) => {
+            console.log("New selected is", selected);
+            if (selected?.type == "point" && oldSelected?.type == "point") {
+              onAddComponent({ _type: "wire", a: oldSelected.point, b: selected.point });
+              return undefined;
+            }
+            return selected;
+          });
+        }}
+      >
+        <ResizablePanelGroup direction="horizontal">
+          {mode == "editing" ? <ComponentChooseBar /> : <ComponentValuesBar />}
+          <ResizableHandle />
+          <CanvasPanel
+            components={components}
+            onAddComponent={onAddComponent}
+            onUpdateComponent={onUpdateComponent}
+            onUpdateComponentCoords={onUpdateComponentCoords}
+          />
+          {mode == "editing" ? (
+            <>
+              <ResizableHandle />
+              <ComponentSettingsBar selectedComponent={selectedComponent ?? null} />
+            </>
+          ) : (
+            <></>
+          )}
+        </ResizablePanelGroup>
+        <StateButton
+          isSimulation={mode == "simulation"}
+          onChange={() => setMode(mode == "editing" ? "simulation" : "editing")}
         />
-        {state == "editing" ? (
-          <>
-            <ResizableHandle />
-            <ComponentSettingsBar selectedComponent={selectedComponent} />
-          </>
-        ) : (
-          <></>
-        )}
-      </ResizablePanelGroup>
-      <StateButton
-        isSimulation={state == "simulation"}
-        onChange={() => navigate({ search: () => ({ state: state == "simulation" ? "editing" : "simulation" }) })}
-      />
+      </SelectComponentProvider>
     </div>
   );
 }

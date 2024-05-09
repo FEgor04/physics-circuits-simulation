@@ -30,6 +30,7 @@ export function ComponentChooseBar() {
       maxSize={50}
       defaultSize={15}
       order={1}
+      data-testid="components-choose-bar"
     >
       {components.map((object, i) => {
         return (
