@@ -1,14 +1,15 @@
+import { useOnSelectComponent } from "@/features/select-component";
 import { Wire } from "@/shared/simulation";
 import { WithID } from "@/shared/simulation/types.ts";
-import { SelectedComponent, useOnSelectElement, useTransformVirtualToCanvas } from "./context";
+import { useTransformVirtualToCanvas } from "./context";
 
 export function WireRenderer({ component }: { component: WithID<Wire> }) {
   const transformer = useTransformVirtualToCanvas();
-  const onSelect = useOnSelectElement();
-  const selectedComponent: SelectedComponent = {
+  const onSelect = useOnSelectComponent();
+  const selectedComponent = {
     type: "component",
     id: component.id,
-  };
+  } as const;
   const aTransformed = transformer(component.a);
   const bTransformed = transformer(component.b);
   return (

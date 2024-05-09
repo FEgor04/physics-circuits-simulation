@@ -1,7 +1,21 @@
 /* eslint-disable prettier/prettier */
 import { createContext, useContext } from "react";
+import { ElectricalComponentID } from "@/shared/simulation";
+import { Point } from "@/shared/simulation/types";
 
-type Selectable = undefined
+
+type SelectedComponent = {
+  type: "component";
+  id: ElectricalComponentID;
+};
+
+type SelectedPoint = {
+  type: "point";
+  point: Point;
+};
+
+type Selectable = SelectedComponent | SelectedPoint
+
 
 export type State = {
   selected: Selectable | undefined,
