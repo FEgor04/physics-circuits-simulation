@@ -5,9 +5,8 @@ import { ComponentSettingsBar } from "@/widgets/component-settings-bar";
 import { ComponentValuesBar } from "@/widgets/component-values-bar";
 import { StateButton } from "@/widgets/state-button";
 import { SelectComponentProvider, SelectComponentState } from "@/features/select-component";
-import { ElectricalComponentWithID } from "@/shared/simulation";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
-import { addComponentWithId, updateComponentCoords } from "../lib";
+import { useSimulationState } from "../model/state";
 
 type Props = {
   mode: "simulation" | "editing";
@@ -15,7 +14,7 @@ type Props = {
 };
 
 export function Simulation({ mode, setMode }: Props) {
-  const [schema, setSchema] = useState<Array<ElectricalComponentWithID>>([
+  const { components, onAddComponent, onUpdateComponent, onUpdateComponentCoords } = useSimulationState([
     {
       id: 1,
       _type: "resistor",
@@ -23,14 +22,14 @@ export function Simulation({ mode, setMode }: Props) {
       b: { x: 1, y: 0 },
       resistance: 500,
     },
-  ]);
+  ])
   const [selected, setSelected] = useState<SelectComponentState["selected"]>(undefined);
   const selectedComponent = useMemo(() => {
     if (selected?.type == "component") {
-      return schema.find((it) => it.id == selected.id);
+      return components.find((it) => it.id == selected.id);
     }
     return undefined;
-  }, [selected, schema]);
+  }, [selected, components]);
 
   return (
     <div className="h-screen">
@@ -40,7 +39,7 @@ export function Simulation({ mode, setMode }: Props) {
           setSelected((oldSelected) => {
             console.log("New selected is", selected);
             if (selected?.type == "point" && oldSelected?.type == "point") {
-              setSchema((old) => [...old, { _type: "wire", a: oldSelected.point, b: selected.point, id: -1 }]);
+              onAddComponent({ _type: "wire", a: oldSelected.point, b: selected.point });
               return undefined;
             }
             return selected;
@@ -51,18 +50,10 @@ export function Simulation({ mode, setMode }: Props) {
           {mode == "editing" ? <ComponentChooseBar /> : <ComponentValuesBar />}
           <ResizableHandle />
           <CanvasPanel
-            components={schema}
-            onAddComponent={(newComponent) => setSchema((old) => addComponentWithId(old, newComponent))}
-            onUpdateComponent={(component) =>
-              setSchema((old) => [...old.filter((it) => it.id != component.id), component])
-            }
-            onUpdateComponentCoords={(id, dx, dy) =>
-              setSchema((old) => {
-                const oldComponent = old.find((it) => it.id == id)!;
-                const newComponent = updateComponentCoords(oldComponent, dx, dy);
-                return [...old.filter((it) => it.id != id), newComponent];
-              })
-            }
+            components={components}
+            onAddComponent={onAddComponent}
+            onUpdateComponent={onUpdateComponent}
+            onUpdateComponentCoords={onUpdateComponentCoords}
           />
           {mode == "editing" ? (
             <>
