@@ -1,4 +1,3 @@
-import { getRouteApi, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { CanvasPanel } from "@/widgets/canvas";
 import { ComponentChooseBar } from "@/widgets/component-choose-bar";
@@ -10,7 +9,12 @@ import { ElectricalComponentWithID } from "@/shared/simulation";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 import { addComponentWithId, updateComponentCoords } from "../lib";
 
-export function Simulation() {
+type Props = {
+  mode: "simulation" | "editing";
+  setMode: (mode: "simulation" | "editing") => void;
+};
+
+export function Simulation({ mode, setMode }: Props) {
   const [schema, setSchema] = useState<Array<ElectricalComponentWithID>>([
     {
       id: 1,
@@ -22,21 +26,17 @@ export function Simulation() {
   ]);
   const [selected, setSelected] = useState<SelectComponentState["selected"]>(undefined);
   const selectedComponent = useMemo(() => {
-    if(selected?.type == "component") {
+    if (selected?.type == "component") {
       return schema.find((it) => it.id == selected.id);
     }
     return undefined;
   }, [selected, schema]);
 
-  const route = getRouteApi("/");
-  const { state } = route.useSearch();
-  const navigate = useNavigate({});
-
   return (
     <div className="h-screen">
       <SelectComponentProvider selected={selected} onSelect={setSelected}>
         <ResizablePanelGroup direction="horizontal">
-          {state == "editing" ? <ComponentChooseBar /> : <ComponentValuesBar />}
+          {mode == "editing" ? <ComponentChooseBar /> : <ComponentValuesBar />}
           <ResizableHandle />
           <CanvasPanel
             components={schema}
@@ -55,7 +55,7 @@ export function Simulation() {
               })
             }
           />
-          {state == "editing" ? (
+          {mode == "editing" ? (
             <>
               <ResizableHandle />
               <ComponentSettingsBar selectedComponent={selectedComponent ?? null} />
@@ -65,8 +65,8 @@ export function Simulation() {
           )}
         </ResizablePanelGroup>
         <StateButton
-          isSimulation={state == "simulation"}
-          onChange={() => navigate({ search: () => ({ state: state == "simulation" ? "editing" : "simulation" }) })}
+          isSimulation={mode == "simulation"}
+          onChange={() => setMode(mode == "editing" ? "simulation" : "editing")}
         />
       </SelectComponentProvider>
     </div>

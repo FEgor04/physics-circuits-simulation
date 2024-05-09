@@ -32,7 +32,7 @@ export function Canvas({ components, canvasSize, onUpdateComponentCoords }: Prop
   }, [canvasRef, canvasSize]);
 
   return (
-    <svg ref={canvasRef} className="mx-auto h-full w-full">
+    <svg ref={canvasRef} className="mx-auto h-full w-full" data-testid="components-canvas">
       {canvasState && (
         <CanvasContext.Provider value={canvasState}>
           <CanvasDndContext onUpdateComponentCoords={onUpdateComponentCoords}>
