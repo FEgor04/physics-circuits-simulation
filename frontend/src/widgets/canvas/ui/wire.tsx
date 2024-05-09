@@ -10,6 +10,7 @@ export function WireRenderer({ component }: { component: WithID<Wire> }) {
     type: "component",
     id: component.id,
   } as const;
+  const { a, b } = component;
   const aTransformed = transformer(component.a);
   const bTransformed = transformer(component.b);
   return (
@@ -21,6 +22,7 @@ export function WireRenderer({ component }: { component: WithID<Wire> }) {
       stroke="black"
       strokeWidth={"3px"}
       onClick={() => onSelect(selectedComponent)}
+      data-testid={`wire-${a.x}-${a.y}-${b.x}-${b.y}`}
     />
   );
 }

@@ -29,7 +29,7 @@ export function CanvasGrid() {
               },
             });
           }}
-          data-testid={`canvas-dot-${x}-${y}`}
+          data-testid={`dot-${x}-${y}`}
         />
       ))}
     </>

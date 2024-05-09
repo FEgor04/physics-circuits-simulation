@@ -34,7 +34,17 @@ export function Simulation({ mode, setMode }: Props) {
 
   return (
     <div className="h-screen">
-      <SelectComponentProvider selected={selected} onSelect={setSelected}>
+      <SelectComponentProvider
+        selected={selected}
+        onSelect={(selected) => {
+          setSelected((oldSelected) => {
+            if (selected?.type == "point" && oldSelected?.type == "point") {
+              setSchema((old) => [...old, { _type: "wire", a: oldSelected.point, b: selected.point, id: -1 }]);
+            }
+            return undefined;
+          });
+        }}
+      >
         <ResizablePanelGroup direction="horizontal">
           {mode == "editing" ? <ComponentChooseBar /> : <ComponentValuesBar />}
           <ResizableHandle />
