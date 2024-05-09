@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
-import { SimpleSimulator } from "./simulator";
-import { Branch, ElectricalComponent } from "./types";
+import { SimpleSimulator } from "../simulator";
+import { Branch, ElectricalComponent } from "../types";
 
 test("gMatrix test", () => {
   const expectedMatrix: number[][] = [

@@ -13,6 +13,11 @@ module.exports = {
   plugins: ["react-refresh", "prettier"],
   rules: {
     "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
-    "prettier/prettier": "error",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
   },
 };
