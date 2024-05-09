@@ -1,6 +1,15 @@
 name: 'Frontend Linters & Tests'
 on: 
   pull_request: 
+    branches:
+      - main
+    paths:
+      - "frontend"
+  push:
+    branches:
+      - main
+    paths:
+      - "frontend"
 
 jobs:
   test:
