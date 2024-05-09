@@ -22,7 +22,7 @@ export function Simulation({ mode, setMode }: Props) {
       b: { x: 1, y: 0 },
       resistance: 500,
     },
-  ])
+  ]);
   const [selected, setSelected] = useState<SelectComponentState["selected"]>(undefined);
   const selectedComponent = useMemo(() => {
     if (selected?.type == "component") {
