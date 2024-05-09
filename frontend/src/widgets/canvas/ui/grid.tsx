@@ -1,4 +1,5 @@
 import { useOnSelectComponent, useSelectedComponent } from "@/features/select-component";
+import { pointsEqual } from "@/shared/simulation/lib";
 import { schemeHeight, schemeWidth } from "../lib";
 import { useTransformVirtualToCanvas } from "./context";
 
@@ -16,11 +17,8 @@ export function CanvasGrid() {
           x={transform({ x, y }).x}
           y={transform({ x, y }).y}
           key={x * schemeWidth + y}
-          isSelected={selected?.type == "point" && selected.point.x == x && selected.point.y == y}
+          isSelected={selected?.type == "point" && pointsEqual(selected.point, { x, y })}
           onSelect={() => {
-            if (selected?.type == "point" && selected.point.x == x && selected.point.y == y) {
-              return;
-            }
             onSelect({
               type: "point",
               point: {

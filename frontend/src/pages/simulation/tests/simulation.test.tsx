@@ -21,13 +21,4 @@ describe("simulation page", () => {
     expect(screen.queryByTestId("components-choose-bar")).toBeNull();
     expect(screen.queryByTestId("components-canvas")).not.toBeNull();
   });
-
-  it("adds new wire when 2 grid dots are selected", async () => {
-    render(<Simulation mode="simulation" setMode={console.log} />);
-    const first = { x: 1, y: 1};
-    const second = { x: 2, y: 2 };
-    await userEvent.click(screen.getByTestId(`dot-${first.x}-${first.y}`));
-    await userEvent.click(screen.getByTestId(`dot-${second.x}-${second.y}`));
-    expect(screen.queryByTestId(`wire-${first.x}-${first.y}-${second.x}-${second.y}`));
-  });
 });

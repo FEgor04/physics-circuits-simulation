@@ -38,10 +38,12 @@ export function Simulation({ mode, setMode }: Props) {
         selected={selected}
         onSelect={(selected) => {
           setSelected((oldSelected) => {
+            console.log("New selected is", selected);
             if (selected?.type == "point" && oldSelected?.type == "point") {
               setSchema((old) => [...old, { _type: "wire", a: oldSelected.point, b: selected.point, id: -1 }]);
+              return undefined;
             }
-            return undefined;
+            return selected;
           });
         }}
       >
