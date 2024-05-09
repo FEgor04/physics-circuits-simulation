@@ -11,7 +11,6 @@ type Props = {
   onAddComponent: (component: ElectricalComponent) => void;
   onUpdateComponent: (component: ElectricalComponentWithID) => void;
   onUpdateComponentCoords: (id: ElectricalComponentID, deltaX: number, deltaY: number) => void;
-  onSelectComponent: (i: ElectricalComponentWithID) => void;
   canvasSize: number;
 };
 

@@ -25,11 +25,12 @@ export function ResistorRenderer({ component }: { component: WithID<Resistor> })
       width={bTransformed.x - aTransformed.x}
       height={resistorHeight}
       href={resistorSvg}
-      onClick={() => onSelect(selectedComponent)}
       ref={(ref) => setNodeRef(ref as unknown as HTMLElement)}
       color={isDragging ? "red" : "black"}
       {...attributes}
       {...listeners}
+      onClick={() => onSelect(selectedComponent)}
+      data-testid={`resistor-${component.id}`}
     />
   );
 }
