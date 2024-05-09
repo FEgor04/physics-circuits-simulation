@@ -5,6 +5,7 @@ export type Point = {
   x: number;
   y: number;
 };
+
 /**
  * Тип для узла
  */

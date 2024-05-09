@@ -32,7 +32,7 @@ export function branchesEqual(a: Branch, b: Branch, strictEqual: boolean = false
       return false;
     }
     return a.components
-      .map((element, idx) => componentsEqual(element, b.components[idx]))
+      .map((element, idx) => componentsEqual(element, b.components[b.components.length - idx - 1]))
       .reduce((a, b) => a && b, true);
   }
   return false;
@@ -57,15 +57,25 @@ export function componentsEqual(a: ElectricalComponent, b: ElectricalComponent):
   }
   const aContacts = getComponentContacts(a);
   const bContacts = getComponentContacts(b);
-  aContacts.forEach((contact) => {
+  for (const contact of aContacts) {
     if (bContacts.find((it) => pointsEqual(it, contact)) === undefined) {
       return false;
     }
-  });
-  bContacts.forEach((contact) => {
+  }
+  for (const contact of bContacts) {
     if (aContacts.find((it) => pointsEqual(it, contact)) === undefined) {
       return false;
     }
-  });
+  }
   return true;
+}
+
+export function deduplicateArray<T>(array: ReadonlyArray<T>, equality: (a: T, b: T) => boolean): Array<T> {
+  const answer: Array<T> = [];
+  array.forEach((elem) => {
+    if (answer.find((it) => equality(it, elem)) === undefined) {
+      answer.push(elem);
+    }
+  });
+  return answer;
 }
