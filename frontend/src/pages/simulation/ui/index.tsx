@@ -52,9 +52,6 @@ export function Simulation({ mode, setMode }: Props) {
           <ResizableHandle />
           <CanvasPanel
             components={schema}
-            onSelectComponent={(component) => {
-              setSelected({ type: "component", id: component.id });
-            }}
             onAddComponent={(newComponent) => setSchema((old) => addComponentWithId(old, newComponent))}
             onUpdateComponent={(component) =>
               setSchema((old) => [...old.filter((it) => it.id != component.id), component])
