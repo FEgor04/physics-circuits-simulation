@@ -1,9 +1,9 @@
 import { expect, test } from "vitest";
-import { SimpleSimulator } from "./simulator";
-import { Branch, ElectricalComponent } from "./types";
+import { SimpleSimulator } from "../simulator";
+import { Branch, ElectricalComponent } from "../types";
 
-test("current Vector test", () => {
-  const expectedVector: number[] = [-4, 2];
+test("gMatrix test", () => {
+  const expectedSolve: number[] = [-10, 0];
 
   const components: ElectricalComponent[] = [
     { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 1 } },
@@ -117,7 +117,9 @@ test("current Vector test", () => {
     },
   ];
 
-  const actVector = simulator.findCurrentForce(actualNodes, actualBranches);
+  const actgMatrix = simulator.buildGMatrix(actualNodes, actualBranches);
+  const actCurrVect = simulator.findCurrentForce(actualNodes, actualBranches);
+  const acrSolve = simulator.solveSLAE(actgMatrix, actCurrVect);
 
-  expect(actVector).toStrictEqual(expectedVector);
+  expect(acrSolve).toStrictEqual(expectedSolve);
 });
