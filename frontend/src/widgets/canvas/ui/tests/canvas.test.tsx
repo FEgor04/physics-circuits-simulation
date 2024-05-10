@@ -46,7 +46,7 @@ describe("canvas", () => {
   });
 
   // Will be faced in issue BIPKI-67
-  it.skip("selects resistor after click", async () => {
+  it("selects resistor after click", async () => {
     const onSelect = vi.fn().mockImplementation(console.log);
     render(
       <SelectComponentProvider selected={undefined} onSelect={onSelect}>

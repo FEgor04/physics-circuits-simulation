@@ -1,4 +1,4 @@
-import { DndContext, Modifier } from "@dnd-kit/core";
+import { DndContext, Modifier, MouseSensor, Sensor, SensorDescriptor, SensorInstance, useSensor } from "@dnd-kit/core";
 import { ElectricalComponentID } from "@/shared/simulation";
 import { schemeHeight, schemeWidth } from "../lib";
 import { useCanvasParams } from "./context";
@@ -8,6 +8,12 @@ type Props = React.PropsWithChildren<{
 }>;
 
 export function CanvasDndContext({ children, onUpdateComponentCoords }: Props) {
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 10,
+    },
+  });
+
   const params = useCanvasParams();
   const gridSizeX = params.width / schemeWidth;
   const gridSizeY = params.height / schemeHeight;
@@ -22,6 +28,7 @@ export function CanvasDndContext({ children, onUpdateComponentCoords }: Props) {
   return (
     <DndContext
       modifiers={[snapToGridModifier]}
+      sensors={[mouseSensor]}
       onDragEnd={(event) => {
         const componentId = event.active.id;
         if (typeof componentId == "string") {
