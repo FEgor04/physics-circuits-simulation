@@ -261,4 +261,28 @@ export class SimpleSimulator implements CircuitSimulator {
 
     return nodesCurrent;
   }
+
+  public solveSLAE(coefficients: number[][], values: number[]): number[] {
+    const n = coefficients.length;
+    const augmentedMatrix = coefficients.map((row, index) => [...row, values[index]]);
+
+    for (let i = 0; i < n; i++) {
+      for (let j = i + 1; j < n; j++) {
+        const factor = augmentedMatrix[j][i] / augmentedMatrix[i][i];
+        for (let k = i; k < n + 1; k++) {
+          augmentedMatrix[j][k] -= augmentedMatrix[i][k] * factor;
+        }
+      }
+    }
+
+    const solution: number[] = new Array(n);
+    for (let i = n - 1; i >= 0; i--) {
+      solution[i] = augmentedMatrix[i][n] / augmentedMatrix[i][i];
+      for (let j = i - 1; j >= 0; j--) {
+        augmentedMatrix[j][n] -= augmentedMatrix[j][i] * solution[i];
+      }
+    }
+
+    return solution;
+  }
 }
