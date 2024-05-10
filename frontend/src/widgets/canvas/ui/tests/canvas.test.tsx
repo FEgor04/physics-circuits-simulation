@@ -60,7 +60,9 @@ describe("canvas", () => {
       </SelectComponentProvider>,
     );
 
-    await userEvent.click(screen.getByTestId("resistor-0"));
+    const resistor = screen.getByTestId("resistor-0");
+    await userEvent.click(resistor);
     expect(onSelect).toHaveBeenCalledOnce();
+    expect(resistor.getAttribute("data-selected")).toBe("true");
   });
 });

@@ -1,4 +1,4 @@
-import { DndContext, Modifier, MouseSensor, Sensor, SensorDescriptor, SensorInstance, useSensor } from "@dnd-kit/core";
+import { DndContext, Modifier, MouseSensor, useSensor } from "@dnd-kit/core";
 import { ElectricalComponentID } from "@/shared/simulation";
 import { schemeHeight, schemeWidth } from "../lib";
 import { useCanvasParams } from "./context";
