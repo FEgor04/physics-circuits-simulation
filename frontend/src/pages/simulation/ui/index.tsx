@@ -7,6 +7,7 @@ import { StateButton } from "@/widgets/state-button";
 import { SelectComponentProvider, SelectComponentState } from "@/features/select-component";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 import { useSimulationState } from "../model/state";
+import { DeleteComponentProvider } from "@/features/delete-component";
 
 type Props = {
   mode: "simulation" | "editing";
@@ -14,15 +15,16 @@ type Props = {
 };
 
 export function Simulation({ mode, setMode }: Props) {
-  const { components, onAddComponent, onUpdateComponent, onUpdateComponentCoords } = useSimulationState([
-    {
-      id: 1,
-      _type: "resistor",
-      a: { x: 0, y: 0 },
-      b: { x: 1, y: 0 },
-      resistance: 500,
-    },
-  ]);
+  const { components, onAddComponent, onUpdateComponent, onUpdateComponentCoords, onDeleteComponent } =
+    useSimulationState([
+      {
+        id: 1,
+        _type: "resistor",
+        a: { x: 0, y: 0 },
+        b: { x: 1, y: 0 },
+        resistance: 500,
+      },
+    ]);
   const [selected, setSelected] = useState<SelectComponentState["selected"]>(undefined);
   const selectedComponent = useMemo(() => {
     if (selected?.type == "component") {
@@ -46,28 +48,30 @@ export function Simulation({ mode, setMode }: Props) {
           });
         }}
       >
-        <ResizablePanelGroup direction="horizontal">
-          {mode == "editing" ? <ComponentChooseBar /> : <ComponentValuesBar />}
-          <ResizableHandle />
-          <CanvasPanel
-            components={components}
-            onAddComponent={onAddComponent}
-            onUpdateComponent={onUpdateComponent}
-            onUpdateComponentCoords={onUpdateComponentCoords}
+        <DeleteComponentProvider onDeleteComponent={onDeleteComponent}>
+          <ResizablePanelGroup direction="horizontal">
+            {mode == "editing" ? <ComponentChooseBar /> : <ComponentValuesBar />}
+            <ResizableHandle />
+            <CanvasPanel
+              components={components}
+              onAddComponent={onAddComponent}
+              onUpdateComponent={onUpdateComponent}
+              onUpdateComponentCoords={onUpdateComponentCoords}
+            />
+            {mode == "editing" ? (
+              <>
+                <ResizableHandle />
+                <ComponentSettingsBar selectedComponent={selectedComponent ?? null} />
+              </>
+            ) : (
+              <></>
+            )}
+          </ResizablePanelGroup>
+          <StateButton
+            isSimulation={mode == "simulation"}
+            onChange={() => setMode(mode == "editing" ? "simulation" : "editing")}
           />
-          {mode == "editing" ? (
-            <>
-              <ResizableHandle />
-              <ComponentSettingsBar selectedComponent={selectedComponent ?? null} />
-            </>
-          ) : (
-            <></>
-          )}
-        </ResizablePanelGroup>
-        <StateButton
-          isSimulation={mode == "simulation"}
-          onChange={() => setMode(mode == "editing" ? "simulation" : "editing")}
-        />
+        </DeleteComponentProvider>
       </SelectComponentProvider>
     </div>
   );
