@@ -1,9 +1,9 @@
+import { beforeEach } from "node:test";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, test as it, vi } from "vitest";
 import { SelectComponentProvider } from "@/features/select-component";
 import { Canvas } from "../canvas";
-import { beforeEach } from "node:test";
 
 describe("canvas", () => {
   beforeEach(() => {
