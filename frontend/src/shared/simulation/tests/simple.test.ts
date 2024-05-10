@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
-import { SimpleSimulator } from "./simulator";
-import { Ampermeter } from "./types";
+import { SimpleSimulator } from "../simulator";
+import { Ampermeter } from "../types";
 
 test.skip("simple scheme with voltmeter only", () => {
   const u = 220;

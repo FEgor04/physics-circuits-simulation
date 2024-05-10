@@ -5,7 +5,13 @@ export type Point = {
   x: number;
   y: number;
 };
-
+/**
+ * Тип для узла
+ */
+export type Node = {
+  _type: "node";
+  loc: Point;
+};
 /**
  * Компоненты лежать в порядке от a до b
  */
