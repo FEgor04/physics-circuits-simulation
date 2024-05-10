@@ -4,12 +4,12 @@ on:
     branches:
       - main
     paths:
-      - "frontend"
+      - "./frontend"
   push:
     branches:
       - main
     paths:
-      - "frontend"
+      - "./frontend"
 
 jobs:
   test:
