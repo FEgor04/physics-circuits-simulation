@@ -6,6 +6,9 @@ export type Point = {
   y: number;
 };
 
+/**
+ * Компоненты лежать в порядке от a до b
+ */
 export type Branch = {
   id: number;
   a: Point;
