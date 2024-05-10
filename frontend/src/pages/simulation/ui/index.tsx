@@ -4,10 +4,10 @@ import { ComponentChooseBar } from "@/widgets/component-choose-bar";
 import { ComponentSettingsBar } from "@/widgets/component-settings-bar";
 import { ComponentValuesBar } from "@/widgets/component-values-bar";
 import { StateButton } from "@/widgets/state-button";
+import { DeleteComponentProvider } from "@/features/delete-component";
 import { SelectComponentProvider, SelectComponentState } from "@/features/select-component";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 import { useSimulationState } from "../model/state";
-import { DeleteComponentProvider } from "@/features/delete-component";
 
 type Props = {
   mode: "simulation" | "editing";
@@ -61,7 +61,7 @@ export function Simulation({ mode, setMode }: Props) {
             {mode == "editing" ? (
               <>
                 <ResizableHandle />
-                <ComponentSettingsBar selectedComponent={selectedComponent ?? null} />
+                <ComponentSettingsBar selectedComponent={selectedComponent} />
               </>
             ) : (
               <></>
