@@ -288,11 +288,8 @@ export class SimpleSimulator implements CircuitSimulator {
 
   public branchCurrent(branches: Branch[], nodes: Array<Point>, tensionList: number[]): number[] {
     const current: number[] = [];
-    const branchesDirection: number[] = [];
 
-    for (const branch of branches) {
-      branchesDirection.push(this.defineDirection(branch));
-    }
+    const branchesDirections = branches.map(this.defineDirection);
 
     let phiM;
     let phiN;
@@ -301,26 +298,23 @@ export class SimpleSimulator implements CircuitSimulator {
     for (let i = 0; i < branches.length; i++) {
       let mIndex = 0;
       let nIndex = 0;
-      for (let m = 0; m < nodes.length - 1; m++) {
-        for (let n = m + 1; n < nodes.length; n++) {
-          if (pointsEqual(branches[i].a, nodes[m]) && pointsEqual(branches[i].b, nodes[n])) {
-            if (branchesDirection[i] == -1) {
-              mIndex = n;
-              nIndex = m;
-            } else {
-              mIndex = m;
-              nIndex = n;
-            }
-          } else if (pointsEqual(branches[i].a, nodes[n]) && pointsEqual(branches[i].b, nodes[m])) {
-            if (branchesDirection[i] == -1) {
-              mIndex = m;
-              nIndex = n;
-            } else {
-              mIndex = n;
-              nIndex = m;
-            }
-          }
-        }
+      const m = nodes.findIndex((_, index) => {
+        return (
+          index < nodes.length - 1 &&
+          (pointsEqual(branches[i].a, nodes[index]) || pointsEqual(branches[i].b, nodes[index]))
+        );
+      });
+
+      const n = nodes.findIndex((_, index) => {
+        return index > m && (pointsEqual(branches[i].a, nodes[index]) || pointsEqual(branches[i].b, nodes[index]));
+      });
+
+      if (branchesDirections[i] === -1) {
+        mIndex = n;
+        nIndex = m;
+      } else {
+        mIndex = m;
+        nIndex = n;
       }
       phiM = tensionList[mIndex];
       phiN = tensionList[nIndex];
