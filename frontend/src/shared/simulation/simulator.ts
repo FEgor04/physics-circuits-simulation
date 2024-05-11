@@ -282,7 +282,8 @@ export class SimpleSimulator implements CircuitSimulator {
         augmentedMatrix[j][n] -= augmentedMatrix[j][i] * solution[i];
       }
     }
-    solution.push(0);
+
+    solution.push(0); // один из потенциалов принимаем за 0
     return solution;
   }
 
