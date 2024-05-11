@@ -4,12 +4,15 @@ import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { Header } from "@/widgets/header";
 
 export const Route = createRootRoute({
-  component: () => (
-    <>
-      <Header />
-      <Outlet />
-      {import.meta.env.DEV && <TanStackRouterDevtools />}
-      {import.meta.env.DEV && <ReactQueryDevtools />}
-    </>
-  ),
+  component: () => {
+    const hideHeader = location.pathname.includes("/embed");
+    return (
+      <>
+        {!hideHeader && <Header />}
+        <Outlet />
+        {import.meta.env.DEV && <TanStackRouterDevtools />}
+        {import.meta.env.DEV && <ReactQueryDevtools />}
+      </>
+    );
+  },
 });
