@@ -282,7 +282,52 @@ export class SimpleSimulator implements CircuitSimulator {
         augmentedMatrix[j][n] -= augmentedMatrix[j][i] * solution[i];
       }
     }
-
+    solution.push(0);
     return solution;
+  }
+
+  public branchCurrent(branches: Branch[], nodes: Array<Point>, tensionList: number[]): number[] {
+    const current: number[] = [];
+    const branchesDirection: number[] = [];
+
+    for (const branch of branches) {
+      branchesDirection.push(this.defineDirection(branch));
+    }
+
+    let phiM;
+    let phiN;
+    let E;
+    let R;
+    for (let i = 0; i < branches.length; i++) {
+      let mIndex = 0;
+      let nIndex = 0;
+      for (let m = 0; m < nodes.length - 1; m++) {
+        for (let n = m + 1; n < nodes.length; n++) {
+          if (pointsEqual(branches[i].a, nodes[m]) && pointsEqual(branches[i].b, nodes[n])) {
+            if (branchesDirection[i] == -1) {
+              mIndex = n;
+              nIndex = m;
+            } else {
+              mIndex = m;
+              nIndex = n;
+            }
+          } else if (pointsEqual(branches[i].a, nodes[n]) && pointsEqual(branches[i].b, nodes[m])) {
+            if (branchesDirection[i] == -1) {
+              mIndex = m;
+              nIndex = n;
+            } else {
+              mIndex = n;
+              nIndex = m;
+            }
+          }
+        }
+      }
+      phiM = tensionList[mIndex];
+      phiN = tensionList[nIndex];
+      E = this.findVoltageOfBranch(branches[i]);
+      R = this.sumResistanceOfBranch(branches[i]);
+      current.push(Math.abs(phiM - phiN + E) / R);
+    }
+    return current;
   }
 }
