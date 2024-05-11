@@ -1,3 +1,4 @@
+import "./style.css";
 import { useDraggable } from "@dnd-kit/core";
 import { useOnSelectComponent, useSelectedComponent } from "@/features/select-component";
 import resistorSvg from "@/shared/assets/circuit/resistor.svg";
@@ -30,6 +31,8 @@ export function ResistorRenderer({ component }: { component: WithID<Resistor> })
       onClick={() => onSelect({ type: "component", id: component.id })}
       data-testid={`resistor-${component.id}`}
       data-selected={isSelected}
+      data-dragging={isDragging}
+      className="filter-primary data-[dragging=true]:opacity-50"
     />
   );
 }
