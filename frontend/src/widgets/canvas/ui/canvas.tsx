@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ElectricalComponent } from "@/shared/simulation";
 import { ElectricalComponentID, ElectricalComponentWithID } from "@/shared/simulation/types";
+import { CanvasParams } from "../lib";
 import { CanvasContext, CanvasState } from "./context";
 import { CanvasDndContext } from "./dnd";
 import { GenericRenderer } from "./generic-renderer";
@@ -20,9 +21,11 @@ export function Canvas({ components, canvasSize, onUpdateComponentCoords }: Prop
 
   useEffect(() => {
     if (canvasRef.current) {
-      const canvasParams = {
+      const canvasParams: CanvasParams = {
         width: canvasRef.current.clientWidth,
         height: canvasRef.current.clientHeight,
+        schemeWidth: 10,
+        schemeHeight: 10,
       };
       setCanvasState({
         canvasParams,

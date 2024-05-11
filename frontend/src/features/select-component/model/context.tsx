@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { createContext, useContext } from "react";
 import { ElectricalComponentID } from "@/shared/simulation";
 import { Point } from "@/shared/simulation/types";

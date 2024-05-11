@@ -1,6 +1,5 @@
 import { DndContext, Modifier } from "@dnd-kit/core";
 import { ElectricalComponentID } from "@/shared/simulation";
-import { schemeHeight, schemeWidth } from "../lib";
 import { useCanvasParams } from "./context";
 
 type Props = React.PropsWithChildren<{
@@ -9,8 +8,8 @@ type Props = React.PropsWithChildren<{
 
 export function CanvasDndContext({ children, onUpdateComponentCoords }: Props) {
   const params = useCanvasParams();
-  const gridSizeX = params.width / schemeWidth;
-  const gridSizeY = params.height / schemeHeight;
+  const gridSizeX = params.width / params.schemeWidth;
+  const gridSizeY = params.height / params.schemeHeight;
   const snapToGridModifier: Modifier = (args) => {
     const { transform } = args;
     return {

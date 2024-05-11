@@ -10,8 +10,8 @@ export const Route = createRootRoute({
       <>
         {!hideHeader && <Header />}
         <Outlet />
-        {import.meta.env.DEV && <TanStackRouterDevtools />}
-        {import.meta.env.DEV && <ReactQueryDevtools />}
+        {import.meta.env.DEV && !hideHeader && <TanStackRouterDevtools />}
+        {import.meta.env.DEV && !hideHeader && <ReactQueryDevtools />}
       </>
     );
   },
