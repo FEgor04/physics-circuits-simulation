@@ -300,10 +300,7 @@ export class SimpleSimulator implements CircuitSimulator {
       let mIndex = 0;
       let nIndex = 0;
       const m = nodes.findIndex((_, index) => {
-        return (
-          index < nodes.length - 1 &&
-          (pointsEqual(branches[i].a, nodes[index]) || pointsEqual(branches[i].b, nodes[index]))
-        );
+        return pointsEqual(branches[i].a, nodes[index]) || pointsEqual(branches[i].b, nodes[index]);
       });
 
       const n = nodes.findIndex((_, index) => {
