@@ -1,14 +1,16 @@
 import { useOnSelectComponent, useSelectedComponent } from "@/features/select-component";
 import { pointsEqual } from "@/shared/simulation/lib";
-import { schemeHeight, schemeWidth } from "../lib";
-import { useTransformVirtualToCanvas } from "./context";
+import { useCanvasParams, useTransformVirtualToCanvas } from "./context";
 
 export function CanvasGrid() {
+  const canvasParams = useCanvasParams();
   const selected = useSelectedComponent();
   const onSelect = useOnSelectComponent();
-  const coords = new Array(schemeWidth)
+  const xMin = -Math.floor(canvasParams.schemeWidth / 2);
+  const yMin = -Math.floor(canvasParams.schemeHeight / 2);
+  const coords = new Array(canvasParams.schemeWidth)
     .fill(0)
-    .flatMap((_, x) => new Array(schemeHeight).fill(0).map((_, y) => ({ x: x - 10, y: y - 10 })));
+    .flatMap((_, x) => new Array(canvasParams.schemeHeight).fill(0).flatMap((_, y) => ({ x: xMin + x, y: yMin + y })));
   const transform = useTransformVirtualToCanvas();
   return (
     <>
@@ -16,7 +18,7 @@ export function CanvasGrid() {
         <CanvasDot
           x={transform({ x, y }).x}
           y={transform({ x, y }).y}
-          key={x * schemeWidth + y}
+          key={x * canvasParams.schemeWidth + y}
           isSelected={selected?.type == "point" && pointsEqual(selected.point, { x, y })}
           onSelect={() => {
             onSelect({

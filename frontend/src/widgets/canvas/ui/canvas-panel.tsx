@@ -7,7 +7,7 @@ type Props = Omit<React.ComponentProps<typeof Canvas>, "canvasSize">;
 export function CanvasPanel(props: Props) {
   const [canvasSize, setCanvasSize] = useState<number>(65);
   return (
-    <ResizablePanel onResize={setCanvasSize} minSize={10} maxSize={90} defaultSize={canvasSize} order={2}>
+    <ResizablePanel onResize={setCanvasSize} minSize={50} maxSize={90} defaultSize={canvasSize} order={2}>
       <Canvas {...props} canvasSize={canvasSize} />
     </ResizablePanel>
   );
