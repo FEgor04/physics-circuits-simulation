@@ -20,10 +20,10 @@ public class Scheme {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    private ElectricalComponentsJson electricalComponents;
+    private String name;
+
     @ManyToOne
-    private User owner;
+    private User author;
     @ManyToMany
     @JoinTable(name = "schemes_redactors",
             joinColumns = @JoinColumn(name = "scheme_id"),
