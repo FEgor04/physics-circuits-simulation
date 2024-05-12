@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.circuisim.domain.simulation.Scheme;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -33,6 +34,12 @@ public class User implements UserDetails {
     @CollectionTable(name = "users_roles")
     @Enumerated(value = EnumType.STRING)
     private Set<Role> roles;
+
+    @ManyToMany
+    @JoinTable(name = "schemes_redactors",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "scheme_id"))
+    private Set<Scheme> schemes;
 
     @Override
     public Collection<? extends SimpleGrantedAuthority> getAuthorities() {
