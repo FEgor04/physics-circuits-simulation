@@ -1,9 +1,9 @@
 import "./style.css";
 import { useDraggable } from "@dnd-kit/core";
 import { useOnSelectComponent, useSelectedComponent } from "@/features/select-component";
+import { assertNever } from "@/shared/lib/types";
 import { ElectricalComponent, ElectricalComponentWithID, Point } from "@/shared/simulation/types.ts";
 import { useTransformVirtualToCanvas } from "./context";
-import { assertNever } from "@/shared/lib/types";
 
 function getFirstPoint(component: ElectricalComponent): Point {
   if (component._type == "sourceDC" || component._type == "source") {

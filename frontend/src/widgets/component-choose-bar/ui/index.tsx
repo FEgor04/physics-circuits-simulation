@@ -1,11 +1,11 @@
 import { useDraggable } from "@dnd-kit/core";
-import resistorSvg from "@/shared/assets/circuit/resistor.svg";
 import sourceDCSvg from "@/shared/assets/circuit/DC_source.svg";
+import resistorSvg from "@/shared/assets/circuit/resistor.svg";
+import { OmitBetter } from "@/shared/lib/types";
 import { ElectricalComponent } from "@/shared/simulation";
+import { Resistor, SourceDC } from "@/shared/simulation/types";
 import { ResizablePanel } from "@/shared/ui/resizable.tsx";
 import "./style.css";
-import { OmitBetter } from "@/shared/lib/types";
-import { Resistor, SourceDC } from "@/shared/simulation/types";
 
 export function ComponentChooseBar() {
   return (

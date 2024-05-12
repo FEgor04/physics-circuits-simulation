@@ -6,4 +6,3 @@ export type OmitBetter<T, K extends keyof any> = T extends any ? Pick<T, Exclude
 export function assertNever(_x: never): never {
   throw new Error("Unexpected value.");
 }
-

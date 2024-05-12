@@ -37,7 +37,7 @@ export function updateComponentCoords<T extends ElectricalComponent>(component: 
       plus: newPlus,
     };
   }
-  assertNever(component)
+  assertNever(component);
 }
 
 function generateComponentId(components: ReadonlyArray<ElectricalComponentWithID>): ElectricalComponentID {

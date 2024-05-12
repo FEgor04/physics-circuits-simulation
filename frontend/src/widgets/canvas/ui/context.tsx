@@ -27,7 +27,7 @@ export const useTransformVirtualToCanvas = () => {
 };
 
 export const useCanvasGrid = () =>
-  useCanvasContext(({canvasParams: params}) => {
+  useCanvasContext(({ canvasParams: params }) => {
     const coefficientX = params.width / params.schemeWidth;
     const coefficientY = params.height / params.schemeHeight;
     const coefficient = Math.min(coefficientX, coefficientY);

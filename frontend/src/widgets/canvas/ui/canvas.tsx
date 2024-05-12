@@ -1,3 +1,4 @@
+import { useDroppable } from "@dnd-kit/core";
 import { useEffect, useRef, useState } from "react";
 import { isEmbedded } from "@/shared/embed/utility.ts";
 import { ElectricalComponent } from "@/shared/simulation";
@@ -7,7 +8,6 @@ import { CanvasContext, CanvasState } from "./context";
 import { CanvasDndContext } from "./dnd";
 import { GenericRenderer } from "./generic-renderer";
 import { CanvasGrid } from "./grid";
-import { useDroppable } from "@dnd-kit/core";
 
 type Props = {
   components: Array<ElectricalComponentWithID>;
@@ -39,7 +39,7 @@ export function Canvas({ components, canvasSize, onUpdateComponentCoords }: Prop
   }, [canvasRef, canvasSize]);
 
   return (
-    <div ref={setNodeRef} className="w-full h-full">
+    <div ref={setNodeRef} className="h-full w-full">
       <svg ref={canvasRef} className="mx-auto h-full w-full" data-testid="components-canvas">
         {canvasState && (
           <CanvasContext.Provider value={canvasState}>
