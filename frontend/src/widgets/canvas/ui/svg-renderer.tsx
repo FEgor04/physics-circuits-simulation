@@ -3,11 +3,7 @@ import { useDraggable } from "@dnd-kit/core";
 import { useOnSelectComponent, useSelectedComponent } from "@/features/select-component";
 import { ElectricalComponent, ElectricalComponentWithID, Point } from "@/shared/simulation/types.ts";
 import { useTransformVirtualToCanvas } from "./context";
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function assertNever(_x: never): never {
-  throw new Error("Unexpected value.");
-}
+import { assertNever } from "@/shared/lib/types";
 
 function getFirstPoint(component: ElectricalComponent): Point {
   if (component._type == "sourceDC" || component._type == "source") {
