@@ -1,12 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useContext, createContext } from "react";
 import { Point } from "@/shared/simulation/types";
-import { schemeWidth, transformVirtualToCanvas } from "../lib";
-
-type CanvasParams = {
-  width: number;
-  height: number;
-};
+import { CanvasParams, transformVirtualToCanvas } from "../lib";
 
 export type CanvasState = {
   canvasParams: CanvasParams;
@@ -33,6 +28,6 @@ export const useTransformVirtualToCanvas = () => {
 
 export const useCanvasGrid = () =>
   useCanvasContext((state) => {
-    const size = Math.min(state.canvasParams.width, state.canvasParams.height);
-    return size / schemeWidth;
-  });
+  const size = Math.min(state.canvasParams.width, state.canvasParams.height);
+  return size / Math.min(state.canvasParams.schemeWidth);
+});
