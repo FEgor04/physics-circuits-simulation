@@ -1,3 +1,4 @@
+import { assertNever } from "@/shared/lib/types";
 import { ElectricalComponent, ElectricalComponentID, ElectricalComponentWithID } from "@/shared/simulation";
 
 export function updateComponentCoords<T extends ElectricalComponent>(component: T, dx: number, dy: number): T {
