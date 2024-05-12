@@ -1,28 +1,25 @@
 import { useDraggable } from "@dnd-kit/core";
 import resistorSvg from "@/shared/assets/circuit/resistor.svg";
+import sourceDCSvg from "@/shared/assets/circuit/DC_source.svg";
 import { ElectricalComponent } from "@/shared/simulation";
 import { ResizablePanel } from "@/shared/ui/resizable.tsx";
 import "./style.css";
-
-const components = [
-  {
-    type: "resistor",
-    src: resistorSvg,
-  },
-] as const;
+import { OmitBetter } from "@/shared/lib/omit";
+import { Resistor, SourceDC } from "@/shared/simulation/types";
 
 export function ComponentChooseBar() {
   return (
     <ResizablePanel
-      className="panel flex flex-row flex-wrap content-start justify-around border-r-4 bg-white"
+      className="panel border-r-4 bg-white p-4"
       minSize={9}
       maxSize={50}
       defaultSize={15}
       order={1}
       data-testid="components-choose-bar"
     >
-      <div className="overflow-visible">
-        <Item type="resistor" defaultValues={{ resistance: 10 }} src={resistorSvg} />
+      <div className="flex flex-row flex-wrap content-start justify-around">
+        <Item<Resistor> type="resistor" defaultValues={{ resistance: 10 }} src={resistorSvg} />
+        <Item<SourceDC> type="sourceDC" defaultValues={{ electromotiveForce: 20 }} src={sourceDCSvg} />
       </div>
     </ResizablePanel>
   );
@@ -35,7 +32,7 @@ function Item<T extends ElectricalComponent>({
 }: {
   type: T["_type"];
   src: string;
-  defaultValues: Omit<T, "a" | "b" | "plus" | "minus" | "_type">;
+  defaultValues: NoInfer<OmitBetter<T, "a" | "b" | "plus" | "minus" | "_type">>;
 }) {
   const { listeners, attributes, setNodeRef, transform } = useDraggable({
     id: type,

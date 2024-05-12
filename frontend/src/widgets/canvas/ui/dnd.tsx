@@ -1,6 +1,6 @@
 import { DndContext, Modifier, MouseSensor, useSensor } from "@dnd-kit/core";
 import { ElectricalComponentID } from "@/shared/simulation";
-import { useCanvasGrid, useTransformVirtualToCanvas } from "./context";
+import { useCanvasGrid } from "./context";
 
 type Props = React.PropsWithChildren<{
   onUpdateComponentCoords: (id: ElectricalComponentID, deltaX: number, deltaY: number) => void;

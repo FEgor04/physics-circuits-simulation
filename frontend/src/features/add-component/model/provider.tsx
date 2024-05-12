@@ -1,12 +1,28 @@
 import "react";
 import { DndContext, DragEndEvent, MouseSensor, useSensor } from "@dnd-kit/core";
-import { Point } from "@/shared/simulation/types";
+import type { OmitBetter } from "@/shared/lib/omit";
+import { ElectricalComponent, Point } from "@/shared/simulation/types";
 import { context as AddComponentContext, State } from "./context";
 
 type Props = React.PropsWithChildren<State>;
 
 function getCoordsFromEvent(event: DragEndEvent): Point {
+  // @ts-expect-error its fine
   return { x: event.delta.x + event.activatorEvent.clientX, y: event.delta.y + event.activatorEvent.clientY };
+}
+
+function componentAtCoords(
+  values: OmitBetter<ElectricalComponent, "a" | "b" | "plus" | "minus">,
+  point: Point,
+): ElectricalComponent {
+  if (values._type == "source" || values._type == "sourceDC") {
+    return {
+      ...values,
+      plus: point,
+      minus: { x: point.x + 1, y: point.y },
+    };
+  }
+  return { ...values, a: point, b: { x: point.x + 1, y: point.y } };
 }
 
 export const AddComponentContextProvider: React.FC<Props> = ({ children, ...props }) => {
@@ -20,7 +36,6 @@ export const AddComponentContextProvider: React.FC<Props> = ({ children, ...prop
           if (!over) {
             return;
           }
-          console.log(e);
           const { x, y } = getCoordsFromEvent(e);
           const rect = over.rect;
           const canvasWidth = rect.width;
@@ -32,19 +47,10 @@ export const AddComponentContextProvider: React.FC<Props> = ({ children, ...prop
           const yCanvas = y - top;
           const xVirtual = Math.ceil((xCanvas - canvasWidth / 2) / coefficient);
           const yVirtual = Math.ceil((canvasHeight / 2 - yCanvas) / coefficient);
-          console.log(xVirtual, yVirtual);
-          props.onAddComponent({
-            _type: "resistor",
-            a: {
-              x: xVirtual,
-              y: yVirtual,
-            },
-            b: {
-              x: xVirtual + 1,
-              y: yVirtual + 1,
-            },
-            resistance: 10,
-          });
+          const data = e.active.data.current as OmitBetter<ElectricalComponent, "a" | "b" | "plus" | "minus">;
+          const newComponent = componentAtCoords(data, { x: xVirtual, y: yVirtual });
+          console.log(newComponent);
+          props.onAddComponent(newComponent);
         }}
       >
         {children}
