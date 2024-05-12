@@ -5,6 +5,7 @@ import { CanvasContext, CanvasState } from "./context";
 import { CanvasDndContext } from "./dnd";
 import { GenericRenderer } from "./generic-renderer";
 import { CanvasGrid } from "./grid";
+import { useDroppable } from "@dnd-kit/core";
 
 type Props = {
   components: Array<ElectricalComponentWithID>;
@@ -15,6 +16,7 @@ type Props = {
 };
 
 export function Canvas({ components, canvasSize, onUpdateComponentCoords }: Props) {
+  const { setNodeRef } = useDroppable({ id: "canvas" });
   const canvasRef = useRef<SVGSVGElement>(null);
   const [canvasState, setCanvasState] = useState<CanvasState | undefined>(undefined);
 
@@ -31,17 +33,19 @@ export function Canvas({ components, canvasSize, onUpdateComponentCoords }: Prop
   }, [canvasRef, canvasSize]);
 
   return (
-    <svg ref={canvasRef} className="mx-auto h-full w-full" data-testid="components-canvas">
-      {canvasState && (
-        <CanvasContext.Provider value={canvasState}>
-          <CanvasDndContext onUpdateComponentCoords={onUpdateComponentCoords}>
-            {components.map((it, ind) => (
-              <GenericRenderer key={ind} component={it} />
-            ))}
-          </CanvasDndContext>
-          <CanvasGrid />
-        </CanvasContext.Provider>
-      )}
-    </svg>
+    <div ref={setNodeRef} className="w-full h-full">
+      <svg ref={canvasRef} className="mx-auto h-full w-full" data-testid="components-canvas">
+        {canvasState && (
+          <CanvasContext.Provider value={canvasState}>
+            <CanvasDndContext onUpdateComponentCoords={onUpdateComponentCoords}>
+              {components.map((it, ind) => (
+                <GenericRenderer key={ind} component={it} />
+              ))}
+            </CanvasDndContext>
+            <CanvasGrid />
+          </CanvasContext.Provider>
+        )}
+      </svg>
+    </div>
   );
 }
