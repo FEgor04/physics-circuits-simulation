@@ -124,9 +124,11 @@ export class SimpleSimulator implements CircuitSimulator {
 
     return totalResistance;
   }
+
   private pointsEqual(a: Point, b: Point): boolean {
     return a.x == b.x && a.y == b.y;
   }
+
   private sumResistanceOfNode(node: Point, branches: Branch[]): number {
     let totalResistance = 0;
 
@@ -175,5 +177,112 @@ export class SimpleSimulator implements CircuitSimulator {
       gMatrix.push(line);
     }
     return gMatrix;
+  }
+
+  /**
+     a->b 1
+     b->a -1
+     */
+  private defineDirection(branch: Branch): number {
+    const commonDirect = 0;
+    let tempA: Point = { x: branch.a.x, y: branch.a.y };
+
+    for (const component of branch.components) {
+      if (component._type === "source" || component._type === "sourceDC") {
+        if (pointsEqual(component.plus, tempA)) {
+          return 1;
+        } else {
+          return -1;
+        }
+      } else {
+        tempA = component.b;
+      }
+    }
+    return commonDirect;
+  }
+
+  private sumResistanceOfBranchForCurrentForse(branch: Branch): number {
+    let totalResistance = 0;
+
+    for (const component of branch.components) {
+      if (component._type === "resistor") {
+        totalResistance += component.resistance;
+      }
+    }
+
+    return totalResistance;
+  }
+
+  private findVoltageOfBranch(branch: Branch): number {
+    let voltage = 0;
+
+    for (const component of branch.components) {
+      if (component._type === "source" || component._type === "sourceDC") {
+        voltage = component.electromotiveForce;
+      }
+    }
+
+    return voltage;
+  }
+
+  public findCurrentForce(nodes: Array<Point>, branches: Branch[]): number[] {
+    const branchesDirection: number[] = [];
+    const nodesCurrent: number[] = [];
+    let nodeCurrent: number = 0;
+    for (const branch of branches) {
+      branchesDirection.push(this.defineDirection(branch));
+    }
+    for (let i = 0; i < nodes.length - 1; i++) {
+      const tempNode: Point = nodes[i];
+      nodeCurrent = 0;
+      for (let j = 0; j < branches.length; j++) {
+        const tempBranch = branches[j];
+        if (branchesDirection[j] != 0) {
+          const resistance = this.sumResistanceOfBranchForCurrentForse(tempBranch);
+          const voltage = this.findVoltageOfBranch(tempBranch);
+
+          if (branchesDirection[j] == 1) {
+            if (pointsEqual(tempNode, tempBranch.a)) {
+              nodeCurrent += -voltage / resistance;
+            } else if (pointsEqual(tempNode, tempBranch.b)) {
+              nodeCurrent += voltage / resistance;
+            }
+          } else {
+            if (pointsEqual(tempNode, tempBranch.a)) {
+              nodeCurrent += voltage / resistance;
+            } else if (pointsEqual(tempNode, tempBranch.b)) {
+              nodeCurrent += -voltage / resistance;
+            }
+          }
+        }
+      }
+      nodesCurrent.push(nodeCurrent);
+    }
+
+    return nodesCurrent;
+  }
+
+  public solveSLAE(coefficients: number[][], values: number[]): number[] {
+    const n = coefficients.length;
+    const augmentedMatrix = coefficients.map((row, index) => [...row, values[index]]);
+
+    for (let i = 0; i < n; i++) {
+      for (let j = i + 1; j < n; j++) {
+        const factor = augmentedMatrix[j][i] / augmentedMatrix[i][i];
+        for (let k = i; k < n + 1; k++) {
+          augmentedMatrix[j][k] -= augmentedMatrix[i][k] * factor;
+        }
+      }
+    }
+
+    const solution: number[] = new Array(n);
+    for (let i = n - 1; i >= 0; i--) {
+      solution[i] = augmentedMatrix[i][n] / augmentedMatrix[i][i];
+      for (let j = i - 1; j >= 0; j--) {
+        augmentedMatrix[j][n] -= augmentedMatrix[j][i] * solution[i];
+      }
+    }
+
+    return solution;
   }
 }

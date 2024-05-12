@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Resistor } from "@/shared/simulation";
+import { useDeleteComponent } from "@/features/delete-component";
+import { Resistor, WithID } from "@/shared/simulation";
 import { Button } from "@/shared/ui/button.tsx";
 import { Slider } from "@/shared/ui/slider";
 
-export function ResistorSettings({ component }: { component: Resistor }) {
+export function ResistorSettings({ component }: { component: WithID<Resistor> }) {
+  const onDeleteComponent = useDeleteComponent();
   const [resistance, setResistance] = useState(component.resistance);
   return (
     <div className="flex w-full flex-col gap-2 p-4">
@@ -21,7 +23,13 @@ export function ResistorSettings({ component }: { component: Resistor }) {
         max={500}
         id="resistanceSlider"
       />
-      <Button>Удалить!</Button>
+      <Button
+        onClick={() => {
+          onDeleteComponent(component.id);
+        }}
+      >
+        Удалить!
+      </Button>
     </div>
   );
 }

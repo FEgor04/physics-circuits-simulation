@@ -55,7 +55,9 @@ function CanvasDot({
         cx={x}
         cy={y}
         r={isSelected ? 5 : 3}
-        fill={isSelected ? "#A81BE4" : "#9A97A3"}
+        className="fill-[#9A97A3] data-[selected=true]:fill-primary"
+        data-selected={isSelected}
+        data-testid={`${testId}-visual`}
       />
       <circle // invisible clickable circle
         cx={x}
@@ -65,6 +67,7 @@ function CanvasDot({
         opacity={0}
         className="cursor-pointer"
         data-testid={testId}
+        data-selected={isSelected}
       />
     </>
   );
