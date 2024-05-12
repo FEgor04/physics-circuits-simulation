@@ -22,21 +22,27 @@ export function ComponentChooseBar() {
       data-testid="components-choose-bar"
     >
       <div className="overflow-visible">
-        {components.map((object, i) => {
-          return (
-            <div className="m-5 flex h-20 cursor-pointer items-center justify-center" key={i}>
-              <Item type={object.type} src={object.src} />
-            </div>
-          );
-        })}
+        <Item type="resistor" defaultValues={{ resistance: 10 }} src={resistorSvg} />
       </div>
     </ResizablePanel>
   );
 }
 
-function Item({ type, src }: { type: ElectricalComponent["_type"]; src: string }) {
+function Item<T extends ElectricalComponent>({
+  type,
+  src,
+  defaultValues,
+}: {
+  type: T["_type"];
+  src: string;
+  defaultValues: Omit<T, "a" | "b" | "plus" | "minus" | "_type">;
+}) {
   const { listeners, attributes, setNodeRef, transform } = useDraggable({
     id: type,
+    data: {
+      ...defaultValues,
+      _type: type,
+    },
   });
   return (
     <img
@@ -47,6 +53,7 @@ function Item({ type, src }: { type: ElectricalComponent["_type"]; src: string }
       style={{
         transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
       }}
+      data-testid={`add-${type}`}
     />
   );
 }
