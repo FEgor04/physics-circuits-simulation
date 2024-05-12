@@ -283,6 +283,43 @@ export class SimpleSimulator implements CircuitSimulator {
       }
     }
 
+    solution.push(0); // один из потенциалов принимаем за 0
     return solution;
+  }
+
+  public branchCurrent(branches: Branch[], nodes: Array<Point>, tensionList: number[]): number[] {
+    const current: number[] = [];
+
+    const branchesDirections = branches.map(this.defineDirection);
+
+    let phiM;
+    let phiN;
+    let E;
+    let R;
+    for (let i = 0; i < branches.length; i++) {
+      let mIndex = 0;
+      let nIndex = 0;
+      const m = nodes.findIndex((_, index) => {
+        return pointsEqual(branches[i].a, nodes[index]) || pointsEqual(branches[i].b, nodes[index]);
+      });
+
+      const n = nodes.findIndex((_, index) => {
+        return index > m && (pointsEqual(branches[i].a, nodes[index]) || pointsEqual(branches[i].b, nodes[index]));
+      });
+
+      if (branchesDirections[i] === -1) {
+        mIndex = n;
+        nIndex = m;
+      } else {
+        mIndex = m;
+        nIndex = n;
+      }
+      phiM = tensionList[mIndex];
+      phiN = tensionList[nIndex];
+      E = this.findVoltageOfBranch(branches[i]);
+      R = this.sumResistanceOfBranch(branches[i]);
+      current.push(Math.abs(phiM - phiN + E) / R);
+    }
+    return current;
   }
 }

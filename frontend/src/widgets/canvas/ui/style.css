@@ -1,0 +1,4 @@
+.filter-primary[data-selected=true] {
+  /* https://codepen.io/sosuke/pen/Pjoqqp */
+  filter: invert(50%) sepia(8%) saturate(6573%) hue-rotate(241deg) brightness(89%) contrast(108%)
+}
