@@ -18,8 +18,8 @@ function componentAtCoords(
   if (values._type == "source" || values._type == "sourceDC") {
     return {
       ...values,
-      plus: point,
-      minus: { x: point.x + 1, y: point.y },
+      minus: point,
+      plus: { x: point.x + 1, y: point.y },
     };
   }
   return { ...values, a: point, b: { x: point.x + 1, y: point.y } };

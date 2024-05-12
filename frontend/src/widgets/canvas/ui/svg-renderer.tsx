@@ -7,7 +7,7 @@ import { assertNever } from "@/shared/lib/types";
 
 function getFirstPoint(component: ElectricalComponent): Point {
   if (component._type == "sourceDC" || component._type == "source") {
-    return component.plus;
+    return component.minus;
   }
   if (
     component._type == "resistor" ||
@@ -23,7 +23,7 @@ function getFirstPoint(component: ElectricalComponent): Point {
 
 function getSecondPoint(component: ElectricalComponent): Point {
   if (component._type == "sourceDC" || component._type == "source") {
-    return component.minus;
+    return component.plus;
   } else if (
     component._type == "resistor" ||
     component._type == "wire" ||
