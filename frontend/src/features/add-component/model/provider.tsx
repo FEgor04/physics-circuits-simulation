@@ -1,6 +1,6 @@
 import "react";
 import { DndContext, DragEndEvent, MouseSensor, useSensor } from "@dnd-kit/core";
-import type { OmitBetter } from "@/shared/lib/omit";
+import type { OmitBetter } from "@/shared/lib/types";
 import { ElectricalComponent, Point } from "@/shared/simulation/types";
 import { context as AddComponentContext, State } from "./context";
 

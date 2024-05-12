@@ -4,7 +4,7 @@ import sourceDCSvg from "@/shared/assets/circuit/DC_source.svg";
 import { ElectricalComponent } from "@/shared/simulation";
 import { ResizablePanel } from "@/shared/ui/resizable.tsx";
 import "./style.css";
-import { OmitBetter } from "@/shared/lib/omit";
+import { OmitBetter } from "@/shared/lib/types";
 import { Resistor, SourceDC } from "@/shared/simulation/types";
 
 export function ComponentChooseBar() {
