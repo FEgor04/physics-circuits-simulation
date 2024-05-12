@@ -84,14 +84,11 @@ test("branch current test", () => {
       ],
     },
   ];
+  const acrSolve: number[] = [-10, 0, 0];
 
   const components = actualBranches.flatMap((it) => it.components);
 
   const simulator = new SimpleSimulator(components);
-
-  const actgMatrix = simulator.buildGMatrix(actualNodes, actualBranches);
-  const actCurrVect = simulator.findCurrentForce(actualNodes, actualBranches);
-  const acrSolve = simulator.solveSLAE(actgMatrix, actCurrVect);
   const branchCurr = simulator.branchCurrent(actualBranches, actualNodes, acrSolve);
   expect(branchCurr).toStrictEqual(expectedCurrent);
 });
