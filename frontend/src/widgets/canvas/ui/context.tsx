@@ -25,3 +25,11 @@ export const useTransformVirtualToCanvas = () => {
     return transformVirtualToCanvas(point, canvasParams);
   };
 };
+
+export const useCanvasGrid = () =>
+  useCanvasContext(({ canvasParams: params }) => {
+    const coefficientX = params.width / params.schemeWidth;
+    const coefficientY = params.height / params.schemeHeight;
+    const coefficient = Math.min(coefficientX, coefficientY);
+    return coefficient;
+  });

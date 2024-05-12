@@ -1,44 +1,56 @@
-import AC_sourceSvg from "@/shared/assets/circuit/AC_source.svg";
-import batterySvg from "@/shared/assets/circuit/battery.svg";
-import capacitorSvg from "@/shared/assets/circuit/capacitor.svg";
-import DC_sourceSvg from "@/shared/assets/circuit/DC_source.svg";
-import diodeSvg from "@/shared/assets/circuit/diode.svg";
-import inductorSvg from "@/shared/assets/circuit/inductor.svg";
-import keySvg from "@/shared/assets/circuit/key.svg";
-import ledSvg from "@/shared/assets/circuit/led.svg";
+import { useDraggable } from "@dnd-kit/core";
+import sourceDCSvg from "@/shared/assets/circuit/DC_source.svg";
 import resistorSvg from "@/shared/assets/circuit/resistor.svg";
-import voltmeterSvg from "@/shared/assets/circuit/voltmeter.svg";
+import { OmitBetter } from "@/shared/lib/types";
+import { ElectricalComponent } from "@/shared/simulation";
+import { Resistor, SourceDC } from "@/shared/simulation/types";
 import { ResizablePanel } from "@/shared/ui/resizable.tsx";
+import "./style.css";
 
 export function ComponentChooseBar() {
-  const components = [
-    voltmeterSvg,
-    AC_sourceSvg,
-    DC_sourceSvg,
-    keySvg,
-    diodeSvg,
-    inductorSvg,
-    batterySvg,
-    resistorSvg,
-    ledSvg,
-    capacitorSvg,
-  ];
   return (
     <ResizablePanel
-      className="flex flex-row flex-wrap content-start justify-around border-r-4 bg-white"
+      className="panel border-r-4 bg-white p-4"
       minSize={9}
       maxSize={50}
       defaultSize={15}
       order={1}
       data-testid="components-choose-bar"
     >
-      {components.map((object, i) => {
-        return (
-          <div className="m-5 flex h-20 cursor-pointer items-center justify-center" key={i}>
-            <img src={object} alt={""} className="w-14" />
-          </div>
-        );
-      })}
+      <div className="flex flex-row flex-wrap content-start justify-around">
+        <Item<Resistor> type="resistor" defaultValues={{ resistance: 10 }} src={resistorSvg} />
+        <Item<SourceDC> type="sourceDC" defaultValues={{ electromotiveForce: 20 }} src={sourceDCSvg} />
+      </div>
     </ResizablePanel>
+  );
+}
+
+function Item<T extends ElectricalComponent>({
+  type,
+  src,
+  defaultValues,
+}: {
+  type: T["_type"];
+  src: string;
+  defaultValues: NoInfer<OmitBetter<T, "a" | "b" | "plus" | "minus" | "_type">>;
+}) {
+  const { listeners, attributes, setNodeRef, transform } = useDraggable({
+    id: type,
+    data: {
+      ...defaultValues,
+      _type: type,
+    },
+  });
+  return (
+    <img
+      {...listeners}
+      {...attributes}
+      ref={setNodeRef}
+      src={src}
+      style={{
+        transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
+      }}
+      data-testid={`add-${type}`}
+    />
   );
 }

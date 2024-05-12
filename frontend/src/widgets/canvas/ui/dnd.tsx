@@ -1,6 +1,6 @@
 import { DndContext, Modifier, MouseSensor, useSensor } from "@dnd-kit/core";
 import { ElectricalComponentID } from "@/shared/simulation";
-import { useCanvasParams } from "./context";
+import { useCanvasGrid } from "./context";
 
 type Props = React.PropsWithChildren<{
   onUpdateComponentCoords: (id: ElectricalComponentID, deltaX: number, deltaY: number) => void;
@@ -13,15 +13,13 @@ export function CanvasDndContext({ children, onUpdateComponentCoords }: Props) {
     },
   });
 
-  const params = useCanvasParams();
-  const gridSizeX = params.width / params.schemeWidth;
-  const gridSizeY = params.height / params.schemeHeight;
+  const gridSize = useCanvasGrid();
   const snapToGridModifier: Modifier = (args) => {
     const { transform } = args;
     return {
       ...transform,
-      x: Math.ceil(transform.x / gridSizeX) * gridSizeX,
-      y: Math.ceil(transform.y / gridSizeY) * gridSizeY,
+      x: Math.ceil(transform.x / gridSize) * gridSize,
+      y: Math.ceil(transform.y / gridSize) * gridSize,
     };
   };
   return (
@@ -33,8 +31,8 @@ export function CanvasDndContext({ children, onUpdateComponentCoords }: Props) {
         if (typeof componentId == "string") {
           return;
         }
-        const deltaGridX = Math.ceil(event.delta.x / gridSizeX);
-        const deltaGridY = Math.ceil(event.delta.y / gridSizeY);
+        const deltaGridX = Math.ceil(event.delta.x / gridSize);
+        const deltaGridY = Math.ceil(event.delta.y / gridSize);
         onUpdateComponentCoords(componentId, deltaGridX, -deltaGridY);
       }}
     >

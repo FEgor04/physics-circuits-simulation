@@ -17,10 +17,11 @@ export function useSimulationState(components: Array<ElectricalComponentWithID>)
     onAddComponent: function (newComponent: ElectricalComponent): ElectricalComponentWithID {
       let id = 0;
       setSchema((old) => {
-        id = old
-          .map((it) => it.id)
-          .sort()
-          .reverse()[0];
+        id =
+          old
+            .map((it) => it.id)
+            .sort()
+            .reverse()[0] + 1;
         return [...old, { ...newComponent, id }];
       });
       return { ...newComponent, id };
