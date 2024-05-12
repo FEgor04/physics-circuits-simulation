@@ -30,7 +30,6 @@ export function Canvas({ components, canvasSize, onUpdateComponentCoords }: Prop
         schemeWidth: Math.floor(canvasRef.current.clientWidth / zoomCoefficient),
         schemeHeight: Math.floor(canvasRef.current.clientHeight / zoomCoefficient),
       };
-      console.log(canvasParams);
       setCanvasState({
         canvasParams,
       });

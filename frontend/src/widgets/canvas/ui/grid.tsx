@@ -8,11 +8,9 @@ export function CanvasGrid() {
   const onSelect = useOnSelectComponent();
   const xMin = -Math.floor(canvasParams.schemeWidth / 2);
   const yMin = -Math.floor(canvasParams.schemeHeight / 2);
-  console.log(xMin, yMin);
   const coords = new Array(canvasParams.schemeWidth)
     .fill(0)
     .flatMap((_, x) => new Array(canvasParams.schemeHeight).fill(0).flatMap((_, y) => ({ x: xMin + x, y: yMin + y })));
-  console.log(coords);
   const transform = useTransformVirtualToCanvas();
   return (
     <>
