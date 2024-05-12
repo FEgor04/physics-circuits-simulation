@@ -12,8 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.rsocket.RSocketSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -75,7 +77,9 @@ public class ApplicationConfig {
                                 .permitAll()
                                 .requestMatchers("/h2-console/**")
                                 .permitAll()
-                                .anyRequest().authenticated()).headers(headers -> headers
+//                                .anyRequest().permitAll()
+                                .anyRequest().authenticated()
+                ).headers(headers -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
                 .anonymous(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new JwtTokenFilter(tokenProvider),

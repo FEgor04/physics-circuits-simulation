@@ -10,6 +10,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+  rsocket:
+    server:
+      port: 7000
 security:
   jwt:
     secret: ${securityJwtSecret}

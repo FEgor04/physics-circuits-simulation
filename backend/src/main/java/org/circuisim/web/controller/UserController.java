@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.circuisim.exception.ErrorMessage;
+import org.circuisim.rSocket.RSocketController;
 import org.circuisim.service.UserService;
 import org.circuisim.web.dto.UserDto;
 import org.circuisim.web.mapper.UserMapper;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
+    private final RSocketController rSocketController;
 
     @GetMapping("/{id}")
     @Operation(summary = "Get user by ID",
@@ -54,6 +56,7 @@ public class UserController {
             description = "Retrieves information about the current user based on the email stored in the JWT payload",
             operationId = "getCurrentUser", tags = "Client API")
     public GetUserResponse getMe(@AuthenticationPrincipal UserDetails userDetails) {
+//        rSocketController.sendNotification();
         return dtoToResponse(userMapper.toDto(userService.getByEmail(userDetails.getUsername())));
     }
 
