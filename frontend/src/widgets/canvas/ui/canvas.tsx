@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import { isEmbedded } from "@/shared/embed/utility.ts";
 import { ElectricalComponent } from "@/shared/simulation";
 import { ElectricalComponentID, ElectricalComponentWithID } from "@/shared/simulation/types";
-import { CanvasParams, zoomCoefficient } from "../lib";
+import { CanvasParams } from "../lib";
 import { CanvasContext, CanvasState } from "./context";
 import { CanvasDndContext } from "./dnd";
 import { GenericRenderer } from "./generic-renderer";
@@ -20,6 +21,8 @@ export function Canvas({ components, canvasSize, onUpdateComponentCoords }: Prop
   const [canvasState, setCanvasState] = useState<CanvasState | undefined>(undefined);
 
   useEffect(() => {
+    // Ratio between width and schemeWidth
+    const zoomCoefficient = isEmbedded() ? 20 : 35;
     if (canvasRef.current) {
       const canvasParams: CanvasParams = {
         width: canvasRef.current.clientWidth,
@@ -27,6 +30,7 @@ export function Canvas({ components, canvasSize, onUpdateComponentCoords }: Prop
         schemeWidth: Math.floor(canvasRef.current.clientWidth / zoomCoefficient),
         schemeHeight: Math.floor(canvasRef.current.clientHeight / zoomCoefficient),
       };
+      console.log(canvasParams);
       setCanvasState({
         canvasParams,
       });

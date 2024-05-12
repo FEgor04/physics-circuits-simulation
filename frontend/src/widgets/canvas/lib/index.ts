@@ -16,9 +16,6 @@ export type CanvasParams = {
   schemeHeight: number;
 };
 
-// Ratio between width and schemeWidth
-export const zoomCoefficient = 30;
-
 export function transformVirtualToCanvas(point: Point, params: CanvasParams): Point {
   const coefficientX = params.width / params.schemeWidth;
   const coefficientY = params.height / params.schemeHeight;
