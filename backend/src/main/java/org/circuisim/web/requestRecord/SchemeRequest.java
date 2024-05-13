@@ -6,6 +6,7 @@ import org.circuisim.web.dto.ElectricalComponentDto;
 import java.util.List;
 
 public record SchemeRequest(
+        Long schemeId,
         String name,
         SchemeEvent eventType,
         List<ElectricalComponentDto> components

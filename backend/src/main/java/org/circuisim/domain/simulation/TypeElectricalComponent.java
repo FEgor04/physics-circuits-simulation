@@ -1,7 +1,6 @@
 package org.circuisim.domain.simulation;
 
 public enum TypeElectricalComponent {
-    BRANCH,
     WIRE,
     RESISTOR,
     SOURCE,

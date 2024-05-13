@@ -14,6 +14,7 @@ public class Point {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int a;
-    private int b;
+    private int x;
+    private int y;
+
 }

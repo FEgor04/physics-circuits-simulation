@@ -11,7 +11,6 @@ import org.hibernate.type.SqlTypes;
 import java.util.Set;
 
 @Entity
-@Table(name = "schemes")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

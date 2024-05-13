@@ -3,10 +3,13 @@ package org.circuisim.web.mapper;
 import lombok.RequiredArgsConstructor;
 import org.circuisim.domain.User;
 import org.circuisim.domain.simulation.ElectricalComponent;
+import org.circuisim.domain.simulation.ElectricalComponentPK;
+import org.circuisim.domain.simulation.Point;
 import org.circuisim.domain.simulation.Scheme;
 import org.circuisim.service.ElectricalComponentService;
 import org.circuisim.service.UserService;
 import org.circuisim.web.dto.ElectricalComponentDto;
+import org.circuisim.web.dto.PointDto;
 import org.circuisim.web.responseRecord.SchemeResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -44,9 +47,9 @@ public class SchemeMapper {
     public List<ElectricalComponentDto> toDto(List<ElectricalComponent> list) {
         return list.stream().map(x -> {
             var electricalComponentDto = new ElectricalComponentDto();
-            electricalComponentDto.setComponent_id(x.getId());
+            electricalComponentDto.setComponentId(x.getPk().getId());
             electricalComponentDto.setType(x.getType());
-            electricalComponentDto.setPoint(x.getPoint());
+            electricalComponentDto.setPoint(new PointDto(x.getPoint().getX(),x.getPoint().getY()));
             return electricalComponentDto;
         }).toList();
     }
@@ -54,10 +57,12 @@ public class SchemeMapper {
     public List<ElectricalComponent> toEntities(List<ElectricalComponentDto> components, Scheme scheme) {
         return components.stream().map(x -> {
             var electricalComponent = new ElectricalComponent();
+            electricalComponent.setPk(new ElectricalComponentPK(x.getComponentId(),scheme.getId()));
             electricalComponent.setScheme(scheme);
             electricalComponent.setType(x.getType());
-            electricalComponent.setPoint(x.getPoint());
+            electricalComponent.setPoint(new Point(null,x.point.x,x.point.y));
             return electricalComponent;
         }).toList();
     }
+
 }

@@ -12,7 +12,7 @@ public record SchemeResponse(
         Long id,
         String name,
         String authorName,
-        boolean can_edit,
+        boolean canEdit,
         List<ElectricalComponentDto> components
 
 ) {
