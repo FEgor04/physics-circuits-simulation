@@ -10,7 +10,7 @@ export function ResistorSettings({ component }: { component: WithID<Resistor> })
     <div className="flex w-full flex-col gap-2 p-4">
       <p>Резистор</p>
       <UpdateResistor defaultValue={component} />
-      <div className="space-x-2">
+      <div className="flex flex-row items-center space-x-2">
         <Button type="submit" form="update-resistor">
           Сохранить
         </Button>
@@ -18,9 +18,9 @@ export function ResistorSettings({ component }: { component: WithID<Resistor> })
           onClick={() => {
             onDeleteComponent(component.id);
           }}
-          variant="outline"
+          variant="destructive"
         >
-          <Trash className="w-4 h-4 mr-2" />
+          <Trash className="mr-2 size-4" />
           Удалить!
         </Button>
       </div>
