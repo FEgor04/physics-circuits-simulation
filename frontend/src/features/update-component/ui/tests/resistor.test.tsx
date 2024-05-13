@@ -52,4 +52,34 @@ describe("Update Resistor Form", () => {
     expect(label.className).not.toMatch("text-destructive");
     expect(onUpdateComponent).toHaveBeenCalledWith(createResistor(228));
   });
+
+  it("should not allow to enter negative resistance", async () => {
+    const { input, onUpdateComponent, user, submit, label } = setup();
+
+    await waitFor(() => user.clear(input));
+    await waitFor(() => user.type(input, "-228"));
+    await waitFor(() => user.click(submit));
+    expect(label.className).toMatch("text-destructive");
+    expect(onUpdateComponent).toHaveBeenCalledTimes(0);
+  });
+
+  it("should not allow to enter resistance with letters", async () => {
+    const { input, onUpdateComponent, user, submit, label } = setup();
+
+    await waitFor(() => user.clear(input));
+    await waitFor(() => user.type(input, "asd321das"));
+    await waitFor(() => user.click(submit));
+    expect(label.className).toMatch("text-destructive");
+    expect(onUpdateComponent).toHaveBeenCalledTimes(0);
+  });
+
+  it("should not allow to enter resistance with letters on the end", async () => {
+    const { input, onUpdateComponent, user, submit, label } = setup();
+
+    await waitFor(() => user.clear(input));
+    await waitFor(() => user.type(input, "321as"));
+    await waitFor(() => user.click(submit));
+    expect(label.className).toMatch("text-destructive");
+    expect(onUpdateComponent).toHaveBeenCalledTimes(0);
+  });
 });
