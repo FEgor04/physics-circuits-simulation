@@ -1,6 +1,5 @@
 package org.circuisim.web.requestRecord;
 
-import org.circuisim.domain.simulation.ElectricalComponent;
 import org.circuisim.domain.simulation.SchemeEvent;
 import org.circuisim.web.dto.ElectricalComponentDto;
 

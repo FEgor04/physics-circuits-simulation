@@ -44,7 +44,7 @@ public class SchemeMapper {
     public List<ElectricalComponentDto> toDto(List<ElectricalComponent> list) {
         return list.stream().map(x -> {
             var electricalComponentDto = new ElectricalComponentDto();
-            electricalComponentDto.setId(x.getId());
+            electricalComponentDto.setComponent_id(x.getId());
             electricalComponentDto.setType(x.getType());
             electricalComponentDto.setPoint(x.getPoint());
             return electricalComponentDto;

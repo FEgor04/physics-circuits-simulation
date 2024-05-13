@@ -12,7 +12,7 @@ import org.circuisim.domain.simulation.TypeElectricalComponent;
 @NoArgsConstructor
 @Schema(description = "DTO for Electrical component")
 public class ElectricalComponentDto {
-    public Long id;
+    public Long component_id;
     public TypeElectricalComponent type;
     public Point point;
 }

@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.circuisim.service.ElectricalComponentService;
 import org.circuisim.service.SchemeService;
+import org.circuisim.web.dto.ElectricalComponentDto;
 import org.circuisim.web.mapper.SchemeMapper;
 import org.circuisim.web.requestRecord.SchemeRequest;
 import org.circuisim.web.responseRecord.SchemeResponse;
@@ -24,6 +26,7 @@ import java.util.List;
 public class SchemesController {
     private final SchemeService schemeService;
     private final SchemeMapper schemeMapper;
+    private final ElectricalComponentService electricalComponentService;
 
     @GetMapping("")
     public List<SchemeResponse> getAllSchemes(
@@ -38,11 +41,12 @@ public class SchemesController {
     ){
         return schemeMapper.toResponse(schemeService.getById(id),userDetails.getUsername());
     }
-    @PutMapping("{id}")
+    @PutMapping("")
     public ResponseEntity<String> updateScheme(
-            @PathVariable @Parameter(description = "Scheme id", required = true) Long id
+            @RequestBody List<ElectricalComponentDto> electricalComponentDto,
+            @AuthenticationPrincipal UserDetails userDetails
     ){
-
+        electricalComponentService.updateComponents(electricalComponentDto,userDetails);
         return ResponseEntity.noContent().build();
     }
 
