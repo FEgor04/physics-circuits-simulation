@@ -9,6 +9,7 @@ import org.circuisim.web.dto.UserDto;
 import java.util.List;
 
 public record SchemeResponse(
+        Long id,
         String name,
         String authorName,
         boolean can_edit,

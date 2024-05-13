@@ -26,14 +26,17 @@ public class SchemesController {
     private final SchemeMapper schemeMapper;
 
     @GetMapping("")
-    public List<SchemeResponse> getAllSchemes(){
-        return schemeMapper.toListResponse(schemeService.getAll());
+    public List<SchemeResponse> getAllSchemes(
+            @AuthenticationPrincipal UserDetails userDetails
+    ){
+        return schemeMapper.toListResponse(schemeService.getAll(),userDetails.getUsername());
     }
     @GetMapping("{id}")
     public SchemeResponse getSchemeById(
-            @PathVariable @Parameter(description = "Scheme id", required = true) Long id
+            @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
+            @AuthenticationPrincipal UserDetails userDetails
     ){
-        return schemeMapper.toResponse(schemeService.getById(id));
+        return schemeMapper.toResponse(schemeService.getById(id),userDetails.getUsername());
     }
     @PutMapping("{id}")
     public ResponseEntity<String> updateScheme(
@@ -48,7 +51,7 @@ public class SchemesController {
             @Validated @RequestBody SchemeRequest schemeRequest,
             @AuthenticationPrincipal UserDetails userDetails
     ){
-        return schemeMapper.toResponse(schemeService.create(schemeRequest,userDetails));
+        return schemeMapper.toResponse(schemeService.create(schemeRequest,userDetails),userDetails.getUsername());
     }
     @PutMapping("{id}/permissions")
     public ResponseEntity<String> setPermissionsByIdScheme(

@@ -33,7 +33,7 @@ public class SchemeServiceImpl implements SchemeService {
         scheme.setName(schemeRequest.name());
         scheme.setAuthor(userService.getByEmail(userDetails.getUsername()));
         scheme = this.save(scheme);
-        saveAllComponents(schemeMapper.toEntities(schemeRequest.components(),scheme),scheme);
+        saveAllComponents(schemeMapper.toEntities(schemeRequest.components(), scheme), scheme);
         return scheme;
     }
 
@@ -56,14 +56,13 @@ public class SchemeServiceImpl implements SchemeService {
         return null;
     }
 
-    private void saveAllComponents(List<ElectricalComponent> components,Scheme scheme) {
-        components.stream().map(element -> {
+    private void saveAllComponents(List<ElectricalComponent> components, Scheme scheme) {
+        for(ElectricalComponent element : components){
             var point = element.getPoint();
             point = pointService.save(point);
             element.setPoint(point);
             element.setScheme(scheme);
-            electricalComponentService.save(element);
-            return element;
-        });
+            element = electricalComponentService.save(element);
+        }
     }
 }
