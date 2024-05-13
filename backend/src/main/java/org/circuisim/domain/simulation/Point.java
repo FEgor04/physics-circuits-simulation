@@ -16,6 +16,4 @@ public class Point {
     private Long id;
     private int a;
     private int b;
-    @ManyToOne
-    private ElectricalComponent component;
 }

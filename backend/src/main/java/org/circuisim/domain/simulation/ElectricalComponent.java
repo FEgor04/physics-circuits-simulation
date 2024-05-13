@@ -20,4 +20,7 @@ public class ElectricalComponent {
 
     @ManyToOne
     private Scheme scheme;
+
+    @OneToOne
+    private Point point;
 }
