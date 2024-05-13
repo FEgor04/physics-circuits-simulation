@@ -1,8 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Resistor, WithID } from "@/shared/simulation";
-import { Button } from "@/shared/ui/button";
 import { UpdateComponentProvider } from "../../model/provider";
 import { UpdateResistor } from "../resistor";
 
@@ -16,39 +15,41 @@ function createResistor(resistance: number): WithID<Resistor> {
   };
 }
 
-describe("Update Resistor Form", () => {
-  it("should render defaultValue", () => {
-    const resistance = 420;
-    const onUpdateComponent = vi.fn().mockImplementation(console.log);
-    render(
-      <UpdateComponentProvider onUpdateComponent={onUpdateComponent}>
-        <UpdateResistor defaultValue={createResistor(resistance)} />
-      </UpdateComponentProvider>,
-    );
-    const input = screen.getByLabelText("Сопротивление");
+const setup = () => {
+  const user = userEvent.setup();
+  const resistance = 420;
+  const onUpdateComponent = vi.fn().mockImplementation(console.log);
+  const utils = render(
+    <UpdateComponentProvider onUpdateComponent={onUpdateComponent}>
+      <UpdateResistor defaultValue={createResistor(resistance)} />
+      <button type="submit" form="update-resistor">
+        Submit
+      </button>
+    </UpdateComponentProvider>,
+  );
+  const input = screen.getByLabelText("Сопротивление");
+  const submit = screen.getByText("Submit");
+  const label = screen.getByText("Сопротивление");
+  return { ...utils, onUpdateComponent, resistance, input, user, submit, label };
+};
 
+describe("Update Resistor Form", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+  });
+
+  it("should render defaultValue", () => {
+    const { input, resistance } = setup();
     expect(input).toHaveProperty("value", String(resistance));
   });
 
-  it("should allow to enter positive resistance", () => {
-    const user = userEvent.setup();
-    const onUpdateComponent = vi.fn().mockImplementation(console.log);
-    const resistance = 200;
-    const newResistance = 420;
-    render(
-      <UpdateComponentProvider onUpdateComponent={onUpdateComponent}>
-        <UpdateResistor defaultValue={createResistor(resistance)} />
-        <Button type="submit" form="update-resistor-form">
-          Submit
-        </Button>
-      </UpdateComponentProvider>,
-    );
+  it("should allow to enter positive resistance", async () => {
+    const { input, onUpdateComponent, user, submit, label } = setup();
 
-    const input = screen.getByLabelText("Сопротивление");
-
-    user.type(input, String(newResistance));
-    user.click(screen.getByText("Submit"));
-    expect(screen.getByText("Сопротивление").className).not.toMatch("text-destructive");
-    expect(onUpdateComponent).toHaveBeenCalledOnce();
+    await waitFor(() => user.clear(input));
+    await waitFor(() => user.type(input, "228"));
+    await waitFor(() => user.click(submit));
+    expect(label.className).not.toMatch("text-destructive");
+    expect(onUpdateComponent).toHaveBeenCalledWith(createResistor(228));
   });
 });

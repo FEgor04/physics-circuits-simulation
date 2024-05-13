@@ -27,7 +27,7 @@ export function UpdateResistor({ defaultValue }: Props) {
 
   return (
     <Form {...form}>
-      <form id="update-resistor-form" data-testid="update-resistor-form" onSubmit={form.handleSubmit(onSubmit)}>
+      <form id="update-resistor" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="resistance"
