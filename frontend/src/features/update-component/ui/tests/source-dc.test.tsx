@@ -5,6 +5,9 @@ import { WithID } from "@/shared/simulation";
 import { SourceDC } from "@/shared/simulation/types";
 import { UpdateComponentProvider } from "../../model/provider";
 import { UpdateSourceDC } from "../source-dc";
+import { useState } from "react";
+import { Button } from "@/shared/ui/button";
+import { waitForDebugger } from "inspector";
 
 function createSourceDC(electromotiveForce: number = 100): WithID<SourceDC> {
   return {
@@ -83,4 +86,33 @@ describe("Update Source DC Form", () => {
     expect(label.className).toMatch("text-destructive");
     expect(onUpdateComponent).toHaveBeenCalledTimes(0);
   });
+
+  it("should update input value when defaultValue changes", async () => {
+    const user = userEvent.setup();
+    const onUpdateComponent = vi.fn().mockImplementation(console.log);
+    render(
+      <UpdateComponentProvider onUpdateComponent={onUpdateComponent}>
+        <UpdateSourceDCChangeDefaultValue />
+      </UpdateComponentProvider>,
+    );
+    const input = screen.getByLabelText("Электродвижущая сила");
+
+    await waitFor(() => user.click(screen.getByTestId("update-source-dc-default-value")));
+    expect(input).toHaveProperty("value", "220");
+  });
 });
+
+function UpdateSourceDCChangeDefaultValue() {
+  const [defaultValue, setDefaultValue] = useState<WithID<SourceDC>>(createSourceDC(200));
+  return (
+    <>
+      <UpdateSourceDC defaultValue={defaultValue} />
+      <Button
+        data-testid="update-source-dc-default-value"
+        onClick={() => {
+          setDefaultValue(createSourceDC(220));
+        }}
+      ></Button>
+    </>
+  );
+}

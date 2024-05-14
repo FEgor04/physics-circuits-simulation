@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { WithID, SourceDC } from "@/shared/simulation";
@@ -20,6 +21,11 @@ export function UpdateSourceDC({ defaultValue }: Props) {
     resolver: zodResolver(schema),
     defaultValues: defaultValue,
   });
+
+  // Syncrhonize internal `form` state with external `defaultValue`
+  useEffect(() => {
+    form.reset(defaultValue);
+  }, [form, defaultValue]);
 
   function onSubmit(values: z.infer<typeof schema>) {
     onUpdate({ ...defaultValue, ...values });
