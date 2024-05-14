@@ -1,15 +1,15 @@
 import { Trash } from "lucide-react";
 import { useDeleteComponent } from "@/features/delete-component";
-import { UpdateSourceDC } from "@/features/update-component";
-import { SourceDC, WithID } from "@/shared/simulation";
+import { UpdateSource } from "@/features/update-component";
+import { Source, WithID } from "@/shared/simulation";
 import { Button } from "@/shared/ui/button.tsx";
 
-export function SourceDCSettings({ component }: { component: WithID<SourceDC> }) {
+export function SourceSettings({ component }: { component: WithID<Source> }) {
   const onDeleteComponent = useDeleteComponent();
   return (
     <div className="flex w-full flex-col gap-2 p-4">
-      <p>Источник постоянного напряжения</p>
-      <UpdateSourceDC defaultValue={component} />
+      <p>Резистор</p>
+      <UpdateSource defaultValue={component} />
       <div className="flex flex-row items-center space-x-2">
         <Button type="submit" form="update-resistor">
           Сохранить
