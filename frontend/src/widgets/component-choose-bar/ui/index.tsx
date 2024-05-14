@@ -1,4 +1,5 @@
 import { useDraggable } from "@dnd-kit/core";
+import { svgSize } from "@/shared/assets/circuit";
 import sourceDCSvg from "@/shared/assets/circuit/DC_source.svg";
 import resistorSvg from "@/shared/assets/circuit/resistor.svg";
 import { OmitBetter } from "@/shared/lib/types";
@@ -49,6 +50,8 @@ function Item<T extends ElectricalComponent>({
       src={src}
       style={{
         transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
+        width: `${svgSize}px`,
+        height: `${svgSize}px`,
       }}
       data-testid={`add-${type}`}
     />
