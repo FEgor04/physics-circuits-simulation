@@ -1,8 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useContext, createContext } from "react";
+import { svgSize } from "@/shared/assets/circuit";
 import { Point } from "@/shared/simulation/types";
 import { CanvasParams, transformVirtualToCanvas } from "../lib";
-import { svgSize } from "@/shared/assets/circuit";
 
 export type CanvasState = {
   canvasParams: CanvasParams;
