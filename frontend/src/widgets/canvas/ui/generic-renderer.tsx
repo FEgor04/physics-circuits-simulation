@@ -1,6 +1,6 @@
+import ampermeterSvg from "@/shared/assets/circuit/ampermater.svg";
 import sourceSvg from "@/shared/assets/circuit/DC_source.svg";
 import resistorSvg from "@/shared/assets/circuit/resistor.svg";
-import ampermeterSvg from "@/shared/assets/circuit/voltmeter.svg";
 import voltmeterSvg from "@/shared/assets/circuit/voltmeter.svg";
 import { ElectricalComponentWithID } from "@/shared/simulation/types.ts";
 import { SVGRenderer } from "./svg-renderer";
