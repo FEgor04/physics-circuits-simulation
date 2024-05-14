@@ -11,7 +11,7 @@ export function SourceSettings({ component }: { component: WithID<Source> }) {
       <p>Резистор</p>
       <UpdateSource defaultValue={component} />
       <div className="flex flex-row items-center space-x-2">
-        <Button type="submit" form="update-resistor">
+        <Button type="submit" form="update-source">
           Сохранить
         </Button>
         <Button

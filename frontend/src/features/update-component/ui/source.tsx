@@ -34,7 +34,7 @@ export function UpdateSource({ defaultValue }: Props) {
 
   return (
     <Form {...form}>
-      <form id="update-source-dc" onSubmit={form.handleSubmit(onSubmit)}>
+      <form id="update-source" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="electromotiveForce"
