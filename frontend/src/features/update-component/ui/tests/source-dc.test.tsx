@@ -1,13 +1,12 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { useState } from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { WithID } from "@/shared/simulation";
 import { SourceDC } from "@/shared/simulation/types";
+import { Button } from "@/shared/ui/button";
 import { UpdateComponentProvider } from "../../model/provider";
 import { UpdateSourceDC } from "../source-dc";
-import { useState } from "react";
-import { Button } from "@/shared/ui/button";
-import { waitForDebugger } from "inspector";
 
 function createSourceDC(electromotiveForce: number = 100): WithID<SourceDC> {
   return {

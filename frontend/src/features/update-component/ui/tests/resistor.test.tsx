@@ -1,11 +1,11 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { userEvent } from "@testing-library/user-event";
+import { useState } from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Resistor, WithID } from "@/shared/simulation";
+import { Button } from "@/shared/ui/button";
 import { UpdateComponentProvider } from "../../model/provider";
 import { UpdateResistor } from "../resistor";
-import { useState } from "react";
-import { Button } from "@/shared/ui/button";
 
 function createResistor(resistance: number): WithID<Resistor> {
   return {

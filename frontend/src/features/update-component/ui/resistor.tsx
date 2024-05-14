@@ -1,11 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Resistor, WithID } from "@/shared/simulation";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/shared/ui/form";
 import { Input } from "@/shared/ui/input";
 import { useOnUpdateComponent } from "../model/hooks";
-import { useEffect } from "react";
 
 type Props = {
   defaultValue: WithID<Resistor>;
