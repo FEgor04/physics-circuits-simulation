@@ -18,7 +18,7 @@ export function CanvasGrid() {
         <CanvasDot
           x={transform({ x, y }).x}
           y={transform({ x, y }).y}
-          key={x * canvasParams.schemeWidth + y}
+          key={`${x}-${y}`}
           isSelected={selected?.type == "point" && pointsEqual(selected.point, { x, y })}
           onSelect={() => {
             onSelect({

@@ -7,6 +7,7 @@ import { StateButton } from "@/widgets/state-button";
 import { AddComponentContextProvider } from "@/features/add-component";
 import { DeleteComponentProvider } from "@/features/delete-component";
 import { SelectComponentProvider, SelectComponentState } from "@/features/select-component";
+import { UpdateComponentProvider } from "@/features/update-component";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 import { useSimulationState } from "../model/state";
 
@@ -51,28 +52,30 @@ export function Simulation({ mode, setMode }: Props) {
       >
         <DeleteComponentProvider onDeleteComponent={onDeleteComponent}>
           <AddComponentContextProvider onAddComponent={(c) => onAddComponent(c).id}>
-            <ResizablePanelGroup direction="horizontal">
-              {mode == "editing" ? <ComponentChooseBar /> : <ComponentValuesBar />}
-              <ResizableHandle />
-              <CanvasPanel
-                components={components}
-                onAddComponent={onAddComponent}
-                onUpdateComponent={onUpdateComponent}
-                onUpdateComponentCoords={onUpdateComponentCoords}
+            <UpdateComponentProvider onUpdateComponent={onUpdateComponent}>
+              <ResizablePanelGroup direction="horizontal">
+                {mode == "editing" ? <ComponentChooseBar /> : <ComponentValuesBar />}
+                <ResizableHandle />
+                <CanvasPanel
+                  components={components}
+                  onAddComponent={onAddComponent}
+                  onUpdateComponent={onUpdateComponent}
+                  onUpdateComponentCoords={onUpdateComponentCoords}
+                />
+                {mode == "editing" ? (
+                  <>
+                    <ResizableHandle />
+                    <ComponentSettingsBar selectedComponent={selectedComponent} />
+                  </>
+                ) : (
+                  <></>
+                )}
+              </ResizablePanelGroup>
+              <StateButton
+                isSimulation={mode == "simulation"}
+                onChange={() => setMode(mode == "editing" ? "simulation" : "editing")}
               />
-              {mode == "editing" ? (
-                <>
-                  <ResizableHandle />
-                  <ComponentSettingsBar selectedComponent={selectedComponent} />
-                </>
-              ) : (
-                <></>
-              )}
-            </ResizablePanelGroup>
-            <StateButton
-              isSimulation={mode == "simulation"}
-              onChange={() => setMode(mode == "editing" ? "simulation" : "editing")}
-            />
+            </UpdateComponentProvider>
           </AddComponentContextProvider>
         </DeleteComponentProvider>
       </SelectComponentProvider>

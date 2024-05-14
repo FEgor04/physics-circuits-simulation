@@ -4,6 +4,7 @@ export type {
   Wire,
   Resistor,
   Source,
+  SourceDC,
   Voltmeter,
   Ampermeter,
   ElectricalComponent,
