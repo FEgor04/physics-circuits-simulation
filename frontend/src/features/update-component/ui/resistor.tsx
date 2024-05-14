@@ -5,6 +5,7 @@ import { Resistor, WithID } from "@/shared/simulation";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/shared/ui/form";
 import { Input } from "@/shared/ui/input";
 import { useOnUpdateComponent } from "../model/hooks";
+import { useEffect } from "react";
 
 type Props = {
   defaultValue: WithID<Resistor>;
@@ -20,6 +21,11 @@ export function UpdateResistor({ defaultValue }: Props) {
     resolver: zodResolver(schema),
     defaultValues: defaultValue,
   });
+
+  // Syncrhonize internal `form` state with external `defaultValue`
+  useEffect(() => {
+    form.reset(defaultValue);
+  }, [form, defaultValue]);
 
   function onSubmit(values: z.infer<typeof schema>) {
     onUpdate({ ...defaultValue, ...values });

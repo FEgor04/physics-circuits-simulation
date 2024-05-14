@@ -4,6 +4,8 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Resistor, WithID } from "@/shared/simulation";
 import { UpdateComponentProvider } from "../../model/provider";
 import { UpdateResistor } from "../resistor";
+import { useState } from "react";
+import { Button } from "@/shared/ui/button";
 
 function createResistor(resistance: number): WithID<Resistor> {
   return {
@@ -82,4 +84,33 @@ describe("Update Resistor Form", () => {
     expect(label.className).toMatch("text-destructive");
     expect(onUpdateComponent).toHaveBeenCalledTimes(0);
   });
+
+  it("should update input value when defaultValue changes", async () => {
+    const user = userEvent.setup();
+    const onUpdateComponent = vi.fn().mockImplementation(console.log);
+    render(
+      <UpdateComponentProvider onUpdateComponent={onUpdateComponent}>
+        <ChangeDefaultValue />
+      </UpdateComponentProvider>,
+    );
+    const input = screen.getByLabelText("Сопротивление");
+
+    await waitFor(() => user.click(screen.getByTestId("change-default-value")));
+    expect(input).toHaveProperty("value", "220");
+  });
 });
+
+function ChangeDefaultValue() {
+  const [defaultValue, setDefaultValue] = useState<WithID<Resistor>>(createResistor(200));
+  return (
+    <>
+      <UpdateResistor defaultValue={defaultValue} />
+      <Button
+        data-testid="change-default-value"
+        onClick={() => {
+          setDefaultValue(createResistor(220));
+        }}
+      ></Button>
+    </>
+  );
+}
