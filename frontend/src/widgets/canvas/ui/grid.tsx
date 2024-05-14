@@ -14,11 +14,11 @@ export function CanvasGrid() {
   const transform = useTransformVirtualToCanvas();
   return (
     <>
-      {coords.map(({ x, y }) => (
+      {coords.map(({ x, y }, ind) => (
         <CanvasDot
           x={transform({ x, y }).x}
           y={transform({ x, y }).y}
-          key={x * canvasParams.schemeWidth + y}
+          key={ind}
           isSelected={selected?.type == "point" && pointsEqual(selected.point, { x, y })}
           onSelect={() => {
             onSelect({
