@@ -18,7 +18,7 @@ export function ComponentChooseBar() {
       order={1}
       data-testid="components-choose-bar"
     >
-      <div className="flex flex-row flex-wrap content-start justify-around">
+      <div className="flex flex-row flex-wrap content-start justify-around items-center">
         <Item<Resistor> type="resistor" defaultValues={{ resistance: 10 }} src={resistorSvg} />
         <Item<SourceDC> type="sourceDC" defaultValues={{ electromotiveForce: 20 }} src={sourceDCSvg} />
       </div>
@@ -42,6 +42,7 @@ function Item<T extends ElectricalComponent>({
       _type: type,
     },
   });
+  const height = type == "resistor" ? svgSize / 2 : svgSize;
   return (
     <img
       {...listeners}
@@ -51,7 +52,7 @@ function Item<T extends ElectricalComponent>({
       style={{
         transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
         width: `${svgSize}px`,
-        height: `${svgSize}px`,
+        height: `${height}px`,
       }}
       data-testid={`add-${type}`}
     />

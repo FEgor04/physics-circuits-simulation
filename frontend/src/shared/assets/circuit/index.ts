@@ -1,2 +1,2 @@
 // Базовый размер svg
-export const svgSize = 32;
+export const svgSize = 48;
