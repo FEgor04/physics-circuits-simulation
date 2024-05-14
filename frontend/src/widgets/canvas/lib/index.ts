@@ -1,3 +1,4 @@
+import { svgSize } from "@/shared/assets/circuit";
 import { Point } from "@/shared/simulation/types";
 
 /**
@@ -17,9 +18,7 @@ export type CanvasParams = {
 };
 
 export function transformVirtualToCanvas(point: Point, params: CanvasParams): Point {
-  const coefficientX = params.width / params.schemeWidth;
-  const coefficientY = params.height / params.schemeHeight;
-  const coefficient = Math.min(coefficientX, coefficientY);
+  const coefficient = svgSize;
   return {
     x: point.x * coefficient + params.width / 2,
     y: params.height / 2 - point.y * coefficient,

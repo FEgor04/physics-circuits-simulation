@@ -1,6 +1,7 @@
 import "./style.css";
 import { useDraggable } from "@dnd-kit/core";
 import { useOnSelectComponent, useSelectedComponent } from "@/features/select-component";
+import { svgSize } from "@/shared/assets/circuit";
 import { assertNever } from "@/shared/lib/types";
 import { ElectricalComponent, ElectricalComponentWithID, Point } from "@/shared/simulation/types.ts";
 import { useTransformVirtualToCanvas } from "./context";
@@ -48,13 +49,13 @@ export function SVGRenderer<T extends ElectricalComponentWithID>({ component, sr
   const isSelected = selectedComponent?.type == "component" && selectedComponent.id == component.id;
   const aTransformed = transformer(getFirstPoint(component));
   const bTransformed = transformer(getSecondPoint(component));
-  const componentHeight = 16;
+  const height = component._type == "resistor" ? svgSize / 2 : svgSize;
   return (
     <image
       x={aTransformed.x + (transform?.x ?? 0)}
-      y={aTransformed.y - componentHeight / 2 + (transform?.y ?? 0)}
+      y={aTransformed.y - height / 2 + (transform?.y ?? 0)}
       width={bTransformed.x - aTransformed.x}
-      height={componentHeight}
+      height={height}
       href={src}
       ref={(ref) => setNodeRef(ref as unknown as HTMLElement)}
       {...attributes}

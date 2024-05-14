@@ -1,4 +1,5 @@
 import { useDraggable } from "@dnd-kit/core";
+import { svgSize } from "@/shared/assets/circuit";
 import sourceDCSvg from "@/shared/assets/circuit/DC_source.svg";
 import resistorSvg from "@/shared/assets/circuit/resistor.svg";
 import { OmitBetter } from "@/shared/lib/types";
@@ -17,7 +18,7 @@ export function ComponentChooseBar() {
       order={1}
       data-testid="components-choose-bar"
     >
-      <div className="flex flex-row flex-wrap content-start justify-around">
+      <div className="flex flex-row flex-wrap content-start items-center justify-around">
         <Item<Resistor> type="resistor" defaultValues={{ resistance: 10 }} src={resistorSvg} />
         <Item<SourceDC> type="sourceDC" defaultValues={{ electromotiveForce: 20 }} src={sourceDCSvg} />
       </div>
@@ -41,6 +42,7 @@ function Item<T extends ElectricalComponent>({
       _type: type,
     },
   });
+  const height = type == "resistor" ? svgSize / 2 : svgSize;
   return (
     <img
       {...listeners}
@@ -49,6 +51,8 @@ function Item<T extends ElectricalComponent>({
       src={src}
       style={{
         transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
+        width: `${svgSize}px`,
+        height: `${height}px`,
       }}
       data-testid={`add-${type}`}
     />
