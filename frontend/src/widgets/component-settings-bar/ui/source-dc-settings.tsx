@@ -11,7 +11,7 @@ export function SourceDCSettings({ component }: { component: WithID<SourceDC> })
       <p>Источник постоянного напряжения</p>
       <UpdateSourceDC defaultValue={component} />
       <div className="flex flex-row items-center space-x-2">
-        <Button type="submit" form="update-resistor">
+        <Button type="submit" form="update-source-dc">
           Сохранить
         </Button>
         <Button
