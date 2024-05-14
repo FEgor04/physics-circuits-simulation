@@ -8,10 +8,10 @@ export function SourceDCSettings({ component }: { component: WithID<SourceDC> })
   const onDeleteComponent = useDeleteComponent();
   return (
     <div className="flex w-full flex-col gap-2 p-4">
-      <p>Резистор</p>
+      <p>Источник постоянного тока</p>
       <UpdateSourceDC defaultValue={component} />
       <div className="flex flex-row items-center space-x-2">
-        <Button type="submit" form="update-resistor">
+        <Button type="submit" form="update-source-dc">
           Сохранить
         </Button>
         <Button
