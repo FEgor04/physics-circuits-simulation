@@ -8,7 +8,6 @@ import org.circuisim.service.UserService;
 import org.circuisim.web.dto.ElectricalComponentDto;
 import org.circuisim.web.dto.PointDto;
 import org.circuisim.web.responseRecord.SchemeResponse;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -27,7 +26,7 @@ public class SchemeMapper {
     public SchemeResponse toResponse(Scheme scheme, String username) {
         User user = userService.getByEmail(username);
         boolean status;
-        if (scheme.getRedactors()!=null && !scheme.getRedactors().isEmpty()) {
+        if (scheme.getRedactors() != null && !scheme.getRedactors().isEmpty()) {
             status = scheme.getRedactors().contains(user) || scheme.getAuthor().getName().equals(username);
         } else {
             status = scheme.getAuthor().getUsername().equals(username);
@@ -46,8 +45,8 @@ public class SchemeMapper {
             var electricalComponentDto = new ElectricalComponentDto();
             electricalComponentDto.setComponentId(x.getPk().getId());
             electricalComponentDto.setType(x.getType());
-            electricalComponentDto.setA(new PointDto(x.getA().getPointPK().getX(),x.getA().getPointPK().getY()));
-            electricalComponentDto.setB(new PointDto(x.getB().getPointPK().getX(),x.getB().getPointPK().getY()));
+            electricalComponentDto.setA(new PointDto(x.getA().getPointPK().getX(), x.getA().getPointPK().getY()));
+            electricalComponentDto.setB(new PointDto(x.getB().getPointPK().getX(), x.getB().getPointPK().getY()));
             return electricalComponentDto;
         }).toList();
     }
@@ -55,11 +54,11 @@ public class SchemeMapper {
     public List<ElectricalComponent> toEntities(List<ElectricalComponentDto> components, Scheme scheme) {
         return components.stream().map(x -> {
             var electricalComponent = new ElectricalComponent();
-            electricalComponent.setPk(new ElectricalComponentPK(x.getComponentId(),scheme.getId()));
+            electricalComponent.setPk(new ElectricalComponentPK(x.getComponentId(), scheme.getId()));
             electricalComponent.setScheme(scheme);
             electricalComponent.setType(x.getType());
-            electricalComponent.setA(new Point(new PointPK(x.b.x,x.b.y)));
-            electricalComponent.setB(new Point(new PointPK(x.a.x,x.a.y)));
+            electricalComponent.setA(new Point(new PointPK(x.b.x, x.b.y)));
+            electricalComponent.setB(new Point(new PointPK(x.a.x, x.a.y)));
             return electricalComponent;
         }).toList();
     }

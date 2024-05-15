@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PointServiceImpl implements PointService {
     private final PointRepository pointRepository;
+
     @Override
     public Point save(Point point) {
         return pointRepository.save(point);

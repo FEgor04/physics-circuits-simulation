@@ -1,7 +1,4 @@
 package org.circuisim.web.requestRecord;
 
-public record SchemeCreateRequest(
-        String name
-) {
-
+public record SchemeCreateRequest(String name) {
 }

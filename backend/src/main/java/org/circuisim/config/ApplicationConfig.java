@@ -12,10 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.rsocket.RSocketSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -68,17 +66,17 @@ public class ApplicationConfig {
                                                     .write("Unauthorized.");
                                         }))
                 .authorizeHttpRequests(configurer ->
-                        configurer
-                                .requestMatchers("/api/auth/**")
-                                .permitAll()
-                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
-                                .permitAll()
-                                .requestMatchers("/actuator", "/actuator/**", "/actuator/prometheus", "/**")
-                                .permitAll()
-                                .requestMatchers("/h2-console/**")
-                                .permitAll()
+                                configurer
+                                        .requestMatchers("/api/auth/**")
+                                        .permitAll()
+                                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+                                        .permitAll()
+                                        .requestMatchers("/actuator", "/actuator/**", "/actuator/prometheus", "/**")
+                                        .permitAll()
+                                        .requestMatchers("/h2-console/**")
+                                        .permitAll()
 //                                .anyRequest().permitAll()
-                                .anyRequest().authenticated()
+                                        .anyRequest().authenticated()
                 ).headers(headers -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
                 .anonymous(AbstractHttpConfigurer::disable)

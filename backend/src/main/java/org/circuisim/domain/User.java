@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.circuisim.domain.simulation.Scheme;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -35,15 +34,12 @@ public class User implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private Set<Role> roles;
 
-
-
     @Override
     public Collection<? extends SimpleGrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> list = new ArrayList<SimpleGrantedAuthority>();
         for (Role role : roles) {
             list.add(new SimpleGrantedAuthority("ROLE" + role.name().toUpperCase()));
         }
-//        list.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         return list;
     }
 

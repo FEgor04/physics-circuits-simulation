@@ -23,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -41,6 +42,9 @@ public class SchemeServiceImpl implements SchemeService {
         scheme.setName(schemeRequest.name());
         scheme.setAuthor(userService.getByEmail(userDetails.getUsername()));
         scheme = this.save(scheme);
+        Set<User> set = new HashSet<>();
+        set.add(scheme.getAuthor());
+        scheme.setRedactors(set);
         return scheme;
     }
 
@@ -56,11 +60,6 @@ public class SchemeServiceImpl implements SchemeService {
     @Override
     public List<Scheme> getAll() {
         return schemeRepository.findAll();
-    }
-
-    @Override
-    public Scheme update(SchemeResponse schemeResponse) {
-        return null;
     }
 
     @Override
