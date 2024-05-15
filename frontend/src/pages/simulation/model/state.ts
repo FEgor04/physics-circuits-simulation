@@ -1,6 +1,11 @@
 import { useState } from "react";
-import { Point } from "recharts/types/shape/Curve";
-import { ElectricalComponent, ElectricalComponentID, ElectricalComponentWithID, Wire } from "@/shared/simulation";
+import {
+  ElectricalComponent,
+  ElectricalComponentID,
+  ElectricalComponentWithID,
+  Wire,
+  Point,
+} from "@/shared/simulation/types";
 import { updateComponentCoords } from "../lib";
 
 type SimulationState = {
@@ -21,17 +26,16 @@ export function useSimulationState(components: Array<ElectricalComponentWithID>)
         id = (old.length ? old.map((it) => it.id).sort((a, b) => b - a)[0] : 0) + 1;
 
         if (newComponent._type === "wire") {
-          const wire = newComponent as Wire;
-          const intermediatePoints: Point[] = findIntermediatePoints(wire.a, wire.b);
+          const intermediatePoints: Point[] = findIntermediatePoints(newComponent.a, newComponent.b);
 
           if (intermediatePoints.length > 0) {
             const segments: Wire[] = [];
-            let currentStart = wire.a;
+            let currentStart = newComponent.a;
             for (const point of intermediatePoints) {
               segments.push({ _type: "wire", a: currentStart, b: point });
               currentStart = point;
             }
-            segments.push({ _type: "wire", a: currentStart, b: wire.b });
+            segments.push({ _type: "wire", a: currentStart, b: newComponent.b });
 
             return [...old, ...segments.map((segment, index) => ({ ...segment, id: id + index }))];
           }
