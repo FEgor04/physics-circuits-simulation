@@ -17,10 +17,12 @@ import org.circuisim.web.mapper.SchemeMapper;
 import org.circuisim.web.requestRecord.SchemeCreateRequest;
 import org.circuisim.web.requestRecord.SchemeRequest;
 import org.circuisim.web.requestRecord.SetPermissionsRequest;
+import org.circuisim.web.responseRecord.GetUsersPermissionsResponse;
 import org.circuisim.web.responseRecord.SchemeResponse;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -90,12 +92,13 @@ public class SchemeServiceImpl implements SchemeService {
         for (var request : requests) {
             var permission = request.permission();
             if (permission.equals(Permission.EDIT)) {
-                schemeUsers = getById(schemeId).getRedactors();
+                schemeUsers = scheme.getRedactors();
             } else {
                 schemeUsers = scheme.getViewers();
             }
             var user = userService.getByEmail(request.username());
             schemeUsers.remove(user);
+
 
             if (permission.equals(Permission.EDIT)) {
                 scheme.setRedactors(schemeUsers);
@@ -104,6 +107,22 @@ public class SchemeServiceImpl implements SchemeService {
             }
         }
         save(scheme);
+    }
+
+    @Override
+    public List<GetUsersPermissionsResponse> getUsersById(Long id) {
+        var scheme = getById(id);
+        var schemeViewers = scheme.getViewers();
+        var schemeRedactors = scheme.getRedactors();
+        List<GetUsersPermissionsResponse> response = new ArrayList<>();
+        for (var user : schemeRedactors) {
+            response.add(new GetUsersPermissionsResponse(user.getUsername(), Permission.EDIT));
+        }
+        for (var user : schemeViewers) {
+            if (!schemeRedactors.contains(user))
+                response.add(new GetUsersPermissionsResponse(user.getUsername(), Permission.VIEW));
+        }
+        return response;
     }
 
 
