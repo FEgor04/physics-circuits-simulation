@@ -63,7 +63,7 @@ function findIntermediatePoints(a: Point, b: Point): Point[] {
 
   const dx = b.x - a.x;
   const dy = b.y - a.y;
-  const gcd = (x: number, y: number): number => y === 0 ? x : gcd(y, x % y);
+  const gcd = (x: number, y: number): number => (y === 0 ? x : gcd(y, x % y));
   const step = gcd(Math.abs(dx), Math.abs(dy));
 
   const stepX = dx / step;
