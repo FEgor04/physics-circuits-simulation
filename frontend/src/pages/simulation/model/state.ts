@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { ElectricalComponent, ElectricalComponentID, ElectricalComponentWithID } from "@/shared/simulation";
+import { Point } from "recharts/types/shape/Curve";
+import { ElectricalComponent, ElectricalComponentID, ElectricalComponentWithID, Wire } from "@/shared/simulation";
 import { updateComponentCoords } from "../lib";
 
 type SimulationState = {
@@ -16,12 +17,28 @@ export function useSimulationState(components: Array<ElectricalComponentWithID>)
     onAddComponent: function (newComponent: ElectricalComponent): ElectricalComponentWithID {
       let id = 0;
       setSchema((old) => {
-        id = old
-          .map((it) => it.id)
-          .sort()
-          .reverse()[0];
+        id = (old.length ? old.map((it) => it.id).sort((a, b) => b - a)[0] : 0) + 1;
+
+        if (newComponent._type === "wire") {
+          const wire = newComponent as Wire;
+          const intermediatePoints: Point[] = findIntermediatePoints(wire.a, wire.b);
+
+          if (intermediatePoints.length > 0) {
+            const segments: Wire[] = [];
+            let currentStart = wire.a;
+            for (const point of intermediatePoints) {
+              segments.push({ _type: "wire", a: currentStart, b: point });
+              currentStart = point;
+            }
+            segments.push({ _type: "wire", a: currentStart, b: wire.b });
+
+            return [...old, ...segments.map((segment, index) => ({ ...segment, id: id + index }))];
+          }
+        }
+
         return [...old, { ...newComponent, id }];
       });
+
       return { ...newComponent, id };
     },
     onUpdateComponent: function (component: ElectricalComponentWithID): void {
@@ -35,4 +52,27 @@ export function useSimulationState(components: Array<ElectricalComponentWithID>)
       });
     },
   };
+}
+
+function findIntermediatePoints(a: Point, b: Point): Point[] {
+  const points: Point[] = [];
+
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const gcd = (x: number, y: number): number => y === 0 ? x : gcd(y, x % y);
+  const step = gcd(Math.abs(dx), Math.abs(dy));
+
+  const stepX = dx / step;
+  const stepY = dy / step;
+
+  for (let i = 1; i < step; i++) {
+    const x = a.x + stepX * i;
+    const y = a.y + stepY * i;
+
+    if (Number.isInteger(x) && Number.isInteger(y)) {
+      points.push({ x, y });
+    }
+  }
+
+  return points;
 }
