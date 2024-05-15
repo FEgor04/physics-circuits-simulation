@@ -10,8 +10,8 @@ const createWire = (a: Point, b: Point): Wire => ({
   b,
 });
 
-describe("wire separate test 1 ", () => {
-  it("splits a wire passing through multiple integer points into multiple wires", () => {
+describe("wire separate tests", () => {
+  it("wire separate test 1 with split", () => {
     const initialComponents: ElectricalComponentWithID[] = [];
     const { result } = renderHook(() => useSimulationState(initialComponents));
 
@@ -45,41 +45,8 @@ describe("wire separate test 1 ", () => {
     expect(wire2.id).toBe(2);
     expect(wire3.id).toBe(3);
   });
-});
 
-describe("wire separate test 2", () => {
-  it("splits a wire passing through multiple integer points into multiple wires", () => {
-    const initialComponents: ElectricalComponentWithID[] = [];
-    const { result } = renderHook(() => useSimulationState(initialComponents));
-
-    const wire: Wire = createWire({ x: 0, y: 0 }, { x: 2, y: 2 });
-
-    act(() => {
-      result.current.onAddComponent(wire);
-    });
-
-    const schema = result.current.components as Array<WithID<Wire>>;
-    expect(schema.length).toBe(2);
-
-    const wire1 = schema[0];
-    const wire2 = schema[1];
-
-    // Verify that the first wire is from (0, 0) to (1, 1)
-    expect(wire1.a).toEqual({ x: 0, y: 0 });
-    expect(wire1.b).toEqual({ x: 1, y: 1 });
-
-    // Verify that the second wire is from (1, 1) to (2, 2)
-    expect(wire2.a).toEqual({ x: 1, y: 1 });
-    expect(wire2.b).toEqual({ x: 2, y: 2 });
-
-    // Verify that the ids are consecutive
-    expect(wire1.id).toBe(1);
-    expect(wire2.id).toBe(2);
-  });
-});
-
-describe("wire separate test 3", () => {
-  it("splits a wire passing through multiple integer points into multiple wires", () => {
+  it("wire separate test 2 without split", () => {
     const initialComponents: ElectricalComponentWithID[] = [];
     const { result } = renderHook(() => useSimulationState(initialComponents));
 
@@ -101,10 +68,8 @@ describe("wire separate test 3", () => {
     // Verify that the ids are consecutive
     expect(wire1.id).toBe(1);
   });
-});
 
-describe("wire separate test 4", () => {
-  it("splits a wire passing through multiple integer points into multiple wires", () => {
+  it("wire separate test 3 with split", () => {
     const initialComponents: ElectricalComponentWithID[] = [];
     const { result } = renderHook(() => useSimulationState(initialComponents));
 
@@ -132,10 +97,8 @@ describe("wire separate test 4", () => {
     expect(wire1.id).toBe(1);
     expect(wire2.id).toBe(2);
   });
-});
 
-describe("wire separate test 5", () => {
-  it("splits a wire passing through multiple integer points into multiple wires", () => {
+  it("wire separate test 4 with split", () => {
     const initialComponents: ElectricalComponentWithID[] = [];
     const { result } = renderHook(() => useSimulationState(initialComponents));
 
