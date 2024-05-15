@@ -1,17 +1,17 @@
 package org.circuisim.domain.simulation;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "points")
+import java.io.Serializable;
+
+@Embeddable
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Point {
-    @EmbeddedId
-    private PointPK pointPK;
-
+public class PointPK implements Serializable {
+    public int x;
+    public int y;
 }

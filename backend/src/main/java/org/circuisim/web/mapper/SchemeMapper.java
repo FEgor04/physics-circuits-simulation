@@ -2,10 +2,7 @@ package org.circuisim.web.mapper;
 
 import lombok.RequiredArgsConstructor;
 import org.circuisim.domain.User;
-import org.circuisim.domain.simulation.ElectricalComponent;
-import org.circuisim.domain.simulation.ElectricalComponentPK;
-import org.circuisim.domain.simulation.Point;
-import org.circuisim.domain.simulation.Scheme;
+import org.circuisim.domain.simulation.*;
 import org.circuisim.service.ElectricalComponentService;
 import org.circuisim.service.UserService;
 import org.circuisim.web.dto.ElectricalComponentDto;
@@ -49,8 +46,8 @@ public class SchemeMapper {
             var electricalComponentDto = new ElectricalComponentDto();
             electricalComponentDto.setComponentId(x.getPk().getId());
             electricalComponentDto.setType(x.getType());
-            electricalComponentDto.setA(new PointDto(x.getA().getX(),x.getA().getY()));
-            electricalComponentDto.setB(new PointDto(x.getB().getX(),x.getB().getY()));
+            electricalComponentDto.setA(new PointDto(x.getA().getPointPK().getX(),x.getA().getPointPK().getY()));
+            electricalComponentDto.setB(new PointDto(x.getB().getPointPK().getX(),x.getB().getPointPK().getY()));
             return electricalComponentDto;
         }).toList();
     }
@@ -61,8 +58,8 @@ public class SchemeMapper {
             electricalComponent.setPk(new ElectricalComponentPK(x.getComponentId(),scheme.getId()));
             electricalComponent.setScheme(scheme);
             electricalComponent.setType(x.getType());
-            electricalComponent.setA(new Point(null,x.b.x,x.b.y));
-            electricalComponent.setB(new Point(null,x.a.x,x.a.y));
+            electricalComponent.setA(new Point(new PointPK(x.b.x,x.b.y)));
+            electricalComponent.setB(new Point(new PointPK(x.a.x,x.a.y)));
             return electricalComponent;
         }).toList();
     }

@@ -9,5 +9,4 @@ import java.util.List;
 
 public interface ElectricalComponentRepository extends JpaRepository<ElectricalComponent, ElectricalComponentPK> {
     List<ElectricalComponent> findAllBySchemeId(Long id);
-    List<ElectricalComponent> findElectricalComponentByPk(ElectricalComponentPK electricalComponentPK);
 }

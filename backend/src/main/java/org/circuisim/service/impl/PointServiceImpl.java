@@ -2,6 +2,7 @@ package org.circuisim.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.circuisim.domain.simulation.Point;
+import org.circuisim.domain.simulation.PointPK;
 import org.circuisim.exception.ResourceNotFoundException;
 import org.circuisim.repository.PointRepository;
 import org.circuisim.service.PointService;
@@ -17,7 +18,7 @@ public class PointServiceImpl implements PointService {
     }
 
     @Override
-    public Point getById(Long id) {
+    public Point getById(PointPK id) {
         return pointRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Point not found"));
     }
 }

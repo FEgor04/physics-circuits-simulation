@@ -2,10 +2,7 @@ package org.circuisim.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.circuisim.domain.User;
-import org.circuisim.domain.simulation.ElectricalComponent;
-import org.circuisim.domain.simulation.ElectricalComponentPK;
-import org.circuisim.domain.simulation.Point;
-import org.circuisim.domain.simulation.Scheme;
+import org.circuisim.domain.simulation.*;
 import org.circuisim.exception.AccessDeniedException;
 import org.circuisim.exception.ResourceNotFoundException;
 import org.circuisim.repository.ElectricalComponentRepository;
@@ -46,44 +43,38 @@ public class ElectricalComponentServiceImpl implements ElectricalComponentServic
             var electricalComponent1 = repository.findById(
                     new ElectricalComponentPK(electricalComponentDto.componentId, schemeId)
             );
-            if(electricalComponent1.isPresent()) {
+            if (electricalComponent1.isPresent()) {
                 var electricalComponent = electricalComponent1.get();
 
-                var a = pointService.getById(electricalComponent.getA().getId());
-                a.setX(electricalComponentDto.getA().getX());
-                a.setY(electricalComponentDto.getA().getY());
+                var a = pointService.getById(electricalComponent.getA().getPointPK());
+                var pointPK = new PointPK(electricalComponentDto.getA().getX(), electricalComponentDto.getA().getY());
+                a.setPointPK(pointPK);
 
-                var b = pointService.getById(electricalComponent.getB().getId());
-                b.setX(electricalComponentDto.getB().getX());
-                b.setY(electricalComponentDto.getB().getY());
+                var b = pointService.getById(electricalComponent.getB().getPointPK());
+                pointPK = new PointPK(electricalComponentDto.getB().getX(), electricalComponentDto.getB().getY());
+                b.setPointPK(pointPK);
 
                 pointService.save(a);
                 pointService.save(b);
                 repository.save(electricalComponent);
-            }else{
-                var scheme= schemeService.getById(schemeId);
+            } else {
+                var scheme = schemeService.getById(schemeId);
                 var component = new ElectricalComponent();
                 component.setPk(new ElectricalComponentPK(electricalComponentDto.getComponentId(), scheme.getId()));
                 component.setScheme(scheme);
                 component.setType(electricalComponentDto.getType());
                 var a = pointService.save(
                         new Point(
-                                null,
-                                electricalComponentDto.getA().getX(),
-                                electricalComponentDto.getA().getY()
-                        ));
+                                new PointPK(electricalComponentDto.getA().getX(), electricalComponentDto.getA().getY())));
                 component.setA(a);
                 var b = pointService.save(
-                        new Point(
-                                null,
-                                electricalComponentDto.getB().getX(),
-                                electricalComponentDto.getB().getY()
-                        ));
+                        new Point(new PointPK(electricalComponentDto.getB().getX(), electricalComponentDto.getB().getY())));
                 component.setB(b);
                 save(component);
             }
         }
     }
+
     private boolean checkAccess(String username1, String username2, Set<User> users) {
         var user = userRepository.findByUsername(username2).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return username1.equals(username2) || (users != null && users.contains(user));
