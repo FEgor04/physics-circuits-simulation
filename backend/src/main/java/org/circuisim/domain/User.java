@@ -35,11 +35,7 @@ public class User implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private Set<Role> roles;
 
-    @ManyToMany
-    @JoinTable(name = "schemes_redactors",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "scheme_id"))
-    private Set<Scheme> schemes;
+
 
     @Override
     public Collection<? extends SimpleGrantedAuthority> getAuthorities() {

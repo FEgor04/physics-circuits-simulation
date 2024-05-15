@@ -1,6 +1,9 @@
 package org.circuisim.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.circuisim.domain.Permission;
+import org.circuisim.domain.User;
 import org.circuisim.domain.simulation.ElectricalComponent;
 import org.circuisim.domain.simulation.ElectricalComponentPK;
 import org.circuisim.domain.simulation.Scheme;
@@ -13,14 +16,17 @@ import org.circuisim.service.UserService;
 import org.circuisim.web.mapper.SchemeMapper;
 import org.circuisim.web.requestRecord.SchemeCreateRequest;
 import org.circuisim.web.requestRecord.SchemeRequest;
+import org.circuisim.web.requestRecord.SetPermissionsRequest;
 import org.circuisim.web.responseRecord.SchemeResponse;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SchemeServiceImpl implements SchemeService {
 
     private final SchemeRepository schemeRepository;
@@ -53,6 +59,51 @@ public class SchemeServiceImpl implements SchemeService {
     @Override
     public Scheme update(SchemeResponse schemeResponse) {
         return null;
+    }
+
+    @Override
+    public void addPermission(Long schemeId, List<SetPermissionsRequest> requests) {
+        var scheme = getById(schemeId);
+        for (var request : requests) {
+            var permission = request.permission();
+            Set<User> schemeUsers;
+            if (permission.equals(Permission.EDIT)) {
+                schemeUsers = scheme.getRedactors();
+            } else {
+                schemeUsers = scheme.getViewers();
+            }
+            var user = userService.getByEmail(request.username());
+            schemeUsers.add(user);
+            if (permission.equals(Permission.EDIT)) {
+                scheme.setRedactors(schemeUsers);
+            } else {
+                scheme.setViewers(schemeUsers);
+            }
+        }
+        save(scheme);
+    }
+
+    @Override
+    public void removePermission(Long schemeId, List<SetPermissionsRequest> requests) {
+        Set<User> schemeUsers;
+        var scheme = getById(schemeId);
+        for (var request : requests) {
+            var permission = request.permission();
+            if (permission.equals(Permission.EDIT)) {
+                schemeUsers = getById(schemeId).getRedactors();
+            } else {
+                schemeUsers = scheme.getViewers();
+            }
+            var user = userService.getByEmail(request.username());
+            schemeUsers.remove(user);
+
+            if (permission.equals(Permission.EDIT)) {
+                scheme.setRedactors(schemeUsers);
+            } else {
+                scheme.setViewers(schemeUsers);
+            }
+        }
+        save(scheme);
     }
 
 

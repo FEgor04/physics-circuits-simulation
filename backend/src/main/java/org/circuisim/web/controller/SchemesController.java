@@ -10,6 +10,7 @@ import org.circuisim.web.dto.ElectricalComponentDto;
 import org.circuisim.web.mapper.SchemeMapper;
 import org.circuisim.web.requestRecord.SchemeCreateRequest;
 import org.circuisim.web.requestRecord.SchemeRequest;
+import org.circuisim.web.requestRecord.SetPermissionsRequest;
 import org.circuisim.web.responseRecord.SchemeResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -61,8 +62,21 @@ public class SchemesController {
     }
     @PutMapping("{id}/permissions")
     public ResponseEntity<String> setPermissionsByIdScheme(
-            @PathVariable @Parameter(description = "Scheme id", required = true) Long id
+            @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
+            @RequestBody List<SetPermissionsRequest> request
     ){
+        schemeService.addPermission(id,request);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("{id}/permissions")
+    public ResponseEntity<String> deletePermissionsByIdScheme(
+            @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
+            @RequestBody List<SetPermissionsRequest> request
+    ){
+        schemeService.removePermission(id,request);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

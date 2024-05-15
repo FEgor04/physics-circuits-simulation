@@ -23,9 +23,16 @@ public class Scheme {
 
     @ManyToOne
     private User author;
-    @ManyToMany
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "schemes_redactors",
             joinColumns = @JoinColumn(name = "scheme_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> redactors;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "schemes_viewers",
+            joinColumns = @JoinColumn(name = "scheme_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> viewers;
 }
