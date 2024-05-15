@@ -49,7 +49,8 @@ public class SchemeMapper {
             var electricalComponentDto = new ElectricalComponentDto();
             electricalComponentDto.setComponentId(x.getPk().getId());
             electricalComponentDto.setType(x.getType());
-            electricalComponentDto.setPoint(new PointDto(x.getPoint().getX(),x.getPoint().getY()));
+            electricalComponentDto.setA(new PointDto(x.getA().getX(),x.getA().getY()));
+            electricalComponentDto.setB(new PointDto(x.getB().getX(),x.getB().getY()));
             return electricalComponentDto;
         }).toList();
     }
@@ -60,7 +61,8 @@ public class SchemeMapper {
             electricalComponent.setPk(new ElectricalComponentPK(x.getComponentId(),scheme.getId()));
             electricalComponent.setScheme(scheme);
             electricalComponent.setType(x.getType());
-            electricalComponent.setPoint(new Point(null,x.point.x,x.point.y));
+            electricalComponent.setA(new Point(null,x.b.x,x.b.y));
+            electricalComponent.setB(new Point(null,x.a.x,x.a.y));
             return electricalComponent;
         }).toList();
     }

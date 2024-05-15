@@ -15,5 +15,6 @@ import org.circuisim.domain.simulation.TypeElectricalComponent;
 public class ElectricalComponentDto {
     public Long componentId;
     public TypeElectricalComponent type;
-    public PointDto point;
+    public PointDto a;
+    public PointDto b;
 }

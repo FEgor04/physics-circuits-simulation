@@ -21,5 +21,7 @@ public class ElectricalComponent {
     private Scheme scheme;
 
     @OneToOne
-    private Point point;
+    private Point a;
+    @OneToOne
+    private Point b;
 }

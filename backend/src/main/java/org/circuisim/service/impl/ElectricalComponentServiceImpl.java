@@ -48,10 +48,17 @@ public class ElectricalComponentServiceImpl implements ElectricalComponentServic
             );
             if(electricalComponent1.isPresent()) {
                 var electricalComponent = electricalComponent1.get();
-                var point = pointService.getById(electricalComponent.getPoint().getId());
-                point.setX(electricalComponentDto.getPoint().getX());
-                point.setY(electricalComponentDto.getPoint().getY());
-                pointService.save(point);
+
+                var a = pointService.getById(electricalComponent.getA().getId());
+                a.setX(electricalComponentDto.getA().getX());
+                a.setY(electricalComponentDto.getA().getY());
+
+                var b = pointService.getById(electricalComponent.getB().getId());
+                b.setX(electricalComponentDto.getB().getX());
+                b.setY(electricalComponentDto.getB().getY());
+
+                pointService.save(a);
+                pointService.save(b);
                 repository.save(electricalComponent);
             }else{
                 var scheme= schemeService.getById(schemeId);
@@ -59,22 +66,24 @@ public class ElectricalComponentServiceImpl implements ElectricalComponentServic
                 component.setPk(new ElectricalComponentPK(electricalComponentDto.getComponentId(), scheme.getId()));
                 component.setScheme(scheme);
                 component.setType(electricalComponentDto.getType());
-                var point = pointService.save(new Point(null,electricalComponentDto.getPoint().getX(),electricalComponentDto.getPoint().getY()));
-                component.setPoint(point);
+                var a = pointService.save(
+                        new Point(
+                                null,
+                                electricalComponentDto.getA().getX(),
+                                electricalComponentDto.getA().getY()
+                        ));
+                component.setA(a);
+                var b = pointService.save(
+                        new Point(
+                                null,
+                                electricalComponentDto.getB().getX(),
+                                electricalComponentDto.getB().getY()
+                        ));
+                component.setB(b);
                 save(component);
             }
         }
     }
-
-    private void saveAllComponents(List<ElectricalComponent> components, Scheme scheme) {
-        for(ElectricalComponent element : components){
-            var point = element.getPoint();
-            point = pointService.save(point);
-            element.setPoint(point);
-            element = this.save(element);
-        }
-    }
-
     private boolean checkAccess(String username1, String username2, Set<User> users) {
         var user = userRepository.findByUsername(username2).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return username1.equals(username2) || (users != null && users.contains(user));
