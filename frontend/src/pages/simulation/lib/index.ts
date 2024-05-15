@@ -1,3 +1,4 @@
+import { assertNever } from "@/shared/lib/types";
 import { ElectricalComponent, ElectricalComponentID, ElectricalComponentWithID } from "@/shared/simulation";
 
 export function updateComponentCoords<T extends ElectricalComponent>(component: T, dx: number, dy: number): T {
@@ -21,7 +22,7 @@ export function updateComponentCoords<T extends ElectricalComponent>(component: 
       b: newB,
     };
   }
-  if (component._type == "source") {
+  if (component._type == "source" || component._type == "sourceDC") {
     const newPlus = {
       x: component.plus.x + dx,
       y: component.plus.y + dy,
@@ -36,7 +37,7 @@ export function updateComponentCoords<T extends ElectricalComponent>(component: 
       plus: newPlus,
     };
   }
-  return component;
+  assertNever(component);
 }
 
 function generateComponentId(components: ReadonlyArray<ElectricalComponentWithID>): ElectricalComponentID {

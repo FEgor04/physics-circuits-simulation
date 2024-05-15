@@ -8,6 +8,7 @@ type SimulationState = {
   onAddComponent: (newComponent: ElectricalComponent) => ElectricalComponentWithID;
   onUpdateComponent: (component: ElectricalComponentWithID) => void;
   onUpdateComponentCoords: (id: ElectricalComponentID, dx: number, dy: number) => void;
+  onDeleteComponent: (id: ElectricalComponentID) => void;
 };
 
 export function useSimulationState(components: Array<ElectricalComponentWithID>): SimulationState {
@@ -35,13 +36,13 @@ export function useSimulationState(components: Array<ElectricalComponentWithID>)
             return [...old, ...segments.map((segment, index) => ({ ...segment, id: id + index }))];
           }
         }
-
         return [...old, { ...newComponent, id }];
       });
 
       return { ...newComponent, id };
     },
     onUpdateComponent: function (component: ElectricalComponentWithID): void {
+      console.log("Update component", component);
       setSchema((old) => [...old.filter((it) => it.id != component.id), component]);
     },
     onUpdateComponentCoords: function (id: number, dx: number, dy: number): void {
@@ -50,6 +51,9 @@ export function useSimulationState(components: Array<ElectricalComponentWithID>)
         const newComponent = updateComponentCoords(oldComponent, dx, dy);
         return [...old.filter((it) => it.id != id), newComponent];
       });
+    },
+    onDeleteComponent(id) {
+      setSchema((old) => old.filter((it) => it.id != id));
     },
   };
 }

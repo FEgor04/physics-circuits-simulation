@@ -1,27 +1,29 @@
-import { useState } from "react";
-import { Resistor } from "@/shared/simulation";
+import { Trash } from "lucide-react";
+import { useDeleteComponent } from "@/features/delete-component";
+import { UpdateResistor } from "@/features/update-component";
+import { Resistor, WithID } from "@/shared/simulation";
 import { Button } from "@/shared/ui/button.tsx";
-import { Slider } from "@/shared/ui/slider";
 
-export function ResistorSettings({ component }: { component: Resistor }) {
-  const [resistance, setResistance] = useState(component.resistance);
+export function ResistorSettings({ component }: { component: WithID<Resistor> }) {
+  const onDeleteComponent = useDeleteComponent();
   return (
     <div className="flex w-full flex-col gap-2 p-4">
       <p>Резистор</p>
-      <label htmlFor="resistanceSlider" className="block w-full">
-        Сопротивление: <span className="float-right">{resistance} Ом</span>
-      </label>
-      <Slider
-        defaultValue={[resistance]}
-        onValueChange={(value: number[]) => {
-          setResistance(value[0]);
-          component.resistance = value[0];
-        }}
-        min={1}
-        max={500}
-        id="resistanceSlider"
-      />
-      <Button>Удалить!</Button>
+      <UpdateResistor defaultValue={component} />
+      <div className="flex flex-row items-center space-x-2">
+        <Button type="submit" form="update-resistor">
+          Сохранить
+        </Button>
+        <Button
+          onClick={() => {
+            onDeleteComponent(component.id);
+          }}
+          variant="destructive"
+        >
+          <Trash className="mr-2 size-4" />
+          Удалить!
+        </Button>
+      </div>
     </div>
   );
 }
