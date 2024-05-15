@@ -41,10 +41,10 @@ public class SchemeServiceImpl implements SchemeService {
         var scheme = new Scheme();
         scheme.setName(schemeRequest.name());
         scheme.setAuthor(userService.getByEmail(userDetails.getUsername()));
-        scheme = this.save(scheme);
         Set<User> set = new HashSet<>();
         set.add(scheme.getAuthor());
         scheme.setRedactors(set);
+        scheme = this.save(scheme);
         return scheme;
     }
 

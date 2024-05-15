@@ -55,7 +55,7 @@ public class SchemesController {
     @PutMapping("{id}")
     public ResponseEntity<String> updateScheme(
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
-            @RequestBody List<ElectricalComponentDto> electricalComponentDto,
+            @RequestBody List<ElectricalComponentDto> electricalComponentDto
     ) {
         electricalComponentService.updateComponents(electricalComponentDto, id);
         return ResponseEntity.noContent().build();

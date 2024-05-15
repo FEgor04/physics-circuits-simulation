@@ -1,20 +1,15 @@
 package org.circuisim.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.circuisim.domain.User;
 import org.circuisim.domain.simulation.*;
-import org.circuisim.exception.ResourceNotFoundException;
 import org.circuisim.repository.ElectricalComponentRepository;
-import org.circuisim.repository.UserRepository;
 import org.circuisim.service.ElectricalComponentService;
 import org.circuisim.service.PointService;
 import org.circuisim.service.SchemeService;
 import org.circuisim.web.dto.ElectricalComponentDto;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
