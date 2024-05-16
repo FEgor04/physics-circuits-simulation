@@ -25,8 +25,8 @@ export function ComponentChooseBar() {
         <Item<Resistor> type="resistor" defaultValues={{ resistance: 10 }} src={resistorSvg} />
         <Item<SourceDC> type="sourceDC" defaultValues={{ electromotiveForce: 20 }} src={sourceDCSvg} />
         <Item<Source> type="source" defaultValues={{ electromotiveForce: 20, internalResistance: 5 }} src={sourceSvg} />
-        <Item<Ampermeter> type="ampermeter" defaultValues={{ currency: 0 }} src={ampermeterSvg} />
-        <Item<Voltmeter> type="voltmeter" defaultValues={{ voltage: 0 }} src={voltmeterSvg} />
+        <Item<Ampermeter> type="ampermeter" defaultValues={{ currency: "unknown" }} src={ampermeterSvg} />
+        <Item<Voltmeter> type="voltmeter" defaultValues={{ voltage: "unknown" }} src={voltmeterSvg} />
       </div>
     </ResizablePanel>
   );

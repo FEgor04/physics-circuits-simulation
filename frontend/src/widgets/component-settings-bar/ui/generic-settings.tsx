@@ -1,3 +1,4 @@
+import { assertNever } from "@/shared/lib/types.ts";
 import { ElectricalComponentWithID } from "@/shared/simulation";
 import { AmpermeterSettings } from "./ampermeter-settings.tsx";
 import { ResistorSettings } from "./resistor-settings.tsx";
@@ -14,5 +15,5 @@ export function GenericSettings({ component }: { component: ElectricalComponentW
   if (component._type == "ampermeter") return <AmpermeterSettings component={component} />;
   if (component._type == "voltmeter") return <VoltmeterSettings component={component} />;
   if (component._type == "wire") return <WireSettings component={component} />;
-  // return <>Тип компонента {component._type} не поддерживается</>;
+  assertNever(component);
 }
