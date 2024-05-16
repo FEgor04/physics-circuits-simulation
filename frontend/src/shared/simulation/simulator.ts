@@ -2,29 +2,29 @@
 
 import { CircuitSimulator } from "./interface";
 import { branchFactory, branchesEqual, deduplicateArray, getComponentContacts, pointsEqual } from "./lib";
-import { Branch, ElectricalComponent, Point } from "./types";
+import { Branch, ElectricalComponentWithID, Point } from "./types";
 
 export class SimpleSimulator implements CircuitSimulator {
-  components: ElectricalComponent[];
+  components: ElectricalComponentWithID[];
   // global state, нужен чтобы избежать ада проброски нод в функции
   private nodes: Array<Point>;
 
-  constructor(_component: ElectricalComponent[]) {
+  constructor(_component: ElectricalComponentWithID[]) {
     this.components = _component;
     this.nodes = [];
   }
 
-  addComponent(_component: ElectricalComponent) {
+  addComponent(_component: ElectricalComponentWithID) {
     this.components.push(_component);
   }
 
-  deleteComponent(_component: ElectricalComponent): void {}
+  deleteComponent(_component: ElectricalComponentWithID): void {}
 
-  getAllComponents(): ElectricalComponent[] {
+  getAllComponents(): ElectricalComponentWithID[] {
     return this.components;
   }
 
-  setComponents(_components: ElectricalComponent[]): void {}
+  setComponents(_components: ElectricalComponentWithID[]): void {}
 
   findNodes(): Array<Point> {
     const nodes: Array<Point> = [];
@@ -70,7 +70,7 @@ export class SimpleSimulator implements CircuitSimulator {
     return deduplicateArray(branches, branchesEqual);
   }
 
-  private findComponentsAtPoint(point: Point): Array<ElectricalComponent> {
+  private findComponentsAtPoint(point: Point): Array<ElectricalComponentWithID> {
     return this.components.filter(
       (component) => getComponentContacts(component).find((contact) => pointsEqual(contact, point)) !== undefined,
     );
@@ -88,7 +88,7 @@ export class SimpleSimulator implements CircuitSimulator {
   findBranchesStartingInPoint(
     root: Point,
     startingNode: Point,
-    componentsOnWay: Array<ElectricalComponent>,
+    componentsOnWay: Array<ElectricalComponentWithID>,
   ): Array<Branch> {
     if (!pointsEqual(root, startingNode) && this.pointIsNode(root)) {
       return [branchFactory(startingNode, root, componentsOnWay)];
@@ -321,5 +321,19 @@ export class SimpleSimulator implements CircuitSimulator {
       current.push(Math.abs(phiM - phiN + E) / R);
     }
     return current;
+  }
+
+  public getBranchCurrentForAmpermetr(id: number, branches: Branch[], currents: number[]): number {
+    let currentForAmper: number = 0;
+    const branchWithGivenComponent = branches.find(
+      (branch) => branch.components.find((element) => id == element.id) !== undefined,
+    );
+    for (let i = 0; i < branches.length; i++) {
+      if (branches[i] == branchWithGivenComponent) {
+        currentForAmper = currents[i];
+        break;
+      }
+    }
+    return currentForAmper;
   }
 }

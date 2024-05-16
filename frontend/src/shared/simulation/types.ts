@@ -13,7 +13,7 @@ export type Branch = {
   id: number;
   a: Point;
   b: Point;
-  components: ElectricalComponent[];
+  components: ElectricalComponentWithID[];
 };
 /**
  * Провод, соединяющий между собой две точки на стеке
