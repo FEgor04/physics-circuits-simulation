@@ -3,12 +3,16 @@ import { DndContext, DragEndEvent, MouseSensor, TouchSensor, useSensor } from "@
 import type { OmitBetter } from "@/shared/lib/types";
 import { ElectricalComponent, Point } from "@/shared/simulation/types";
 import { context as AddComponentContext, State } from "./context";
+import { getZoomCoefficient } from "@/shared/embed/utility.ts";
 
 type Props = React.PropsWithChildren<State>;
 
 function getCoordsFromEvent(event: DragEndEvent): Point {
   if (event.activatorEvent instanceof TouchEvent) {
-    return { x: event.delta.x, y: event.delta.y };
+    return {
+      x: event.delta.x + event.activatorEvent.touches[0].clientX,
+      y: event.delta.y + event.activatorEvent.touches[0].clientY,
+    };
   } else if (event.activatorEvent instanceof MouseEvent) {
     return { x: event.delta.x + event.activatorEvent.clientX, y: event.delta.y + event.activatorEvent.clientY };
   }
@@ -47,11 +51,13 @@ export const AddComponentContextProvider: React.FC<Props> = ({ children, ...prop
           const canvasHeight = rect.height;
           const top = rect.top;
           const left = rect.left;
-          const coefficient = Math.min(canvasWidth, canvasHeight) / 21;
+          const coefficient = getZoomCoefficient();
           const xCanvas = x - left;
           const yCanvas = y - top;
-          const xVirtual = Math.ceil((xCanvas - canvasWidth / 2) / coefficient);
-          const yVirtual = Math.ceil((canvasHeight / 2 - yCanvas) / coefficient);
+          const schemeWidth = Math.floor(canvasWidth / coefficient);
+          const schemeHeight = Math.floor(canvasHeight / coefficient);
+          const xVirtual = Math.floor(xCanvas / coefficient) - Math.floor(schemeWidth / 2);
+          const yVirtual = Math.floor(schemeHeight / 2) - Math.floor(yCanvas / coefficient);
           const data = e.active.data.current as OmitBetter<ElectricalComponent, "a" | "b" | "plus" | "minus">;
           const newComponent = componentAtCoords(data, { x: xVirtual, y: yVirtual });
           console.log(newComponent);
