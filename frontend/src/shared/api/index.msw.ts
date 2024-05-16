@@ -7,7 +7,99 @@
  */
 import { faker } from "@faker-js/faker";
 import { HttpResponse, delay, http } from "msw";
-import type { GetUserResponse, JwtResponse } from "./index.schemas";
+import type { GetUserResponse, GetUsersPermissionsResponse, JwtResponse, SchemeResponse } from "./index.schemas";
+
+export const getGetSchemeByIdResponseMock = (overrideResponse: any = {}): SchemeResponse => ({
+  authorName: faker.word.sample(),
+  canEdit: faker.datatype.boolean(),
+  components: faker.helpers.arrayElement([
+    Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
+      a: {
+        x: faker.number.int({ min: undefined, max: undefined }),
+        y: faker.number.int({ min: undefined, max: undefined }),
+        ...overrideResponse,
+      },
+      b: {
+        x: faker.number.int({ min: undefined, max: undefined }),
+        y: faker.number.int({ min: undefined, max: undefined }),
+        ...overrideResponse,
+      },
+      componentId: faker.number.int({ min: undefined, max: undefined }),
+      type: faker.helpers.arrayElement(["WIRE", "RESISTOR", "SOURCE", "SOURCE_DC", "VOLTMETER", "AMPERMETER"] as const),
+      ...overrideResponse,
+    })),
+    undefined,
+  ]),
+  id: faker.number.int({ min: undefined, max: undefined }),
+  name: faker.word.sample(),
+  ...overrideResponse,
+});
+
+export const getUpdateSchemeResponseMock = (): string => faker.word.sample();
+
+export const getSetPermissionsByIdSchemeResponseMock = (): string => faker.word.sample();
+
+export const getDeletePermissionsByIdSchemeResponseMock = (): string => faker.word.sample();
+
+export const getGetAllSchemesResponseMock = (overrideResponse: any = {}): SchemeResponse[] =>
+  Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
+    authorName: faker.word.sample(),
+    canEdit: faker.datatype.boolean(),
+    components: faker.helpers.arrayElement([
+      Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
+        a: {
+          x: faker.number.int({ min: undefined, max: undefined }),
+          y: faker.number.int({ min: undefined, max: undefined }),
+          ...overrideResponse,
+        },
+        b: {
+          x: faker.number.int({ min: undefined, max: undefined }),
+          y: faker.number.int({ min: undefined, max: undefined }),
+          ...overrideResponse,
+        },
+        componentId: faker.number.int({ min: undefined, max: undefined }),
+        type: faker.helpers.arrayElement([
+          "WIRE",
+          "RESISTOR",
+          "SOURCE",
+          "SOURCE_DC",
+          "VOLTMETER",
+          "AMPERMETER",
+        ] as const),
+        ...overrideResponse,
+      })),
+      undefined,
+    ]),
+    id: faker.number.int({ min: undefined, max: undefined }),
+    name: faker.word.sample(),
+    ...overrideResponse,
+  }));
+
+export const getCreateNewSchemeResponseMock = (overrideResponse: any = {}): SchemeResponse => ({
+  authorName: faker.word.sample(),
+  canEdit: faker.datatype.boolean(),
+  components: faker.helpers.arrayElement([
+    Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
+      a: {
+        x: faker.number.int({ min: undefined, max: undefined }),
+        y: faker.number.int({ min: undefined, max: undefined }),
+        ...overrideResponse,
+      },
+      b: {
+        x: faker.number.int({ min: undefined, max: undefined }),
+        y: faker.number.int({ min: undefined, max: undefined }),
+        ...overrideResponse,
+      },
+      componentId: faker.number.int({ min: undefined, max: undefined }),
+      type: faker.helpers.arrayElement(["WIRE", "RESISTOR", "SOURCE", "SOURCE_DC", "VOLTMETER", "AMPERMETER"] as const),
+      ...overrideResponse,
+    })),
+    undefined,
+  ]),
+  id: faker.number.int({ min: undefined, max: undefined }),
+  name: faker.word.sample(),
+  ...overrideResponse,
+});
 
 export const getRegisterResponseMock = (overrideResponse: any = {}): JwtResponse => ({
   accessToken: faker.word.sample(),
@@ -58,6 +150,91 @@ export const getGetCurrentUserResponseMock = (overrideResponse: any = {}): GetUs
   name: faker.word.sample(),
   ...overrideResponse,
 });
+
+export const getGetAllUsersBySchemeIdResponseMock = (overrideResponse: any = {}): GetUsersPermissionsResponse[] =>
+  Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
+    permission: faker.helpers.arrayElement(["EDIT", "VIEW"] as const),
+    username: faker.word.sample(),
+    ...overrideResponse,
+  }));
+
+export const getGetSchemeByIdMockHandler = (overrideResponse?: SchemeResponse) => {
+  return http.get("*/api/schemes/:id", async () => {
+    await delay(1000);
+    return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getGetSchemeByIdResponseMock()), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  });
+};
+
+export const getUpdateSchemeMockHandler = (overrideResponse?: string) => {
+  return http.put("*/api/schemes/:id", async () => {
+    await delay(1000);
+    return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getUpdateSchemeResponseMock()), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  });
+};
+
+export const getSetPermissionsByIdSchemeMockHandler = (overrideResponse?: string) => {
+  return http.put("*/api/schemes/:id/permissions", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(overrideResponse ? overrideResponse : getSetPermissionsByIdSchemeResponseMock()),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  });
+};
+
+export const getDeletePermissionsByIdSchemeMockHandler = (overrideResponse?: string) => {
+  return http.delete("*/api/schemes/:id/permissions", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(overrideResponse ? overrideResponse : getDeletePermissionsByIdSchemeResponseMock()),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  });
+};
+
+export const getGetAllSchemesMockHandler = (overrideResponse?: SchemeResponse[]) => {
+  return http.get("*/api/schemes", async () => {
+    await delay(1000);
+    return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getGetAllSchemesResponseMock()), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  });
+};
+
+export const getCreateNewSchemeMockHandler = (overrideResponse?: SchemeResponse) => {
+  return http.post("*/api/schemes", async () => {
+    await delay(1000);
+    return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getCreateNewSchemeResponseMock()), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  });
+};
 
 export const getRegisterMockHandler = (overrideResponse?: JwtResponse) => {
   return http.post("*/api/auth/register", async () => {
@@ -130,11 +307,33 @@ export const getGetCurrentUserMockHandler = (overrideResponse?: GetUserResponse)
     });
   });
 };
+
+export const getGetAllUsersBySchemeIdMockHandler = (overrideResponse?: GetUsersPermissionsResponse[]) => {
+  return http.get("*/api/schemes/:id/users", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(overrideResponse ? overrideResponse : getGetAllUsersBySchemeIdResponseMock()),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  });
+};
 export const getPhysicsCircuitsSimulationEngineMock = () => [
+  getGetSchemeByIdMockHandler(),
+  getUpdateSchemeMockHandler(),
+  getSetPermissionsByIdSchemeMockHandler(),
+  getDeletePermissionsByIdSchemeMockHandler(),
+  getGetAllSchemesMockHandler(),
+  getCreateNewSchemeMockHandler(),
   getRegisterMockHandler(),
   getRegisterAdminMockHandler(),
   getRefreshMockHandler(),
   getLoginMockHandler(),
   getGetUserByIdMockHandler(),
   getGetCurrentUserMockHandler(),
+  getGetAllUsersBySchemeIdMockHandler(),
 ];

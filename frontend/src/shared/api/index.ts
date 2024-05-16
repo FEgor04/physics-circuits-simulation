@@ -7,7 +7,62 @@
  */
 import * as axios from "axios";
 import type { AxiosRequestConfig, AxiosResponse } from "axios";
-import type { GetUserResponse, JwtResponse, SignInRequest, SignUpAdminRequest, SignUpRequest } from "./index.schemas";
+import type {
+  ElectricalComponentDto,
+  GetUserResponse,
+  GetUsersPermissionsResponse,
+  JwtResponse,
+  SchemeCreateRequest,
+  SchemeResponse,
+  SetPermissionsRequest,
+  SignInRequest,
+  SignUpAdminRequest,
+  SignUpRequest,
+} from "./index.schemas";
+
+export const getSchemeById = <TData = AxiosResponse<SchemeResponse>>(
+  id: number,
+  options?: AxiosRequestConfig,
+): Promise<TData> => {
+  return axios.default.get(`/api/schemes/${id}`, options);
+};
+
+export const updateScheme = <TData = AxiosResponse<string>>(
+  id: number,
+  electricalComponentDto: ElectricalComponentDto[],
+  options?: AxiosRequestConfig,
+): Promise<TData> => {
+  return axios.default.put(`/api/schemes/${id}`, electricalComponentDto, options);
+};
+
+export const setPermissionsByIdScheme = <TData = AxiosResponse<string>>(
+  id: number,
+  setPermissionsRequest: SetPermissionsRequest[],
+  options?: AxiosRequestConfig,
+): Promise<TData> => {
+  return axios.default.put(`/api/schemes/${id}/permissions`, setPermissionsRequest, options);
+};
+
+export const deletePermissionsByIdScheme = <TData = AxiosResponse<string>>(
+  id: number,
+  setPermissionsRequest: SetPermissionsRequest[],
+  options?: AxiosRequestConfig,
+): Promise<TData> => {
+  return axios.default.delete(`/api/schemes/${id}/permissions`, { data: setPermissionsRequest, ...options });
+};
+
+export const getAllSchemes = <TData = AxiosResponse<SchemeResponse[]>>(
+  options?: AxiosRequestConfig,
+): Promise<TData> => {
+  return axios.default.get(`/api/schemes`, options);
+};
+
+export const createNewScheme = <TData = AxiosResponse<SchemeResponse>>(
+  schemeCreateRequest: SchemeCreateRequest,
+  options?: AxiosRequestConfig,
+): Promise<TData> => {
+  return axios.default.post(`/api/schemes`, schemeCreateRequest, options);
+};
 
 /**
  * Registers a new user with provided details and generates JWT token
@@ -74,9 +129,23 @@ export const getCurrentUser = <TData = AxiosResponse<GetUserResponse>>(
   return axios.default.get(`/api/users/me`, options);
 };
 
+export const getAllUsersBySchemeId = <TData = AxiosResponse<GetUsersPermissionsResponse[]>>(
+  id: number,
+  options?: AxiosRequestConfig,
+): Promise<TData> => {
+  return axios.default.get(`/api/schemes/${id}/users`, options);
+};
+
+export type GetSchemeByIdResult = AxiosResponse<SchemeResponse>;
+export type UpdateSchemeResult = AxiosResponse<string>;
+export type SetPermissionsByIdSchemeResult = AxiosResponse<string>;
+export type DeletePermissionsByIdSchemeResult = AxiosResponse<string>;
+export type GetAllSchemesResult = AxiosResponse<SchemeResponse[]>;
+export type CreateNewSchemeResult = AxiosResponse<SchemeResponse>;
 export type RegisterResult = AxiosResponse<JwtResponse>;
 export type RegisterAdminResult = AxiosResponse<JwtResponse>;
 export type RefreshResult = AxiosResponse<JwtResponse>;
 export type LoginResult = AxiosResponse<JwtResponse>;
 export type GetUserByIdResult = AxiosResponse<GetUserResponse>;
 export type GetCurrentUserResult = AxiosResponse<GetUserResponse>;
+export type GetAllUsersBySchemeIdResult = AxiosResponse<GetUsersPermissionsResponse[]>;
