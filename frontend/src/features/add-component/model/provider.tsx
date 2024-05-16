@@ -1,5 +1,5 @@
 import "react";
-import { DndContext, DragEndEvent, MouseSensor, useSensor } from "@dnd-kit/core";
+import { DndContext, DragEndEvent, MouseSensor, TouchSensor, useSensor } from "@dnd-kit/core";
 import type { OmitBetter } from "@/shared/lib/types";
 import { ElectricalComponent, Point } from "@/shared/simulation/types";
 import { context as AddComponentContext, State } from "./context";
@@ -7,8 +7,12 @@ import { context as AddComponentContext, State } from "./context";
 type Props = React.PropsWithChildren<State>;
 
 function getCoordsFromEvent(event: DragEndEvent): Point {
-  // @ts-expect-error its fine
-  return { x: event.delta.x + event.activatorEvent.clientX, y: event.delta.y + event.activatorEvent.clientY };
+  if (event.activatorEvent instanceof TouchEvent) {
+    return { x: event.delta.x, y: event.delta.y };
+  } else if (event.activatorEvent instanceof MouseEvent) {
+    return { x: event.delta.x + event.activatorEvent.clientX, y: event.delta.y + event.activatorEvent.clientY };
+  }
+  throw new Error("Unexpected drag event");
 }
 
 function componentAtCoords(
@@ -27,10 +31,11 @@ function componentAtCoords(
 
 export const AddComponentContextProvider: React.FC<Props> = ({ children, ...props }) => {
   const mouseSensor = useSensor(MouseSensor);
+  const touchSensor = useSensor(TouchSensor);
   return (
     <AddComponentContext.Provider value={props}>
       <DndContext
-        sensors={[mouseSensor]}
+        sensors={[mouseSensor, touchSensor]}
         onDragEnd={(e) => {
           const over = e.over;
           if (!over) {
