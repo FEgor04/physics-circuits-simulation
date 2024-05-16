@@ -1,4 +1,4 @@
-import { DndContext, Modifier, MouseSensor, useSensor } from "@dnd-kit/core";
+import { DndContext, Modifier, MouseSensor, TouchSensor, useSensor } from "@dnd-kit/core";
 import { ElectricalComponentID } from "@/shared/simulation";
 import { useCanvasGrid } from "./context";
 
@@ -8,6 +8,11 @@ type Props = React.PropsWithChildren<{
 
 export function CanvasDndContext({ children, onUpdateComponentCoords }: Props) {
   const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 10,
+    },
+  });
+  const touchSensor = useSensor(TouchSensor, {
     activationConstraint: {
       distance: 10,
     },
@@ -25,7 +30,7 @@ export function CanvasDndContext({ children, onUpdateComponentCoords }: Props) {
   return (
     <DndContext
       modifiers={[snapToGridModifier]}
-      sensors={[mouseSensor]}
+      sensors={[mouseSensor, touchSensor]}
       onDragEnd={(event) => {
         const componentId = event.active.id;
         if (typeof componentId == "string") {
