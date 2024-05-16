@@ -66,16 +66,18 @@ public class ApplicationConfig {
                                                     .write("Unauthorized.");
                                         }))
                 .authorizeHttpRequests(configurer ->
-                        configurer
-                                .requestMatchers("/api/auth/**")
-                                .permitAll()
-                                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
-                                .permitAll()
-                                .requestMatchers("/actuator", "/actuator/**", "/actuator/prometheus", "/**")
-                                .permitAll()
-                                .requestMatchers("/h2-console/**")
-                                .permitAll()
-                                .anyRequest().authenticated()).headers(headers -> headers
+                                configurer
+                                        .requestMatchers("/api/auth/**")
+                                        .permitAll()
+                                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+                                        .permitAll()
+                                        .requestMatchers("/actuator", "/actuator/**", "/actuator/prometheus", "/**")
+                                        .permitAll()
+                                        .requestMatchers("/h2-console/**")
+                                        .permitAll()
+//                                .anyRequest().permitAll()
+                                        .anyRequest().authenticated()
+                ).headers(headers -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
                 .anonymous(AbstractHttpConfigurer::disable)
                 .addFilterBefore(new JwtTokenFilter(tokenProvider),

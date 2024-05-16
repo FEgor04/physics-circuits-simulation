@@ -40,7 +40,6 @@ public class User implements UserDetails {
         for (Role role : roles) {
             list.add(new SimpleGrantedAuthority("ROLE" + role.name().toUpperCase()));
         }
-//        list.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         return list;
     }
 
