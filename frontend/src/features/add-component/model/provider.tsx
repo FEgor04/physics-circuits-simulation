@@ -1,9 +1,9 @@
 import "react";
 import { DndContext, DragEndEvent, MouseSensor, TouchSensor, useSensor } from "@dnd-kit/core";
+import { getZoomCoefficient } from "@/shared/embed/utility.ts";
 import type { OmitBetter } from "@/shared/lib/types";
 import { ElectricalComponent, Point } from "@/shared/simulation/types";
 import { context as AddComponentContext, State } from "./context";
-import { getZoomCoefficient } from "@/shared/embed/utility.ts";
 
 type Props = React.PropsWithChildren<State>;
 
