@@ -47,8 +47,8 @@ public class SchemeMapper {
             electricalComponentDto.setType(x.getType());
             electricalComponentDto.setResistance(x.getResistance());
             electricalComponentDto.setEMF(x.getEMF());
-            electricalComponentDto.setA(new PointDto(x.getA().getPointPK().getX(), x.getA().getPointPK().getY()));
-            electricalComponentDto.setB(new PointDto(x.getB().getPointPK().getX(), x.getB().getPointPK().getY()));
+            electricalComponentDto.setA(new PointDto(x.getA().getX(), x.getA().getY()));
+            electricalComponentDto.setB(new PointDto(x.getB().getX(), x.getB().getY()));
             return electricalComponentDto;
         }).toList();
     }
@@ -61,8 +61,8 @@ public class SchemeMapper {
             electricalComponent.setType(x.getType());
             electricalComponent.setResistance(x.getResistance());
             electricalComponent.setEMF(x.getEMF());
-            electricalComponent.setA(new Point(new PointPK(x.b.x, x.b.y)));
-            electricalComponent.setB(new Point(new PointPK(x.a.x, x.a.y)));
+            electricalComponent.setA(new Point(x.b.x, x.b.y));
+            electricalComponent.setB(new Point(x.a.x, x.a.y));
             return electricalComponent;
         }).toList();
     }

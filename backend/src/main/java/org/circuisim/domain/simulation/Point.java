@@ -5,13 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name = "points")
+import java.io.Serializable;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Point {
-    @EmbeddedId
-    private PointPK pointPK;
-
+@Embeddable
+public class Point implements Serializable {
+    public int x;
+    public int y;
 }

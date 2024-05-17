@@ -24,8 +24,8 @@ public class ElectricalComponent {
     @ManyToOne
     private Scheme scheme;
 
-    @OneToOne
+    @Embedded
     private Point a;
-    @OneToOne
+    @Embedded
     private Point b;
 }
