@@ -6,6 +6,7 @@ import org.circuisim.repository.ElectricalComponentRepository;
 import org.circuisim.service.ElectricalComponentService;
 import org.circuisim.service.SchemeService;
 import org.circuisim.web.dto.ElectricalComponentDto;
+import org.circuisim.web.mapper.SchemeMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,6 +45,8 @@ public class ElectricalComponentServiceImpl implements ElectricalComponentServic
     private void updatePresentComponent(ElectricalComponent electricalComponent, ElectricalComponentDto electricalComponentDto) {
         electricalComponent.setA(new Point(electricalComponentDto.getA().getX(),electricalComponentDto.getA().getY()));
         electricalComponent.setB(new Point(electricalComponentDto.getB().getX(),electricalComponentDto.getB().getY()));
+        electricalComponent.setEMF(electricalComponentDto.getEmf());
+        electricalComponent.setResistance(electricalComponentDto.getResistance());
         repository.save(electricalComponent);
     }
 
@@ -55,6 +58,8 @@ public class ElectricalComponentServiceImpl implements ElectricalComponentServic
         component.setType(electricalComponentDto.getType());
         component.setA(new Point(electricalComponentDto.getA().getX(),electricalComponentDto.getA().getY()));
         component.setB(new Point(electricalComponentDto.getB().getX(),electricalComponentDto.getB().getY()));
+        component.setResistance(electricalComponentDto.getResistance());
+        component.setEMF(electricalComponentDto.getEmf());
         save(component);
     }
 }

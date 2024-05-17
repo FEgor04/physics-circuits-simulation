@@ -23,7 +23,7 @@ public class ElectricalComponentDto {
     @Schema(description = "Component resistance", example = "5")
     public double resistance;
     @Schema(description = "EMF of the component", example = "2")
-    public double EMF;
+    public double emf;
     @Schema(description = "Point dto")
     @NotNull
     public PointDto a;
