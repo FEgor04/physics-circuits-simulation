@@ -17,11 +17,23 @@ public class ElectricalComponent {
 
     private TypeElectricalComponent type;
 
+    private double resistance;
+
+    private double EMF;
+
     @ManyToOne
     private Scheme scheme;
 
-    @OneToOne
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "x", column = @Column(name = "x_1")),
+            @AttributeOverride(name = "y", column = @Column(name = "y_1"))
+    })
     private Point a;
-    @OneToOne
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "x", column = @Column(name = "x_2")),
+            @AttributeOverride(name = "y", column = @Column(name = "y_2"))
+    })
     private Point b;
 }
