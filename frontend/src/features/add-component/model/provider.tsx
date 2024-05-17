@@ -47,20 +47,18 @@ export const AddComponentContextProvider: React.FC<Props> = ({ children, ...prop
           }
           const { x, y } = getCoordsFromEvent(e);
           const rect = over.rect;
+          const zoom = getZoomCoefficient();
+
+          const xCanvas = x - rect.left;
+          const yCanvas = y - rect.top;
           const canvasWidth = rect.width;
           const canvasHeight = rect.height;
-          const top = rect.top;
-          const left = rect.left;
-          const coefficient = getZoomCoefficient();
-          const xCanvas = x - left;
-          const yCanvas = y - top;
-          const schemeWidth = Math.floor(canvasWidth / coefficient);
-          const schemeHeight = Math.floor(canvasHeight / coefficient);
-          const xVirtual = Math.floor(xCanvas / coefficient) - Math.floor(schemeWidth / 2);
-          const yVirtual = Math.floor(schemeHeight / 2) - Math.floor(yCanvas / coefficient);
+
+          const xVirtual = Math.floor((xCanvas - canvasWidth / 2) / zoom);
+          const yVirtual = Math.floor((canvasHeight / 2 - yCanvas) / zoom);
+
           const data = e.active.data.current as OmitBetter<ElectricalComponent, "a" | "b" | "plus" | "minus">;
           const newComponent = componentAtCoords(data, { x: xVirtual, y: yVirtual });
-          console.log(newComponent);
           props.onAddComponent(newComponent);
         }}
       >
