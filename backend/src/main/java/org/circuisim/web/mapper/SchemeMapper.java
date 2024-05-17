@@ -45,6 +45,8 @@ public class SchemeMapper {
             var electricalComponentDto = new ElectricalComponentDto();
             electricalComponentDto.setComponentId(x.getPk().getId());
             electricalComponentDto.setType(x.getType());
+            electricalComponentDto.setResistance(x.getResistance());
+            electricalComponentDto.setEMF(x.getEMF());
             electricalComponentDto.setA(new PointDto(x.getA().getPointPK().getX(), x.getA().getPointPK().getY()));
             electricalComponentDto.setB(new PointDto(x.getB().getPointPK().getX(), x.getB().getPointPK().getY()));
             return electricalComponentDto;
@@ -57,6 +59,8 @@ public class SchemeMapper {
             electricalComponent.setPk(new ElectricalComponentPK(x.getComponentId(), scheme.getId()));
             electricalComponent.setScheme(scheme);
             electricalComponent.setType(x.getType());
+            electricalComponent.setResistance(x.getResistance());
+            electricalComponent.setEMF(x.getEMF());
             electricalComponent.setA(new Point(new PointPK(x.b.x, x.b.y)));
             electricalComponent.setB(new Point(new PointPK(x.a.x, x.a.y)));
             return electricalComponent;

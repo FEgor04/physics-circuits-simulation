@@ -17,6 +17,10 @@ public class ElectricalComponent {
 
     private TypeElectricalComponent type;
 
+    private double resistance;
+
+    private double EMF;
+
     @ManyToOne
     private Scheme scheme;
 
