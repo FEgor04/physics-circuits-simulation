@@ -1,12 +1,30 @@
 import "react";
 import { DndContext, DragEndEvent, MouseSensor, TouchSensor, useSensor } from "@dnd-kit/core";
-import { getEventCoordinates } from "@dnd-kit/utilities";
+import { Active, Over } from "@dnd-kit/core/dist/store";
+import { ClientRect } from "@dnd-kit/core/dist/types";
+import { snapCenterToCursor } from "@dnd-kit/modifiers";
+import { getEventCoordinates, Transform } from "@dnd-kit/utilities";
 import { getZoomCoefficient } from "@/shared/embed/utility.ts";
 import type { OmitBetter } from "@/shared/lib/types";
 import { ElectricalComponent, Point } from "@/shared/simulation/types";
 import { context as AddComponentContext, State } from "./context";
 
 type Props = React.PropsWithChildren<State>;
+
+// Why there is no such type in library...
+type ModifierArgs = {
+  activatorEvent: Event | null;
+  active: Active | null;
+  activeNodeRect: ClientRect | null;
+  draggingNodeRect: ClientRect | null;
+  containerNodeRect: ClientRect | null;
+  over: Over | null;
+  overlayNodeRect: ClientRect | null;
+  scrollableAncestors: Element[];
+  scrollableAncestorRects: ClientRect[];
+  transform: Transform;
+  windowRect: ClientRect | null;
+};
 
 function getCoordsFromEvent(event: DragEndEvent): Point {
   return {
@@ -32,10 +50,37 @@ function componentAtCoords(
 export const AddComponentContextProvider: React.FC<Props> = ({ children, ...props }) => {
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
+  const gridSize = 48;
+  function snapToGrid({ activatorEvent, over, draggingNodeRect, transform }: ModifierArgs) {
+    if (!over) return transform;
+    if (!draggingNodeRect) return transform;
+    if (!activatorEvent) return transform;
+
+    const activatorCoordinates = getEventCoordinates(activatorEvent);
+
+    if (!activatorCoordinates) return transform;
+
+    const mouseX = activatorCoordinates.x + transform.x;
+    const mouseY = activatorCoordinates.y + transform.y;
+    const canvasCentreX = Math.floor(over.rect.left + over.rect.width / 2);
+    const canvasCentreY = Math.floor(over.rect.top + over.rect.height / 2);
+    const mouseDeltaX = (mouseX - canvasCentreX) % gridSize;
+    const mouseDeltaY = (mouseY - canvasCentreY) % gridSize;
+    const elementWidth = draggingNodeRect.width;
+    const elementHeight = draggingNodeRect.height;
+
+    return {
+      ...transform,
+      x: transform.x - mouseDeltaX - Math.ceil(elementWidth / 2),
+      y: transform.y - mouseDeltaY - elementHeight,
+    };
+  }
+
   return (
     <AddComponentContext.Provider value={props}>
       <DndContext
         sensors={[mouseSensor, touchSensor]}
+        modifiers={[snapToGrid, snapCenterToCursor]}
         onDragEnd={(e) => {
           const over = e.over;
           if (!over) {
