@@ -1,6 +1,6 @@
 import { ElectricalComponent }  from "@/shared/simulation";
 
-type SchemeID = number;
+export type SchemeID = number;
 
 export type Scheme = {
   id: SchemeID;
