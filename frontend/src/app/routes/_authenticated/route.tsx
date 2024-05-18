@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import { getMeQueryOptions } from "@/entities/principal";
 
 export const Route = createFileRoute("/_authenticated")({
-  beforeLoad: async ({ context }) => {
+  beforeLoad: async ({ context, location }) => {
     try {
       const me = await context.queryClient.ensureQueryData(getMeQueryOptions());
       console.log(me);
@@ -11,9 +11,9 @@ export const Route = createFileRoute("/_authenticated")({
       if (e instanceof AxiosError && e.response?.status == 401) {
         throw redirect({
           to: "/signin",
+          search: { redirect: location.href },
         });
       }
     }
   },
 });
-

@@ -4,7 +4,7 @@ import { SignInForm, useSignInByEmailMutation } from "@/features/auth-by-email";
 import { Button } from "@/shared/ui/button.tsx";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/shared/ui/card.tsx";
 
-export function SignInPage() {
+export function SignInPage({ redirect }: { redirect: string | undefined }) {
   const { mutate, isError, error } = useSignInByEmailMutation();
   const navigate = useNavigate({});
 
@@ -19,7 +19,7 @@ export function SignInPage() {
             onSubmit={(values) => {
               mutate(values, {
                 onSuccess: () => {
-                  navigate({ to: "/", search: { state: "editing" } });
+                  navigate({ to: redirect ?? "/schemes" });
                 },
               });
             }}
