@@ -1,4 +1,5 @@
-import { DndContext, Modifier, MouseSensor, TouchSensor, useSensor } from "@dnd-kit/core";
+import { DndContext, MouseSensor, TouchSensor, useSensor } from "@dnd-kit/core";
+import { createSnapModifier } from "@dnd-kit/modifiers";
 import { ElectricalComponentID } from "@/shared/simulation";
 import { useCanvasGrid } from "./context";
 
@@ -19,17 +20,9 @@ export function CanvasDndContext({ children, onUpdateComponentCoords }: Props) {
   });
 
   const gridSize = useCanvasGrid();
-  const snapToGridModifier: Modifier = (args) => {
-    const { transform } = args;
-    return {
-      ...transform,
-      x: Math.ceil(transform.x / gridSize) * gridSize,
-      y: Math.ceil(transform.y / gridSize) * gridSize,
-    };
-  };
   return (
     <DndContext
-      modifiers={[snapToGridModifier]}
+      modifiers={[createSnapModifier(gridSize)]}
       sensors={[mouseSensor, touchSensor]}
       onDragEnd={(event) => {
         const componentId = event.active.id;
