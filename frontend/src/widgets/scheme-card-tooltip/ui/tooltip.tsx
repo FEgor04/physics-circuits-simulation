@@ -11,9 +11,16 @@ export function SchemeCardTooltip() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem><PencilLine className="size-4 mr-2" />Переименовать </DropdownMenuItem>
-        <DropdownMenuItem><Share2 className="size-4 mr-2" /> Поделиться</DropdownMenuItem>
-        <DropdownMenuItem><Trash className="size-4 mr-2" /> Удалить</DropdownMenuItem>
+        <DropdownMenuItem>
+          <PencilLine className="mr-2 size-4" />
+          Переименовать{" "}
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Share2 className="mr-2 size-4" /> Поделиться
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Trash className="mr-2 size-4" /> Удалить
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

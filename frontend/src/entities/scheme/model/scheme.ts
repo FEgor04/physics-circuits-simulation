@@ -1,4 +1,4 @@
-import { ElectricalComponent }  from "@/shared/simulation";
+import { ElectricalComponent } from "@/shared/simulation";
 
 export type SchemeID = number;
 

@@ -15,7 +15,7 @@ export function useSignInByEmailMutation() {
       return response.data;
     },
     onSuccess: (response) => {
-      setSession(response)
+      setSession(response);
       queryClient.invalidateQueries(getMeQueryOptions());
     },
   });
