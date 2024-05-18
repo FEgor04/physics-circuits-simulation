@@ -50,7 +50,7 @@ function componentAtCoords(
 export const AddComponentContextProvider: React.FC<Props> = ({ children, ...props }) => {
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
-  const gridSize = 48;
+  const gridSize = getZoomCoefficient();
   function snapToGrid({ activatorEvent, over, draggingNodeRect, transform }: ModifierArgs) {
     if (!over) return transform;
     if (!draggingNodeRect) return transform;
@@ -64,10 +64,16 @@ export const AddComponentContextProvider: React.FC<Props> = ({ children, ...prop
     const mouseY = activatorCoordinates.y + transform.y;
     const canvasCentreX = Math.floor(over.rect.left + over.rect.width / 2);
     const canvasCentreY = Math.floor(over.rect.top + over.rect.height / 2);
-    const mouseDeltaX = (mouseX - canvasCentreX) % gridSize;
-    const mouseDeltaY = (mouseY - canvasCentreY) % gridSize;
+    let mouseDeltaX = (mouseX - canvasCentreX) % gridSize;
+    let mouseDeltaY = (mouseY - canvasCentreY) % gridSize;
     const elementWidth = draggingNodeRect.width;
     const elementHeight = draggingNodeRect.height;
+    if (mouseDeltaX > 0) {
+      mouseDeltaX -= elementWidth;
+    }
+    if (mouseDeltaY > 0) {
+      mouseDeltaY -= elementHeight;
+    }
 
     return {
       ...transform,
