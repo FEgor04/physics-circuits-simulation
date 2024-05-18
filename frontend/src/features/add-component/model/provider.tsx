@@ -64,10 +64,10 @@ export const AddComponentContextProvider: React.FC<Props> = ({ children, ...prop
     const mouseY = activatorCoordinates.y + transform.y;
     const canvasCentreX = Math.floor(over.rect.left + over.rect.width / 2);
     const canvasCentreY = Math.floor(over.rect.top + over.rect.height / 2);
-    let mouseDeltaX = (mouseX - canvasCentreX) % gridSize;
-    let mouseDeltaY = (mouseY - canvasCentreY) % gridSize;
     const elementWidth = draggingNodeRect.width;
     const elementHeight = draggingNodeRect.height;
+    let mouseDeltaX = (mouseX - canvasCentreX) % gridSize;
+    let mouseDeltaY = (Math.floor(mouseY - elementHeight / 2) - canvasCentreY) % gridSize;
     if (mouseDeltaX > 0) {
       mouseDeltaX -= elementWidth;
     }
@@ -78,7 +78,7 @@ export const AddComponentContextProvider: React.FC<Props> = ({ children, ...prop
     return {
       ...transform,
       x: transform.x - mouseDeltaX - Math.ceil(elementWidth / 2),
-      y: transform.y - mouseDeltaY - elementHeight,
+      y: transform.y - mouseDeltaY - Math.ceil(elementHeight / 2),
     };
   }
 
