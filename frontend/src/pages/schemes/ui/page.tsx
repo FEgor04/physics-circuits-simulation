@@ -2,6 +2,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { CreateSchemeButton } from "@/features/create-scheme";
 import { Scheme, getSchemesQueryOptions } from "@/entities/scheme";
 import { SchemeCard } from "@/entities/scheme";
+import { SchemeCardTooltip } from "@/widgets/scheme-card-tooltip";
 
 type Props = {
   schemes: Array<Scheme>;
@@ -17,7 +18,7 @@ export function SchemesPage({ schemes: initialSchemes }: Props) {
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {schemes.map((scheme) => (
-          <SchemeCard key={scheme.id} scheme={scheme} />
+          <SchemeCard key={scheme.id} scheme={scheme} tooltip={<SchemeCardTooltip />} />
         ))}
       </div>
     </div>
