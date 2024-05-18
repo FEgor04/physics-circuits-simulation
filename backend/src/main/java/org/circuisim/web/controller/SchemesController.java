@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.circuisim.rSocket.RSocketController;
 import org.circuisim.service.ElectricalComponentService;
 import org.circuisim.service.SchemeService;
 import org.circuisim.web.dto.ElectricalComponentDto;
@@ -29,6 +30,7 @@ public class SchemesController {
     private final SchemeService schemeService;
     private final SchemeMapper schemeMapper;
     private final ElectricalComponentService electricalComponentService;
+    private final RSocketController rSocketController;
 
     @GetMapping("")
     public List<SchemeResponse> getAllSchemes(
@@ -57,6 +59,7 @@ public class SchemesController {
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
             @RequestBody List<ElectricalComponentDto> electricalComponentDto
     ) {
+        rSocketController.sendNotification(id,"UPDATE");
         electricalComponentService.updateComponents(electricalComponentDto, id);
         return ResponseEntity.noContent().build();
     }

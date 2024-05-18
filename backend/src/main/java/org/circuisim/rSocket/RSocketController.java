@@ -29,7 +29,7 @@ public class RSocketController {
     public static final String SERVER = "Server";
     public static final String RESPONSE = "Response";
 
-    private final Map<Long, List<RSocketRequester>> CLIENTS_MAP = new HashMap<>();
+    private Map<Long, List<RSocketRequester>> CLIENTS_MAP = new HashMap<>();
 
     @PreDestroy
     void shutdown() {
@@ -51,7 +51,13 @@ public class RSocketController {
                 .doFirst(() -> {
                     // Add all new clients to a client list
                     log.info("Client: {} CONNECTED.", connectRequest.getClient());
-                    CLIENTS_MAP.getOrDefault(connectRequest.getSchemeId(), new ArrayList<>()).add(requester);
+                    if (CLIENTS_MAP.containsKey(connectRequest.getSchemeId())) {
+                        CLIENTS_MAP.get(connectRequest.getSchemeId()).add(requester);
+                    } else {
+                        List<RSocketRequester> list = new ArrayList<>();
+                        list.add(requester);
+                        CLIENTS_MAP.put(connectRequest.getSchemeId(), list);
+                    }
                 })
                 .doOnError(error -> {
                     // Warn when channels are closed by clients
@@ -59,7 +65,7 @@ public class RSocketController {
                 })
                 .doFinally(consumer -> {
                     // Remove disconnected clients from the client list
-                    CLIENTS_MAP.getOrDefault(connectRequest.getSchemeId(), new ArrayList<>()).remove(requester);
+                    CLIENTS_MAP.get(connectRequest.getSchemeId()).remove(requester);
                     log.info("Client {} DISCONNECTED", connectRequest.getClient());
                 })
                 .subscribe();
@@ -70,6 +76,17 @@ public class RSocketController {
                 .retrieveFlux(String.class)
                 .doOnNext(s -> log.info("Client: {} Free Memory: {}.", connectRequest.getClient(), s))
                 .subscribe();
+    }
+
+    public void sendNotification(Long schemeId, String message) {
+        if (CLIENTS_MAP.containsKey(schemeId)) {
+            for (var requester : CLIENTS_MAP.get(schemeId)) {
+                requester.route("client-data")
+                        .data("UPDATE")
+                        .retrieveMono(String.class)
+                        .block();
+            }
+        }
     }
 
 
