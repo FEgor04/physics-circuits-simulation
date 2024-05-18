@@ -78,12 +78,12 @@ public class RSocketController {
                 .subscribe();
     }
 
-    public void sendNotification(Long schemeId, String message) {
+    public void sendNotification(Long schemeId, Action action) {
         if (CLIENTS_MAP.containsKey(schemeId)) {
             for (var requester : CLIENTS_MAP.get(schemeId)) {
                 requester.route("client-data")
-                        .data("UPDATE")
-                        .retrieveMono(String.class)
+                        .data(action)
+                        .retrieveMono(Action.class)
                         .block();
             }
         }

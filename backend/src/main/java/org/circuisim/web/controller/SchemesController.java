@@ -59,7 +59,7 @@ public class SchemesController {
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
             @RequestBody List<ElectricalComponentDto> electricalComponentDto
     ) {
-        rSocketController.sendNotification(id,"UPDATE");
+//        rSocketController.sendNotification(id,"UPDATE");
         electricalComponentService.updateComponents(electricalComponentDto, id);
         return ResponseEntity.noContent().build();
     }
