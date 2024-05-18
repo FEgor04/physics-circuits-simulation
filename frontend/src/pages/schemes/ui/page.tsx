@@ -1,8 +1,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { SchemeCardTooltip } from "@/widgets/scheme-card-tooltip";
 import { CreateSchemeButton } from "@/features/create-scheme";
 import { Scheme, getSchemesQueryOptions } from "@/entities/scheme";
 import { SchemeCard } from "@/entities/scheme";
-import { SchemeCardTooltip } from "@/widgets/scheme-card-tooltip";
 
 type Props = {
   schemes: Array<Scheme>;
