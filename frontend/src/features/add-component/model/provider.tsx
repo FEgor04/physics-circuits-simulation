@@ -86,6 +86,7 @@ export const AddComponentContextProvider: React.FC<Props> = ({ children, ...prop
     <AddComponentContext.Provider value={props}>
       <DndContext
         sensors={[mouseSensor, touchSensor]}
+        autoScroll={false}
         modifiers={[snapToGrid, snapCenterToCursor]}
         onDragEnd={(e) => {
           const over = e.over;
