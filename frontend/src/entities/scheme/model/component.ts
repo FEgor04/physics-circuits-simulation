@@ -28,7 +28,7 @@ export const zSource = componentBase.extend({
 });
 
 export const zSourceDC = zSource.extend({
-  _type: z.literal("source_dc"),
+  _type: z.literal("sourceDC"),
   internalResistance: z.number(),
 });
 
