@@ -1,5 +1,13 @@
 import { ElectricalComponentDto, SchemeResponse } from "@/shared/api/index.schemas";
-import { Ampermeter, ElectricalComponentWithID, Resistor, Voltmeter, Wire, WithID } from "@/shared/simulation";
+import {
+  Ampermeter,
+  ElectricalComponent,
+  ElectricalComponentWithID,
+  Resistor,
+  Voltmeter,
+  Wire,
+  WithID,
+} from "@/shared/simulation";
 import { zElectricalComponent, zSourceDC } from "../model/component";
 import { Scheme } from "../model/scheme";
 
@@ -43,4 +51,39 @@ export function componentFromDTO(dto: ElectricalComponentDto): WithID<Electrical
     resistance: dto.resistance,
     electromotiveForce: dto.emf,
   }) as WithID<Resistor | Wire | Ampermeter | Voltmeter>;
+}
+
+export function componentToDTO(entity: ElectricalComponentWithID): ElectricalComponentDto {
+  return {
+    componentId: entity.id,
+    type: typeToDTO(entity._type),
+    resistance: getResistance(entity),
+    emf: getElectromotiveForce(entity),
+    a: "a" in entity ? entity.a : entity.plus,
+    b: "b" in entity ? entity.b : entity.plus,
+  };
+}
+
+function typeToDTO(type: ElectricalComponentWithID["_type"]): ElectricalComponentDto["type"] {
+  if (type == "sourceDC") {
+    return "SOURCE_DC";
+  }
+  return type.toUpperCase() as Uppercase<Exclude<ElectricalComponentWithID["_type"], "sourceDC">>;
+}
+
+function getResistance(entity: ElectricalComponent): number | undefined {
+  if ("resistance" in entity) {
+    return entity.resistance;
+  }
+  if ("internalResistance" in entity) {
+    return entity.internalResistance;
+  }
+  return undefined;
+}
+
+function getElectromotiveForce(entity: ElectricalComponent): number | undefined {
+  if ("electromotiveForce" in entity) {
+    return entity.electromotiveForce;
+  }
+  return undefined;
 }
