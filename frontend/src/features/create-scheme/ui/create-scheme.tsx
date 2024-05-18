@@ -1,15 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "@tanstack/react-router";
 import { PlusCircle } from "lucide-react";
-import { forwardRef } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { useCreateSchemeMutation } from "@/entities/scheme";
 import { Button } from "@/shared/ui/button";
 import { Dialog, DialogHeader, DialogTitle, DialogContent, DialogTrigger } from "@/shared/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/shared/ui/form";
 import { Input } from "@/shared/ui/input";
-import { useCreateSchemeMutation } from "../api/create-scheme";
-import { SchemeID } from "../model/scheme";
 
 export function CreateSchemeButton() {
   return <CreateDialog />;
@@ -28,10 +26,10 @@ function CreateDialog() {
         navigate({
           to: "/schemes/$scheme",
           params: {
-            scheme: result.id,
+            scheme: String(result.id),
           },
         });
-      }
+      },
     });
   }
 

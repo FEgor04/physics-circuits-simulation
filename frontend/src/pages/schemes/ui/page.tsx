@@ -1,14 +1,14 @@
-import { PlusCircle } from "lucide-react";
-import { Scheme } from "@/entities/scheme";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { CreateSchemeButton } from "@/features/create-scheme";
+import { Scheme, getSchemesQueryOptions } from "@/entities/scheme";
 import { SchemeCard } from "@/entities/scheme";
-import { Button } from "@/shared/ui/button";
-import { CreateSchemeButton } from "@/entities/scheme/ui/create-scheme";
 
 type Props = {
   schemes: Array<Scheme>;
 };
 
-export function SchemesPage({ schemes }: Props) {
+export function SchemesPage({ schemes: initialSchemes }: Props) {
+  const { data: schemes } = useSuspenseQuery({ ...getSchemesQueryOptions(), initialData: initialSchemes });
   return (
     <div className="container mx-auto mt-8">
       <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between">
