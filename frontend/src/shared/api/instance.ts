@@ -1,7 +1,7 @@
  import axios, { AxiosResponse } from 'axios';
 import Axios, { AxiosRequestConfig } from 'axios';
 
-const AXIOS_INSTANCE = axios.create();
+export const AXIOS_INSTANCE = axios.create();
 
  export const customInstance = <T>(
    config: AxiosRequestConfig,
