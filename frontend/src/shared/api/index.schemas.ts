@@ -47,6 +47,16 @@ export interface SignUpAdminRequest {
 }
 
 /**
+ * Error message model
+ */
+export interface ErrorMessage {
+  description?: string;
+  message?: string;
+  statusCode?: number;
+  timestamp?: string;
+}
+
+/**
  * JWT Response
  */
 export interface JwtResponse {
@@ -60,16 +70,6 @@ export interface JwtResponse {
   refreshToken: string;
   /** Username */
   username: string;
-}
-
-/**
- * Error message model
- */
-export interface ErrorMessage {
-  description?: string;
-  message?: string;
-  statusCode?: number;
-  timestamp?: string;
 }
 
 export interface SignUpRequest {
@@ -151,6 +151,10 @@ export interface ElectricalComponentDto {
   b: PointDto;
   /** Component id  */
   componentId: number;
+  /** EMF of the component */
+  emf?: number;
+  /** Component resistance */
+  resistance?: number;
   /** Type of component */
   type: ElectricalComponentDtoType;
 }
