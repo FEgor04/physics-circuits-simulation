@@ -37,7 +37,7 @@ export const zAmpermeter = zWire.extend({
 });
 
 export const zVoltmeter = zWire.extend({
-  _type: z.literal("ampermeter"),
+  _type: z.literal("voltmeter"),
 });
 
 export const zElectricalComponent = z.discriminatedUnion("_type", [
