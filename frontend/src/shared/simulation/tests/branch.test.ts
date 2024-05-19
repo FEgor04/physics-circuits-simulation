@@ -10,8 +10,8 @@ describe("branches equality", () => {
       a: { x: 0, y: 0 },
       b: { x: 2, y: 2 },
       components: [
-        { _type: "wire", a: { x: 0, y: 0 }, b: { x: 1, y: 1 } },
-        { _type: "resistor", a: { x: 1, y: 1 }, b: { x: 2, y: 2 }, resistance: 10 },
+        { _type: "wire", a: { x: 0, y: 0 }, b: { x: 1, y: 1 }, id: 0 },
+        { _type: "resistor", a: { x: 1, y: 1 }, b: { x: 2, y: 2 }, resistance: 10, id: 1 },
       ],
     };
 
@@ -20,8 +20,8 @@ describe("branches equality", () => {
       a: { x: 0, y: 0 },
       b: { x: 2, y: 2 },
       components: [
-        { _type: "wire", a: { x: 0, y: 0 }, b: { x: 1, y: 1 } },
-        { _type: "resistor", a: { x: 1, y: 1 }, b: { x: 2, y: 2 }, resistance: 10 },
+        { _type: "wire", a: { x: 0, y: 0 }, b: { x: 1, y: 1 }, id: 1 },
+        { _type: "resistor", a: { x: 1, y: 1 }, b: { x: 2, y: 2 }, resistance: 10, id: 2 },
       ],
     };
 
@@ -35,8 +35,8 @@ describe("branches equality", () => {
       a: { x: 0, y: 0 },
       b: { x: 2, y: 2 },
       components: [
-        { _type: "wire", a: { x: 0, y: 0 }, b: { x: 1, y: 1 } },
-        { _type: "resistor", a: { x: 1, y: 1 }, b: { x: 2, y: 2 }, resistance: 10 },
+        { _type: "wire", a: { x: 0, y: 0 }, b: { x: 1, y: 1 }, id: 0 },
+        { _type: "resistor", a: { x: 1, y: 1 }, b: { x: 2, y: 2 }, resistance: 10, id: 1 },
       ],
     };
 
@@ -45,8 +45,8 @@ describe("branches equality", () => {
       b: { x: 0, y: 0 },
       a: { x: 2, y: 2 },
       components: [
-        { _type: "resistor", a: { x: 1, y: 1 }, b: { x: 2, y: 2 }, resistance: 10 },
-        { _type: "wire", a: { x: 0, y: 0 }, b: { x: 1, y: 1 } },
+        { _type: "resistor", a: { x: 1, y: 1 }, b: { x: 2, y: 2 }, resistance: 10, id: 0 },
+        { _type: "wire", a: { x: 0, y: 0 }, b: { x: 1, y: 1 }, id: 1 },
       ],
     };
 

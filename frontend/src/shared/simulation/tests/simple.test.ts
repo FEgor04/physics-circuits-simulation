@@ -10,6 +10,7 @@ test.skip("simple scheme with voltmeter only", () => {
   // Источник, у которого плюс расположен в точке (0, 0).
   // Минус -- в точке (-1, 0)
   simulator.addComponent({
+    id: 0,
     _type: "source",
     plus: { x: 0, y: 0 },
     minus: { x: -1, y: 0 },
@@ -18,17 +19,20 @@ test.skip("simple scheme with voltmeter only", () => {
   });
 
   simulator.addComponent({
+    id: 1,
     _type: "wire",
     a: { x: -1, y: 0 },
     b: { x: -1, y: 5 },
   });
   simulator.addComponent({
+    id: 2,
     _type: "ampermeter",
     a: { x: -1, y: 5 },
     b: { x: 0, y: 5 },
     currency: "unknown",
   });
   simulator.addComponent({
+    id: 3,
     _type: "wire",
     a: { x: 0, y: 5 },
     b: { x: 0, y: 0 },

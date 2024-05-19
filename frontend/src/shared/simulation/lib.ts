@@ -1,6 +1,6 @@
-import { Branch, ElectricalComponent, Point } from "./types";
+import { Branch, ElectricalComponentWithID, Point } from "./types";
 
-export function getComponentContacts(component: ElectricalComponent): Array<Point> {
+export function getComponentContacts(component: ElectricalComponentWithID): Array<Point> {
   if (
     component._type === "wire" ||
     component._type === "resistor" ||
@@ -42,7 +42,7 @@ export function branchToString(a: Branch) {
   return `(${a.a.x}, ${a.a.y}) -- (${a.b.x}, ${a.b.y})`;
 }
 
-export function branchFactory(start: Point, end: Point, components: Array<ElectricalComponent>): Branch {
+export function branchFactory(start: Point, end: Point, components: Array<ElectricalComponentWithID>): Branch {
   return {
     id: 0,
     a: start,
@@ -51,7 +51,7 @@ export function branchFactory(start: Point, end: Point, components: Array<Electr
   };
 }
 
-export function componentsEqual(a: ElectricalComponent, b: ElectricalComponent): boolean {
+export function componentsEqual(a: ElectricalComponentWithID, b: ElectricalComponentWithID): boolean {
   if (a._type != b._type) {
     return false;
   }
