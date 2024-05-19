@@ -34,7 +34,7 @@ public class SchemesController {
     public List<SchemeResponse> getAllSchemes(
             @AuthenticationPrincipal UserDetails userDetails
     ) {
-        return schemeMapper.toListResponse(schemeService.getAll(), userDetails.getUsername());
+        return schemeMapper.toListResponse(schemeService.getAllByUsername(userDetails.getUsername()), userDetails.getUsername());
     }
 
     @GetMapping("{id}")

@@ -51,8 +51,10 @@ public class SchemeServiceImpl implements SchemeService {
     }
 
     @Override
-    public List<Scheme> getAll() {
-        return schemeRepository.findAll();
+    public List<Scheme> getAllByUsername(String username) {
+        var user = userService.getByEmail(username);
+        return schemeRepository.findAllByAuthorOrRedactorsContainingOrViewersContaining(user,
+                Set.of(user), Set.of(user));
     }
 
     @Override

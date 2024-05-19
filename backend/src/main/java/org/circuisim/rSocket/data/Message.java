@@ -21,9 +21,4 @@ public class Message {
         this.index = 0;
     }
 
-    public Message(String origin, String interaction, long index) {
-        this.origin = origin;
-        this.interaction = interaction;
-        this.index = index;
-    }
 }
