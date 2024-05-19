@@ -2,7 +2,7 @@ name: Deploy
 on:
   workflow_run:
     workflows: ["Frontend Linters & Tests"]
-    branches: [main, fix-cd]
+    branches: [main]
     types:
       - completed
 
