@@ -20,4 +20,6 @@ public interface SchemeService {
     void removePermission(Long schemeId, List<SetPermissionsRequest> request);
 
     List<GetUsersPermissionsResponse> getUsersById(Long id);
+
+    void deleteById(Long id);
 }

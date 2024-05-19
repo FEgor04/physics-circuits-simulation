@@ -87,5 +87,13 @@ public class SchemesController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deletePermissionsByIdScheme(
+            @PathVariable @Parameter(description = "Scheme id", required = true) Long id
+    ) {
+        schemeService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
