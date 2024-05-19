@@ -5,19 +5,21 @@ import { Scheme } from "../model/scheme";
 
 export function SchemeCard({ scheme, tooltip }: { scheme: Scheme; tooltip: React.PropsWithChildren["children"] }) {
   return (
-    <Link to="/schemes/$scheme" params={{ scheme: String(scheme.id) }} search={{ mode: "editing" }}>
-      <Card>
-        <div>
+    <Card>
+      <div>
+        <Link to="/schemes/$scheme" params={{ scheme: String(scheme.id) }} search={{ mode: "editing" }}>
           <Skeleton className="aspect-square w-full" />
-        </div>
-        <CardHeader className="flex flex-row items-start justify-between">
-          <div>
+        </Link>
+      </div>
+      <CardHeader className="flex flex-row items-start justify-between">
+        <div>
+          <Link to="/schemes/$scheme" params={{ scheme: String(scheme.id) }} search={{ mode: "editing" }}>
             <CardTitle className="text-lg">{scheme.name}</CardTitle>
-            <CardDescription className="flex flex-row justify-between">{scheme.authorName}</CardDescription>
-          </div>
-          <div>{tooltip}</div>
-        </CardHeader>
-      </Card>
-    </Link>
+          </Link>
+          <CardDescription className="flex flex-row justify-between">{scheme.authorName}</CardDescription>
+        </div>
+        <div>{tooltip}</div>
+      </CardHeader>
+    </Card>
   );
 }
