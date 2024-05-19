@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 import { SimpleSimulator } from "../simulator";
 import { ElectricalComponentWithID } from "../types";
 
-test("test closed loop 1", () => {
+test("test closed loop", () => {
   const components: ElectricalComponentWithID[] = [
     { id: 0, _type: "wire", a: { x: 0, y: 3 }, b: { x: 0, y: 4 } },
     { id: 1, _type: "resistor", a: { x: 0, y: 4 }, b: { x: 0, y: 5 }, resistance: 10 },
@@ -35,7 +35,7 @@ test("test closed loop 1", () => {
   expect(error).toBe(undefined);
 });
 
-test("test closed loop 2", () => {
+test("test open loop", () => {
   const components: ElectricalComponentWithID[] = [
     { id: 0, _type: "wire", a: { x: 0, y: 3 }, b: { x: 0, y: 4 } },
     { id: 1, _type: "resistor", a: { x: 0, y: 4 }, b: { x: 0, y: 5 }, resistance: 10 },
@@ -47,7 +47,7 @@ test("test closed loop 2", () => {
   expect(error).toBe("noClosedLoop");
 });
 
-test("test closed loop 3", () => {
+test("test closed loop with not connected wire", () => {
   const components: ElectricalComponentWithID[] = [
     { id: 0, _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 1 } },
     { id: 1, _type: "resistor", a: { x: 0, y: 1 }, b: { x: 1, y: 1 }, resistance: 10 },
@@ -58,5 +58,5 @@ test("test closed loop 3", () => {
 
   const simulation = new SimpleSimulator(components);
   const error = simulation.validateSchema();
-  expect(error).toBe(undefined);
+  expect(error).toBe("noClosedLoop");
 });

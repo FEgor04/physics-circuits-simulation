@@ -369,31 +369,37 @@ export class SimpleSimulator implements CircuitSimulator {
       }
     }
 
-    // Helper function for DFS
-    const hasCycleDFS = (node: string, visited: Set<string>, parent: string): boolean => {
+    // Helper function for DFS to check connectivity
+    const dfs = (node: string, visited: Set<string>) => {
       visited.add(node);
       const neighbors = adjacencyList.get(node) || new Set();
       for (const neighbor of neighbors) {
         if (!visited.has(neighbor)) {
-          if (hasCycleDFS(neighbor, visited, node)) {
-            return true;
-          }
-        } else if (neighbor !== parent) {
-          return true;
+          dfs(neighbor, visited);
         }
       }
-      return false;
     };
 
+    const allNodes = Array.from(adjacencyList.keys());
+    if (allNodes.length === 0) {
+      return "noClosedLoop";
+    }
+
     const visited: Set<string> = new Set();
+    dfs(allNodes[0], visited);
+
+    // Check if all nodes are visited (graph is connected)
+    if (visited.size !== allNodes.length) {
+      return "noClosedLoop";
+    }
+
+    // Check if all nodes have even degree
     for (const node of adjacencyList.keys()) {
-      if (!visited.has(node)) {
-        if (hasCycleDFS(node, visited, "")) {
-          return undefined;
-        }
+      if ((adjacencyList.get(node)?.size || 0) % 2 !== 0) {
+        return "noClosedLoop";
       }
     }
 
-    return "noClosedLoop";
+    return undefined;
   }
 }
