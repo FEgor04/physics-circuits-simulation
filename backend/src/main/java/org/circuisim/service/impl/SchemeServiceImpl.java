@@ -119,5 +119,10 @@ public class SchemeServiceImpl implements SchemeService {
         return response;
     }
 
+    @Override
+    public void deleteById(Long id) {
+        schemeRepository.deleteById(id);
+    }
+
 
 }
