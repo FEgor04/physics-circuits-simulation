@@ -8,25 +8,19 @@ import { AddComponentContextProvider } from "@/features/add-component";
 import { DeleteComponentProvider } from "@/features/delete-component";
 import { SelectComponentProvider, SelectComponentState } from "@/features/select-component";
 import { UpdateComponentProvider } from "@/features/update-component";
+import { Scheme } from "@/entities/scheme";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 import { useSimulationState } from "../model/state";
 
 type Props = {
   mode: "simulation" | "editing";
   setMode: (mode: "simulation" | "editing") => void;
+  scheme: Scheme;
 };
 
-export function Simulation({ mode, setMode }: Props) {
+export function Simulation({ mode, setMode, scheme }: Props) {
   const { components, onAddComponent, onUpdateComponent, onUpdateComponentCoords, onDeleteComponent } =
-    useSimulationState([
-      {
-        id: 1,
-        _type: "resistor",
-        a: { x: 0, y: 0 },
-        b: { x: 1, y: 0 },
-        resistance: 500,
-      },
-    ]);
+    useSimulationState(scheme.components);
   const [selected, setSelected] = useState<SelectComponentState["selected"]>(undefined);
   const selectedComponent = useMemo(() => {
     if (selected?.type == "component") {

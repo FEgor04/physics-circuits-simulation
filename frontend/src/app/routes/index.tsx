@@ -1,27 +1,16 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { z } from "zod";
-import { Simulation } from "@/pages/simulation";
-
-const rootSearchSchema = z.object({
-  state: z.enum(["simulation", "editing"]).catch("editing"),
-});
+import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   component: Component,
-  validateSearch: rootSearchSchema,
 });
 
 function Component() {
-  const { state: mode } = Route.useSearch();
-  const navigate = useNavigate({ from: Route.fullPath });
-  function setMode(mode: z.infer<typeof rootSearchSchema>["state"]) {
-    navigate({
-      search: (prev) => ({
-        ...prev,
-        state: mode,
-      }),
-    });
-  }
-
-  return <Simulation mode={mode} setMode={setMode} />;
+  return (
+    <div className="container mx-auto mt-8">
+      <h1 className="text-center text-4xl font-bold md:text-5xl lg:text-6xl">
+        {" "}
+        <span className="text-primary underline">Азат</span>, сделай пожалуйста красивый лендинг!!!{" "}
+      </h1>
+    </div>
+  );
 }
