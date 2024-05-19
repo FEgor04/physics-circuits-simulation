@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.List;
 
 public interface SchemeService {
+    Scheme save(Scheme scheme);
     Scheme create(SchemeCreateRequest schemeCreateRequest, UserDetails userDetails);
 
     Scheme getById(Long id);
@@ -22,4 +23,6 @@ public interface SchemeService {
     List<GetUsersPermissionsResponse> getUsersById(Long id);
 
     void deleteById(Long id);
+
+    void updateSchemeName(String schemeName, Long schemeId);
 }

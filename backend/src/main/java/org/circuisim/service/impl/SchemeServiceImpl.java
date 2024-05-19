@@ -41,6 +41,7 @@ public class SchemeServiceImpl implements SchemeService {
         return scheme;
     }
 
+    @Override
     public Scheme save(Scheme scheme) {
         return schemeRepository.save(scheme);
     }
@@ -122,6 +123,15 @@ public class SchemeServiceImpl implements SchemeService {
     @Override
     public void deleteById(Long id) {
         schemeRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateSchemeName(String schemeName, Long schemeId) {
+        var scheme = getById(schemeId);
+        if (!scheme.getName().equals(schemeName)) {
+            scheme.setName(schemeName);
+            save(scheme);
+        }
     }
 
 
