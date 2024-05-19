@@ -89,7 +89,7 @@ public class SchemesController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deletePermissionsByIdScheme(
+    public ResponseEntity<String> deleteSchemeById(
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
