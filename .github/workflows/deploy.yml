@@ -1,0 +1,21 @@
+name: Deploy to server
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: SSH to server, clone from git and re-deploy docker
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        username: ${{ secrets.DEPLOY_USER }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd ${{ DEPLOY_DIRECTORY }}
+          git checkout main
+          git pull
+          docker compose -f traefik.docker-compose.yml up -d --build
