@@ -3,6 +3,8 @@ package org.circuisim.web.controller;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.circuisim.exception.AccessDeniedException;
 import org.circuisim.service.ElectricalComponentService;
@@ -10,6 +12,7 @@ import org.circuisim.service.SchemeService;
 import org.circuisim.web.dto.ElectricalComponentDto;
 import org.circuisim.web.mapper.SchemeMapper;
 import org.circuisim.web.requestRecord.SchemeCreateRequest;
+import org.circuisim.web.requestRecord.SchemeUpdateRequest;
 import org.circuisim.web.requestRecord.SetPermissionsRequest;
 import org.circuisim.web.responseRecord.GetUsersPermissionsResponse;
 import org.circuisim.web.responseRecord.SchemeResponse;
@@ -30,6 +33,14 @@ public class SchemesController {
     private final SchemeService schemeService;
     private final SchemeMapper schemeMapper;
     private final ElectricalComponentService electricalComponentService;
+
+    @PostMapping("")
+    public SchemeResponse createNewScheme(
+            @Validated @RequestBody SchemeCreateRequest schemeCreateRequest,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        return schemeMapper.toResponse(schemeService.create(schemeCreateRequest, userDetails), userDetails.getUsername());
+    }
 
     @GetMapping("")
     public List<SchemeResponse> getAllSchemes(
@@ -56,18 +67,10 @@ public class SchemesController {
     @PutMapping("{id}")
     public ResponseEntity<String> updateScheme(
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
-            @RequestBody List<ElectricalComponentDto> electricalComponentDto
-    ) {
-        electricalComponentService.updateComponents(electricalComponentDto, id);
+            @RequestBody SchemeUpdateRequest schemeUpdateRequest
+            ) {
+        electricalComponentService.updateComponents(schemeUpdateRequest.electricalComponentDto(),schemeUpdateRequest.schemeName(), id);
         return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("")
-    public SchemeResponse createNewScheme(
-            @Validated @RequestBody SchemeCreateRequest schemeCreateRequest,
-            @AuthenticationPrincipal UserDetails userDetails
-    ) {
-        return schemeMapper.toResponse(schemeService.create(schemeCreateRequest, userDetails), userDetails.getUsername());
     }
 
     @PutMapping("{id}/permissions")

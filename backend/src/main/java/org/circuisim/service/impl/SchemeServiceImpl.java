@@ -41,6 +41,7 @@ public class SchemeServiceImpl implements SchemeService {
         return scheme;
     }
 
+    @Override
     public Scheme save(Scheme scheme) {
         return schemeRepository.save(scheme);
     }
