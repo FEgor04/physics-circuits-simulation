@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-      - fix-cd # temprorarily, remove before merge
+
 jobs:
   build:
     name: Deploy
