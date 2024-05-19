@@ -1,0 +1,55 @@
+networks:
+  backend:
+  frontend:
+  traefik:
+    external: true
+
+volumes:
+  db-data:
+    driver: local
+
+services:
+  postgres:
+    image: 'postgres:15.1-alpine'
+    env_file:
+      - backend/.env
+    networks:
+      - backend
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    labels:
+      - traefik.enable=false
+
+  app:
+    build:
+      context: ./backend
+    env_file: ./backend/.env
+    depends_on:
+      - postgres
+    networks:
+      - backend
+      - frontend
+    environment:
+      - HOST=postgres:5432
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    labels:
+      - traefik.enable=false
+
+  front:
+    build:
+      context: ./frontend
+    networks:
+      - frontend
+      - traefik
+    depends_on:
+      - app
+    restart: always
+    labels:
+      - traefik.enable=false
+      - traefik.http.routers.front.rule=Host("physics.efedorov.spb.su")
+      - traefik.http.routers.front.entrypoints=websecure
+      - traefik.http.routers.front.tls.certresolver=letsEncrypt
+      - traefik.http.services.front.loadbalancer.server.port=80
+
