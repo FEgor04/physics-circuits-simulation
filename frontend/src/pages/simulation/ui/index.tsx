@@ -8,15 +8,17 @@ import { AddComponentContextProvider } from "@/features/add-component";
 import { DeleteComponentProvider } from "@/features/delete-component";
 import { SelectComponentProvider, SelectComponentState } from "@/features/select-component";
 import { UpdateComponentProvider } from "@/features/update-component";
+import { Scheme } from "@/entities/scheme";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 import { useSimulationState } from "../model/state";
 
 type Props = {
   mode: "simulation" | "editing";
   setMode: (mode: "simulation" | "editing") => void;
+  scheme: Scheme;
 };
 
-export function Simulation({ mode, setMode }: Props) {
+export function Simulation({ mode, setMode, scheme }: Props) {
   const { components, onAddComponent, onUpdateComponent, onUpdateComponentCoords, onDeleteComponent } =
     useSimulationState([
       {
