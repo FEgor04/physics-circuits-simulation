@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
+import { schemaErrors } from "./errors";
 import { CircuitSimulator } from "./interface";
 import { branchFactory, branchesEqual, deduplicateArray, getComponentContacts, pointsEqual } from "./lib";
 import { Branch, ElectricalComponentWithID, Point } from "./types";
@@ -335,5 +336,64 @@ export class SimpleSimulator implements CircuitSimulator {
       }
     }
     return currentForAmper;
+  }
+
+  validateSchema(): keyof typeof schemaErrors | undefined {
+    const adjacencyList: Map<string, Set<string>> = new Map();
+
+    // Helper function to add edge to the graph
+    const addEdge = (a: Point, b: Point) => {
+      const aKey = `${a.x},${a.y}`;
+      const bKey = `${b.x},${b.y}`;
+      if (!adjacencyList.has(aKey)) {
+        adjacencyList.set(aKey, new Set());
+      }
+      if (!adjacencyList.has(bKey)) {
+        adjacencyList.set(bKey, new Set());
+      }
+      adjacencyList.get(aKey)?.add(bKey);
+      adjacencyList.get(bKey)?.add(aKey);
+    };
+
+    // Build the adjacency list from the components
+    for (const component of this.components) {
+      if (
+        component._type === "wire" ||
+        component._type === "resistor" ||
+        component._type === "voltmeter" ||
+        component._type === "ampermeter"
+      ) {
+        addEdge(component.a, component.b);
+      } else if (component._type === "source" || component._type === "sourceDC") {
+        addEdge(component.plus, component.minus);
+      }
+    }
+
+    // Helper function for DFS
+    const hasCycleDFS = (node: string, visited: Set<string>, parent: string): boolean => {
+      visited.add(node);
+      const neighbors = adjacencyList.get(node) || new Set();
+      for (const neighbor of neighbors) {
+        if (!visited.has(neighbor)) {
+          if (hasCycleDFS(neighbor, visited, node)) {
+            return true;
+          }
+        } else if (neighbor !== parent) {
+          return true;
+        }
+      }
+      return false;
+    };
+
+    const visited: Set<string> = new Set();
+    for (const node of adjacencyList.keys()) {
+      if (!visited.has(node)) {
+        if (hasCycleDFS(node, visited, "")) {
+          return undefined;
+        }
+      }
+    }
+
+    return "noClosedLoop";
   }
 }

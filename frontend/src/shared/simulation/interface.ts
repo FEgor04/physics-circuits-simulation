@@ -1,3 +1,4 @@
+import { schemaErrors } from "./errors";
 import { ElectricalComponent } from "./types";
 
 export interface CircuitSimulator {
@@ -17,4 +18,9 @@ export interface CircuitSimulator {
    * Заменяет все компоненты переданными
    **/
   setComponents(components: Array<ElectricalComponent>): void;
+
+  /**
+   * Проверка схемы на наличие хотя бы одного замкнутого контура
+   **/
+  validateSchema(): keyof typeof schemaErrors | undefined;
 }
