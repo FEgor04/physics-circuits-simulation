@@ -4,21 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.circuisim.domain.Permission;
 import org.circuisim.domain.User;
-import org.circuisim.domain.simulation.ElectricalComponent;
-import org.circuisim.domain.simulation.ElectricalComponentPK;
 import org.circuisim.domain.simulation.Scheme;
 import org.circuisim.exception.ResourceNotFoundException;
 import org.circuisim.repository.SchemeRepository;
-import org.circuisim.service.ElectricalComponentService;
-import org.circuisim.service.PointService;
 import org.circuisim.service.SchemeService;
 import org.circuisim.service.UserService;
-import org.circuisim.web.mapper.SchemeMapper;
 import org.circuisim.web.requestRecord.SchemeCreateRequest;
-import org.circuisim.web.requestRecord.SchemeRequest;
 import org.circuisim.web.requestRecord.SetPermissionsRequest;
 import org.circuisim.web.responseRecord.GetUsersPermissionsResponse;
-import org.circuisim.web.responseRecord.SchemeResponse;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -58,8 +51,10 @@ public class SchemeServiceImpl implements SchemeService {
     }
 
     @Override
-    public List<Scheme> getAll() {
-        return schemeRepository.findAll();
+    public List<Scheme> getAllByUsername(String username) {
+        var user = userService.getByEmail(username);
+        return schemeRepository.findAllByAuthorOrRedactorsContainingOrViewersContaining(user,
+                Set.of(user), Set.of(user));
     }
 
     @Override

@@ -45,8 +45,10 @@ public class SchemeMapper {
             var electricalComponentDto = new ElectricalComponentDto();
             electricalComponentDto.setComponentId(x.getPk().getId());
             electricalComponentDto.setType(x.getType());
-            electricalComponentDto.setA(new PointDto(x.getA().getPointPK().getX(), x.getA().getPointPK().getY()));
-            electricalComponentDto.setB(new PointDto(x.getB().getPointPK().getX(), x.getB().getPointPK().getY()));
+            electricalComponentDto.setResistance(x.getResistance());
+            electricalComponentDto.setEmf(x.getEMF());
+            electricalComponentDto.setA(new PointDto(x.getA().getX(), x.getA().getY()));
+            electricalComponentDto.setB(new PointDto(x.getB().getX(), x.getB().getY()));
             return electricalComponentDto;
         }).toList();
     }
@@ -57,10 +59,24 @@ public class SchemeMapper {
             electricalComponent.setPk(new ElectricalComponentPK(x.getComponentId(), scheme.getId()));
             electricalComponent.setScheme(scheme);
             electricalComponent.setType(x.getType());
-            electricalComponent.setA(new Point(new PointPK(x.b.x, x.b.y)));
-            electricalComponent.setB(new Point(new PointPK(x.a.x, x.a.y)));
+            electricalComponent.setResistance(x.getResistance());
+            electricalComponent.setEMF(x.getEmf());
+            electricalComponent.setA(new Point(x.b.x, x.b.y));
+            electricalComponent.setB(new Point(x.a.x, x.a.y));
             return electricalComponent;
         }).toList();
     }
 
+
+    public ElectricalComponent toEntity(ElectricalComponentDto x, Scheme scheme) {
+            var electricalComponent = new ElectricalComponent();
+            electricalComponent.setPk(new ElectricalComponentPK(x.getComponentId(), scheme.getId()));
+            electricalComponent.setScheme(scheme);
+            electricalComponent.setType(x.getType());
+            electricalComponent.setResistance(x.getResistance());
+            electricalComponent.setEMF(x.getEmf());
+            electricalComponent.setA(new Point(x.b.x, x.b.y));
+            electricalComponent.setB(new Point(x.a.x, x.a.y));
+            return electricalComponent;
+    }
 }

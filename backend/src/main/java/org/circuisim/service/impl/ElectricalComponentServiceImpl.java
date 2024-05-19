@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.circuisim.domain.simulation.*;
 import org.circuisim.repository.ElectricalComponentRepository;
 import org.circuisim.service.ElectricalComponentService;
-import org.circuisim.service.PointService;
 import org.circuisim.service.SchemeService;
 import org.circuisim.web.dto.ElectricalComponentDto;
+import org.circuisim.web.mapper.SchemeMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ElectricalComponentServiceImpl implements ElectricalComponentService {
     private final ElectricalComponentRepository repository;
-    private final PointService pointService;
     private final SchemeService schemeService;
 
     @Override
@@ -44,17 +43,10 @@ public class ElectricalComponentServiceImpl implements ElectricalComponentServic
     }
 
     private void updatePresentComponent(ElectricalComponent electricalComponent, ElectricalComponentDto electricalComponentDto) {
-
-        var a = pointService.getById(electricalComponent.getA().getPointPK());
-        var pointPK = new PointPK(electricalComponentDto.getA().getX(), electricalComponentDto.getA().getY());
-        a.setPointPK(pointPK);
-
-        var b = pointService.getById(electricalComponent.getB().getPointPK());
-        pointPK = new PointPK(electricalComponentDto.getB().getX(), electricalComponentDto.getB().getY());
-        b.setPointPK(pointPK);
-
-        pointService.save(a);
-        pointService.save(b);
+        electricalComponent.setA(new Point(electricalComponentDto.getA().getX(),electricalComponentDto.getA().getY()));
+        electricalComponent.setB(new Point(electricalComponentDto.getB().getX(),electricalComponentDto.getB().getY()));
+        electricalComponent.setEMF(electricalComponentDto.getEmf());
+        electricalComponent.setResistance(electricalComponentDto.getResistance());
         repository.save(electricalComponent);
     }
 
@@ -64,13 +56,10 @@ public class ElectricalComponentServiceImpl implements ElectricalComponentServic
         component.setPk(new ElectricalComponentPK(electricalComponentDto.getComponentId(), scheme.getId()));
         component.setScheme(scheme);
         component.setType(electricalComponentDto.getType());
-        var a = pointService.save(
-                new Point(
-                        new PointPK(electricalComponentDto.getA().getX(), electricalComponentDto.getA().getY())));
-        component.setA(a);
-        var b = pointService.save(
-                new Point(new PointPK(electricalComponentDto.getB().getX(), electricalComponentDto.getB().getY())));
-        component.setB(b);
+        component.setA(new Point(electricalComponentDto.getA().getX(),electricalComponentDto.getA().getY()));
+        component.setB(new Point(electricalComponentDto.getB().getX(),electricalComponentDto.getB().getY()));
+        component.setResistance(electricalComponentDto.getResistance());
+        component.setEMF(electricalComponentDto.getEmf());
         save(component);
     }
 }

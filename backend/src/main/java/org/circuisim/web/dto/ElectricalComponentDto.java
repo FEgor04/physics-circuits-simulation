@@ -20,6 +20,10 @@ public class ElectricalComponentDto {
     @Schema(description = "Type of component", example = "WIRE")
     @NotNull
     public TypeElectricalComponent type;
+    @Schema(description = "Component resistance", example = "5")
+    public double resistance;
+    @Schema(description = "EMF of the component", example = "2")
+    public double emf;
     @Schema(description = "Point dto")
     @NotNull
     public PointDto a;
