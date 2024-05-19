@@ -337,7 +337,7 @@ export class SimpleSimulator implements CircuitSimulator {
     }
     return currentForAmper;
   }
-
+  
   validateSchema(): keyof typeof schemaErrors | undefined {
     const adjacencyList: Map<string, Set<string>> = new Map();
 

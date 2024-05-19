@@ -14,7 +14,10 @@ import { Route as rootRoute } from "./app/routes/__root";
 import { Route as SignupImport } from "./app/routes/signup";
 import { Route as SigninImport } from "./app/routes/signin";
 import { Route as EmbedImport } from "./app/routes/embed";
+import { Route as AuthenticatedRouteImport } from "./app/routes/_authenticated/route";
 import { Route as IndexImport } from "./app/routes/index";
+import { Route as AuthenticatedSchemesIndexImport } from "./app/routes/_authenticated/schemes.index";
+import { Route as AuthenticatedSchemesSchemeImport } from "./app/routes/_authenticated/schemes.$scheme";
 
 // Create/Update Routes
 
@@ -33,10 +36,27 @@ const EmbedRoute = EmbedImport.update({
   getParentRoute: () => rootRoute,
 } as any);
 
+const AuthenticatedRouteRoute = AuthenticatedRouteImport.update({
+  id: "/_authenticated",
+  getParentRoute: () => rootRoute,
+} as any);
+
 const IndexRoute = IndexImport.update({
   path: "/",
   getParentRoute: () => rootRoute,
 } as any);
+
+const AuthenticatedSchemesIndexRoute = AuthenticatedSchemesIndexImport.update({
+  path: "/schemes/",
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any);
+
+const AuthenticatedSchemesSchemeRoute = AuthenticatedSchemesSchemeImport.update(
+  {
+    path: "/schemes/$scheme",
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any,
+);
 
 // Populate the FileRoutesByPath interface
 
@@ -44,6 +64,10 @@ declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
     "/": {
       preLoaderRoute: typeof IndexImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_authenticated": {
+      preLoaderRoute: typeof AuthenticatedRouteImport;
       parentRoute: typeof rootRoute;
     };
     "/embed": {
@@ -58,6 +82,14 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof SignupImport;
       parentRoute: typeof rootRoute;
     };
+    "/_authenticated/schemes/$scheme": {
+      preLoaderRoute: typeof AuthenticatedSchemesSchemeImport;
+      parentRoute: typeof AuthenticatedRouteImport;
+    };
+    "/_authenticated/schemes/": {
+      preLoaderRoute: typeof AuthenticatedSchemesIndexImport;
+      parentRoute: typeof AuthenticatedRouteImport;
+    };
   }
 }
 
@@ -65,6 +97,10 @@ declare module "@tanstack/react-router" {
 
 export const routeTree = rootRoute.addChildren([
   IndexRoute,
+  AuthenticatedRouteRoute.addChildren([
+    AuthenticatedSchemesSchemeRoute,
+    AuthenticatedSchemesIndexRoute,
+  ]),
   EmbedRoute,
   SigninRoute,
   SignupRoute,

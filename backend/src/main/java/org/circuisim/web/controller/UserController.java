@@ -45,7 +45,7 @@ public class UserController {
     public GetUserResponse getUserById(
             @PathVariable
             @Min(value = 0, message = "User ID must be greater than or equal to 0")
-            @Parameter(description = "ID of the user to retrieve",required = true) Long id) {
+            @Parameter(description = "ID of the user to retrieve", required = true) Long id) {
         return dtoToResponse(userMapper.toDto(userService.getById(id)));
     }
 

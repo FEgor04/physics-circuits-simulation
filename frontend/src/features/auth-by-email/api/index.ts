@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getMeQueryOptions } from "@/entities/principal";
 import { login, register } from "@/shared/api";
+import "./interceptors.ts"; // set up interceptors
+import { setSession } from "./interceptors.ts";
 
 export function useSignInByEmailMutation() {
   const queryClient = useQueryClient();
@@ -13,13 +15,7 @@ export function useSignInByEmailMutation() {
       return response.data;
     },
     onSuccess: (response) => {
-      localStorage.setItem(
-        "session",
-        JSON.stringify({
-          accessToken: response.accessToken,
-          refreshToken: response.refreshToken,
-        }),
-      );
+      setSession(response);
       queryClient.invalidateQueries(getMeQueryOptions());
     },
   });
@@ -37,13 +33,7 @@ export function useSignUpByEmailMutation() {
       return response.data;
     },
     onSuccess: (response) => {
-      localStorage.setItem(
-        "session",
-        JSON.stringify({
-          accessToken: response.accessToken,
-          refreshToken: response.refreshToken,
-        }),
-      );
+      setSession(response);
       queryClient.invalidateQueries(getMeQueryOptions());
     },
   });
