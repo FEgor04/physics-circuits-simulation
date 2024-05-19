@@ -2,7 +2,7 @@ import { MoreHorizontal, PencilLine, Share2, Trash } from "lucide-react";
 import { Scheme } from "@/entities/scheme";
 import { Button } from "@/shared/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/ui/dropdown-menu";
-import { useDeleteSchemeMutation } from "@/entities/scheme/api/delete-scheme";
+import { useDeleteSchemeMutation } from "@/entities/scheme";
 
 type Props = {
   scheme: Scheme;
