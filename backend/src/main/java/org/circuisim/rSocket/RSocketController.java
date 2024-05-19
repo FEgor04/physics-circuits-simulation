@@ -73,9 +73,9 @@ public class RSocketController {
     }
 
 
-    @MessageMapping("request-response")
-    Mono<Message> requestResponse(final Message request) {
-        log.info("Received request-response request: {}", request);
-        return Mono.just(new Message(SERVER, RESPONSE));
-    }
+//    @MessageMapping("request-response")
+//    Mono<Message> requestResponse(final Message request) {
+//        log.info("Received request-response request: {}", request);
+//        return Mono.just(new Message(SERVER, RESPONSE));
+//    }
 }
