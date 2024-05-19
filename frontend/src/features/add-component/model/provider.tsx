@@ -1,30 +1,13 @@
 import "react";
-import { DndContext, DragEndEvent, MouseSensor, TouchSensor, useSensor } from "@dnd-kit/core";
-import { Active, Over } from "@dnd-kit/core/dist/store";
-import { ClientRect } from "@dnd-kit/core/dist/types";
+import { DndContext, DragEndEvent, Modifier, MouseSensor, TouchSensor, useSensor } from "@dnd-kit/core";
 import { snapCenterToCursor } from "@dnd-kit/modifiers";
-import { getEventCoordinates, Transform } from "@dnd-kit/utilities";
+import { getEventCoordinates } from "@dnd-kit/utilities";
 import { getZoomCoefficient } from "@/shared/embed/utility.ts";
 import type { OmitBetter } from "@/shared/lib/types";
 import { ElectricalComponent, Point } from "@/shared/simulation/types";
 import { context as AddComponentContext, State } from "./context";
 
 type Props = React.PropsWithChildren<State>;
-
-// Why there is no such type in library...
-type ModifierArgs = {
-  activatorEvent: Event | null;
-  active: Active | null;
-  activeNodeRect: ClientRect | null;
-  draggingNodeRect: ClientRect | null;
-  containerNodeRect: ClientRect | null;
-  over: Over | null;
-  overlayNodeRect: ClientRect | null;
-  scrollableAncestors: Element[];
-  scrollableAncestorRects: ClientRect[];
-  transform: Transform;
-  windowRect: ClientRect | null;
-};
 
 function getCoordsFromEvent(event: DragEndEvent): Point {
   return {
@@ -51,7 +34,7 @@ export const AddComponentContextProvider: React.FC<Props> = ({ children, ...prop
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
   const gridSize = getZoomCoefficient();
-  function snapToGrid({ activatorEvent, over, draggingNodeRect, transform }: ModifierArgs) {
+  const snapToGrid: Modifier = ({ activatorEvent, over, draggingNodeRect, transform }) => {
     if (!over) return transform;
     if (!draggingNodeRect) return transform;
     if (!activatorEvent) return transform;
@@ -80,7 +63,7 @@ export const AddComponentContextProvider: React.FC<Props> = ({ children, ...prop
       x: transform.x - mouseDeltaX - Math.ceil(elementWidth / 2),
       y: transform.y - mouseDeltaY - Math.ceil(elementHeight / 2),
     };
-  }
+  };
 
   return (
     <AddComponentContext.Provider value={props}>
