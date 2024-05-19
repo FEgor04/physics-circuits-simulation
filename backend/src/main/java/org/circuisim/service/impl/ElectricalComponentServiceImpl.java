@@ -29,11 +29,7 @@ public class ElectricalComponentServiceImpl implements ElectricalComponentServic
 
     @Override
     public void updateComponents(List<ElectricalComponentDto> list, String schemeName, Long schemeId) {
-        var scheme = schemeService.getById(schemeId);
-        if (!scheme.getName().equals(schemeName)) {
-            scheme.setName(schemeName);
-            schemeService.save(scheme);
-        }
+        schemeService.updateSchemeName(schemeName,schemeId);
         for (ElectricalComponentDto electricalComponentDto : list) {
             var electricalComponent1 = repository.findById(
                     new ElectricalComponentPK(electricalComponentDto.componentId, schemeId)

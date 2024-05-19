@@ -23,4 +23,6 @@ public interface SchemeService {
     List<GetUsersPermissionsResponse> getUsersById(Long id);
 
     void deleteById(Long id);
+
+    void updateSchemeName(String schemeName, Long schemeId);
 }

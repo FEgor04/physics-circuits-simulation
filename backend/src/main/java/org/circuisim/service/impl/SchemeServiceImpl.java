@@ -125,5 +125,14 @@ public class SchemeServiceImpl implements SchemeService {
         schemeRepository.deleteById(id);
     }
 
+    @Override
+    public void updateSchemeName(String schemeName, Long schemeId) {
+        var scheme = getById(schemeId);
+        if (!scheme.getName().equals(schemeName)) {
+            scheme.setName(schemeName);
+            save(scheme);
+        }
+    }
+
 
 }
