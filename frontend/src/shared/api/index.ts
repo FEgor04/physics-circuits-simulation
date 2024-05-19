@@ -5,8 +5,6 @@
  * Sample API of the Physics project engine
  * OpenAPI spec version: 1.0.0
  */
-import * as axios from "axios";
-import type { AxiosRequestConfig, AxiosResponse } from "axios";
 import type {
   ElectricalComponentDto,
   GetUserResponse,
@@ -19,133 +17,158 @@ import type {
   SignUpAdminRequest,
   SignUpRequest,
 } from "./index.schemas";
+import { customInstance } from "./instance";
 
-export const getSchemeById = <TData = AxiosResponse<SchemeResponse>>(
-  id: number,
-  options?: AxiosRequestConfig,
-): Promise<TData> => {
-  return axios.default.get(`/api/schemes/${id}`, options);
+type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1];
+
+export const getSchemeById = (id: number, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<SchemeResponse>({ url: `/api/schemes/${id}`, method: "GET" }, options);
 };
 
-export const updateScheme = <TData = AxiosResponse<string>>(
+export const updateScheme = (
   id: number,
   electricalComponentDto: ElectricalComponentDto[],
-  options?: AxiosRequestConfig,
-): Promise<TData> => {
-  return axios.default.put(`/api/schemes/${id}`, electricalComponentDto, options);
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<string>(
+    {
+      url: `/api/schemes/${id}`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      data: electricalComponentDto,
+    },
+    options,
+  );
 };
 
-export const setPermissionsByIdScheme = <TData = AxiosResponse<string>>(
+export const setPermissionsByIdScheme = (
   id: number,
   setPermissionsRequest: SetPermissionsRequest[],
-  options?: AxiosRequestConfig,
-): Promise<TData> => {
-  return axios.default.put(`/api/schemes/${id}/permissions`, setPermissionsRequest, options);
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<string>(
+    {
+      url: `/api/schemes/${id}/permissions`,
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      data: setPermissionsRequest,
+    },
+    options,
+  );
 };
 
-export const deletePermissionsByIdScheme = <TData = AxiosResponse<string>>(
+export const deletePermissionsByIdScheme = (
   id: number,
   setPermissionsRequest: SetPermissionsRequest[],
-  options?: AxiosRequestConfig,
-): Promise<TData> => {
-  return axios.default.delete(`/api/schemes/${id}/permissions`, { data: setPermissionsRequest, ...options });
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<string>(
+    {
+      url: `/api/schemes/${id}/permissions`,
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      data: setPermissionsRequest,
+    },
+    options,
+  );
 };
 
-export const getAllSchemes = <TData = AxiosResponse<SchemeResponse[]>>(
-  options?: AxiosRequestConfig,
-): Promise<TData> => {
-  return axios.default.get(`/api/schemes`, options);
+export const getAllSchemes = (options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<SchemeResponse[]>({ url: `/api/schemes`, method: "GET" }, options);
 };
 
-export const createNewScheme = <TData = AxiosResponse<SchemeResponse>>(
+export const createNewScheme = (
   schemeCreateRequest: SchemeCreateRequest,
-  options?: AxiosRequestConfig,
-): Promise<TData> => {
-  return axios.default.post(`/api/schemes`, schemeCreateRequest, options);
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<SchemeResponse>(
+    { url: `/api/schemes`, method: "POST", headers: { "Content-Type": "application/json" }, data: schemeCreateRequest },
+    options,
+  );
 };
 
 /**
  * Registers a new user with provided details and generates JWT token
  * @summary User registration
  */
-export const register = <TData = AxiosResponse<JwtResponse>>(
-  signUpRequest: SignUpRequest,
-  options?: AxiosRequestConfig,
-): Promise<TData> => {
-  return axios.default.post(`/api/auth/register`, signUpRequest, options);
+export const register = (signUpRequest: SignUpRequest, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<JwtResponse>(
+    { url: `/api/auth/register`, method: "POST", headers: { "Content-Type": "application/json" }, data: signUpRequest },
+    options,
+  );
 };
 
 /**
  * Registers a new administrator with provided details and admin key, and generates JWT token
  * @summary Admin registration
  */
-export const registerAdmin = <TData = AxiosResponse<JwtResponse>>(
+export const registerAdmin = (
   signUpAdminRequest: SignUpAdminRequest,
-  options?: AxiosRequestConfig,
-): Promise<TData> => {
-  return axios.default.post(`/api/auth/register/admin`, signUpAdminRequest, options);
+  options?: SecondParameter<typeof customInstance>,
+) => {
+  return customInstance<JwtResponse>(
+    {
+      url: `/api/auth/register/admin`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      data: signUpAdminRequest,
+    },
+    options,
+  );
 };
 
 /**
  * Refreshes JWT token based on provided refresh token
  * @summary Refresh token
  */
-export const refresh = <TData = AxiosResponse<JwtResponse>>(
-  refreshBody: string,
-  options?: AxiosRequestConfig,
-): Promise<TData> => {
-  return axios.default.post(`/api/auth/refresh`, refreshBody, options);
+export const refresh = (refreshBody: string, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<JwtResponse>(
+    { url: `/api/auth/refresh`, method: "POST", headers: { "Content-Type": "application/json" }, data: refreshBody },
+    options,
+  );
 };
 
 /**
  * Authenticates user based on provided credentials and generates JWT token
  * @summary User login
  */
-export const login = <TData = AxiosResponse<JwtResponse>>(
-  signInRequest: SignInRequest,
-  options?: AxiosRequestConfig,
-): Promise<TData> => {
-  return axios.default.post(`/api/auth/login`, signInRequest, options);
+export const login = (signInRequest: SignInRequest, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<JwtResponse>(
+    { url: `/api/auth/login`, method: "POST", headers: { "Content-Type": "application/json" }, data: signInRequest },
+    options,
+  );
 };
 
 /**
  * Retrieves user information by their ID
  * @summary Get user by ID
  */
-export const getUserById = <TData = AxiosResponse<GetUserResponse>>(
-  id: number,
-  options?: AxiosRequestConfig,
-): Promise<TData> => {
-  return axios.default.get(`/api/users/${id}`, options);
+export const getUserById = (id: number, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<GetUserResponse>({ url: `/api/users/${id}`, method: "GET" }, options);
 };
 
 /**
  * Retrieves information about the current user based on the email stored in the JWT payload
  * @summary Get current user
  */
-export const getCurrentUser = <TData = AxiosResponse<GetUserResponse>>(
-  options?: AxiosRequestConfig,
-): Promise<TData> => {
-  return axios.default.get(`/api/users/me`, options);
+export const getCurrentUser = (options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<GetUserResponse>({ url: `/api/users/me`, method: "GET" }, options);
 };
 
-export const getAllUsersBySchemeId = <TData = AxiosResponse<GetUsersPermissionsResponse[]>>(
-  id: number,
-  options?: AxiosRequestConfig,
-): Promise<TData> => {
-  return axios.default.get(`/api/schemes/${id}/users`, options);
+export const getAllUsersBySchemeId = (id: number, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<GetUsersPermissionsResponse[]>({ url: `/api/schemes/${id}/users`, method: "GET" }, options);
 };
 
-export type GetSchemeByIdResult = AxiosResponse<SchemeResponse>;
-export type UpdateSchemeResult = AxiosResponse<string>;
-export type SetPermissionsByIdSchemeResult = AxiosResponse<string>;
-export type DeletePermissionsByIdSchemeResult = AxiosResponse<string>;
-export type GetAllSchemesResult = AxiosResponse<SchemeResponse[]>;
-export type CreateNewSchemeResult = AxiosResponse<SchemeResponse>;
-export type RegisterResult = AxiosResponse<JwtResponse>;
-export type RegisterAdminResult = AxiosResponse<JwtResponse>;
-export type RefreshResult = AxiosResponse<JwtResponse>;
-export type LoginResult = AxiosResponse<JwtResponse>;
-export type GetUserByIdResult = AxiosResponse<GetUserResponse>;
-export type GetCurrentUserResult = AxiosResponse<GetUserResponse>;
-export type GetAllUsersBySchemeIdResult = AxiosResponse<GetUsersPermissionsResponse[]>;
+export type GetSchemeByIdResult = NonNullable<Awaited<ReturnType<typeof getSchemeById>>>;
+export type UpdateSchemeResult = NonNullable<Awaited<ReturnType<typeof updateScheme>>>;
+export type SetPermissionsByIdSchemeResult = NonNullable<Awaited<ReturnType<typeof setPermissionsByIdScheme>>>;
+export type DeletePermissionsByIdSchemeResult = NonNullable<Awaited<ReturnType<typeof deletePermissionsByIdScheme>>>;
+export type GetAllSchemesResult = NonNullable<Awaited<ReturnType<typeof getAllSchemes>>>;
+export type CreateNewSchemeResult = NonNullable<Awaited<ReturnType<typeof createNewScheme>>>;
+export type RegisterResult = NonNullable<Awaited<ReturnType<typeof register>>>;
+export type RegisterAdminResult = NonNullable<Awaited<ReturnType<typeof registerAdmin>>>;
+export type RefreshResult = NonNullable<Awaited<ReturnType<typeof refresh>>>;
+export type LoginResult = NonNullable<Awaited<ReturnType<typeof login>>>;
+export type GetUserByIdResult = NonNullable<Awaited<ReturnType<typeof getUserById>>>;
+export type GetCurrentUserResult = NonNullable<Awaited<ReturnType<typeof getCurrentUser>>>;
+export type GetAllUsersBySchemeIdResult = NonNullable<Awaited<ReturnType<typeof getAllUsersBySchemeId>>>;
