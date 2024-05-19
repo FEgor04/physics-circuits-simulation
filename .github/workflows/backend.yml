@@ -8,6 +8,9 @@ on:
 
 jobs:
   build:
+    defaults:
+      run:
+        working-directory: ./backend
 
     runs-on: ubuntu-latest
     permissions:
@@ -30,6 +33,9 @@ jobs:
       run: ./gradlew build
 
   dependency-submission:
+    defaults:
+      run:
+        working-directory: ./backend
 
     runs-on: ubuntu-latest
     permissions:
