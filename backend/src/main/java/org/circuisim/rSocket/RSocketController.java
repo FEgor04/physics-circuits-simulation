@@ -78,21 +78,21 @@ public class RSocketController {
                 .subscribe();
     }
 
-    public void sendNotification(Long schemeId, Action action) {
-        if (CLIENTS_MAP.containsKey(schemeId)) {
-            for (var requester : CLIENTS_MAP.get(schemeId)) {
-                requester.route("client-data")
-                        .data(action)
-                        .retrieveMono(Action.class)
-                        .block();
-            }
-        }
-    }
+//    public void sendNotification(Long schemeId, Action action) {
+//        if (CLIENTS_MAP.containsKey(schemeId)) {
+//            for (var requester : CLIENTS_MAP.get(schemeId)) {
+//                requester.route("client-data")
+//                        .data(action)
+//                        .retrieveMono(Action.class)
+//                        .block();
+//            }
+//        }
+//    }
 
-
-    @MessageMapping("request-response")
-    Mono<Message> requestResponse(final Message request) {
-        log.info("Received request-response request: {}", request);
-        return Mono.just(new Message(SERVER, RESPONSE));
-    }
+//
+//    @MessageMapping("request-response")
+//    Mono<Message> requestResponse(final Message request) {
+//        log.info("Received request-response request: {}", request);
+//        return Mono.just(new Message(SERVER, RESPONSE));
+//    }
 }
