@@ -1,4 +1,5 @@
 import { useDraggable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
 import { svgSize } from "@/shared/assets/circuit";
 import ampermeterSvg from "@/shared/assets/circuit/ampermater.svg";
 import sourceSvg from "@/shared/assets/circuit/battery.svg";
@@ -56,7 +57,7 @@ function Item<T extends ElectricalComponent>({
       ref={setNodeRef}
       src={src}
       style={{
-        transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
+        transform: transform ? CSS.Translate.toString(transform) : undefined,
         width: `${svgSize}px`,
         height: `${height}px`,
       }}

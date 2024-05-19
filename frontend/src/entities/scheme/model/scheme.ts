@@ -1,4 +1,4 @@
-import { ElectricalComponent } from "@/shared/simulation";
+import { ElectricalComponentWithID } from "@/shared/simulation";
 
 export type SchemeID = number;
 
@@ -7,5 +7,5 @@ export type Scheme = {
   name: string;
   authorName: string;
   canEdit: boolean;
-  components: Array<ElectricalComponent>;
+  components: Array<ElectricalComponentWithID>;
 };

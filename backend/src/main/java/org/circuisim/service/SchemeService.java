@@ -13,11 +13,13 @@ public interface SchemeService {
 
     Scheme getById(Long id);
 
-    List<Scheme> getAll();
+    List<Scheme> getAllByUsername(String username);
 
     void addPermission(Long schemeId, List<SetPermissionsRequest> request);
 
     void removePermission(Long schemeId, List<SetPermissionsRequest> request);
 
     List<GetUsersPermissionsResponse> getUsersById(Long id);
+
+    void deleteById(Long id);
 }

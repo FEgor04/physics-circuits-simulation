@@ -25,6 +25,7 @@ public class ControllerExceptionHandler {
     private final String INVALID_INPUT_EXCEPTION = "Invalid input";
     private final String NOT_FOUND_EXCEPTION = "Not found";
     private final String UNAUTHORIZED_EXCEPTION = "Invalid password or email!";
+    private final String ACCESS_DENIED = "You do not have permission to delete!";
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorMessage> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
@@ -62,6 +63,12 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<ErrorMessage>(message, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(value = {AccessDeniedException.class})
+    public ResponseEntity<ErrorMessage> accessDeniedExceptionHandler(Exception ex, WebRequest request) {
+        ErrorMessage message = new ErrorMessage(HttpStatus.FORBIDDEN.value(), new Date(), ACCESS_DENIED, ex.getMessage());
+
+        return new ResponseEntity<ErrorMessage>(message, HttpStatus.FORBIDDEN);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorMessage> globalExceptionHandler(Exception ex, WebRequest request) {

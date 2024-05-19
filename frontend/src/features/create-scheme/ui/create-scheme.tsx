@@ -28,6 +28,9 @@ function CreateDialog() {
           params: {
             scheme: String(result.id),
           },
+          search: {
+            mode: "editing",
+          },
         });
       },
     });

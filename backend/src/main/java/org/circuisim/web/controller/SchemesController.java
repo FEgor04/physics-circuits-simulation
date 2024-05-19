@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.circuisim.exception.AccessDeniedException;
 import org.circuisim.service.ElectricalComponentService;
 import org.circuisim.service.SchemeService;
 import org.circuisim.web.dto.ElectricalComponentDto;
@@ -34,7 +35,7 @@ public class SchemesController {
     public List<SchemeResponse> getAllSchemes(
             @AuthenticationPrincipal UserDetails userDetails
     ) {
-        return schemeMapper.toListResponse(schemeService.getAll(), userDetails.getUsername());
+        return schemeMapper.toListResponse(schemeService.getAllByUsername(userDetails.getUsername()), userDetails.getUsername());
     }
 
     @GetMapping("{id}")
@@ -84,6 +85,19 @@ public class SchemesController {
             @RequestBody List<SetPermissionsRequest> request
     ) {
         schemeService.removePermission(id, request);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteSchemeById(
+            @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        if (schemeService.getById(id).getAuthor().getUsername().equals(userDetails.getUsername())) {
+            schemeService.deleteById(id);
+        } else {
+            throw new AccessDeniedException();
+        }
         return ResponseEntity.noContent().build();
     }
 

@@ -10,7 +10,8 @@ export function useCreateSchemeMutation() {
       return data.data;
     },
     onSuccess: (data) => {
-      queryClient.setQueryData(["scheme", "detail", data.id], fromDTO(data));
+      queryClient.invalidateQueries({ queryKey: ["schemes"] });
+      queryClient.setQueryData(["schemes", "detail", data.id], fromDTO(data));
     },
   });
 }
