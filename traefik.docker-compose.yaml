@@ -47,7 +47,7 @@ services:
       - app
     restart: always
     labels:
-      - traefik.enable=false
+      - traefik.enable=true
       - traefik.http.routers.front.rule=Host("physics.efedorov.spb.su")
       - traefik.http.routers.front.entrypoints=websecure
       - traefik.http.routers.front.tls.certresolver=letsEncrypt
