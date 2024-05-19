@@ -13,7 +13,7 @@ public interface SchemeService {
 
     Scheme getById(Long id);
 
-    List<Scheme> getAll();
+    List<Scheme> getAll(UserDetails userDetails);
 
     void addPermission(Long schemeId, List<SetPermissionsRequest> request);
 
