@@ -1,10 +1,13 @@
-name: Deploy to server
+name: Deploy
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Frontend Linters & Tests"]
+    branches: [main]
+    types:
+      - completed
+
 jobs:
-  build:
+  deploy:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
@@ -15,7 +18,7 @@ jobs:
         username: ${{ secrets.DEPLOY_USER }}
         key: ${{ secrets.SSH_KEY }}
         script: |
-          cd ${{ DEPLOY_DIRECTORY }}
+          cd ${{ secrets.DEPLOY_DIRECTORY }}
           git checkout main
           git pull
-          docker compose -f traefik.docker-compose.yml up -d --build
+          docker compose -f traefik.docker-compose.yaml up -d --build
