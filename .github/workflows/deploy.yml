@@ -19,4 +19,4 @@ jobs:
           cd ${{ secrets.DEPLOY_DIRECTORY }}
           git checkout main
           git pull
-          docker compose -f traefik.docker-compose.yml up -d --build
+          docker compose -f traefik.docker-compose.yaml up -d --build
