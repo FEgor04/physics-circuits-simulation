@@ -3,7 +3,7 @@ import { SimpleSimulator } from "../simulator";
 import { ElectricalComponentWithID } from "../types";
 
 test("branch current test", () => {
-  const expectedCurrent: number[] = [3, 1, 2, Infinity, 1, Infinity];
+  const expectedVoltage: number = 10;
   const actualNodes = [
     { x: 0, y: 5 },
     { x: 4, y: 0 },
@@ -62,7 +62,6 @@ test("branch current test", () => {
   const simulator = new SimpleSimulator(components);
   const newComponents = simulator.rebuildShema(simulator.findBranches());
   const newSimulator = new SimpleSimulator(newComponents);
-  const actualBranches = newSimulator.findBranches();
-  const branchCurr = newSimulator.branchCurrent(actualBranches, actualNodes, acrSolve);
-  expect(branchCurr).toStrictEqual(expectedCurrent);
+  const voltage = newSimulator.getVoltageForVoltmetr(27, newSimulator.findBranches(), actualNodes, acrSolve);
+  expect(voltage).toStrictEqual(expectedVoltage);
 });
