@@ -1,8 +1,10 @@
-name: Deploy to server
+name: Release
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Frontend Linters & Tests"]
+    branches: [main, fix-cd]
+    types:
+      - completed
 
 jobs:
   build:
