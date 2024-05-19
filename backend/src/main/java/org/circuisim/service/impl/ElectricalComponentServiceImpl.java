@@ -28,7 +28,8 @@ public class ElectricalComponentServiceImpl implements ElectricalComponentServic
     }
 
     @Override
-    public void updateComponents(List<ElectricalComponentDto> list, Long schemeId) {
+    public void updateComponents(List<ElectricalComponentDto> list, String schemeName, Long schemeId) {
+        schemeService.updateSchemeName(schemeName,schemeId);
         for (ElectricalComponentDto electricalComponentDto : list) {
             var electricalComponent1 = repository.findById(
                     new ElectricalComponentPK(electricalComponentDto.componentId, schemeId)
@@ -43,8 +44,8 @@ public class ElectricalComponentServiceImpl implements ElectricalComponentServic
     }
 
     private void updatePresentComponent(ElectricalComponent electricalComponent, ElectricalComponentDto electricalComponentDto) {
-        electricalComponent.setA(new Point(electricalComponentDto.getA().getX(),electricalComponentDto.getA().getY()));
-        electricalComponent.setB(new Point(electricalComponentDto.getB().getX(),electricalComponentDto.getB().getY()));
+        electricalComponent.setA(new Point(electricalComponentDto.getA().getX(), electricalComponentDto.getA().getY()));
+        electricalComponent.setB(new Point(electricalComponentDto.getB().getX(), electricalComponentDto.getB().getY()));
         electricalComponent.setEMF(electricalComponentDto.getEmf());
         electricalComponent.setResistance(electricalComponentDto.getResistance());
         repository.save(electricalComponent);
@@ -56,8 +57,8 @@ public class ElectricalComponentServiceImpl implements ElectricalComponentServic
         component.setPk(new ElectricalComponentPK(electricalComponentDto.getComponentId(), scheme.getId()));
         component.setScheme(scheme);
         component.setType(electricalComponentDto.getType());
-        component.setA(new Point(electricalComponentDto.getA().getX(),electricalComponentDto.getA().getY()));
-        component.setB(new Point(electricalComponentDto.getB().getX(),electricalComponentDto.getB().getY()));
+        component.setA(new Point(electricalComponentDto.getA().getX(), electricalComponentDto.getA().getY()));
+        component.setB(new Point(electricalComponentDto.getB().getX(), electricalComponentDto.getB().getY()));
         component.setResistance(electricalComponentDto.getResistance());
         component.setEMF(electricalComponentDto.getEmf());
         save(component);
