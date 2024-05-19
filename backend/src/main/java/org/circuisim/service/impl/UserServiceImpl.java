@@ -64,12 +64,14 @@ public class UserServiceImpl implements UserService {
     }
 
     private void createAdminUser() {
-        User user = new User();
-        user.setName(adminProperties.getAdminName());
-        user.setUsername(adminProperties.getAdminUsername());
-        user.setPassword(passwordEncoder.encode(adminProperties.getAdminPassword()));
-        user.setRoles(Set.of(Role.ADMIN));
-        userRepository.save(user);
+        if (userRepository.findByUsername(adminProperties.getAdminUsername()).isEmpty()) {
+            User user = new User();
+            user.setName(adminProperties.getAdminName());
+            user.setUsername(adminProperties.getAdminUsername());
+            user.setPassword(passwordEncoder.encode(adminProperties.getAdminPassword()));
+            user.setRoles(Set.of(Role.ADMIN));
+            userRepository.save(user);
+        }
     }
 
     private UserDto createUserEntity(UserDto userDto) {
