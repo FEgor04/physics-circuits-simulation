@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.circuisim.exception.AccessDeniedException;
 import org.circuisim.service.ElectricalComponentService;
 import org.circuisim.service.SchemeService;
 import org.circuisim.web.dto.ElectricalComponentDto;
@@ -89,9 +90,14 @@ public class SchemesController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<String> deletePermissionsByIdScheme(
-            @PathVariable @Parameter(description = "Scheme id", required = true) Long id
+            @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        schemeService.deleteById(id);
+        if (schemeService.getById(id).getAuthor().getUsername().equals(userDetails.getUsername())) {
+            schemeService.deleteById(id);
+        } else {
+            throw new AccessDeniedException();
+        }
         return ResponseEntity.noContent().build();
     }
 
