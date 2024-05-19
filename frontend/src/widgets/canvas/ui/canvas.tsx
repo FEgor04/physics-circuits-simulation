@@ -1,6 +1,6 @@
 import { useDroppable } from "@dnd-kit/core";
 import { useEffect, useRef, useState } from "react";
-import { isEmbedded } from "@/shared/embed/utility.ts";
+import { getZoomCoefficient } from "@/shared/embed/utility.ts";
 import { ElectricalComponent } from "@/shared/simulation";
 import { ElectricalComponentID, ElectricalComponentWithID } from "@/shared/simulation/types";
 import { CanvasParams } from "../lib";
@@ -24,7 +24,7 @@ export function Canvas({ components, canvasSize, onUpdateComponentCoords }: Prop
 
   useEffect(() => {
     // Ratio between width and schemeWidth
-    const zoomCoefficient = isEmbedded() ? 20 : 35;
+    const zoomCoefficient = getZoomCoefficient();
     if (canvasRef.current) {
       const canvasParams: CanvasParams = {
         width: canvasRef.current.clientWidth,
