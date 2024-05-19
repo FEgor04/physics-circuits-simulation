@@ -1,10 +1,7 @@
 name: Deploy
 on:
-  workflow_run:
-    workflows: ["Frontend"]
-    branches: [main, fix-cd]
-    types:
-      - completed
+  release:
+    types: [published]
 
 jobs:
   deploy:
