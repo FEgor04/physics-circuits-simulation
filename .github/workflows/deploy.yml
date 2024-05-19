@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - fix-cd # temprorarily, remove before merge
 jobs:
   build:
     name: Deploy
@@ -15,7 +16,7 @@ jobs:
         username: ${{ secrets.DEPLOY_USER }}
         key: ${{ secrets.SSH_KEY }}
         script: |
-          cd ${{ DEPLOY_DIRECTORY }}
+          cd ${{ secrets.DEPLOY_DIRECTORY }}
           git checkout main
           git pull
           docker compose -f traefik.docker-compose.yml up -d --build
