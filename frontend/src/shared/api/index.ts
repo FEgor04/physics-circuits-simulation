@@ -41,6 +41,10 @@ export const updateScheme = (
   );
 };
 
+export const deleteSchemeById = (id: number, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<string>({ url: `/api/schemes/${id}`, method: "DELETE" }, options);
+};
+
 export const setPermissionsByIdScheme = (
   id: number,
   setPermissionsRequest: SetPermissionsRequest[],
@@ -161,6 +165,7 @@ export const getAllUsersBySchemeId = (id: number, options?: SecondParameter<type
 
 export type GetSchemeByIdResult = NonNullable<Awaited<ReturnType<typeof getSchemeById>>>;
 export type UpdateSchemeResult = NonNullable<Awaited<ReturnType<typeof updateScheme>>>;
+export type DeleteSchemeByIdResult = NonNullable<Awaited<ReturnType<typeof deleteSchemeById>>>;
 export type SetPermissionsByIdSchemeResult = NonNullable<Awaited<ReturnType<typeof setPermissionsByIdScheme>>>;
 export type DeletePermissionsByIdSchemeResult = NonNullable<Awaited<ReturnType<typeof deletePermissionsByIdScheme>>>;
 export type GetAllSchemesResult = NonNullable<Awaited<ReturnType<typeof getAllSchemes>>>;

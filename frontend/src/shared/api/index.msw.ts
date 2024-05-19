@@ -39,6 +39,8 @@ export const getGetSchemeByIdResponseMock = (overrideResponse: any = {}): Scheme
 
 export const getUpdateSchemeResponseMock = (): string => faker.word.sample();
 
+export const getDeleteSchemeByIdResponseMock = (): string => faker.word.sample();
+
 export const getSetPermissionsByIdSchemeResponseMock = (): string => faker.word.sample();
 
 export const getDeletePermissionsByIdSchemeResponseMock = (): string => faker.word.sample();
@@ -180,6 +182,18 @@ export const getUpdateSchemeMockHandler = (overrideResponse?: string) => {
   return http.put("*/api/schemes/:id", async () => {
     await delay(1000);
     return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getUpdateSchemeResponseMock()), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  });
+};
+
+export const getDeleteSchemeByIdMockHandler = (overrideResponse?: string) => {
+  return http.delete("*/api/schemes/:id", async () => {
+    await delay(1000);
+    return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getDeleteSchemeByIdResponseMock()), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
@@ -331,6 +345,7 @@ export const getGetAllUsersBySchemeIdMockHandler = (overrideResponse?: GetUsersP
 export const getPhysicsCircuitsSimulationEngineMock = () => [
   getGetSchemeByIdMockHandler(),
   getUpdateSchemeMockHandler(),
+  getDeleteSchemeByIdMockHandler(),
   getSetPermissionsByIdSchemeMockHandler(),
   getDeletePermissionsByIdSchemeMockHandler(),
   getGetAllSchemesMockHandler(),
