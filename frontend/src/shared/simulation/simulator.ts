@@ -172,6 +172,7 @@ export class SimpleSimulator implements CircuitSimulator {
     return totalResistance;
   }
 
+
   private findResistanceBetweenNodes(node1: Point, node2: Point, branches: Branch[]): number {
     let totalResistance = 0;
 
