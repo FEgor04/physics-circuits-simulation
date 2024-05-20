@@ -1,4 +1,4 @@
-name: 'Frontend Linters & Tests'
+name: 'Frontend'
 on: 
   pull_request: 
     branches:
@@ -37,3 +37,23 @@ jobs:
       uses:  davelosert/vitest-coverage-report-action@v2
       with:
         working-directory: ./frontend
+  build:
+    defaults:
+      run:
+        working-directory: ./frontend
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: 'Install Node'
+      uses: actions/setup-node@v4
+      with:
+        node-version: '21.7.x'
+    - name: Install dependencies
+      run: npm install -g pnpm && pnpm install
+    - name: Build
+      run: pnpm run build

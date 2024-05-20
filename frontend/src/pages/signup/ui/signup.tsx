@@ -6,14 +6,14 @@ import { formSchema } from "@/features/auth-by-email";
 import { Button } from "@/shared/ui/button.tsx";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/shared/ui/card.tsx";
 
-export function SignUpPage() {
+export function SignUpPage({ redirect }: { redirect: string | undefined }) {
   const navigate = useNavigate({});
   const { mutate, isPending, isError, error } = useSignUpByEmailMutation();
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     mutate(values, {
       onSuccess: () => {
-        void navigate({ to: "/", search: { state: "editing" } });
+        void navigate({ to: redirect ?? "/schemes" });
       },
     });
   }

@@ -11,6 +11,12 @@ export default defineConfig({
       workspace: "src/shared/api",
       mode: "split",
       mock: true,
+      override: {
+        mutator: {
+          path: "./instance.ts",
+          name: "customInstance",
+        },
+      },
     },
   },
 });
