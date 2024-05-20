@@ -389,19 +389,45 @@ export class SimpleSimulator implements CircuitSimulator {
 
     for (let i = 0; i < tempBranches.length; i++) {
       const k = tempBranches[i].components.length;
-      if (tempBranches[i].components[0]._type == "wire") {
-        if (!pointsEqual(tempBranches[i].components[0].a, tempBranches[i].a)) {
-          tempBranches[i].components[0].a = tempBranches[i].a;
+      const startOfBranch = tempBranches[i].components[0];
+      const seconsElementOfBranch = tempBranches[i].components[1];
+      if (startOfBranch._type != "source" && startOfBranch._type != "sourceDC") {
+        if (!pointsEqual(startOfBranch.a, tempBranches[i].a)) {
+          startOfBranch.a = tempBranches[i].a;
         }
       } else {
-        shema.push({ _type: "wire", a: tempBranches[i].components[0].a, b: tempBranches[i].a, id: this.getNewId() });
+        if (seconsElementOfBranch._type != "source" && seconsElementOfBranch._type != "sourceDC") {
+          if (pointsEqual(startOfBranch.plus, seconsElementOfBranch.a)) {
+            shema.push({ _type: "wire", a: tempBranches[i].a, b: startOfBranch.minus, id: this.getNewId() });
+          } else {
+            shema.push({ _type: "wire", a: tempBranches[i].a, b: startOfBranch.plus, id: this.getNewId() });
+          }
+        }
       }
-      if (tempBranches[i].components[k - 1]._type == "wire") {
-        if (!pointsEqual(tempBranches[i].components[k - 1].b, tempBranches[i].b)) {
-          tempBranches[i].components[k - 1].b = tempBranches[i].b;
+      const endOfBranch = tempBranches[i].components[k - 1];
+      const preLastElementOfBranch = tempBranches[i].components[k - 2];
+      if (endOfBranch._type != "source" && endOfBranch._type != "sourceDC") {
+        if (!pointsEqual(endOfBranch.b, tempBranches[i].b)) {
+          endOfBranch.b = tempBranches[i].b;
         }
       } else {
-        shema.push({ _type: "wire", a: tempBranches[i].components[0].b, b: tempBranches[i].b, id: this.getNewId() });
+        if (preLastElementOfBranch._type != "source" && preLastElementOfBranch._type != "sourceDC") {
+          if (pointsEqual(endOfBranch.plus, preLastElementOfBranch.b)) {
+            shema.push({
+              _type: "wire",
+              a: endOfBranch.minus,
+              b: tempBranches[i].b,
+              id: this.getNewId(),
+            });
+          } else {
+            shema.push({
+              _type: "wire",
+              a: endOfBranch.plus,
+              b: tempBranches[i].b,
+              id: this.getNewId(),
+            });
+          }
+        }
       }
     }
     for (let i = 0; i < tempBranches.length; i++) {
