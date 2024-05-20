@@ -9,6 +9,8 @@ import { DeleteComponentProvider } from "@/features/delete-component";
 import { SelectComponentProvider, SelectComponentState } from "@/features/select-component";
 import { UpdateComponentProvider } from "@/features/update-component";
 import { Scheme } from "@/entities/scheme";
+import { CircuitSimulator } from "@/shared/simulation";
+import { SimpleSimulator } from "@/shared/simulation/simulator";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 import { useSimulationState } from "../model/state";
 
@@ -19,7 +21,7 @@ type Props = {
 };
 
 export function Simulation({ mode, setMode, scheme }: Props) {
-  const { components, onAddComponent, onUpdateComponent, onUpdateComponentCoords, onDeleteComponent } =
+  const { components, onAddComponent, onUpdateComponent, onUpdateComponentCoords, onDeleteComponent, simulator } =
     useSimulationState(scheme.components);
   const [selected, setSelected] = useState<SelectComponentState["selected"]>(undefined);
   const selectedComponent = useMemo(() => {

@@ -1,63 +1,56 @@
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer } from "recharts";
-import { ResizablePanel } from "@/shared/ui/resizable.tsx";
+import { assertNever } from "@/shared/lib/types";
+import { Ampermeter, Voltmeter, WithID } from "@/shared/simulation";
+import { Input } from "@/shared/ui/input";
+import { Label } from "@/shared/ui/label";
 
-export function ComponentValuesBar() {
-  const data = [
-    {
-      v1: 100,
-      v2: 110,
-    },
-    {
-      v1: 150,
-      v2: 100,
-    },
-    {
-      v1: 140,
-      v2: 120,
-    },
-    {
-      v1: 140,
-      v2: 120,
-    },
-    {
-      v1: 110,
-      v2: 100,
-    },
-    {
-      v1: 115,
-      v2: 90,
-    },
-    {
-      v1: 100,
-      v2: 100,
-    },
-    {
-      v1: 105,
-      v2: 85,
-    },
-  ];
+type AmpermeterProps = {
+  type: Ampermeter["_type"];
+  component: WithID<Ampermeter>;
+  measurements: {
+    currency: number;
+  };
+};
+
+type VoltmeterProps = {
+  type: Voltmeter["_type"];
+  component: WithID<Voltmeter>;
+  measurements: {
+    voltage: number;
+  };
+};
+
+type Props = VoltmeterProps | AmpermeterProps;
+
+export function ComponentValuesBar(props: Props) {
+  if (props.type == "ampermeter") {
+    return <AmpermeterValuesBar {...props} />;
+  }
+  if (props.type == "voltmeter") {
+    return <VoltmeterValuesBar {...props} />;
+  }
+  assertNever(props);
+}
+
+function AmpermeterValuesBar({ measurements: { currency } }: AmpermeterProps) {
   return (
-    <ResizablePanel className="w-full border-r-4 bg-white" minSize={15} maxSize={50} defaultSize={15} order={1}>
-      <ResponsiveContainer width="100%" height="35%">
-        <LineChart
-          width={200}
-          height={200}
-          data={data}
-          margin={{
-            top: 20,
-            right: 20,
-            left: 0,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="0" />
-          <XAxis />
-          <YAxis />
-          <Legend />
-          <Line type="monotone" dataKey="v1" stroke="#8884d8" dot={false} strokeWidth={4} />
-          <Line type="monotone" dataKey="v2" stroke="#82ca9d" dot={false} strokeWidth={4} />
-        </LineChart>
-      </ResponsiveContainer>
-    </ResizablePanel>
+    <div className="space-y-4">
+      <h6>Амперметр</h6>
+      <div className="space-y-2">
+        <Label>Сила тока</Label>
+        <Input disabled value={currency} />
+      </div>
+    </div>
+  );
+}
+
+function VoltmeterValuesBar({ measurements: { voltage } }: VoltmeterProps) {
+  return (
+    <div className="space-y-4">
+      <h6>Вольтметр</h6>
+      <div className="space-y-2">
+        <Label>Напряжение</Label>
+        <Input disabled value={voltage} />
+      </div>
+    </div>
   );
 }
