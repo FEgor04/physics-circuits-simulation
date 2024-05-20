@@ -173,7 +173,6 @@ export class SimpleSimulator implements CircuitSimulator {
     return totalResistance;
   }
 
-
   private findResistanceBetweenNodes(node1: Point, node2: Point, branches: Branch[]): number {
     let totalResistance = 0;
 
@@ -465,7 +464,6 @@ export class SimpleSimulator implements CircuitSimulator {
     return currentForAmper;
   }
 
-
   public getVoltageForVoltmetr(id: number, branches: Branch[], nodes: Array<Point>, tensionList: number[]): number {
     let voltage: number = 0;
     const branchWithGivenComponent: Branch | undefined = branches.find(
@@ -515,7 +513,7 @@ export class SimpleSimulator implements CircuitSimulator {
     } else {
       throw new Error("Element not ampermetr or voltmetr");
     }
-
+  }
   validateSchema(): keyof typeof schemaErrors | undefined {
     const adjacencyList: Map<string, Set<string>> = new Map();
 
@@ -579,6 +577,5 @@ export class SimpleSimulator implements CircuitSimulator {
     }
 
     return undefined;
-
   }
 }
