@@ -65,8 +65,6 @@ AXIOS_INSTANCE.interceptors.response.use(
             return res;
           });
         } catch (_error) {
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
           currentlyRefreshing = false;
           if (_error instanceof AxiosError) {
             return Promise.reject(_error.response?.data);

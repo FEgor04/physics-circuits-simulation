@@ -1,4 +1,5 @@
 import { queryOptions, useMutation, useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { getCurrentUser, GetCurrentUserResult } from "@/shared/api";
 import { Principal } from "../model";
 
@@ -15,6 +16,12 @@ export const getMeQueryOptions = () =>
   queryOptions({
     queryFn: getPrincipalQueryFn,
     queryKey: ["principal"],
+    retry(failureCount, error) {
+      if (error instanceof AxiosError && error.response?.status == 401) {
+        return false;
+      }
+      return failureCount < 3;
+    },
   });
 
 export function useSignOutMutation() {
