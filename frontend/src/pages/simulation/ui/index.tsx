@@ -66,7 +66,7 @@ export function Simulation({ mode, setMode, scheme }: Props) {
                   <ComponentChooseBar />
                 ) : (
                   (selectedComponent?._type == "ampermeter" || selectedComponent?._type == "voltmeter") &&
-                  selectedComponentMeasurements && (
+                  selectedComponentMeasurements !== undefined && (
                     <ComponentValuesBar type={selectedComponent._type} measurements={selectedComponentMeasurements} />
                   )
                 )}
