@@ -12,7 +12,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @Schema
 public class Message {
-    private Long userId;
-    private Long schemeId;
-    Event event;
+    public Long userId;
+    public Long schemeId;
+    public Event event;
 }

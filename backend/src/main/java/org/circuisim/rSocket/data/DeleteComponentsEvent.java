@@ -7,5 +7,5 @@ import java.util.List;
 
 @Schema
 public final class DeleteComponentsEvent extends Event{
-    private List<ElectricalComponentDto> components;
+    public List<ElectricalComponentDto> components;
 }

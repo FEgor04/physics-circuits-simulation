@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Schema(description = "Schema for Developer object...")
 public class ConnectRequest {
-    private String client;
-    private Long schemeId;
+    public String client;
+    public Long schemeId;
 }

@@ -4,6 +4,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.circuisim.web.dto.UserDto;
 @Schema
 public final class UserConnectedEvent extends Event{
-    private Long schemeId;
-    private UserDto userDto;
+    public Long schemeId;
+    public UserDto userDto;
 }

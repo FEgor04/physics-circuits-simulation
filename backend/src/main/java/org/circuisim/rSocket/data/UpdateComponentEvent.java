@@ -6,5 +6,5 @@ import org.circuisim.web.dto.ElectricalComponentDto;
 import java.util.List;
 @Schema
 public final class UpdateComponentEvent extends Event{
-    private List<ElectricalComponentDto> components;
+    public List<ElectricalComponentDto> components;
 }

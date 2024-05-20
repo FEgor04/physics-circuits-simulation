@@ -14,12 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "DO NOT USE!")
 public class RSocketFakeController {
     @GetMapping("")
-    @Schema(oneOf = {Event.class, DeleteComponentsEvent.class, UpdateComponentEvent.class, UserConnectedEvent.class,
-            UserDisconnectedEvent.class, UserSelectedEvent.class}
-    )
-    public Event doNothing() {
+    @Schema()
+    public Message doNothing() {
 
-        return new Event();
+        return new Message();
     }
 
 }
