@@ -500,15 +500,17 @@ export class SimpleSimulator implements CircuitSimulator {
     const tensionList = this.solveSLAE(gMatrix, currentList);
     const branchCurrent = this.branchCurrent(branches, nodes, tensionList);
     const element = this.getComponentById(id);
-    if (element == undefined) {
-      return { currency: 0, voltage: 0 };
+    if (element === undefined) {
+      throw new Error("Element is undefined");
     }
     if (element._type == "ampermeter") {
       currency = this.getBranchCurrentForAmpermetr(id, branches, branchCurrent);
-    }
-    if (element._type == "voltmeter") {
+      return { currency: currency, voltage: voltage };
+    } else if (element._type == "voltmeter") {
       voltage = this.getVoltageForVoltmetr(id, branches, nodes, tensionList);
+      return { currency: currency, voltage: voltage };
+    } else {
+      throw new Error("Element not ampermetr or voltmetr");
     }
-    return { currency: currency, voltage: voltage };
   }
 }
