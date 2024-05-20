@@ -2,7 +2,7 @@
 
 import { CircuitSimulator } from "./interface";
 import { branchFactory, branchesEqual, deduplicateArray, getComponentContacts, pointsEqual } from "./lib";
-import { Branch, ElectricalComponentWithID, Point } from "./types";
+import { Branch, ElectricalComponentID, ElectricalComponentWithID, Point } from "./types";
 
 export class SimpleSimulator implements CircuitSimulator {
   components: ElectricalComponentWithID[];
@@ -20,7 +20,15 @@ export class SimpleSimulator implements CircuitSimulator {
 
   deleteComponent(_component: ElectricalComponentWithID): void {}
 
-  deleteComponentById(id: number): void {
+  getComponentById(id: ElectricalComponentID): ElectricalComponentWithID | undefined {
+    for (let i = 0; i < this.components.length; i++) {
+      if (this.components[i].id === id) {
+        return this.components[i];
+      }
+    }
+  }
+
+  deleteComponentById(id: ElectricalComponentID): void {
     for (let i = 0; i < this.components.length; i++) {
       if (this.components[i].id === id) {
         this.components.splice(i, 1);
@@ -480,5 +488,27 @@ export class SimpleSimulator implements CircuitSimulator {
       voltage = Math.abs(phiM - phiN);
     }
     return voltage;
+  }
+
+  public getMeasurementsForComponent(id: ElectricalComponentID): { currency: number; voltage: number } {
+    let currency = 0;
+    let voltage = 0;
+    const nodes = this.findNodes();
+    const branches = this.findBranches();
+    const gMatrix = this.buildGMatrix(nodes, branches);
+    const currentList = this.findCurrentForce(nodes, branches);
+    const tensionList = this.solveSLAE(gMatrix, currentList);
+    const branchCurrent = this.branchCurrent(branches, nodes, tensionList);
+    const element = this.getComponentById(id);
+    if (element == undefined) {
+      return { currency: 0, voltage: 0 };
+    }
+    if (element._type == "ampermeter") {
+      currency = this.getBranchCurrentForAmpermetr(id, branches, branchCurrent);
+    }
+    if (element._type == "voltmeter") {
+      voltage = this.getVoltageForVoltmetr(id, branches, nodes, tensionList);
+    }
+    return { currency: currency, voltage: voltage };
   }
 }

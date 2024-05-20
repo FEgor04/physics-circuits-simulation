@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 import { SimpleSimulator } from "../simulator";
 import { ElectricalComponentWithID } from "../types";
 
-test("branch current test", () => {
+test("voltmetr test", () => {
   const expectedVoltage: number = 10;
   const actualNodes = [
     { x: 0, y: 5 },
@@ -63,5 +63,6 @@ test("branch current test", () => {
   const newComponents = simulator.rebuildShema(simulator.findBranches());
   const newSimulator = new SimpleSimulator(newComponents);
   const voltage = newSimulator.getVoltageForVoltmetr(27, newSimulator.findBranches(), actualNodes, acrSolve);
+
   expect(voltage).toStrictEqual(expectedVoltage);
 });
