@@ -3,7 +3,7 @@
 import { schemaErrors } from "./errors";
 import { CircuitSimulator } from "./interface";
 import { branchFactory, branchesEqual, deduplicateArray, getComponentContacts, pointsEqual } from "./lib";
-import { Branch, ElectricalComponentWithID, Point } from "./types";
+import { Branch, ElectricalComponentID, ElectricalComponentWithID, Point } from "./types";
 
 export class SimpleSimulator implements CircuitSimulator {
   components: ElectricalComponentWithID[];
@@ -20,6 +20,34 @@ export class SimpleSimulator implements CircuitSimulator {
   }
 
   deleteComponent(_component: ElectricalComponentWithID): void {}
+
+  getComponentById(id: ElectricalComponentID): ElectricalComponentWithID | undefined {
+    for (let i = 0; i < this.components.length; i++) {
+      if (this.components[i].id === id) {
+        return this.components[i];
+      }
+    }
+  }
+
+  deleteComponentById(id: ElectricalComponentID): void {
+    for (let i = 0; i < this.components.length; i++) {
+      if (this.components[i].id === id) {
+        this.components.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  getNewId(): number {
+    let temp_id = 0;
+    for (const element of this.components) {
+      if (temp_id < element.id) {
+        temp_id = element.id;
+      }
+    }
+    temp_id++;
+    return temp_id;
+  }
 
   getAllComponents(): ElectricalComponentWithID[] {
     return this.components;
@@ -196,7 +224,9 @@ export class SimpleSimulator implements CircuitSimulator {
           return -1;
         }
       } else {
-        tempA = component.b;
+        if (pointsEqual(tempA, component.a)) {
+          tempA = component.b;
+        } else if (pointsEqual(tempA, component.b)) tempA = component.a;
       }
     }
     return commonDirect;
@@ -233,6 +263,7 @@ export class SimpleSimulator implements CircuitSimulator {
     for (const branch of branches) {
       branchesDirection.push(this.defineDirection(branch));
     }
+
     for (let i = 0; i < nodes.length - 1; i++) {
       const tempNode: Point = nodes[i];
       nodeCurrent = 0;
@@ -324,6 +355,101 @@ export class SimpleSimulator implements CircuitSimulator {
     return current;
   }
 
+  public isBranchFree(branch: Branch): boolean {
+    let f = true;
+    for (const element of branch.components) {
+      if (element._type != "wire") {
+        f = false;
+        break;
+      }
+    }
+    return f;
+  }
+
+  public rebuildShema(branches: Branch[]): ElectricalComponentWithID[] {
+    const shema: ElectricalComponentWithID[] = [];
+    const deletedNodesA: Point[] = [];
+    const deletedNodesB: Point[] = [];
+    const tempBranches = branches.slice();
+
+    for (let i = 0; i < tempBranches.length; i++) {
+      if (this.isBranchFree(tempBranches[i])) {
+        if (
+          (!deletedNodesA.some((node) => node === branches[i].a) &&
+            !deletedNodesA.some((node) => node === branches[i].b)) ||
+          (!deletedNodesB.some((node) => node === branches[i].a) &&
+            !deletedNodesB.some((node) => node === branches[i].b))
+        ) {
+          deletedNodesA.push(branches[i].a);
+          deletedNodesB.push(branches[i].b);
+        }
+      }
+    }
+    // a <- b
+    for (let i = 0; i < deletedNodesA.length; i++) {
+      for (let j = 0; j < tempBranches.length; j++) {
+        if (pointsEqual(deletedNodesB[i], tempBranches[j].a)) {
+          tempBranches[j].a = deletedNodesA[i];
+        } else if (pointsEqual(deletedNodesB[i], tempBranches[j].b)) {
+          tempBranches[j].b = deletedNodesA[i];
+        }
+      }
+    }
+
+    for (let i = 0; i < tempBranches.length; i++) {
+      const k = tempBranches[i].components.length;
+      const startOfBranch = tempBranches[i].components[0];
+      const seconsElementOfBranch = tempBranches[i].components[1];
+      if (startOfBranch._type != "source" && startOfBranch._type != "sourceDC") {
+        if (!pointsEqual(startOfBranch.a, tempBranches[i].a)) {
+          startOfBranch.a = tempBranches[i].a;
+        }
+      } else {
+        if (seconsElementOfBranch._type != "source" && seconsElementOfBranch._type != "sourceDC") {
+          if (pointsEqual(startOfBranch.plus, seconsElementOfBranch.a)) {
+            shema.push({ _type: "wire", a: tempBranches[i].a, b: startOfBranch.minus, id: this.getNewId() });
+          } else {
+            shema.push({ _type: "wire", a: tempBranches[i].a, b: startOfBranch.plus, id: this.getNewId() });
+          }
+        }
+      }
+      const endOfBranch = tempBranches[i].components[k - 1];
+      const preLastElementOfBranch = tempBranches[i].components[k - 2];
+      if (endOfBranch._type != "source" && endOfBranch._type != "sourceDC") {
+        if (!pointsEqual(endOfBranch.b, tempBranches[i].b)) {
+          endOfBranch.b = tempBranches[i].b;
+        }
+      } else {
+        if (preLastElementOfBranch._type != "source" && preLastElementOfBranch._type != "sourceDC") {
+          if (pointsEqual(endOfBranch.plus, preLastElementOfBranch.b)) {
+            shema.push({
+              _type: "wire",
+              a: endOfBranch.minus,
+              b: tempBranches[i].b,
+              id: this.getNewId(),
+            });
+          } else {
+            shema.push({
+              _type: "wire",
+              a: endOfBranch.plus,
+              b: tempBranches[i].b,
+              id: this.getNewId(),
+            });
+          }
+        }
+      }
+    }
+    for (let i = 0; i < tempBranches.length; i++) {
+      if (!pointsEqual(tempBranches[i].a, tempBranches[i].b)) {
+        for (const element of tempBranches[i].components) {
+          shema.push(element);
+        }
+      }
+    }
+
+    return shema;
+  }
+
   public getBranchCurrentForAmpermetr(id: number, branches: Branch[], currents: number[]): number {
     let currentForAmper: number = 0;
     const branchWithGivenComponent = branches.find(
@@ -338,6 +464,56 @@ export class SimpleSimulator implements CircuitSimulator {
     return currentForAmper;
   }
 
+  public getVoltageForVoltmetr(id: number, branches: Branch[], nodes: Array<Point>, tensionList: number[]): number {
+    let voltage: number = 0;
+    const branchWithGivenComponent: Branch | undefined = branches.find(
+      (branch) => branch.components.find((element) => id == element.id) !== undefined,
+    );
+    if (branchWithGivenComponent !== undefined) {
+      const m = nodes.findIndex((_, index) => {
+        return (
+          pointsEqual(branchWithGivenComponent.a, nodes[index]) || pointsEqual(branchWithGivenComponent.b, nodes[index])
+        );
+      });
+
+      const n = nodes.findIndex((_, index) => {
+        return (
+          index > m &&
+          (pointsEqual(branchWithGivenComponent.a, nodes[index]) ||
+            pointsEqual(branchWithGivenComponent.b, nodes[index]))
+        );
+      });
+
+      const phiM = tensionList[m];
+      const phiN = tensionList[n];
+      voltage = Math.abs(phiM - phiN);
+    }
+    return voltage;
+  }
+
+  public getMeasurementsForComponent(id: ElectricalComponentID): { currency: number; voltage: number } {
+    let currency = 0;
+    let voltage = 0;
+    const nodes = this.findNodes();
+    const branches = this.findBranches();
+    const gMatrix = this.buildGMatrix(nodes, branches);
+    const currentList = this.findCurrentForce(nodes, branches);
+    const tensionList = this.solveSLAE(gMatrix, currentList);
+    const branchCurrent = this.branchCurrent(branches, nodes, tensionList);
+    const element = this.getComponentById(id);
+    if (element === undefined) {
+      throw new Error("Element is undefined");
+    }
+    if (element._type == "ampermeter") {
+      currency = this.getBranchCurrentForAmpermetr(id, branches, branchCurrent);
+      return { currency: currency, voltage: voltage };
+    } else if (element._type == "voltmeter") {
+      voltage = this.getVoltageForVoltmetr(id, branches, nodes, tensionList);
+      return { currency: currency, voltage: voltage };
+    } else {
+      throw new Error("Element not ampermetr or voltmetr");
+    }
+  }
   validateSchema(): keyof typeof schemaErrors | undefined {
     const adjacencyList: Map<string, Set<string>> = new Map();
 
