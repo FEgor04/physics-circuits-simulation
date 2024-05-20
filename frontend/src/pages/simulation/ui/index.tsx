@@ -11,6 +11,7 @@ import { UpdateComponentProvider } from "@/features/update-component";
 import { Scheme } from "@/entities/scheme";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 import { useSimulationState } from "../model/state";
+import { schemaErrors } from "@/shared/simulation/errors";
 
 type Props = {
   mode: "simulation" | "editing";
@@ -19,7 +20,7 @@ type Props = {
 };
 
 export function Simulation({ mode, setMode, scheme }: Props) {
-  const { components, onAddComponent, onUpdateComponent, onUpdateComponentCoords, onDeleteComponent, simulator } =
+  const { components, onAddComponent, onUpdateComponent, onUpdateComponentCoords, onDeleteComponent, simulator, errors } =
     useSimulationState(scheme.components);
   const [selected, setSelected] = useState<SelectComponentState["selected"]>(undefined);
   const selectedComponent = useMemo(() => {
@@ -88,7 +89,13 @@ export function Simulation({ mode, setMode, scheme }: Props) {
               </ResizablePanelGroup>
               <StateButton
                 isSimulation={mode == "simulation"}
-                onChange={() => setMode(mode == "editing" ? "simulation" : "editing")}
+                onChange={() => {
+                  if (mode == "editing" && errors != undefined) {
+                    alert("Ошибка!" + schemaErrors[errors]);
+                    return;
+                  }
+                  setMode(mode == "simulation" ? "editing" : "simulation");
+                }}
               />
             </UpdateComponentProvider>
           </AddComponentContextProvider>
