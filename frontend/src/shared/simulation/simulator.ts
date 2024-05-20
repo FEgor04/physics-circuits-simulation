@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
+import { schemaErrors } from "./errors";
 import { CircuitSimulator } from "./interface";
 import { branchFactory, branchesEqual, deduplicateArray, getComponentContacts, pointsEqual } from "./lib";
 import { Branch, ElectricalComponentID, ElectricalComponentWithID, Point } from "./types";
@@ -464,6 +465,7 @@ export class SimpleSimulator implements CircuitSimulator {
     return currentForAmper;
   }
 
+
   public getVoltageForVoltmetr(id: number, branches: Branch[], nodes: Array<Point>, tensionList: number[]): number {
     let voltage: number = 0;
     const branchWithGivenComponent: Branch | undefined = branches.find(
@@ -513,5 +515,70 @@ export class SimpleSimulator implements CircuitSimulator {
     } else {
       throw new Error("Element not ampermetr or voltmetr");
     }
+
+  validateSchema(): keyof typeof schemaErrors | undefined {
+    const adjacencyList: Map<string, Set<string>> = new Map();
+
+    // Helper function to add edge to the graph
+    const addEdge = (a: Point, b: Point) => {
+      const aKey = `${a.x},${a.y}`;
+      const bKey = `${b.x},${b.y}`;
+      if (!adjacencyList.has(aKey)) {
+        adjacencyList.set(aKey, new Set());
+      }
+      if (!adjacencyList.has(bKey)) {
+        adjacencyList.set(bKey, new Set());
+      }
+      adjacencyList.get(aKey)?.add(bKey);
+      adjacencyList.get(bKey)?.add(aKey);
+    };
+
+    // Build the adjacency list from the components
+    for (const component of this.components) {
+      if (
+        component._type === "wire" ||
+        component._type === "resistor" ||
+        component._type === "voltmeter" ||
+        component._type === "ampermeter"
+      ) {
+        addEdge(component.a, component.b);
+      } else if (component._type === "source" || component._type === "sourceDC") {
+        addEdge(component.plus, component.minus);
+      }
+    }
+
+    // Helper function for DFS to check connectivity
+    const dfs = (node: string, visited: Set<string>) => {
+      visited.add(node);
+      const neighbors = adjacencyList.get(node) || new Set();
+      for (const neighbor of neighbors) {
+        if (!visited.has(neighbor)) {
+          dfs(neighbor, visited);
+        }
+      }
+    };
+
+    const allNodes = Array.from(adjacencyList.keys());
+    if (allNodes.length === 0) {
+      return "noClosedLoop";
+    }
+
+    const visited: Set<string> = new Set();
+    dfs(allNodes[0], visited);
+
+    // Check if all nodes are visited (graph is connected)
+    if (visited.size !== allNodes.length) {
+      return "noClosedLoop";
+    }
+
+    // Check if all nodes have a degree > 1
+    for (const node of adjacencyList.keys()) {
+      if ((adjacencyList.get(node)?.size || 0) <= 1) {
+        return "noClosedLoop";
+      }
+    }
+
+    return undefined;
+
   }
 }
