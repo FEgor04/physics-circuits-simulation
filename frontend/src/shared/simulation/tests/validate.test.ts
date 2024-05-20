@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 import { SimpleSimulator } from "../simulator";
 import { ElectricalComponentWithID } from "../types";
 
-test("test closed loop", () => {
+test("closed loop", () => {
   const components: ElectricalComponentWithID[] = [
     { id: 0, _type: "wire", a: { x: 0, y: 3 }, b: { x: 0, y: 4 } },
     { id: 1, _type: "resistor", a: { x: 0, y: 4 }, b: { x: 0, y: 5 }, resistance: 10 },
@@ -35,7 +35,7 @@ test("test closed loop", () => {
   expect(error).toBe(undefined);
 });
 
-test("test open loop", () => {
+test("open loop", () => {
   const components: ElectricalComponentWithID[] = [
     { id: 0, _type: "wire", a: { x: 0, y: 3 }, b: { x: 0, y: 4 } },
     { id: 1, _type: "resistor", a: { x: 0, y: 4 }, b: { x: 0, y: 5 }, resistance: 10 },
@@ -47,7 +47,7 @@ test("test open loop", () => {
   expect(error).toBe("noClosedLoop");
 });
 
-test("test closed loop with not connected wire", () => {
+test("closed loop with not connected wire", () => {
   const components: ElectricalComponentWithID[] = [
     { id: 0, _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 1 } },
     { id: 1, _type: "resistor", a: { x: 0, y: 1 }, b: { x: 1, y: 1 }, resistance: 10 },
@@ -61,7 +61,7 @@ test("test closed loop with not connected wire", () => {
   expect(error).toBe("noClosedLoop");
 });
 
-test("test open loop with other components", () => {
+test("open loop with other components", () => {
   const components: ElectricalComponentWithID[] = [
     { id: 0, _type: "wire", a: { x: 0, y: 0 }, b: { x: 1, y: 0 } },
     { id: 1, _type: "resistor", a: { x: 1, y: 0 }, b: { x: 1, y: 1 }, resistance: 10 },
@@ -82,7 +82,7 @@ test("test open loop with other components", () => {
   expect(error).toBe("noClosedLoop");
 });
 
-test("test empty scheme", () => {
+test("empty scheme", () => {
   const components: ElectricalComponentWithID[] = [];
 
   const simulation = new SimpleSimulator(components);
@@ -90,7 +90,7 @@ test("test empty scheme", () => {
   expect(error).toBe("noClosedLoop");
 });
 
-test("test big scheme", () => {
+test("closed loop big scheme", () => {
   const components: ElectricalComponentWithID[] = [
     { _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 1 }, id: 0 },
     { _type: "wire", a: { x: 0, y: 2 }, b: { x: 0, y: 3 }, id: 1 },
@@ -131,6 +131,32 @@ test("test big scheme", () => {
       internalResistance: 1,
       id: 24,
     },
+  ];
+
+  const simulation = new SimpleSimulator(components);
+  const error = simulation.validateSchema();
+  expect(error).toBe(undefined);
+});
+
+test("closed loop scheme with 2 circuit", () => {
+  const components: ElectricalComponentWithID[] = [
+    // Внешний контур
+    { id: 0, _type: "wire", a: { x: 0, y: 0 }, b: { x: 10, y: 0 } },
+    { id: 1, _type: "wire", a: { x: 10, y: 0 }, b: { x: 10, y: 10 } },
+    { id: 2, _type: "wire", a: { x: 10, y: 10 }, b: { x: 0, y: 10 } },
+    { id: 3, _type: "wire", a: { x: 0, y: 10 }, b: { x: 0, y: 0 } },
+
+    // Внутренний контур 1
+    { id: 4, _type: "sourceDC", plus: { x: 2, y: 2 }, minus: { x: 8, y: 2 }, electromotiveForce: 12 },
+    { id: 5, _type: "ampermeter", a: { x: 8, y: 2 }, b: { x: 8, y: 8 }, currency: 5 },
+    { id: 6, _type: "wire", a: { x: 8, y: 8 }, b: { x: 2, y: 8 } },
+    { id: 7, _type: "wire", a: { x: 2, y: 8 }, b: { x: 2, y: 2 } },
+
+    // Соединения между контурами
+    { id: 8, _type: "wire", a: { x: 0, y: 0 }, b: { x: 2, y: 2 } },
+    { id: 9, _type: "wire", a: { x: 10, y: 0 }, b: { x: 8, y: 2 } },
+    { id: 10, _type: "wire", a: { x: 10, y: 10 }, b: { x: 8, y: 8 } },
+    { id: 11, _type: "wire", a: { x: 0, y: 10 }, b: { x: 2, y: 8 } },
   ];
 
   const simulation = new SimpleSimulator(components);
