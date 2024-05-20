@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
-import { ElectricalComponentWithID } from "@/shared/simulation";
-import { SimpleSimulator } from "@/shared/simulation/simulator.ts";
+import { SimpleSimulator } from "../simulator";
+import { ElectricalComponentWithID } from "../types";
 
 test("re buils test", () => {
   const expectedComponents: ElectricalComponentWithID[] = [
