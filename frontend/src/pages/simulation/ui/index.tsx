@@ -9,8 +9,6 @@ import { DeleteComponentProvider } from "@/features/delete-component";
 import { SelectComponentProvider, SelectComponentState } from "@/features/select-component";
 import { UpdateComponentProvider } from "@/features/update-component";
 import { Scheme } from "@/entities/scheme";
-import { CircuitSimulator } from "@/shared/simulation";
-import { SimpleSimulator } from "@/shared/simulation/simulator";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 import { useSimulationState } from "../model/state";
 
@@ -31,6 +29,20 @@ export function Simulation({ mode, setMode, scheme }: Props) {
     return undefined;
   }, [selected, components]);
 
+  const selectedComponentMeasurements = useMemo(() => {
+    if (
+      selectedComponent == undefined ||
+      (selectedComponent._type != "ampermeter" && selectedComponent._type != "voltmeter")
+    ) {
+      return undefined;
+    }
+    const measurements = simulator.getMeasurementsForComponent(selectedComponent.id);
+    if (selectedComponent._type == "ampermeter") {
+      return measurements.currency;
+    }
+    return measurements.voltage;
+  }, [selectedComponent, simulator]);
+
   return (
     <div className="h-screen">
       <SelectComponentProvider
@@ -50,7 +62,14 @@ export function Simulation({ mode, setMode, scheme }: Props) {
           <AddComponentContextProvider onAddComponent={(c) => onAddComponent(c).id}>
             <UpdateComponentProvider onUpdateComponent={onUpdateComponent}>
               <ResizablePanelGroup direction="horizontal">
-                {mode == "editing" ? <ComponentChooseBar /> : <ComponentValuesBar />}
+                {mode == "editing" ? (
+                  <ComponentChooseBar />
+                ) : (
+                  (selectedComponent?._type == "ampermeter" || selectedComponent?._type == "voltmeter") &&
+                  selectedComponentMeasurements && (
+                    <ComponentValuesBar type={selectedComponent._type} measurements={selectedComponentMeasurements} />
+                  )
+                )}
                 <ResizableHandle />
                 <CanvasPanel
                   components={components}
