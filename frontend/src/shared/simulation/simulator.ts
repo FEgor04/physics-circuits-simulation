@@ -79,6 +79,16 @@ export class SimpleSimulator implements CircuitSimulator {
         nodes.push(nodeMap[key].loc);
       }
     }
+    if (nodes.length==0){
+      for (const element of this.components) {
+        if(element._type=="wire"){
+          nodes.push(element.a);
+          nodes.push(element.b);
+          break;
+        }
+      }
+
+    }
     return nodes;
   }
 
@@ -163,7 +173,7 @@ export class SimpleSimulator implements CircuitSimulator {
 
     for (const branch of branches) {
       if (this.pointsEqual(branch.a, node) || this.pointsEqual(branch.b, node)) {
-        const resistance = this.sumResistanceOfBranch(branch);
+        const resistance = this.sumResistanceOfBranchForCurrentForse(branch);
         if (resistance != 0) {
           totalResistance += 1 / resistance;
         }
@@ -217,13 +227,19 @@ export class SimpleSimulator implements CircuitSimulator {
     let tempA: Point = { x: branch.a.x, y: branch.a.y };
 
     for (const component of branch.components) {
-      if (component._type === "source" || component._type === "sourceDC") {
+      if (component._type === "source" ) {
         if (pointsEqual(component.plus, tempA)) {
           return 1;
         } else {
           return -1;
         }
-      } else {
+      }else if(component._type === "sourceDC"){
+        if (pointsEqual(component.plus, tempA)) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }else {
         if (pointsEqual(tempA, component.a)) {
           tempA = component.b;
         } else if (pointsEqual(tempA, component.b)) tempA = component.a;
@@ -333,13 +349,13 @@ export class SimpleSimulator implements CircuitSimulator {
     const current: number[] = [];
 
     const branchesDirections = branches.map(this.defineDirection);
+
     let phiM;
     let phiN;
     let E;
     let R;
     for (let i = 0; i < branches.length; i++) {
-      let mIndex = 0;
-      let nIndex = 0;
+
       const m = nodes.findIndex((_, index) => {
         return pointsEqual(branches[i].a, nodes[index]) || pointsEqual(branches[i].b, nodes[index]);
       });
@@ -347,16 +363,29 @@ export class SimpleSimulator implements CircuitSimulator {
       const n = nodes.findIndex((_, index) => {
         return index > m && (pointsEqual(branches[i].a, nodes[index]) || pointsEqual(branches[i].b, nodes[index]));
       });
+        if (nodes[m]==branches[i].a){
 
-      if (branchesDirections[i] === -1) {
-        mIndex = n;
-        nIndex = m;
-      } else {
-        mIndex = m;
-        nIndex = n;
-      }
-      phiM = tensionList[mIndex];
-      phiN = tensionList[nIndex];
+          if (branchesDirections[i] === 1){
+            console.log(n,m)
+            phiM = tensionList[n];
+            phiN = tensionList[m];
+          }else{
+            phiM = tensionList[m];
+            phiN = tensionList[n];
+          }
+        }else{
+          if (branchesDirections[i] === 1) {
+            phiM = tensionList[m];
+            phiN = tensionList[n];
+          } else {
+            phiM = tensionList[n];
+            phiN = tensionList[m];
+          }
+
+        }
+
+
+
       E = this.findVoltageOfBranch(branches[i]);
       if (this.isSourceDCBranch(branches[i])) {
         R = this.sumResistanceOfBranchForCurrentForse(branches[i]);
@@ -365,6 +394,7 @@ export class SimpleSimulator implements CircuitSimulator {
       }
 
       current.push(Math.abs(phiM - phiN + E) / R);
+
     }
     return current;
   }
