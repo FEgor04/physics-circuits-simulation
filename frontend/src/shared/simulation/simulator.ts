@@ -318,12 +318,21 @@ export class SimpleSimulator implements CircuitSimulator {
     solution.push(0); // один из потенциалов принимаем за 0
     return solution;
   }
+  public isSourceDCBranch(branch: Branch): boolean {
+    let f = false;
+    for (const element of branch.components) {
+      if (element._type == "sourceDC") {
+        f = true;
+        break;
+      }
+    }
+    return f;
+  }
 
   public branchCurrent(branches: Branch[], nodes: Array<Point>, tensionList: number[]): number[] {
     const current: number[] = [];
 
     const branchesDirections = branches.map(this.defineDirection);
-
     let phiM;
     let phiN;
     let E;
@@ -349,7 +358,12 @@ export class SimpleSimulator implements CircuitSimulator {
       phiM = tensionList[mIndex];
       phiN = tensionList[nIndex];
       E = this.findVoltageOfBranch(branches[i]);
-      R = this.sumResistanceOfBranchForCurrentForse(branches[i]);
+      if (this.isSourceDCBranch(branches[i])) {
+        R = this.sumResistanceOfBranchForCurrentForse(branches[i]);
+      } else {
+        R = this.sumResistanceOfBranch(branches[i]);
+      }
+
       current.push(Math.abs(phiM - phiN + E) / R);
     }
     return current;

@@ -3,7 +3,7 @@ import { SimpleSimulator } from "../simulator";
 import { ElectricalComponentWithID } from "../types";
 
 test("branch current test", () => {
-  const expectedCurrent: number[] = [3, 1, 2, Infinity, 1, Infinity];
+  const expectedCurrent: number[] = [3, 1, 2, Infinity, 1, 1];
   const actualNodes = [
     { x: 0, y: 5 },
     { x: 4, y: 0 },
