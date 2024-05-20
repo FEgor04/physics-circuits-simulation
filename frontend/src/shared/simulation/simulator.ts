@@ -349,7 +349,7 @@ export class SimpleSimulator implements CircuitSimulator {
       phiM = tensionList[mIndex];
       phiN = tensionList[nIndex];
       E = this.findVoltageOfBranch(branches[i]);
-      R = this.sumResistanceOfBranch(branches[i]);
+      R = this.sumResistanceOfBranchForCurrentForse(branches[i]);
       current.push(Math.abs(phiM - phiN + E) / R);
     }
     return current;
