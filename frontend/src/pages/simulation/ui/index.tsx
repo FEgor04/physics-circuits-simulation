@@ -12,6 +12,7 @@ import { Scheme } from "@/entities/scheme";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 import { useSimulationState } from "../model/state";
 import { schemaErrors } from "@/shared/simulation/errors";
+import { toast } from "sonner";
 
 type Props = {
   mode: "simulation" | "editing";
@@ -91,7 +92,7 @@ export function Simulation({ mode, setMode, scheme }: Props) {
                 isSimulation={mode == "simulation"}
                 onChange={() => {
                   if (mode == "editing" && errors != undefined) {
-                    alert("Ошибка!" + schemaErrors[errors]);
+                    toast.error(`Ошибка! ${schemaErrors[errors]}`);
                     return;
                   }
                   setMode(mode == "simulation" ? "editing" : "simulation");
