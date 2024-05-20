@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { toast } from "sonner";
 import { CanvasPanel } from "@/widgets/canvas";
 import { ComponentChooseBar } from "@/widgets/component-choose-bar";
 import { ComponentSettingsBar } from "@/widgets/component-settings-bar";
@@ -9,10 +10,9 @@ import { DeleteComponentProvider } from "@/features/delete-component";
 import { SelectComponentProvider, SelectComponentState } from "@/features/select-component";
 import { UpdateComponentProvider } from "@/features/update-component";
 import { Scheme } from "@/entities/scheme";
+import { schemaErrors } from "@/shared/simulation/errors";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 import { useSimulationState } from "../model/state";
-import { schemaErrors } from "@/shared/simulation/errors";
-import { toast } from "sonner";
 
 type Props = {
   mode: "simulation" | "editing";
@@ -21,8 +21,15 @@ type Props = {
 };
 
 export function Simulation({ mode, setMode, scheme }: Props) {
-  const { components, onAddComponent, onUpdateComponent, onUpdateComponentCoords, onDeleteComponent, simulator, errors } =
-    useSimulationState(scheme.components);
+  const {
+    components,
+    onAddComponent,
+    onUpdateComponent,
+    onUpdateComponentCoords,
+    onDeleteComponent,
+    simulator,
+    errors,
+  } = useSimulationState(scheme.components);
   const [selected, setSelected] = useState<SelectComponentState["selected"]>(undefined);
   const selectedComponent = useMemo(() => {
     if (selected?.type == "component") {
