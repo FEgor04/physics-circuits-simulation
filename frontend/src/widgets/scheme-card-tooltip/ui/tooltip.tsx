@@ -1,4 +1,4 @@
-import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
+import { Dialog } from "@radix-ui/react-dialog";
 import { MoreHorizontal, PencilLine, Share2, Trash } from "lucide-react";
 import { useState } from "react";
 import { RenameSchemeDialogContent } from "@/features/rename-scheme";
