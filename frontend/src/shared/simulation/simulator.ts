@@ -337,7 +337,7 @@ export class SimpleSimulator implements CircuitSimulator {
     }
     return currentForAmper;
   }
-  
+
   validateSchema(): keyof typeof schemaErrors | undefined {
     const adjacencyList: Map<string, Set<string>> = new Map();
 
@@ -393,9 +393,9 @@ export class SimpleSimulator implements CircuitSimulator {
       return "noClosedLoop";
     }
 
-    // Check if all nodes have even degree
+    // Check if all nodes have a degree > 1
     for (const node of adjacencyList.keys()) {
-      if ((adjacencyList.get(node)?.size || 0) % 2 !== 0) {
+      if ((adjacencyList.get(node)?.size || 0) <= 1) {
         return "noClosedLoop";
       }
     }
