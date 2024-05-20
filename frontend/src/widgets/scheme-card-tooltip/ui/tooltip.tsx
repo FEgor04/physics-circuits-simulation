@@ -1,4 +1,7 @@
+import { Dialog } from "@radix-ui/react-dialog";
 import { MoreHorizontal, PencilLine, Share2, Trash } from "lucide-react";
+import { useState } from "react";
+import { RenameSchemeDialogContent } from "@/features/rename-scheme";
 import { Scheme } from "@/entities/scheme";
 import { useDeleteSchemeMutation } from "@/entities/scheme";
 import { Button } from "@/shared/ui/button";
@@ -9,24 +12,31 @@ type Props = {
 };
 
 export function SchemeCardTooltip(props: Props) {
+  const [isRenameOpen, setRenameOpen] = useState(false);
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="secondary" size="icon">
-          <MoreHorizontal className="size-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem>
-          <PencilLine className="mr-2 size-4" />
-          Переименовать{" "}
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Share2 className="mr-2 size-4" /> Поделиться
-        </DropdownMenuItem>
-        <DeleteSchemeItem {...props} />
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="secondary" size="icon">
+            <MoreHorizontal className="size-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem>
+            <Share2 className="mr-2 size-4" /> Поделиться
+          </DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => setRenameOpen(true)}>
+            <PencilLine className="mr-2 size-4" />
+            Переименовать{" "}
+          </DropdownMenuItem>
+          <DeleteSchemeItem {...props} />
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <Dialog open={isRenameOpen} onOpenChange={setRenameOpen}>
+        <RenameSchemeDialogContent {...props} />
+      </Dialog>
+    </>
   );
 }
 
