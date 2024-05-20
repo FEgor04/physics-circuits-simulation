@@ -5,6 +5,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { setupMocks } from "@/shared/mocks/browser";
+import { Toaster } from "@/shared/ui/sonner";
 import { routeTree } from "@/routeTree.gen";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ setupMocks().then(() =>
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
+        <Toaster position="bottom-center" />
       </QueryClientProvider>
     </React.StrictMode>,
   ),

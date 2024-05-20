@@ -4,7 +4,7 @@ export function StateButton({ isSimulation, onChange }: { isSimulation: boolean;
   return (
     <Toggle
       className="fixed bottom-10 right-10 h-20 w-20 cursor-pointer rounded-2xl border-4"
-      defaultPressed={isSimulation}
+      pressed={isSimulation}
       onPressedChange={onChange}
     >
       {isSimulation ? "Edit!" : "Simulate!"}
