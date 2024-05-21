@@ -7,6 +7,7 @@ import { ComponentValuesBar } from "@/widgets/component-values-bar";
 import { StateButton } from "@/widgets/state-button";
 import { AddComponentContextProvider } from "@/features/add-component";
 import { DeleteComponentProvider } from "@/features/delete-component";
+import { GetMeasurementProvider } from "@/features/measurment";
 import { SelectComponentProvider, SelectComponentState } from "@/features/select-component";
 import { UpdateComponentProvider } from "@/features/update-component";
 import { Scheme } from "@/entities/scheme";
@@ -37,6 +38,14 @@ export function Simulation({ mode, setMode, scheme }: Props) {
     }
     return undefined;
   }, [selected, components]);
+
+  const getMeasurementForComponent = (id: number) => {
+    const measurements = simulator.getMeasurementsForComponent(id);
+    if (measurements.currency != 0) {
+      return measurements.currency;
+    }
+    return measurements.voltage;
+  };
 
   const selectedComponentMeasurements = useMemo(() => {
     if (
@@ -70,41 +79,43 @@ export function Simulation({ mode, setMode, scheme }: Props) {
         <DeleteComponentProvider onDeleteComponent={onDeleteComponent}>
           <AddComponentContextProvider onAddComponent={(c) => onAddComponent(c).id}>
             <UpdateComponentProvider onUpdateComponent={onUpdateComponent}>
-              <ResizablePanelGroup direction="horizontal">
-                {mode == "editing" ? (
-                  <ComponentChooseBar />
-                ) : (
-                  (selectedComponent?._type == "ampermeter" || selectedComponent?._type == "voltmeter") &&
-                  selectedComponentMeasurements !== undefined && (
-                    <ComponentValuesBar type={selectedComponent._type} measurements={selectedComponentMeasurements} />
-                  )
-                )}
-                <ResizableHandle />
-                <CanvasPanel
-                  components={components}
-                  onAddComponent={onAddComponent}
-                  onUpdateComponent={onUpdateComponent}
-                  onUpdateComponentCoords={onUpdateComponentCoords}
+              <GetMeasurementProvider getCurrentMeasurement={(id: number) => getMeasurementForComponent(id)}>
+                <ResizablePanelGroup direction="horizontal">
+                  {mode == "editing" ? (
+                    <ComponentChooseBar />
+                  ) : (
+                    (selectedComponent?._type == "ampermeter" || selectedComponent?._type == "voltmeter") &&
+                    selectedComponentMeasurements !== undefined && (
+                      <ComponentValuesBar type={selectedComponent._type} measurements={selectedComponentMeasurements} />
+                    )
+                  )}
+                  <ResizableHandle />
+                  <CanvasPanel
+                    components={components}
+                    onAddComponent={onAddComponent}
+                    onUpdateComponent={onUpdateComponent}
+                    onUpdateComponentCoords={onUpdateComponentCoords}
+                  />
+                  {mode == "editing" ? (
+                    <>
+                      <ResizableHandle />
+                      <ComponentSettingsBar selectedComponent={selectedComponent} />
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </ResizablePanelGroup>
+                <StateButton
+                  isSimulation={mode == "simulation"}
+                  onChange={() => {
+                    if (mode == "editing" && errors != undefined) {
+                      toast.error(`Ошибка! ${schemaErrors[errors]}`);
+                      return;
+                    }
+                    setMode(mode == "simulation" ? "editing" : "simulation");
+                  }}
                 />
-                {mode == "editing" ? (
-                  <>
-                    <ResizableHandle />
-                    <ComponentSettingsBar selectedComponent={selectedComponent} />
-                  </>
-                ) : (
-                  <></>
-                )}
-              </ResizablePanelGroup>
-              <StateButton
-                isSimulation={mode == "simulation"}
-                onChange={() => {
-                  if (mode == "editing" && errors != undefined) {
-                    toast.error(`Ошибка! ${schemaErrors[errors]}`);
-                    return;
-                  }
-                  setMode(mode == "simulation" ? "editing" : "simulation");
-                }}
-              />
+              </GetMeasurementProvider>
             </UpdateComponentProvider>
           </AddComponentContextProvider>
         </DeleteComponentProvider>

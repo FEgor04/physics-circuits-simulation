@@ -5,6 +5,9 @@ import { svgSize } from "@/shared/assets/circuit";
 import { assertNever } from "@/shared/lib/types";
 import { ElectricalComponent, ElectricalComponentWithID, Point } from "@/shared/simulation/types.ts";
 import { useTransformVirtualToCanvas } from "./context";
+import { useSimulationState } from "@/pages/simulation/model/state.ts";
+import { useGetMeasurementContext } from "@/features/measurment/model/content.tsx";
+import { useGetMeasurement } from "@/features/measurment";
 
 function getFirstPoint(component: ElectricalComponent): Point {
   if (component._type == "sourceDC" || component._type == "source") {
@@ -50,6 +53,10 @@ export function SVGRenderer<T extends ElectricalComponentWithID>({ component, sr
   const aTransformed = transformer(getFirstPoint(component));
   const bTransformed = transformer(getSecondPoint(component));
   const height = component._type == "resistor" ? svgSize / 2 : svgSize;
+  const getMeasurement = useGetMeasurement();
+  if (component._type == "voltmeter" || component._type == "ampermeter") {
+    console.log(getMeasurement(component.id));
+  }
   return (
     <image
       x={aTransformed.x + (transform?.x ?? 0)}
