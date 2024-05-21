@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 import { SimpleSimulator } from "../simulator";
 import { ElectricalComponentWithID } from "../types";
 
-test("re buils test", () => {
+test("re build test", () => {
   const expectedComponents: ElectricalComponentWithID[] = [
     { _type: "wire", a: { x: 0, y: 5 }, b: { x: 0, y: 4 }, id: 2 },
     {

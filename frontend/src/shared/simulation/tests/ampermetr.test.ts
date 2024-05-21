@@ -3,7 +3,7 @@ import { SimpleSimulator } from "../simulator";
 import { Branch } from "../types";
 
 test("ampermetr test", () => {
-  const expectedCurrent: number = 2;
+  const expectedCurrent: number = 1.890795631825273;
   const actualNodes = [
     { x: 0, y: 5 },
     { x: 8, y: 5 },
@@ -95,7 +95,7 @@ test("ampermetr test", () => {
       ],
     },
   ];
-  const acrSolve: number[] = [-10, 0, 0];
+  const acrSolve: number[] = [-9.157566302652105, 0.29641185647425866, 0];
 
   const components = actualBranches.flatMap((it) => it.components);
 

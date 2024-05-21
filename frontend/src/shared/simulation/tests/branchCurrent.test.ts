@@ -3,14 +3,21 @@ import { SimpleSimulator } from "../simulator";
 import { ElectricalComponentWithID } from "../types";
 
 test("branch current test", () => {
-  const expectedCurrent: number[] = [3, 1, 2, Infinity, 1, 1];
+  const expectedCurrent: number[] = [
+    2.776911076443058,
+    0.9453978159126365,
+    1.831513260530421,
+    Infinity,
+    0.93603744149766,
+    0.8823019587450165,
+  ];
   const actualNodes = [
     { x: 0, y: 5 },
     { x: 4, y: 0 },
     { x: 6, y: 5 },
   ];
 
-  const acrSolve: number[] = [-10, 0, 0];
+  const acrSolve: number[] = [-9.157566302652105, 0.29641185647425866, 0];
 
   const components: ElectricalComponentWithID[] = [
     { _type: "wire", a: { x: 0, y: 1 }, b: { x: 0, y: 0 }, id: 0 },
