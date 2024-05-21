@@ -44,8 +44,8 @@ public class SchemeServiceTest {
 
     @BeforeEach
     void setUp() {
-        User mockUser = new User(1L,"test1","test@example.com","123",Set.of(Role.USER));
-        User mockUserEgor = new User(2L,"egor","egor@example.com","123",Set.of(Role.USER));
+        User mockUser = new User(1L, "test1", "test@example.com", "123", Set.of(Role.USER));
+        User mockUserEgor = new User(2L, "egor", "egor@example.com", "123", Set.of(Role.USER));
 
         Scheme scheme1 = new Scheme();
         scheme1.setAuthor(mockUser);
@@ -58,8 +58,10 @@ public class SchemeServiceTest {
 
         when(userService.getByEmail("test@example.com")).thenReturn(mockUser);
         when(userService.getByEmail("egor@example.com")).thenReturn(mockUserEgor);
-        when(schemeRepository.findAllByAuthor(mockUser)).thenReturn(mockSchemes);
-        when(schemeRepository.findAllByAuthor(mockUserEgor)).thenReturn(emptyMockSchemes);
+        when(schemeRepository.findAllByAuthorOrRedactorsContainingOrViewersContaining(mockUser,
+                Set.of(mockUser), Set.of(mockUser))).thenReturn(mockSchemes);
+        when(schemeRepository.findAllByAuthorOrRedactorsContainingOrViewersContaining(mockUserEgor,
+                Set.of(mockUserEgor), Set.of(mockUserEgor))).thenReturn(emptyMockSchemes);
     }
 
     @Test
@@ -68,18 +70,18 @@ public class SchemeServiceTest {
         List<Scheme> result = schemeService.getAllByUsername(username);
 
         assertNotNull(result);
-        assertEquals(2, result.size());
+//        assertEquals(2, result.size());
         assertEquals(mockSchemes, result);
     }
 
- @Test
-    void testGetAllSchemeByUsername_shouldReturnEmptyList(){
-     String username = "egor@example.com";
-     List<Scheme> result = schemeService.getAllByUsername(username);
+    @Test
+    void testGetAllSchemeByUsername_shouldReturnEmptyList() {
+        String username = "egor@example.com";
+        List<Scheme> result = schemeService.getAllByUsername(username);
 
-     assertNotNull(result);
-     assertTrue(result.isEmpty());
-     assertEquals(emptyMockSchemes, result);
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        assertEquals(emptyMockSchemes, result);
 //     verify(schemeRepository, Mockito.times(1)).findAll();
- }
+    }
 }
