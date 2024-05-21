@@ -1,8 +1,6 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { LogOut } from "lucide-react";
-import React from "react";
-import { ErrorBoundary } from "react-error-boundary";
 import { getMeQueryOptions, useSignOutMutation } from "@/entities/principal";
 import { Avatar, AvatarFallback } from "@/shared/ui/avatar";
 import { Button } from "@/shared/ui/button";
@@ -16,7 +14,18 @@ import {
 import { PrincipalSettingsMenuFallback } from "./fallback";
 
 export function PrincipalDropdownMenu() {
-  const { data: principal } = useSuspenseQuery(getMeQueryOptions());
+  const { data: principal, isError } = useQuery(getMeQueryOptions());
+  if (isError) {
+    return (
+      <Button asChild>
+        <Link to="/signin">Войти</Link>
+      </Button>
+    );
+  }
+  if (!principal) {
+    return <PrincipalSettingsMenuFallback />;
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -29,22 +38,6 @@ export function PrincipalDropdownMenu() {
         <LogOutItem />
       </DropdownMenuContent>
     </DropdownMenu>
-  );
-}
-
-export function PrincipalDropdownMenuContainer() {
-  return (
-    <ErrorBoundary
-      fallback={
-        <Button asChild>
-          <Link to="/signin">Войти</Link>
-        </Button>
-      }
-    >
-      <React.Suspense fallback={<PrincipalSettingsMenuFallback />}>
-        <PrincipalDropdownMenu />
-      </React.Suspense>
-    </ErrorBoundary>
   );
 }
 
