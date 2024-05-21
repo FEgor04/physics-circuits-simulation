@@ -5,9 +5,15 @@ import React from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { getMeQueryOptions, useSignOutMutation } from "@/entities/principal";
 import { Avatar, AvatarFallback } from "@/shared/ui/avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/ui/dropdown-menu";
-import { PrincipalSettingsMenuFallback } from "./fallback";
 import { Button } from "@/shared/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/shared/ui/dropdown-menu";
+import { PrincipalSettingsMenuFallback } from "./fallback";
 
 export function PrincipalDropdownMenu() {
   const { data: principal } = useSuspenseQuery(getMeQueryOptions());
@@ -19,6 +25,7 @@ export function PrincipalDropdownMenu() {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
+        <DropdownMenuLabel>{principal.fullName}</DropdownMenuLabel>
         <LogOutItem />
       </DropdownMenuContent>
     </DropdownMenu>
@@ -27,7 +34,13 @@ export function PrincipalDropdownMenu() {
 
 export function PrincipalDropdownMenuContainer() {
   return (
-    <ErrorBoundary fallback={<Button asChild><Link to="/signin">Войти</Link></Button>}>
+    <ErrorBoundary
+      fallback={
+        <Button asChild>
+          <Link to="/signin">Войти</Link>
+        </Button>
+      }
+    >
       <React.Suspense fallback={<PrincipalSettingsMenuFallback />}>
         <PrincipalDropdownMenu />
       </React.Suspense>
