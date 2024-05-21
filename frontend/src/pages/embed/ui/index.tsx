@@ -17,7 +17,6 @@ export function SimulationEmbedded() {
     <SelectComponentProvider selected={undefined} onSelect={() => {}}>
       <Canvas
         components={components}
-        canvasSize={100}
         onUpdateComponentCoords={() => {}}
         onAddComponent={() => {}}
         onUpdateComponent={() => {}}

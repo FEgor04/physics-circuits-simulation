@@ -14,10 +14,9 @@ type Props = {
   onAddComponent: (component: ElectricalComponent) => void;
   onUpdateComponent: (component: ElectricalComponentWithID) => void;
   onUpdateComponentCoords: (id: ElectricalComponentID, deltaX: number, deltaY: number) => void;
-  canvasSize: number;
 };
 
-export function Canvas({ components, canvasSize, onUpdateComponentCoords }: Props) {
+export function Canvas({ components, onUpdateComponentCoords }: Props) {
   const { setNodeRef } = useDroppable({ id: "canvas" });
   const canvasRef = useRef<SVGSVGElement>(null);
   const [canvasState, setCanvasState] = useState<CanvasState | undefined>(undefined);
@@ -36,7 +35,7 @@ export function Canvas({ components, canvasSize, onUpdateComponentCoords }: Prop
         canvasParams,
       });
     }
-  }, [canvasRef, canvasSize]);
+  }, [canvasRef]);
 
   return (
     <div ref={setNodeRef} className="h-full w-full">
