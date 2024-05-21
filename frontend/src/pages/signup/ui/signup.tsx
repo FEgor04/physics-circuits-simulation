@@ -18,7 +18,7 @@ export function SignUpPage({ redirect }: { redirect: string | undefined }) {
     });
   }
   return (
-    <Card className="mx-auto mt-8 max-w-md">
+    <Card className="mx-auto mt-8 max-w-md border-4 border-black">
       <CardHeader>
         <CardTitle>Регистрация в сети</CardTitle>
       </CardHeader>
