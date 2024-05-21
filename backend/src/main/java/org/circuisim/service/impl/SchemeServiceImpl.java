@@ -56,10 +56,7 @@ public class SchemeServiceImpl implements SchemeService {
     public Scheme getByIdAndUsername(String username, Long id) {
         var scheme = schemeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Scheme not found"));
         var user = userService.getByEmail(username);
-        if (scheme.isEmbedded() ||
-                scheme.getRedactors().contains(user) ||
-                scheme.getViewers().contains(user) ||
-                scheme.getAuthor().equals(user)) {
+        if (checkAccessSchemeForUser(scheme, user)) {
             return scheme;
         } else {
             throw new AccessDeniedException();
@@ -154,6 +151,13 @@ public class SchemeServiceImpl implements SchemeService {
         var scheme = getById(schemeId);
         scheme.setEmbedded(newEmbedded);
         save(scheme);
+    }
+
+    private boolean checkAccessSchemeForUser(Scheme scheme, User user) {
+        return scheme.isEmbedded() ||
+                scheme.getRedactors().contains(user) ||
+                scheme.getViewers().contains(user) ||
+                scheme.getAuthor().equals(user);
     }
 
 
