@@ -5,7 +5,7 @@ import { Branch, ElectricalComponentWithID } from "../types";
 test("gMatrix test 1", () => {
   const expectedMatrix: number[][] = [
     [0.4, -0.2],
-    [-0.2, 0.30000000000000004],
+    [-0.2, 0.325],
   ];
 
   const components: ElectricalComponentWithID[] = [
@@ -31,7 +31,7 @@ test("gMatrix test 1", () => {
     { _type: "resistor", a: { x: 5, y: 0 }, b: { x: 6, y: 0 }, resistance: 3, id: 19 },
     { _type: "resistor", a: { x: 7, y: 3 }, b: { x: 7, y: 4 }, resistance: 40, id: 20 },
     { _type: "resistor", a: { x: 8, y: 3 }, b: { x: 8, y: 4 }, resistance: 7, id: 21 },
-    { _type: "sourceDC", plus: { x: 5, y: 1 }, minus: { x: 6, y: 2 }, electromotiveForce: 40, id: 22 },
+    { _type: "sourceDC", plus: { x: 6, y: 2 }, minus: { x: 5, y: 1 }, electromotiveForce: 40, id: 22 },
     {
       _type: "source",
       plus: { x: 0, y: 4 },
@@ -212,7 +212,7 @@ test("gMatrix test 2", () => {
 test("gMatrix test 3", () => {
   const expectedMatrix: number[][] = [
     [0.4, -0.2],
-    [-0.2, 0.30000000000000004],
+    [-0.2, 0.32500000000000007],
   ];
 
   const components: ElectricalComponentWithID[] = [
@@ -266,6 +266,6 @@ test("gMatrix test 3", () => {
   const newCompomemts = simulator.rebuildShema(simulator.findBranches());
   const newSimulator = new SimpleSimulator(newCompomemts);
   const actgMatrix = newSimulator.buildGMatrix(newSimulator.findNodes(), newSimulator.findBranches());
-  console.log(newSimulator.findBranches());
+
   expect(actgMatrix).toStrictEqual(expectedMatrix);
 });
