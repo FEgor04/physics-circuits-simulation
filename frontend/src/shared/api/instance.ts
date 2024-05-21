@@ -8,7 +8,7 @@ export const AXIOS_INSTANCE = axios.create();
    options?: AxiosRequestConfig,
  ): Promise<AxiosResponse<T>> => {
    const source = Axios.CancelToken.source();
-   const promise = AXIOS_INSTANCE({
+   const promise = AXIOS_INSTANCE<T>({
      ...config,
      ...options,
      cancelToken: source.token,

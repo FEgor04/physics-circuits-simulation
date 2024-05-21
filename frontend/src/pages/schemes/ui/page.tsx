@@ -18,7 +18,7 @@ export function SchemesPage({ schemes: initialSchemes }: Props) {
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {schemes.map((scheme) => (
-          <SchemeCard key={scheme.id} scheme={scheme} tooltip={<SchemeCardTooltip />} />
+          <SchemeCard key={scheme.id} scheme={scheme} tooltip={<SchemeCardTooltip scheme={scheme} />} />
         ))}
       </div>
     </div>

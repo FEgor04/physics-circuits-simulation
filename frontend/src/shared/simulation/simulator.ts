@@ -1,30 +1,59 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
+import { schemaErrors } from "./errors";
 import { CircuitSimulator } from "./interface";
 import { branchFactory, branchesEqual, deduplicateArray, getComponentContacts, pointsEqual } from "./lib";
-import { Branch, ElectricalComponent, Point } from "./types";
+import { Branch, ElectricalComponentID, ElectricalComponentWithID, Point } from "./types";
 
 export class SimpleSimulator implements CircuitSimulator {
-  components: ElectricalComponent[];
+  components: ElectricalComponentWithID[];
   // global state, нужен чтобы избежать ада проброски нод в функции
   private nodes: Array<Point>;
 
-  constructor(_component: ElectricalComponent[]) {
+  constructor(_component: ElectricalComponentWithID[]) {
     this.components = _component;
     this.nodes = [];
   }
 
-  addComponent(_component: ElectricalComponent) {
+  addComponent(_component: ElectricalComponentWithID) {
     this.components.push(_component);
   }
 
-  deleteComponent(_component: ElectricalComponent): void {}
+  deleteComponent(_component: ElectricalComponentWithID): void {}
 
-  getAllComponents(): ElectricalComponent[] {
+  getComponentById(id: ElectricalComponentID): ElectricalComponentWithID | undefined {
+    for (let i = 0; i < this.components.length; i++) {
+      if (this.components[i].id === id) {
+        return this.components[i];
+      }
+    }
+  }
+
+  deleteComponentById(id: ElectricalComponentID): void {
+    for (let i = 0; i < this.components.length; i++) {
+      if (this.components[i].id === id) {
+        this.components.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  getNewId(): number {
+    let temp_id = 0;
+    for (const element of this.components) {
+      if (temp_id < element.id) {
+        temp_id = element.id;
+      }
+    }
+    temp_id++;
+    return temp_id;
+  }
+
+  getAllComponents(): ElectricalComponentWithID[] {
     return this.components;
   }
 
-  setComponents(_components: ElectricalComponent[]): void {}
+  setComponents(_components: ElectricalComponentWithID[]): void {}
 
   findNodes(): Array<Point> {
     const nodes: Array<Point> = [];
@@ -70,7 +99,7 @@ export class SimpleSimulator implements CircuitSimulator {
     return deduplicateArray(branches, branchesEqual);
   }
 
-  private findComponentsAtPoint(point: Point): Array<ElectricalComponent> {
+  private findComponentsAtPoint(point: Point): Array<ElectricalComponentWithID> {
     return this.components.filter(
       (component) => getComponentContacts(component).find((contact) => pointsEqual(contact, point)) !== undefined,
     );
@@ -88,7 +117,7 @@ export class SimpleSimulator implements CircuitSimulator {
   findBranchesStartingInPoint(
     root: Point,
     startingNode: Point,
-    componentsOnWay: Array<ElectricalComponent>,
+    componentsOnWay: Array<ElectricalComponentWithID>,
   ): Array<Branch> {
     if (!pointsEqual(root, startingNode) && this.pointIsNode(root)) {
       return [branchFactory(startingNode, root, componentsOnWay)];
@@ -195,7 +224,9 @@ export class SimpleSimulator implements CircuitSimulator {
           return -1;
         }
       } else {
-        tempA = component.b;
+        if (pointsEqual(tempA, component.a)) {
+          tempA = component.b;
+        } else if (pointsEqual(tempA, component.b)) tempA = component.a;
       }
     }
     return commonDirect;
@@ -232,6 +263,7 @@ export class SimpleSimulator implements CircuitSimulator {
     for (const branch of branches) {
       branchesDirection.push(this.defineDirection(branch));
     }
+
     for (let i = 0; i < nodes.length - 1; i++) {
       const tempNode: Point = nodes[i];
       nodeCurrent = 0;
@@ -321,5 +353,229 @@ export class SimpleSimulator implements CircuitSimulator {
       current.push(Math.abs(phiM - phiN + E) / R);
     }
     return current;
+  }
+
+  public isBranchFree(branch: Branch): boolean {
+    let f = true;
+    for (const element of branch.components) {
+      if (element._type != "wire") {
+        f = false;
+        break;
+      }
+    }
+    return f;
+  }
+
+  public rebuildShema(branches: Branch[]): ElectricalComponentWithID[] {
+    const shema: ElectricalComponentWithID[] = [];
+    const deletedNodesA: Point[] = [];
+    const deletedNodesB: Point[] = [];
+    const tempBranches = branches.slice();
+
+    for (let i = 0; i < tempBranches.length; i++) {
+      if (this.isBranchFree(tempBranches[i])) {
+        if (
+          (!deletedNodesA.some((node) => node === branches[i].a) &&
+            !deletedNodesA.some((node) => node === branches[i].b)) ||
+          (!deletedNodesB.some((node) => node === branches[i].a) &&
+            !deletedNodesB.some((node) => node === branches[i].b))
+        ) {
+          deletedNodesA.push(branches[i].a);
+          deletedNodesB.push(branches[i].b);
+        }
+      }
+    }
+    // a <- b
+    for (let i = 0; i < deletedNodesA.length; i++) {
+      for (let j = 0; j < tempBranches.length; j++) {
+        if (pointsEqual(deletedNodesB[i], tempBranches[j].a)) {
+          tempBranches[j].a = deletedNodesA[i];
+        } else if (pointsEqual(deletedNodesB[i], tempBranches[j].b)) {
+          tempBranches[j].b = deletedNodesA[i];
+        }
+      }
+    }
+
+    for (let i = 0; i < tempBranches.length; i++) {
+      const k = tempBranches[i].components.length;
+      const startOfBranch = tempBranches[i].components[0];
+      const seconsElementOfBranch = tempBranches[i].components[1];
+      if (startOfBranch._type != "source" && startOfBranch._type != "sourceDC") {
+        if (!pointsEqual(startOfBranch.a, tempBranches[i].a)) {
+          startOfBranch.a = tempBranches[i].a;
+        }
+      } else {
+        if (seconsElementOfBranch._type != "source" && seconsElementOfBranch._type != "sourceDC") {
+          if (pointsEqual(startOfBranch.plus, seconsElementOfBranch.a)) {
+            shema.push({ _type: "wire", a: tempBranches[i].a, b: startOfBranch.minus, id: this.getNewId() });
+          } else {
+            shema.push({ _type: "wire", a: tempBranches[i].a, b: startOfBranch.plus, id: this.getNewId() });
+          }
+        }
+      }
+      const endOfBranch = tempBranches[i].components[k - 1];
+      const preLastElementOfBranch = tempBranches[i].components[k - 2];
+      if (endOfBranch._type != "source" && endOfBranch._type != "sourceDC") {
+        if (!pointsEqual(endOfBranch.b, tempBranches[i].b)) {
+          endOfBranch.b = tempBranches[i].b;
+        }
+      } else {
+        if (preLastElementOfBranch._type != "source" && preLastElementOfBranch._type != "sourceDC") {
+          if (pointsEqual(endOfBranch.plus, preLastElementOfBranch.b)) {
+            shema.push({
+              _type: "wire",
+              a: endOfBranch.minus,
+              b: tempBranches[i].b,
+              id: this.getNewId(),
+            });
+          } else {
+            shema.push({
+              _type: "wire",
+              a: endOfBranch.plus,
+              b: tempBranches[i].b,
+              id: this.getNewId(),
+            });
+          }
+        }
+      }
+    }
+    for (let i = 0; i < tempBranches.length; i++) {
+      if (!pointsEqual(tempBranches[i].a, tempBranches[i].b)) {
+        for (const element of tempBranches[i].components) {
+          shema.push(element);
+        }
+      }
+    }
+
+    return shema;
+  }
+
+  public getBranchCurrentForAmpermetr(id: number, branches: Branch[], currents: number[]): number {
+    let currentForAmper: number = 0;
+    const branchWithGivenComponent = branches.find(
+      (branch) => branch.components.find((element) => id == element.id) !== undefined,
+    );
+    for (let i = 0; i < branches.length; i++) {
+      if (branches[i] == branchWithGivenComponent) {
+        currentForAmper = currents[i];
+        break;
+      }
+    }
+    return currentForAmper;
+  }
+
+  public getVoltageForVoltmetr(id: number, branches: Branch[], nodes: Array<Point>, tensionList: number[]): number {
+    let voltage: number = 0;
+    const branchWithGivenComponent: Branch | undefined = branches.find(
+      (branch) => branch.components.find((element) => id == element.id) !== undefined,
+    );
+    if (branchWithGivenComponent !== undefined) {
+      const m = nodes.findIndex((_, index) => {
+        return (
+          pointsEqual(branchWithGivenComponent.a, nodes[index]) || pointsEqual(branchWithGivenComponent.b, nodes[index])
+        );
+      });
+
+      const n = nodes.findIndex((_, index) => {
+        return (
+          index > m &&
+          (pointsEqual(branchWithGivenComponent.a, nodes[index]) ||
+            pointsEqual(branchWithGivenComponent.b, nodes[index]))
+        );
+      });
+
+      const phiM = tensionList[m];
+      const phiN = tensionList[n];
+      voltage = Math.abs(phiM - phiN);
+    }
+    return voltage;
+  }
+
+  public getMeasurementsForComponent(id: ElectricalComponentID): { currency: number; voltage: number } {
+    let currency = 0;
+    let voltage = 0;
+    const nodes = this.findNodes();
+    const branches = this.findBranches();
+    const gMatrix = this.buildGMatrix(nodes, branches);
+    const currentList = this.findCurrentForce(nodes, branches);
+    const tensionList = this.solveSLAE(gMatrix, currentList);
+    const branchCurrent = this.branchCurrent(branches, nodes, tensionList);
+    const element = this.getComponentById(id);
+    if (element === undefined) {
+      throw new Error("Element is undefined");
+    }
+    if (element._type == "ampermeter") {
+      currency = this.getBranchCurrentForAmpermetr(id, branches, branchCurrent);
+      return { currency: currency, voltage: voltage };
+    } else if (element._type == "voltmeter") {
+      voltage = this.getVoltageForVoltmetr(id, branches, nodes, tensionList);
+      return { currency: currency, voltage: voltage };
+    } else {
+      throw new Error("Element not ampermetr or voltmetr");
+    }
+  }
+  validateSchema(): keyof typeof schemaErrors | undefined {
+    const adjacencyList: Map<string, Set<string>> = new Map();
+
+    // Helper function to add edge to the graph
+    const addEdge = (a: Point, b: Point) => {
+      const aKey = `${a.x},${a.y}`;
+      const bKey = `${b.x},${b.y}`;
+      if (!adjacencyList.has(aKey)) {
+        adjacencyList.set(aKey, new Set());
+      }
+      if (!adjacencyList.has(bKey)) {
+        adjacencyList.set(bKey, new Set());
+      }
+      adjacencyList.get(aKey)?.add(bKey);
+      adjacencyList.get(bKey)?.add(aKey);
+    };
+
+    // Build the adjacency list from the components
+    for (const component of this.components) {
+      if (
+        component._type === "wire" ||
+        component._type === "resistor" ||
+        component._type === "voltmeter" ||
+        component._type === "ampermeter"
+      ) {
+        addEdge(component.a, component.b);
+      } else if (component._type === "source" || component._type === "sourceDC") {
+        addEdge(component.plus, component.minus);
+      }
+    }
+
+    // Helper function for DFS to check connectivity
+    const dfs = (node: string, visited: Set<string>) => {
+      visited.add(node);
+      const neighbors = adjacencyList.get(node) || new Set();
+      for (const neighbor of neighbors) {
+        if (!visited.has(neighbor)) {
+          dfs(neighbor, visited);
+        }
+      }
+    };
+
+    const allNodes = Array.from(adjacencyList.keys());
+    if (allNodes.length === 0) {
+      return "noClosedLoop";
+    }
+
+    const visited: Set<string> = new Set();
+    dfs(allNodes[0], visited);
+
+    // Check if all nodes are visited (graph is connected)
+    if (visited.size !== allNodes.length) {
+      return "noClosedLoop";
+    }
+
+    // Check if all nodes have a degree > 1
+    for (const node of adjacencyList.keys()) {
+      if ((adjacencyList.get(node)?.size || 0) <= 1) {
+        return "noClosedLoop";
+      }
+    }
+
+    return undefined;
   }
 }

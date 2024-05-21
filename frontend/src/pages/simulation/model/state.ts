@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { schemaErrors } from "@/shared/simulation/errors";
+import { SimpleSimulator } from "@/shared/simulation/simulator";
 import {
   ElectricalComponent,
   ElectricalComponentID,
@@ -14,11 +16,21 @@ type SimulationState = {
   onUpdateComponent: (component: ElectricalComponentWithID) => void;
   onUpdateComponentCoords: (id: ElectricalComponentID, dx: number, dy: number) => void;
   onDeleteComponent: (id: ElectricalComponentID) => void;
+  simulator: SimpleSimulator;
+  errors: keyof typeof schemaErrors | undefined;
 };
 
 export function useSimulationState(components: Array<ElectricalComponentWithID>): SimulationState {
   const [schema, setSchema] = useState(components);
+  const simulator = useMemo(() => {
+    return new SimpleSimulator(schema);
+  }, [schema]);
+  const errors = useMemo(() => {
+    return simulator.validateSchema();
+  }, [simulator]);
   return {
+    errors,
+    simulator,
     components: schema,
     onAddComponent: function (newComponent: ElectricalComponent): ElectricalComponentWithID {
       let id = 0;
