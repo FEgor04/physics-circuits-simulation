@@ -31,7 +31,7 @@ test("simple scheme with ampermeter and voltmeter only", () => {
     _type: "sourceDC",
     minus: { x: 3, y: 0 },
     plus: { x: 4, y: 0 },
-    internalResistance:5,
+    internalResistance: 5,
     electromotiveForce: 20,
     id: 1,
   });
