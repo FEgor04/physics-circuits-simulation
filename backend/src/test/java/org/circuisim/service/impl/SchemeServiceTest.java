@@ -70,7 +70,7 @@ public class SchemeServiceTest {
         List<Scheme> result = schemeService.getAllByUsername(username);
 
         assertNotNull(result);
-//        assertEquals(2, result.size());
+        assertEquals(2, result.size());
         assertEquals(mockSchemes, result);
     }
 
@@ -82,6 +82,5 @@ public class SchemeServiceTest {
         assertNotNull(result);
         assertTrue(result.isEmpty());
         assertEquals(emptyMockSchemes, result);
-//     verify(schemeRepository, Mockito.times(1)).findAll();
     }
 }
