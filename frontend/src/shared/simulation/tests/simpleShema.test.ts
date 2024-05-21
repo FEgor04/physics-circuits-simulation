@@ -2,7 +2,6 @@ import { expect, test } from "vitest";
 import { SimpleSimulator } from "../simulator";
 
 test("simple scheme with ampermeter and voltmeter only", () => {
-
   const expectedCurrent = { currency: 6.666666666666666, voltage: 0 };
 
   const simulator = new SimpleSimulator([]);
@@ -29,7 +28,6 @@ test("simple scheme with ampermeter and voltmeter only", () => {
 
   simulator.addComponent({ _type: "wire", a: { x: 5, y: 5 }, b: { x: 3, y: 7 }, id: 17 });
   simulator.addComponent({ _type: "voltmeter", a: { x: 2, y: 7 }, b: { x: 3, y: 7 }, voltage: "unknown", id: 18 });
-
 
   simulator.addComponent({
     _type: "sourceDC",
