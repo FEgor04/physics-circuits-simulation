@@ -1,9 +1,13 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { LogOut } from "lucide-react";
+import React from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { getMeQueryOptions, useSignOutMutation } from "@/entities/principal";
 import { Avatar, AvatarFallback } from "@/shared/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/ui/dropdown-menu";
+import { PrincipalSettingsMenuFallback } from "./fallback";
+import { Button } from "@/shared/ui/button";
 
 export function PrincipalDropdownMenu() {
   const { data: principal } = useSuspenseQuery(getMeQueryOptions());
@@ -18,6 +22,16 @@ export function PrincipalDropdownMenu() {
         <LogOutItem />
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+
+export function PrincipalDropdownMenuContainer() {
+  return (
+    <ErrorBoundary fallback={<Button>Войти</Button>}>
+      <React.Suspense fallback={<PrincipalSettingsMenuFallback />}>
+        <PrincipalDropdownMenu />
+      </React.Suspense>
+    </ErrorBoundary>
   );
 }
 

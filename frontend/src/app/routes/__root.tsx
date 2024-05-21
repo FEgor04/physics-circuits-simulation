@@ -3,7 +3,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { Header } from "@/widgets/header";
-import { PrincipalDropdownMenu } from "@/widgets/principal-menu";
+import { PrincipalDropdownMenuContainer } from "@/widgets/principal-menu";
 import { isEmbedded } from "@/shared/embed/utility.ts";
 
 type Context = {
@@ -15,7 +15,7 @@ export const Route = createRootRouteWithContext<Context>()({
     const hideHeader = isEmbedded();
     return (
       <>
-        {!hideHeader && <Header principalMenu={<PrincipalDropdownMenu />} />}
+        {!hideHeader && <Header principalMenu={<PrincipalDropdownMenuContainer />} />}
         <Outlet />
         {import.meta.env.DEV && !hideHeader && <TanStackRouterDevtools />}
         {import.meta.env.DEV && !hideHeader && <ReactQueryDevtools />}
