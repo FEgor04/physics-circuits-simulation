@@ -15,7 +15,7 @@ import "./style.css";
 export function ComponentChooseBar() {
   return (
     <ResizablePanel
-      className="panel border-r-4 bg-white p-4"
+      className="panel"
       minSize={9}
       maxSize={50}
       defaultSize={15}
