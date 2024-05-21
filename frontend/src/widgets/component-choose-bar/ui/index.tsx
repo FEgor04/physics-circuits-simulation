@@ -24,7 +24,11 @@ export function ComponentChooseBar() {
     >
       <div className="flex flex-row flex-wrap content-start items-center justify-around">
         <Item<Resistor> type="resistor" defaultValues={{ resistance: 10 }} src={resistorSvg} />
-        <Item<SourceDC> type="sourceDC" defaultValues={{ electromotiveForce: 20 }} src={sourceDCSvg} />
+        <Item<SourceDC>
+          type="sourceDC"
+          defaultValues={{ electromotiveForce: 20, internalResistance: 5 }}
+          src={sourceDCSvg}
+        />
         <Item<Source> type="source" defaultValues={{ electromotiveForce: 20, internalResistance: 5 }} src={sourceSvg} />
         <Item<Ampermeter> type="ampermeter" defaultValues={{ currency: "unknown" }} src={ampermeterSvg} />
         <Item<Voltmeter> type="voltmeter" defaultValues={{ voltage: "unknown" }} src={voltmeterSvg} />

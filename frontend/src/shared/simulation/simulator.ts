@@ -363,7 +363,6 @@ export class SimpleSimulator implements CircuitSimulator {
       });
       if (nodes[m] == branches[i].a) {
         if (branchesDirections[i] === 1) {
-          console.log(n, m);
           phiM = tensionList[n];
           phiN = tensionList[m];
         } else {
@@ -538,6 +537,7 @@ export class SimpleSimulator implements CircuitSimulator {
     const tensionList = this.solveSLAE(gMatrix, currentList);
     const branchCurrent = this.branchCurrent(branches, nodes, tensionList);
     const element = this.getComponentById(id);
+    console.log(currentList);
     if (element === undefined) {
       throw new Error("Element is undefined");
     }

@@ -22,11 +22,16 @@ test("simple scheme with ampermeter and voltmeter only", () => {
   simulator.addComponent({ _type: "wire", a: { x: 0, y: 5 }, b: { x: 1, y: 5 }, id: 13 });
 
   simulator.addComponent({ _type: "wire", a: { x: 0, y: 0 }, b: { x: 0, y: 5 }, id: 15 });
+  simulator.addComponent({ _type: "wire", a: { x: 1, y: 5 }, b: { x: 2, y: 7 }, id: 16 });
+
+  simulator.addComponent({ _type: "wire", a: { x: 5, y: 5 }, b: { x: 3, y: 7 }, id: 17 });
+  simulator.addComponent({ _type: "voltmeter", a: { x: 2, y: 7 }, b: { x: 3, y: 7 }, voltage: "unknown", id: 4 });
 
   simulator.addComponent({
     _type: "sourceDC",
     minus: { x: 3, y: 0 },
     plus: { x: 4, y: 0 },
+    internalResistance:5,
     electromotiveForce: 20,
     id: 1,
   });

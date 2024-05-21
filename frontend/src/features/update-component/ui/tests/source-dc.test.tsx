@@ -14,6 +14,7 @@ function createSourceDC(electromotiveForce: number = 100): WithID<SourceDC> {
     _type: "sourceDC",
     plus: { x: 0, y: 0 },
     minus: { x: 1, y: 0 },
+    internalResistance: 5,
     electromotiveForce,
   };
 }
