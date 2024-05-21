@@ -2,6 +2,7 @@ package org.circuisim.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.circuisim.domain.simulation.*;
+import org.circuisim.exception.ResourceNotFoundException;
 import org.circuisim.repository.ElectricalComponentRepository;
 import org.circuisim.service.ElectricalComponentService;
 import org.circuisim.service.SchemeService;
@@ -29,7 +30,7 @@ public class ElectricalComponentServiceImpl implements ElectricalComponentServic
 
     @Override
     public void updateComponents(List<ElectricalComponentDto> list, String schemeName, Long schemeId) {
-        schemeService.updateSchemeName(schemeName,schemeId);
+        schemeService.updateSchemeName(schemeName, schemeId);
         for (ElectricalComponentDto electricalComponentDto : list) {
             var electricalComponent1 = repository.findById(
                     new ElectricalComponentPK(electricalComponentDto.componentId, schemeId)
@@ -40,6 +41,15 @@ public class ElectricalComponentServiceImpl implements ElectricalComponentServic
             } else {
                 updateNotPresentComponent(schemeId, electricalComponentDto);
             }
+        }
+    }
+
+    @Override
+    public void deleteComponents(List<ElectricalComponentDto> components, Long schemeId) {
+        for (ElectricalComponentDto electricalComponentDto : components) {
+            var electricalComponent = repository.findById(new ElectricalComponentPK(electricalComponentDto.componentId, schemeId)).
+                    orElseThrow(() -> new ResourceNotFoundException("electricalComponent not found"));
+            repository.delete(electricalComponent);
         }
     }
 
