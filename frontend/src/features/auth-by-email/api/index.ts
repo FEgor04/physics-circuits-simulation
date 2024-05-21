@@ -16,7 +16,7 @@ export function useSignInByEmailMutation() {
     },
     onSuccess: (response) => {
       setSession(response);
-      queryClient.invalidateQueries(getMeQueryOptions());
+      return queryClient.invalidateQueries(getMeQueryOptions());
     },
   });
 }
@@ -34,7 +34,7 @@ export function useSignUpByEmailMutation() {
     },
     onSuccess: (response) => {
       setSession(response);
-      queryClient.invalidateQueries(getMeQueryOptions());
+      return queryClient.invalidateQueries(getMeQueryOptions());
     },
   });
 }

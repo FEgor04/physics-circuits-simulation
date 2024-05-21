@@ -53,7 +53,7 @@ AXIOS_INSTANCE.interceptors.response.use(
         try {
           const previousRefreshToken = getRefreshToken();
           if (!previousRefreshToken) {
-            return Promise.reject(err.response.data);
+            return Promise.reject(err);
           }
           const rs = await refreshAccessTokenFn(previousRefreshToken);
           const { accessToken, refreshToken } = rs;
@@ -66,9 +66,6 @@ AXIOS_INSTANCE.interceptors.response.use(
           });
         } catch (_error) {
           currentlyRefreshing = false;
-          if (_error instanceof AxiosError) {
-            return Promise.reject(_error.response?.data);
-          }
           return Promise.reject(_error);
         }
       }
