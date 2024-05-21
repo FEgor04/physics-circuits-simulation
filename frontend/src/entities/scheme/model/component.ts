@@ -20,15 +20,15 @@ export const zResistor = zWire.extend({
   resistance: z.number(),
 });
 
-export const zSource = componentBase.extend({
-  _type: z.literal("source"),
+export const zSourceDC = componentBase.extend({
+  _type: z.literal("sourceDC"),
   electromotiveForce: z.number(),
   plus: zPoint,
   minus: zPoint,
 });
 
-export const zSourceDC = zSource.extend({
-  _type: z.literal("sourceDC"),
+export const zSource = zSourceDC.extend({
+  _type: z.literal("source"),
   internalResistance: z.number(),
 });
 
