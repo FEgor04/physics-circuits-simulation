@@ -3,6 +3,7 @@ import { SimpleSimulator } from "../simulator";
 import { ElectricalComponentWithID } from "../types";
 
 test("branch current test", () => {
+
   const expectedCurrent: number[] = [
     2.776911076443058,
     0.9453978159126365,
@@ -11,6 +12,7 @@ test("branch current test", () => {
     0.93603744149766,
     0.8823019587450165,
   ];
+
   const actualNodes = [
     { x: 0, y: 5 },
     { x: 4, y: 0 },

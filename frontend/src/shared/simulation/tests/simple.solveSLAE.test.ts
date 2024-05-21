@@ -37,6 +37,7 @@ test("solve slae test", () => {
     { _type: "resistor", a: { x: 6, y: 0 }, b: { x: 5, y: 0 }, resistance: 3, id: 19 },
     { _type: "resistor", a: { x: 7, y: 4 }, b: { x: 7, y: 3 }, resistance: 40, id: 20 },
     { _type: "resistor", a: { x: 8, y: 4 }, b: { x: 8, y: 3 }, resistance: 7, id: 21 },
+
     {
       _type: "sourceDC",
       plus: { x: 6, y: 2 },
@@ -45,6 +46,7 @@ test("solve slae test", () => {
       electromotiveForce: 40,
       id: 22,
     },
+
     {
       _type: "source",
       plus: { x: 0, y: 4 },

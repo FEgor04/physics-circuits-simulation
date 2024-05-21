@@ -337,14 +337,9 @@ export class SimpleSimulator implements CircuitSimulator {
     return solution;
   }
   public isSourceDCBranch(branch: Branch): boolean {
-    let f = false;
-    for (const element of branch.components) {
-      if (element._type == "sourceDC") {
-        f = true;
-        break;
-      }
-    }
-    return f;
+
+    return branch.components.find((it) => it._type == "sourceDC") !== undefined;
+
   }
 
   public branchCurrent(branches: Branch[], nodes: Array<Point>, tensionList: number[]): number[] {

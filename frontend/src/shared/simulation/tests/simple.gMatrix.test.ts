@@ -4,8 +4,10 @@ import { Branch, ElectricalComponentWithID } from "../types";
 
 test("gMatrix test 1", () => {
   const expectedMatrix: number[][] = [
+
     [0.39090909090909093, -0.2],
     [-0.2, 0.31313131313131315],
+
   ];
 
   const components: ElectricalComponentWithID[] = [
@@ -31,6 +33,7 @@ test("gMatrix test 1", () => {
     { _type: "resistor", a: { x: 5, y: 0 }, b: { x: 6, y: 0 }, resistance: 3, id: 19 },
     { _type: "resistor", a: { x: 7, y: 3 }, b: { x: 7, y: 4 }, resistance: 40, id: 20 },
     { _type: "resistor", a: { x: 8, y: 3 }, b: { x: 8, y: 4 }, resistance: 7, id: 21 },
+
     {
       _type: "sourceDC",
       plus: { x: 6, y: 2 },
@@ -39,6 +42,7 @@ test("gMatrix test 1", () => {
       electromotiveForce: 40,
       id: 22,
     },
+
     {
       _type: "source",
       plus: { x: 0, y: 4 },
@@ -227,6 +231,7 @@ test("gMatrix test 3", () => {
   const expectedMatrix: number[][] = [
     [0.39090909090909093, -0.19090909090909092],
     [-0.19090909090909092, 0.30404040404040406],
+
   ];
 
   const components: ElectricalComponentWithID[] = [
