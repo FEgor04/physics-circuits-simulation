@@ -10,6 +10,7 @@ import java.util.List;
 public record SchemeResponse(
         @Schema(description = "Scheme id", example = "1") @NotNull Long id,
         @Schema(description = "Scheme id", example = "Physics") @NotNull String name,
+        @Schema(description = "Embedded status", example = "True") @NotNull boolean isEmbedded,
         @Schema(description = "Scheme author name", example = "test@gmail.com") @NotNull String authorName,
         @Schema(description = "User permission", example = "true") @NotNull boolean canEdit,
         List<ElectricalComponentDto> components

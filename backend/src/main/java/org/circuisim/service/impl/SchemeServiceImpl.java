@@ -54,8 +54,10 @@ public class SchemeServiceImpl implements SchemeService {
     @Override
     public List<Scheme> getAllByUsername(String username) {
         var user = userService.getByEmail(username);
-        return schemeRepository.findAllByAuthorOrRedactorsContainingOrViewersContaining(user,
+        List<Scheme> list = schemeRepository.findAllByAuthorOrRedactorsContainingOrViewersContaining(user,
                 Set.of(user), Set.of(user));
+        list.addAll(schemeRepository.findAllByEmbeddedIsTrue());
+        return list;
     }
 
     @Override
@@ -132,6 +134,13 @@ public class SchemeServiceImpl implements SchemeService {
             scheme.setName(schemeName);
             save(scheme);
         }
+    }
+
+    @Override
+    public void updateSchemeEmbeddedStatus(boolean newEmbedded, Long schemeId) {
+        var scheme = getById(schemeId);
+        scheme.setEmbedded(newEmbedded);
+        save(scheme);
     }
 
 
