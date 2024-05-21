@@ -29,7 +29,7 @@ export function componentFromDTO(dto: ElectricalComponentDto): WithID<Electrical
       id: dto.componentId,
       _type: "sourceDC",
       electromotiveForce: dto.emf!,
-      resistance: dto.resistance,
+      internalResistance: dto.resistance!,
       plus: dto.a,
       minus: dto.b,
     });

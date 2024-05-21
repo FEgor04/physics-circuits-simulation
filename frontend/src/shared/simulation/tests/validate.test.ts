@@ -114,7 +114,14 @@ test("closed loop big scheme", () => {
     { _type: "resistor", a: { x: 5, y: 0 }, b: { x: 6, y: 0 }, resistance: 3, id: 19 },
     { _type: "resistor", a: { x: 7, y: 3 }, b: { x: 7, y: 4 }, resistance: 40, id: 20 },
     { _type: "resistor", a: { x: 8, y: 3 }, b: { x: 8, y: 4 }, resistance: 7, id: 21 },
-    { _type: "sourceDC", plus: { x: 5, y: 1 }, minus: { x: 6, y: 2 }, electromotiveForce: 40, id: 22 },
+    {
+      _type: "sourceDC",
+      plus: { x: 5, y: 1 },
+      minus: { x: 6, y: 2 },
+      internalResistance: 5,
+      electromotiveForce: 40,
+      id: 22,
+    },
     {
       _type: "source",
       plus: { x: 0, y: 4 },
@@ -147,7 +154,14 @@ test("closed loop scheme with 2 circuit", () => {
     { id: 3, _type: "wire", a: { x: 0, y: 10 }, b: { x: 0, y: 0 } },
 
     // Внутренний контур 1
-    { id: 4, _type: "sourceDC", plus: { x: 2, y: 2 }, minus: { x: 8, y: 2 }, electromotiveForce: 12 },
+    {
+      id: 4,
+      _type: "sourceDC",
+      plus: { x: 2, y: 2 },
+      minus: { x: 8, y: 2 },
+      internalResistance: 5,
+      electromotiveForce: 12,
+    },
     { id: 5, _type: "ampermeter", a: { x: 8, y: 2 }, b: { x: 8, y: 8 }, currency: 5 },
     { id: 6, _type: "wire", a: { x: 8, y: 8 }, b: { x: 2, y: 8 } },
     { id: 7, _type: "wire", a: { x: 2, y: 8 }, b: { x: 2, y: 2 } },

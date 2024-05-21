@@ -155,8 +155,8 @@ export class SimpleSimulator implements CircuitSimulator {
       if (component._type === "resistor") {
         totalResistance += component.resistance;
       }
-      if (component._type === "sourceDC") {
-        return 0;
+      if (component._type === "sourceDC" || component._type === "source") {
+        totalResistance += component.internalResistance;
       }
     }
 
@@ -253,6 +253,9 @@ export class SimpleSimulator implements CircuitSimulator {
     for (const component of branch.components) {
       if (component._type === "resistor") {
         totalResistance += component.resistance;
+      }
+      if (component._type === "sourceDC" || component._type === "source") {
+        totalResistance += component.internalResistance;
       }
     }
 

@@ -3,7 +3,7 @@ import { SimpleSimulator } from "../simulator";
 import { Branch, ElectricalComponentWithID } from "../types";
 
 test("current force test", () => {
-  const expectedCurrentVector: number[] = [-4, 2];
+  const expectedCurrentVector: number[] = [-3.6363636363636362, 1.797979797979798];
   const actualNodes = [
     { x: 0, y: 5 },
     { x: 8, y: 5 },
@@ -57,7 +57,16 @@ test("current force test", () => {
       b: { x: 8, y: 5 },
       components: [
         { _type: "wire", a: { x: 4, y: 0 }, b: { x: 5, y: 1 }, id: 13 },
-        { _type: "sourceDC", plus: { x: 6, y: 2 }, minus: { x: 5, y: 1 }, electromotiveForce: 40, id: 22 },
+
+        {
+          _type: "sourceDC",
+          plus: { x: 6, y: 2 },
+          minus: { x: 5, y: 1 },
+          internalResistance: 5,
+          electromotiveForce: 40,
+          id: 22,
+        },
+
         { _type: "wire", a: { x: 6, y: 2 }, b: { x: 7, y: 3 }, id: 14 },
         { _type: "resistor", a: { x: 7, y: 3 }, b: { x: 7, y: 4 }, resistance: 40, id: 20 },
         { _type: "wire", a: { x: 7, y: 4 }, b: { x: 8, y: 5 }, id: 15 },
@@ -96,7 +105,7 @@ test("current force test", () => {
 });
 
 test("current force test 2", () => {
-  const expectedCurrentVector: number[] = [-4, 2];
+  const expectedCurrentVector: number[] = [-3.6363636363636362, 1.8383838383838382];
   const actualNodes = [
     { x: 0, y: 5 },
     { x: 4, y: 0 },
@@ -131,7 +140,16 @@ test("current force test 2", () => {
     { _type: "resistor", a: { x: 6, y: 0 }, b: { x: 5, y: 0 }, resistance: 3, id: 19 },
     { _type: "resistor", a: { x: 7, y: 4 }, b: { x: 7, y: 3 }, resistance: 40, id: 20 },
     { _type: "resistor", a: { x: 8, y: 4 }, b: { x: 8, y: 3 }, resistance: 7, id: 21 },
-    { _type: "sourceDC", plus: { x: 6, y: 2 }, minus: { x: 5, y: 1 }, electromotiveForce: 40, id: 22 },
+
+    {
+      _type: "sourceDC",
+      plus: { x: 6, y: 2 },
+      minus: { x: 5, y: 1 },
+      internalResistance: 5,
+      electromotiveForce: 40,
+      id: 22,
+    },
+
     {
       _type: "source",
       plus: { x: 0, y: 4 },

@@ -4,8 +4,8 @@ import { Branch, ElectricalComponentWithID } from "../types";
 
 test("gMatrix test 1", () => {
   const expectedMatrix: number[][] = [
-    [0.4, -0.2],
-    [-0.2, 0.325],
+    [0.39090909090909093, -0.2],
+    [-0.2, 0.31313131313131315],
   ];
 
   const components: ElectricalComponentWithID[] = [
@@ -31,7 +31,16 @@ test("gMatrix test 1", () => {
     { _type: "resistor", a: { x: 5, y: 0 }, b: { x: 6, y: 0 }, resistance: 3, id: 19 },
     { _type: "resistor", a: { x: 7, y: 3 }, b: { x: 7, y: 4 }, resistance: 40, id: 20 },
     { _type: "resistor", a: { x: 8, y: 3 }, b: { x: 8, y: 4 }, resistance: 7, id: 21 },
-    { _type: "sourceDC", plus: { x: 6, y: 2 }, minus: { x: 5, y: 1 }, electromotiveForce: 40, id: 22 },
+
+    {
+      _type: "sourceDC",
+      plus: { x: 6, y: 2 },
+      minus: { x: 5, y: 1 },
+      internalResistance: 5,
+      electromotiveForce: 40,
+      id: 22,
+    },
+
     {
       _type: "source",
       plus: { x: 0, y: 4 },
@@ -105,7 +114,14 @@ test("gMatrix test 1", () => {
       b: { x: 8, y: 5 },
       components: [
         { _type: "wire", a: { x: 4, y: 0 }, b: { x: 5, y: 1 }, id: 13 },
-        { _type: "sourceDC", plus: { x: 5, y: 1 }, minus: { x: 6, y: 2 }, electromotiveForce: 40, id: 22 },
+        {
+          _type: "sourceDC",
+          plus: { x: 5, y: 1 },
+          minus: { x: 6, y: 2 },
+          internalResistance: 5,
+          electromotiveForce: 40,
+          id: 22,
+        },
         { _type: "wire", a: { x: 6, y: 2 }, b: { x: 7, y: 3 }, id: 14 },
         { _type: "resistor", a: { x: 7, y: 3 }, b: { x: 7, y: 4 }, resistance: 40, id: 20 },
         { _type: "wire", a: { x: 7, y: 4 }, b: { x: 8, y: 5 }, id: 15 },
@@ -142,8 +158,8 @@ test("gMatrix test 1", () => {
 
 test("gMatrix test 2", () => {
   const expectedMatrix: number[][] = [
-    [0.25, -0.1],
-    [-0.1, 0.3],
+    [0.2350358422939068, -0.0989247311827957],
+    [-0.0989247311827957, 0.27403993855606756],
   ];
 
   const components: ElectricalComponentWithID[] = [
@@ -211,8 +227,8 @@ test("gMatrix test 2", () => {
 });
 test("gMatrix test 3", () => {
   const expectedMatrix: number[][] = [
-    [0.4, -0.2],
-    [-0.2, 0.32500000000000007],
+    [0.39090909090909093, -0.19090909090909092],
+    [-0.19090909090909092, 0.30404040404040406],
   ];
 
   const components: ElectricalComponentWithID[] = [
@@ -243,7 +259,14 @@ test("gMatrix test 3", () => {
     { _type: "resistor", a: { x: 6, y: 0 }, b: { x: 5, y: 0 }, resistance: 3, id: 19 },
     { _type: "resistor", a: { x: 7, y: 4 }, b: { x: 7, y: 3 }, resistance: 40, id: 20 },
     { _type: "resistor", a: { x: 8, y: 4 }, b: { x: 8, y: 3 }, resistance: 7, id: 21 },
-    { _type: "sourceDC", plus: { x: 5, y: 1 }, minus: { x: 6, y: 2 }, electromotiveForce: 40, id: 22 },
+    {
+      _type: "sourceDC",
+      plus: { x: 5, y: 1 },
+      minus: { x: 6, y: 2 },
+      internalResistance: 5,
+      electromotiveForce: 40,
+      id: 22,
+    },
     {
       _type: "source",
       plus: { x: 0, y: 4 },
