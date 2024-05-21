@@ -1,8 +1,10 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { Canvas } from "@/widgets/canvas";
 import { SchemeCardTooltip } from "@/widgets/scheme-card-tooltip";
 import { CreateSchemeButton } from "@/features/create-scheme";
 import { Scheme, getSchemesQueryOptions } from "@/entities/scheme";
 import { SchemeCard } from "@/entities/scheme";
+import { SelectComponentProvider } from "@/features/select-component";
 
 type Props = {
   schemes: Array<Scheme>;
@@ -18,7 +20,21 @@ export function SchemesPage({ schemes: initialSchemes }: Props) {
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {schemes.map((scheme) => (
-          <SchemeCard key={scheme.id} scheme={scheme} tooltip={<SchemeCardTooltip scheme={scheme} />} />
+          <SchemeCard
+            key={scheme.id}
+            scheme={scheme}
+            tooltip={<SchemeCardTooltip scheme={scheme} />}
+            preview={
+              <SelectComponentProvider selected={undefined} onSelect={() => {}}>
+                <Canvas
+                  components={scheme.components}
+                  onUpdateComponentCoords={() => {}}
+                  onAddComponent={() => {}}
+                  onUpdateComponent={() => {}}
+                />
+              </SelectComponentProvider>
+            }
+          />
         ))}
       </div>
     </div>
