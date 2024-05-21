@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { LogOut } from "lucide-react";
 import React from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -27,7 +27,7 @@ export function PrincipalDropdownMenu() {
 
 export function PrincipalDropdownMenuContainer() {
   return (
-    <ErrorBoundary fallback={<Button>Войти</Button>}>
+    <ErrorBoundary fallback={<Button asChild><Link to="/signin">Войти</Link></Button>}>
       <React.Suspense fallback={<PrincipalSettingsMenuFallback />}>
         <PrincipalDropdownMenu />
       </React.Suspense>
