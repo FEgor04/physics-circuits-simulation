@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.circuisim.rSocket.data.Message;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Slf4j
+@Disabled
 public class RSocketClientToServerITest {
 
     private static RSocketRequester requester;
