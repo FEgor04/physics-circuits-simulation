@@ -47,7 +47,7 @@ public class JwtTokenFilter extends GenericFilterBean {
                 httpResponse.getWriter().println("No JWT token");
                 return;
             }
-        } catch (MalformedJwtException | ExpiredJwtException e) {
+        } catch (io.jsonwebtoken.security.SignatureException | MalformedJwtException | ExpiredJwtException e) {
             var httpResponse = (HttpServletResponse) servletResponse;
             httpResponse.setStatus(401);
             httpResponse.getWriter().println("Invalid JWT token");
