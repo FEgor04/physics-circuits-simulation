@@ -54,7 +54,7 @@ public class SchemesController {
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
-        return schemeMapper.toResponse(schemeService.getById(id), userDetails.getUsername());
+        return schemeMapper.toResponse(schemeService.getByIdAndUsername(userDetails.getUsername(), id), userDetails.getUsername());
     }
 
     @GetMapping("{id}/users")
@@ -70,7 +70,7 @@ public class SchemesController {
             @RequestBody SchemeUpdateRequest schemeUpdateRequest
     ) {
         electricalComponentService.updateComponents(schemeUpdateRequest.electricalComponentDto(),
-                schemeUpdateRequest.schemeName(), id,schemeUpdateRequest.isEmbedded());
+                schemeUpdateRequest.schemeName(), id, schemeUpdateRequest.isEmbedded());
         return ResponseEntity.noContent().build();
     }
 

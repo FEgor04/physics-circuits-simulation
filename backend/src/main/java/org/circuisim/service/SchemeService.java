@@ -15,6 +15,8 @@ public interface SchemeService {
 
     Scheme getById(Long id);
 
+    Scheme getByIdAndUsername(String username, Long id);
+
     List<Scheme> getAllByUsername(String username);
 
     void addPermission(Long schemeId, List<SetPermissionsRequest> request);

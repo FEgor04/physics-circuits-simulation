@@ -25,7 +25,7 @@ public class ControllerExceptionHandler {
     private final String INVALID_INPUT_EXCEPTION = "Invalid input";
     private final String NOT_FOUND_EXCEPTION = "Not found";
     private final String UNAUTHORIZED_EXCEPTION = "Invalid password or email!";
-    private final String ACCESS_DENIED = "You do not have permission to delete!";
+    private final String ACCESS_DENIED = "You do not have permission!";
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorMessage> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
