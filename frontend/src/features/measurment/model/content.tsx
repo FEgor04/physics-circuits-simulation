@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 
 export type State = {
-  getCurrentMeasurement: (id: number) => number;
+  getCurrentMeasurement: (id: number) => number | undefined;
 };
 
 export const context = createContext<State | null>(null);

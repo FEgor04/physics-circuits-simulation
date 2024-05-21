@@ -40,26 +40,13 @@ export function Simulation({ mode, setMode, scheme }: Props) {
   }, [selected, components]);
 
   const getMeasurementForComponent = (id: number) => {
+    if (mode == "editing") return undefined;
     const measurements = simulator.getMeasurementsForComponent(id);
     if (measurements.currency != 0) {
       return measurements.currency;
     }
     return measurements.voltage;
   };
-
-  const selectedComponentMeasurements = useMemo(() => {
-    if (
-      selectedComponent == undefined ||
-      (selectedComponent._type != "ampermeter" && selectedComponent._type != "voltmeter")
-    ) {
-      return undefined;
-    }
-    const measurements = simulator.getMeasurementsForComponent(selectedComponent.id);
-    if (selectedComponent._type == "ampermeter") {
-      return measurements.currency;
-    }
-    return measurements.voltage;
-  }, [selectedComponent, simulator]);
 
   return (
     <div className="h-screen">
@@ -81,14 +68,7 @@ export function Simulation({ mode, setMode, scheme }: Props) {
             <UpdateComponentProvider onUpdateComponent={onUpdateComponent}>
               <GetMeasurementProvider getCurrentMeasurement={(id: number) => getMeasurementForComponent(id)}>
                 <ResizablePanelGroup direction="horizontal">
-                  {mode == "editing" ? (
-                    <ComponentChooseBar />
-                  ) : (
-                    (selectedComponent?._type == "ampermeter" || selectedComponent?._type == "voltmeter") &&
-                    selectedComponentMeasurements !== undefined && (
-                      <ComponentValuesBar type={selectedComponent._type} measurements={selectedComponentMeasurements} />
-                    )
-                  )}
+                  {mode == "editing" && <ComponentChooseBar />}
                   <ResizableHandle />
                   <CanvasPanel
                     components={components}
