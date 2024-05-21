@@ -1,0 +1,1020 @@
+
+body, html{margin:0px;
+	padding:0px;
+	background-color:#dcdcdc;
+	height:100%
+}
+
+#container{width:960px;
+			min-height:100%;		
+			padding:0;
+			margin-left:auto;
+			margin-right:auto;
+			margin-bottom:0px;
+			background-color:white;			
+}
+*html #container{
+height:100%;
+}
+/* H1 Header */
+#header{background-color:beige;
+			height:50px;
+}
+/* h2 Horizontal Navigation */
+#hnav{background-color:#1d6898;		
+		height:20px;
+}
+#traces_pic{width:375px;
+			height:20px;
+			float:right;
+			margin-top:-20px;
+}
+#topMenu {
+	list-style:none; 
+	margin-top:0px;
+	margin-left:250px;          
+	       
+	padding:0;	
+	height:20px;  
+	background-color:#1d6898;
+	font:15px/19px Arial, Helvetica, sans-serif;
+	
+}
+#topMenu  li { float:left;
+}
+#topMenu  a{
+			display:block;
+			height:20px;
+			text-decoration:none; 
+			color:#ace0ec;  
+			padding:0 18px; 						
+}                    
+#topMenu  a:hover{
+	background-color:#155981;	
+	text-decoration:none;
+}
+/* h2 Logo */
+#logo{background:#1c5a84;
+		float:left;
+		height:60px;
+		width:220px;
+		margin-top:-10px;
+}
+#logo img{width:220px;
+		border:0px;
+}
+#logo a{border:0px;
+		padding:0px;
+}
+#emptyBox{background:white;
+			height:40px;
+}
+/* H1 Left Column */
+#sideBar{background-color:#efefef;		
+		float:left;
+		width:220px;
+		min-height:220px;
+}
+/* h2 Left Vertical Navigation */
+.vnavContainer{background-color:#efefef;
+				padding-bottom:2px;
+				border-radius:5px;
+}
+.vnavHeader{
+			background-color:#0f4d73;
+			
+			width:175px;
+			height:22px;
+			margin-top:0px;
+			margin-left:15px;
+			color:#ace0ec;
+			font:15px/20px Arial, Helvetica, sans-serif;
+			padding-left:15px;			
+}
+.vnavHeaderWrap{background-color:#0d4461;
+				
+}
+.vnav , .vnav ul{	margin-left:15px;				
+				margin-top:0px;
+				padding:0;							
+}
+.vnav{width:190px;		
+		
+}
+.vnav ul{position:absolute;
+		left:190px;
+		top:0px;
+		width:220px;
+		margin-left:0px;		
+		display:none;		
+		border-left:white solid 1px;
+		border:#dadada solid 1px;
+		z-index:2;
+		/*border-left:RGBA(255,255,255,0) solid 1px;*/		
+}
+.vnav li:hover ul{display:block;
+}
+.vnav li:hover{background-color:#e7fcfe;
+}
+.vnav li:hover ul li{background-color:#d8f7ff;
+				background-color:rgba(216,247,255,0.9);	
+				background-color:rgba(220,220,220,0.88);				
+}
+.vnav li:hover ul a{color:#000;				
+}
+.vnav li:hover ul a:hover{background-color:rgb(248,248,248);	
+						color:#20729d;						
+}
+.vnav li{background-color:#daf5fc;		
+		position:relative;
+		display:block;
+		height:32px;		
+		margin-top:0px;	
+		
+}
+.vnav .vnavBigLi{height:50px;
+}
+.vnav .vnavBigA{height:39px;
+}
+.vnav a{
+		display:block;
+		height:23px;
+		text-decoration:none;
+		font:15px Arial, Helvetica, sans-serif;	
+		
+		color:#20729d;
+		padding:7px 0px 4px 5px;			
+}
+.vnav ul a{padding-left:12px;
+		padding-right:12px;
+}
+.vnav a:hover{background-color:#c7f2ff;			
+				color:#0786c7;
+}
+.vnav img{border:0px;
+			width:6px;
+			float:left;
+			position:relative;
+			left:165px;
+			top:1px;
+			margin:4px 4px 0px 0px;
+}
+
+.vnav a:only-child{padding-left:15px;
+}
+.vnav .oneLink{padding-left:15px;
+}
+
+
+/* H1 Main Content Area */
+#content #siteTitle{color:#125b84;
+					font-family: Arial, Helvetica, sans-serif;
+					font-size:16px;
+					margin-left:52px;
+					margin-top:-36px;
+}
+#content #indexList{margin-left:10px;
+					margin-top:-2px;
+					
+}
+#content #indexList li{background-color:#fff;
+					float:left;	
+					margin-left:7px;
+					margin-bottom:36px;
+					color:#1d7160;
+					font-family: Arial, Helvetica, sans-serif;
+					font-size:14px;
+					list-style-position:inside;
+					list-style-type:disc;
+}
+#content #indexList .liShort{width:90px;
+}
+#content #indexList .liLong{width:125px;
+}
+#content #indexList #liCircuits{width:74px;
+}
+#content #indexList #liFormulas{width:96px;
+}
+#contentContainer{background-color:#efefef;
+}
+#content{background-color:white;
+			width:700px;
+			margin-left:219px; /* '-1' becouse of border */
+			padding:10px 20px;
+			padding-bottom:60px;
+			/*border-left:#d1d1d1 dotted 1px;*/
+}
+
+#content span {
+	font-style: italic;
+}
+#content strong{color:#4f4f4f;
+}
+#content {font-family: Arial, Helvetica, sans-serif;
+}
+#content pre{font-family: Arial, Helvetica, sans-serif;
+}
+#content sub {font-size:12px;
+			line-height:13px;
+}
+
+#content sup{font-size:10px;
+			line-height:11px;
+}
+.myFormula{
+			text-align:center;
+			font-family:Arial, Helvetica, sans-serif;
+			font-size:15px;
+			margin-bottom:12px;
+}
+#content h1 {background:white;
+	padding-left:10px;
+	font-size:18px;
+	line-height:26px;
+	font-family: Arial, Helvetica, sans-serif;
+	color:#494949;
+	font-weight: bolder;
+	text-align:left;	
+	margin-top:-7px;
+}
+#content p {background-color:white;
+		font-size:15px;
+		line-height:18px;
+		text-align:justify;
+		font-family: Arial, Helvetica, sans-serif;
+		color: #2a2a2a;		
+}
+#content .imageTitle{margin-top:-10px;
+					margin-bottom:35px;
+}
+#content .authorName{color:#555;						
+}
+					
+                    
+#content h2 {background:white;
+	font-size: 16px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-variant: normal;
+	color:#494949;
+	font-weight: bold;
+	text-align:left;
+	padding-left:10px;
+	margin-top:30px;
+	margin-bottom:-5px;
+}
+#content h3 {
+	text-align:left;
+	font-size: 15px;
+	right: 20px;
+	font-family: Arial, Helvetica, sans-serif;
+	color:#494949;
+	font-weight: bolder;
+	padding-left:10px;
+	margin-top:30px;
+	margin-bottom:-5px;
+}
+#content .headerCenter{text-align:center;
+	`					margin-left:auto;
+	`					margin-right:auto;
+}
+#content .bigH2{font-size:18px;
+				margin-top:0px;
+}
+#content a{color:#216887;
+}
+#content a:hover{text-decoration:none;
+}	
+#content img{margin-top:15px;
+			border:0px;
+}
+#content .imageTitle{text-align:center;
+					margin-top:0px;
+}
+#content a h3{color:#216887;
+			margin-top:8px;
+			margin-bottom:8px;
+			font-size:15px;
+}
+#content #ledTitle{font-size:18px;
+}
+#content #tauChar{font-family:Calibri, sans-serif;				
+}
+
+/* h3 Site Map */
+#content ul{font-family: Arial, Helvetica, sans-serif;
+			margin-bottom:1px;
+			color: #2a2a2a;
+			font-size:14px;
+			list-style:circle;
+}
+
+#content .articleList{font-family: Arial, Helvetica, sans-serif;
+						font-size:15px;
+							color: #2a2a2a;
+					margin-bottom:5px;
+					list-style:circle;
+}
+
+#content .articleList li{margin-bottom:12px;
+						text-align:justify;
+						padding-right:30px;
+}
+
+#content .articleList li p{padding-left:0px;
+						padding-right:0px;						
+						margin:12px 0px;
+}
+
+/* h2 main thumb START */
+#content .rowContainer{background-color:#C2A385;					  
+						background-color:#fff;
+						width:696px;
+						margin-bottom:50px;
+						float:left;
+}
+#content .mainThumb{background-color:#fff;
+					width:232px;
+					float:left;
+}
+
+#content .mainThumb .aThumbTitle{display:block;
+								background-color:#eee;	
+								color:#1d6898;
+								color:#555;
+								
+								width:148px;
+								height:24px;
+								padding-top:10px;
+								padding-left:16px;
+								margin-left:32px;
+								margin-bottom:20px;
+								border-radius:4px;
+								border: solid #ddd 1px;								
+								text-decoration:none;
+								/*text-align:center;*/
+								font-size:12px;
+								font-weight:bold;																														
+}
+#content .mainThumb .aThumbTitle:hover{background-color:#606060;
+										color:#eee;
+										border:solid #606060 1px;		
+										
+}
+
+/* h2 main thumb END */
+
+/* h2 Article Thumb */
+#content .articleThumb{background-color:#fff;						
+						width:690px;
+						padding:10px 10px 20px 10px;												
+						margin-bottom:8px;
+						border-bottom:#dedede solid 0px;
+}
+#content .articleThumb h1, #content .articleThumb h2{display:block;
+													background-color:#fff;
+													margin-left:250px;
+													margin-top:0px;
+													margin-bottom:-10px;
+													font-size:16px;
+													color:#216887;							
+}
+#content .articleThumb a{color:#216887;	
+}
+#content .articleThumb p{background-color:#fff;	
+						margin-left:250px;
+						font-size:14px;
+						line-height:17px;
+						
+}
+#content .articleThumb img{width:240px;
+						float:left;
+						margin-top:0px;						
+}
+#content .articleThumb #yellowCore{margin-top:30px;
+}
+
+#content #articleThumbSmallWrapper{background-color:#fff;
+									margin-top:50px;
+									border-top:#dcdcdc solid 1px;
+}
+
+#content .articleThumbSmall{background-color:#fff;						
+						width:620px;
+						height:80px;
+						padding:10px 10px 20px 10px;												
+						margin-bottom:0px;
+						margin-left:20px;
+						
+}
+
+#content .articleThumbSmall h2{display:block;
+							background-color:#fff;
+							margin-left:140px;
+							margin-top:4px;
+							margin-bottom:-10px;
+							font-size:16px;
+							color:#216887;							
+}
+
+#content .articleThumbSmall a{color:#216887;	
+}
+
+#content .articleThumbSmall img{width:180px;
+						float:left;
+						margin-top:-10px;						
+}
+
+#content #mosfetThumbWrapper{height:60px;
+}
+
+#content #bipolarThumbWrapper h2{margin-top:20px;
+								
+}
+
+.silverHbar{background-color:#eee;
+	  
+		padding-top:4px;
+		height:20px;
+		margin-top:40px;
+		margin-bottom:24px;
+}
+
+#content #articleThumbSmallHeader{background-color:#eee;
+		margin-top:0px;
+		margin-left:0px;
+		margin-bottom:40px;
+		font-size:14px;
+		color:#787878;		
+}
+
+#content .rework{color: #DDD;
+}
+
+#counter{display:none;
+}
+
+.clear{
+background-color:coral;
+clear:both;
+}
+
+/* H1 Footer */
+#footer{background-color:#e2e2e2;
+			height:100px;			
+			margin-top:-100px;
+			margin-bottom:-16px;
+			margin-left:auto;
+			margin-right:auto;
+			width:960px;
+}
+#rasporka{
+			height:100px;
+}
+#footer p{
+			width:800px;
+			position:relative;	
+			left:115px;
+			top:15px;
+			margin-top:0px;
+			margin-bottom:0px;
+			color:#626262;
+			font: 12px Helvetica, Arial, sans-serif;
+}
+
+/* h2 counters */
+
+#radioTopCounter{float:left;
+				margin-left:400px;
+				margin-top:25px;
+}
+
+#ramblerTop100counter{margin-left:20px;
+						margin-top:25px;
+						float:left;					
+}
+
+/* H1 Table of Atom Shells*/
+#shell_table{border:#DDD solid 1px;	
+			 font-family:Verdana, Helvetica, sans-serif;
+			 font-size:12px;
+			 margin-left:50px;	
+			 margin-top:20px;
+			 margin-bottom:20px;
+				color: #2a2a2a;
+}
+#shell_table td{border:#EEE solid 1px;
+				padding:3px 10px;
+}
+
+
+
+
+
+
+
+/* H1 Thumbs */
+#content .homeThumb{width:230px;
+}
+#content #hThumbDiode{width:192px;
+					margin-left:20px;
+					margin-top:30px;					
+}
+#content #hThumbRes{width:180px;
+					margin-left:24px
+}
+#content #hThumbCap{width:188px;
+					margin-left:24px;
+					margin-top:0px;
+}
+#content #hThumbDie{width:140px;
+					margin-left:46px;
+					margin-top:42px;
+}
+
+
+/* H1 Pictures Classes */
+.wFull_pic{width:680px;
+				margin-left:10px;
+				margin-bottom:20px;
+				margin-top:20px;
+}
+.w900_pic{width:620px;
+			margin-left:30px;
+			margin-bottom:5px;
+			margin-top:5px;
+}
+.w800_pic{	
+	width: 400px;
+	margin-left:150px;	
+	margin-bottom:20px;
+}
+.w700_pic{	
+	width: 350px;
+	margin-left:185px;	
+	margin-top:15px;
+	margin-bottom:10px;
+}
+.w600_pic{
+	
+	width: 250px;
+	margin-left:220px;
+	margin-bottom:20px;
+}
+.w400_pic{
+	
+	width: 200px;
+	margin-left:220px;	
+	margin-bottom:20px;	
+}
+.extralarge_pic{	
+	width: 540px;	
+	margin-top:30px;
+	margin-bottom:30px;
+	margin-left:85px;	
+}
+.large_pic{	
+	width: 430px;
+	margin-left:180px;	
+}
+.medium_pic{	
+	width: 300px;
+	margin-left:220px;
+	margin-top:20px;
+	margin-bottom:20px;	
+}
+.small_pic{
+	
+	width: 240px;
+	margin-left:250px;	
+}
+#content .formulaImg{
+			display:block;
+			margin-left:auto;
+			margin-right:auto;
+}
+
+
+/* H1 Pictures Names */
+
+/* h2 Semiconductors */
+#content #atom_pic{width:350px;
+			margin-left:165px;
+			margin-bottom:10px;
+}
+#content #covalent_pic{ width:200px;
+				margin-left:60px;
+				margin-top:70px;
+				margin-bottom:65px;
+}
+#content #crystal_pic{ background-color:coral;	
+				float:left;
+				width:250px;
+				margin-left:80px;
+				margin-bottom:0px;
+}
+#content #core_si_pic{width: 400px;
+					margin-top:40px;
+}
+#grafen_pic { display:block;
+                  float:right;
+				  margin-left:20px;
+				  margin-bottom:12px;
+				  padding-top:10px;
+				  padding-left:20px;
+				  width:220px;				 
+}
+
+/* h2 Diods */
+
+#content #diode_pn_pic{width:180px;
+						margin-left:20px;
+						margin-top:0px;
+						float:left;
+}
+#diode_pn_still_pic{width:360px;
+					margin-left:200px;
+}
+#content #diode_sign_pic{width:180px;
+						margin-left:52px;
+						margin-top:0px;
+						float:left;
+}
+#content #diodeBand{width:200px;
+					margin-left:40px;
+}
+#content #VI_full{margin-top:60px;
+					margin-left:150px;		
+}
+
+/* h2 Transistors */
+
+#content #parasitBJT{	
+	width: 460px;
+	margin-left:100px;
+	margin-top:10px;
+	margin-bottom:10px;	
+}
+#content #tranCurrentRu{	
+	width: 320px;
+	margin-left:200px;
+	margin-top:10px;
+	margin-bottom:10px;	
+}
+#tran_pot_pic{width:580px;
+			margin-left:70px;
+			margin-bottom:15px;
+			margin-top:15px;
+}
+#content #tranVCE_VBE{width:720px;
+				margin-left:0px;
+				margin-bottom:30px;
+				margin-top:30px;
+}
+#content .articleThumb #mosfetThumb{width:100px;
+									margin-left:70px;
+}
+
+#content .articleThumbSmall #mosfetThumb{width:60px;
+									margin-left:60px;
+}
+#content .articleThumb #diodeAppThumb{width:200px;
+									margin-left:24px;
+}
+
+/* BJT Amplifier Formulas */
+#testSize{width:331px;
+}
+#Ibmaxmin{width:489px;
+}
+#IbmaxminAr2{width:484px;
+}
+#IcmaxminCalc{width:315px;
+}
+#VoutDefine{width:171px;
+}
+#VoutCalc{width:470px;
+}
+
+/* h2 Resistors */
+
+#resistor5bands{margin-left:180px;
+				margin-bottom:0px;
+}
+
+#resistor6bands{width:440px;
+				margin-left:150px;
+				margin-bottom:0px;
+}
+
+#RconnectParallelVoltage{margin-left:140px;
+}
+
+#GtotalPar{width:480px;
+			
+}
+#RtotalPar{width:334px;
+}
+#RtotalSeq{width:170px;
+}
+#RtotalParEqual2R{width:178px;
+}
+#RtotalParEqualNR{width:150px;
+}
+#RtotalMix{width:300px;
+}
+#RtotalMixLong{width:428px;
+}
+#CurrentPar{width:155px;
+}
+#VRnSeq{width:119px;
+}
+#content #resistorRobotWeb{width:160px;
+							margin-left:32px;
+}
+
+/* Fan Regulator */
+#content #fanBlocks{margin-top:40px;
+}
+#content #fanMontaj{margin-top:30px;
+}
+#content #fanThumb{width:140px;
+					margin-left:44px;
+}
+/* Capacitor Formulas START */
+#content #tauFormula{width:236px;
+					margin-bottom:80px;
+}
+#content #capCurrentFormula{width:96px;
+}
+#content #capCurrentFormulaVR{width:66px;
+}
+#content #capFormula{width:55px;
+}
+#content #capFormulaAde{width:75px;
+						margin-top:-20px;
+}
+/* RS485 */
+#content .articleThumb #max485{width:160px;
+							margin-left:40px;
+							margin-top:40px;
+}
+/* Current Source */
+#content .articleThumb #currentSource{width:160px;
+							margin-left:40px;
+							margin-top:0px;
+}
+/* Capacitor */
+#content .articleThumb #capTypeThumb{width:160px;
+							margin-left:40px;
+							margin-top:30px;
+}
+
+
+
+
+
+
+
+/* h1 Show Comments Styling */
+#commentWrapper{padding:0px;
+				margin-top:0px;
+}
+#commentWrapper .silverHbar{margin-top:30px;
+}
+#content #commentsHeader{background-color:#eee;
+		margin-top:0px;
+		margin-left:0px;
+		margin-bottom:40px;
+		font-size:14px;
+		color:#787878;		
+}
+.singleCommentTable{border-bottom:#aaa dotted 1px;
+					border-top:#aaa dotted 1px;
+					background-color:white;
+					width:700px;
+					margin-bottom:12px;
+					padding-top:4px;
+					padding-bottom:5px;
+}
+.commentAuthor{width:100px;
+				color:#555;
+				font-size:14px;
+				font-weight:bold;				
+}
+.commentDate{color:#585858;
+			font-size:12px;
+}
+.commentText{color:#333;
+			font-size:14px;
+			padding-top:10px;
+}
+
+/* h1 Add New Comment Form Styling */
+#commentFormWrapper{background-color:#efefef;
+					width:620px;
+					margin-top:30px;
+					margin-left:auto;
+					margin-right:auto;					
+					padding:40px;					
+					padding-top:24px;					
+					border-radius:10px;
+					font-size:14px;
+					color:#444;
+}
+#commentForm h3{padding-left:3px;
+				font-size:15px;
+				margin-top:0px;
+}
+#commentForm input{width:260px;
+					height:18px;
+}
+#commentForm input[type=submit]{width:100px;
+								height:24px;
+								margin-top:10px;
+}
+#commentForm textarea{width:610px;
+					height:120px;
+}
+#commentForm td{height:24px;
+				vertical-align:bottom;
+}
+#commentForm .inputContainer{vertical-align:top;
+}
+
+/* h2 Capture Area Styling */
+#robotProtect{margin-top:10px;
+			margin-bottom:14px;			
+}
+#robotProtect tr:last-child{background-color:#e4e4e4;
+				
+}
+
+#robotProtect td{margin:0px;
+					padding:4px;
+				
+}
+#robotProtect input{width:54px;
+					margin-bottom:2px;
+					margin-left:-4px;
+					
+}
+#captureImgCell{width:286px;				
+}
+#captureImgCell img{width:280px;	
+					margin-top:0px;
+					margin-left:6px;
+}
+
+/* Error Message Styling */
+#errorMesBox{background-color:beige;
+				width:340px;
+				margin:0 auto;
+				padding:20px;								
+				font-family:Arial, Verdana, sans-serif;
+				line-height:28px;				
+}
+#errorMesBox h2{font-size:18px;
+				color:#8A0000;
+				margin-top:-5px;
+}
+#errorMesBox a{display:block;
+				color:#265583;
+}
+#errorMesBox a:visited{color:#265583;
+}
+#errorMesBox a:hover{color:#265583;
+					text-decoration:none;
+}
+
+/* Sucess Message Styling */
+#successMesBox{background-color:#E1F0E9;
+				width:260px;
+				margin:0 auto;
+				padding:20px;								
+				font-family:Arial, Verdana, sans-serif;
+				color:#006400;
+				font-size:18px;
+}
+#successMesBox a{display:block;
+				 color:#265583;
+				 font-size:16px;
+}
+#successMesBox a:visited{color:#265583;
+}
+#successMesBox a:hover{color:#265583;
+					text-decoration:none;
+}
+
+
+
+
+
+
+
+/* GENERIC TABLE start */
+.genericTable{border:#DDD solid 1px;	
+			 font-family:Verdana, Helvetica, sans-serif;
+			 font-size:13px;
+			 margin-left:auto;	
+			 margin-right:auto;	
+			 margin-top:40px;
+			 margin-bottom:40px;
+				color: #2a2a2a;
+}
+.genericTable td{border:#EEE solid 1px;
+				padding:6px 14px;
+}
+.genericTable .tableColTitle{font-size:14px;
+							text-align:center;
+							background-color:#f4f4f4;	
+}
+
+.genericTable .tableMainTitle{font-size:14px;
+							text-align:center;
+							background-color:#f3efe4;							
+}
+.genericTable .tableMainTitle td{border:#f3efe4 solid 1px;
+}
+.genericTable .tableColTitle td{border:#f4f4f4 solid 1px;
+}
+
+/* GENERIC TABLE end */
+
+/* RESISTOR COLOR CODE TABLE start */
+.colorCodeTable{margin:5px auto;
+				margin-bottom:50px;
+				border:silver solid 1px;
+				width:430px;
+				height:400px;
+				font-family:Verdana, Helvetica, sans-serif;
+				font-size:11px;
+				text-align:center;
+}
+
+#fiveBands{width:480px;
+}
+#sixBands{width:574px;
+}
+
+#fiveBands td:nth-child(6){width:132px;
+}
+.colorCodeTable td:nth-child(2),
+.colorCodeTable td:nth-child(3),
+#fiveBands td:nth-child(4),
+#sixBands td:nth-child(4){width:42px;
+}
+#sixBands td:nth-child(6){width:140px;
+}
+#sixBands td:nth-child(7){width:96px;
+}
+.colorCodeTable td{border:silver solid 1px;
+					padding-left:4px;
+					margin:0;
+}
+.emptyCell{background-color:white;
+}
+.band{background-color:#f4f4f4;		
+}
+.meaning{background-color:#f4f4f4;
+		height:44px;
+}
+.silverRow{background-color:#dddddd;		
+}
+.goldRow{background-color:#dbcc6c;		
+}
+.blackRow{background-color:#333;
+			color:white;
+}
+.brownRow{background-color:#7a5c28;	
+			color:white;
+}
+.redRow{background-color:#c34f4f;
+				color:white;
+}
+.orangeRow{background-color:#e2a329;		
+}
+.yellowRow{background-color:#f5f064;		
+}
+.greenRow{background-color:#3d9847;
+				color:white;
+}
+.blueRow{background-color:#487bc7;	
+			color:white;
+}
+.violetRow{background-color:#a261ae;
+				color:white;
+}
+.grayRow{background-color:gray;	
+			color:white;
+}
+.whiteRow{background-color:white;		
+}
+/* RESISTOR COLOR CODE TABLE end */
+
+.content_p p {
+	padding: 6px 10px;
+}
+
+.commentText p {
+	margin:0;
+}
