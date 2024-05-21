@@ -1,3 +1,4 @@
+import { RotateCcw } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { CanvasPanel } from "@/widgets/canvas";
@@ -9,8 +10,9 @@ import { DeleteComponentProvider } from "@/features/delete-component";
 import { GetMeasurementProvider } from "@/features/measurment";
 import { SelectComponentProvider, SelectComponentState } from "@/features/select-component";
 import { UpdateComponentProvider } from "@/features/update-component";
-import { Scheme } from "@/entities/scheme";
+import { Scheme, useUpdateSchemeMutation } from "@/entities/scheme";
 import { schemaErrors } from "@/shared/simulation/errors";
+import { Button } from "@/shared/ui/button";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 import { useSimulationState } from "../model/state";
 
@@ -30,6 +32,9 @@ export function Simulation({ mode, setMode, scheme }: Props) {
     simulator,
     errors,
   } = useSimulationState(scheme.components);
+
+  const { mutate, isPending } = useUpdateSchemeMutation();
+
   const [selected, setSelected] = useState<SelectComponentState["selected"]>(undefined);
   const selectedComponent = useMemo(() => {
     if (selected?.type == "component") {
@@ -67,7 +72,21 @@ export function Simulation({ mode, setMode, scheme }: Props) {
             <UpdateComponentProvider onUpdateComponent={onUpdateComponent}>
               <GetMeasurementProvider getCurrentMeasurement={(id: number) => getMeasurementForComponent(id)}>
                 <ResizablePanelGroup direction="horizontal">
-                  {mode == "editing" && <ComponentChooseBar />}
+                  <div className="space-y-8 border-r-4 bg-white p-4">
+                    {mode == "editing" && <ComponentChooseBar />}
+                    <Button
+                      onClick={() => {
+                        mutate({
+                          ...scheme,
+                          components,
+                        });
+                      }}
+                      disabled={isPending}
+                    >
+                      {isPending && <RotateCcw className="mr-2 size-4 animate-spin" />}
+                      Сохранить
+                    </Button>
+                  </div>
                   <ResizableHandle />
                   <CanvasPanel
                     components={components}

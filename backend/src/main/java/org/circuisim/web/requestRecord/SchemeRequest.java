@@ -15,6 +15,11 @@ public record SchemeRequest(
         @Schema(description = "Scheme name", example = "Physics")
         @NotNull
         String name,
+
+        @Schema(description = "Embedded status", example = "True")
+        @NotNull
+        boolean isEmbedded,
+
         @Schema(description = "Sheme event", example = "CREATE")
         @NotNull
         SchemeEvent eventType,

@@ -79,6 +79,15 @@ export class SimpleSimulator implements CircuitSimulator {
         nodes.push(nodeMap[key].loc);
       }
     }
+    if (nodes.length == 0) {
+      for (const element of this.components) {
+        if (element._type == "wire") {
+          nodes.push(element.a);
+          nodes.push(element.b);
+          break;
+        }
+      }
+    }
     return nodes;
   }
 
@@ -146,8 +155,8 @@ export class SimpleSimulator implements CircuitSimulator {
       if (component._type === "resistor") {
         totalResistance += component.resistance;
       }
-      if (component._type === "sourceDC") {
-        return 0;
+      if (component._type === "sourceDC" || component._type === "source") {
+        totalResistance += component.internalResistance;
       }
     }
 
@@ -163,7 +172,7 @@ export class SimpleSimulator implements CircuitSimulator {
 
     for (const branch of branches) {
       if (this.pointsEqual(branch.a, node) || this.pointsEqual(branch.b, node)) {
-        const resistance = this.sumResistanceOfBranch(branch);
+        const resistance = this.sumResistanceOfBranchForCurrentForse(branch);
         if (resistance != 0) {
           totalResistance += 1 / resistance;
         }
@@ -217,11 +226,17 @@ export class SimpleSimulator implements CircuitSimulator {
     let tempA: Point = { x: branch.a.x, y: branch.a.y };
 
     for (const component of branch.components) {
-      if (component._type === "source" || component._type === "sourceDC") {
+      if (component._type === "source") {
         if (pointsEqual(component.plus, tempA)) {
           return 1;
         } else {
           return -1;
+        }
+      } else if (component._type === "sourceDC") {
+        if (pointsEqual(component.plus, tempA)) {
+          return -1;
+        } else {
+          return 1;
         }
       } else {
         if (pointsEqual(tempA, component.a)) {
@@ -238,6 +253,9 @@ export class SimpleSimulator implements CircuitSimulator {
     for (const component of branch.components) {
       if (component._type === "resistor") {
         totalResistance += component.resistance;
+      }
+      if (component._type === "sourceDC" || component._type === "source") {
+        totalResistance += component.internalResistance;
       }
     }
 
@@ -318,6 +336,9 @@ export class SimpleSimulator implements CircuitSimulator {
     solution.push(0); // один из потенциалов принимаем за 0
     return solution;
   }
+  public isSourceDCBranch(branch: Branch): boolean {
+    return branch.components.find((it) => it._type == "sourceDC") !== undefined;
+  }
 
   public branchCurrent(branches: Branch[], nodes: Array<Point>, tensionList: number[]): number[] {
     const current: number[] = [];
@@ -329,8 +350,6 @@ export class SimpleSimulator implements CircuitSimulator {
     let E;
     let R;
     for (let i = 0; i < branches.length; i++) {
-      let mIndex = 0;
-      let nIndex = 0;
       const m = nodes.findIndex((_, index) => {
         return pointsEqual(branches[i].a, nodes[index]) || pointsEqual(branches[i].b, nodes[index]);
       });
@@ -338,18 +357,31 @@ export class SimpleSimulator implements CircuitSimulator {
       const n = nodes.findIndex((_, index) => {
         return index > m && (pointsEqual(branches[i].a, nodes[index]) || pointsEqual(branches[i].b, nodes[index]));
       });
-
-      if (branchesDirections[i] === -1) {
-        mIndex = n;
-        nIndex = m;
+      if (nodes[m] == branches[i].a) {
+        if (branchesDirections[i] === 1) {
+          phiM = tensionList[n];
+          phiN = tensionList[m];
+        } else {
+          phiM = tensionList[m];
+          phiN = tensionList[n];
+        }
       } else {
-        mIndex = m;
-        nIndex = n;
+        if (branchesDirections[i] === 1) {
+          phiM = tensionList[m];
+          phiN = tensionList[n];
+        } else {
+          phiM = tensionList[n];
+          phiN = tensionList[m];
+        }
       }
-      phiM = tensionList[mIndex];
-      phiN = tensionList[nIndex];
+
       E = this.findVoltageOfBranch(branches[i]);
-      R = this.sumResistanceOfBranch(branches[i]);
+      if (this.isSourceDCBranch(branches[i])) {
+        R = this.sumResistanceOfBranchForCurrentForse(branches[i]);
+      } else {
+        R = this.sumResistanceOfBranch(branches[i]);
+      }
+
       current.push(Math.abs(phiM - phiN + E) / R);
     }
     return current;

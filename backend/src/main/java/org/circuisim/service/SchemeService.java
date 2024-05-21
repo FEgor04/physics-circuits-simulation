@@ -10,9 +10,12 @@ import java.util.List;
 
 public interface SchemeService {
     Scheme save(Scheme scheme);
+
     Scheme create(SchemeCreateRequest schemeCreateRequest, UserDetails userDetails);
 
     Scheme getById(Long id);
+
+    Scheme getByIdAndUsername(String username, Long id);
 
     List<Scheme> getAllByUsername(String username);
 
@@ -25,4 +28,6 @@ public interface SchemeService {
     void deleteById(Long id);
 
     void updateSchemeName(String schemeName, Long schemeId);
+
+    void updateSchemeEmbeddedStatus(boolean newEmbedded, Long schemeId);
 }

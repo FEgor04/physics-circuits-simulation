@@ -3,7 +3,7 @@ import { SimpleSimulator } from "../simulator";
 import { Branch } from "../types";
 
 test("ampermetr test", () => {
-  const expectedCurrent: number = 2;
+  const expectedCurrent: number = 1.890795631825273;
   const actualNodes = [
     { x: 0, y: 5 },
     { x: 8, y: 5 },
@@ -59,7 +59,14 @@ test("ampermetr test", () => {
       b: { x: 8, y: 5 },
       components: [
         { _type: "wire", a: { x: 4, y: 0 }, b: { x: 5, y: 1 }, id: 13 },
-        { _type: "sourceDC", plus: { x: 5, y: 1 }, minus: { x: 6, y: 2 }, electromotiveForce: 40, id: 22 },
+        {
+          _type: "sourceDC",
+          plus: { x: 5, y: 1 },
+          minus: { x: 6, y: 2 },
+          internalResistance: 5,
+          electromotiveForce: 40,
+          id: 22,
+        },
         { _type: "wire", a: { x: 6, y: 2 }, b: { x: 7, y: 3 }, id: 14 },
         { _type: "resistor", a: { x: 7, y: 3 }, b: { x: 7, y: 4 }, resistance: 40, id: 20 },
         { _type: "wire", a: { x: 7, y: 4 }, b: { x: 8, y: 5 }, id: 15 },
@@ -88,7 +95,7 @@ test("ampermetr test", () => {
       ],
     },
   ];
-  const acrSolve: number[] = [-10, 0, 0];
+  const acrSolve: number[] = [-9.157566302652105, 0.29641185647425866, 0];
 
   const components = actualBranches.flatMap((it) => it.components);
 
