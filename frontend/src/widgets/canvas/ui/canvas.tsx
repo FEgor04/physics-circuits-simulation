@@ -35,7 +35,7 @@ export function Canvas({ components, onUpdateComponentCoords }: Props) {
         canvasParams,
       });
     }
-  }, [canvasRef]);
+  }, [canvasRef, canvasRef.current?.clientHeight, canvasRef.current?.clientWidth]);
 
   return (
     <div ref={setNodeRef} className="h-full w-full">
