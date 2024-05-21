@@ -13,6 +13,7 @@ type Props = {
 
 const schema = z.object({
   electromotiveForce: z.coerce.number(),
+  internalResistance: z.coerce.number(),
 });
 
 export function UpdateSourceDC({ defaultValue }: Props) {
@@ -40,6 +41,18 @@ export function UpdateSourceDC({ defaultValue }: Props) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Электродвижущая сила</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="internalResistance"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Внутреннее сопротивление</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
