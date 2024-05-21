@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.circuisim.domain.Permission;
 import org.circuisim.domain.User;
 import org.circuisim.domain.simulation.Scheme;
+import org.circuisim.exception.AccessDeniedException;
 import org.circuisim.exception.ResourceNotFoundException;
 import org.circuisim.repository.SchemeRepository;
 import org.circuisim.service.SchemeService;
@@ -49,6 +50,17 @@ public class SchemeServiceImpl implements SchemeService {
     @Override
     public Scheme getById(Long id) {
         return schemeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Scheme not found"));
+    }
+
+    @Override
+    public Scheme getByIdAndUsername(String username, Long id) {
+        var scheme = schemeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Scheme not found"));
+        var user = userService.getByEmail(username);
+        if (checkAccessSchemeForUser(scheme, user)) {
+            return scheme;
+        } else {
+            throw new AccessDeniedException();
+        }
     }
 
     @Override
@@ -132,6 +144,20 @@ public class SchemeServiceImpl implements SchemeService {
             scheme.setName(schemeName);
             save(scheme);
         }
+    }
+
+    @Override
+    public void updateSchemeEmbeddedStatus(boolean newEmbedded, Long schemeId) {
+        var scheme = getById(schemeId);
+        scheme.setEmbedded(newEmbedded);
+        save(scheme);
+    }
+
+    private boolean checkAccessSchemeForUser(Scheme scheme, User user) {
+        return scheme.isEmbedded() ||
+                scheme.getRedactors().contains(user) ||
+                scheme.getViewers().contains(user) ||
+                scheme.getAuthor().equals(user);
     }
 
 
