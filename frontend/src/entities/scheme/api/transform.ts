@@ -8,7 +8,7 @@ import {
   Wire,
   WithID,
 } from "@/shared/simulation";
-import { zElectricalComponent, zSourceDC } from "../model/component";
+import { zElectricalComponent, zSource, zSourceDC } from "../model/component";
 import { Scheme } from "../model/scheme";
 
 export function fromDTO(dto: SchemeResponse): Scheme {
@@ -29,19 +29,20 @@ export function componentFromDTO(dto: ElectricalComponentDto): WithID<Electrical
       id: dto.componentId,
       _type: "sourceDC",
       electromotiveForce: dto.emf!,
+      resistance: dto.resistance,
       plus: dto.a,
       minus: dto.b,
     });
   }
   if (dto.type == "SOURCE") {
-    return {
+    return zSource.parse({
       id: dto.componentId,
       _type: "source",
       electromotiveForce: dto.emf!,
       internalResistance: dto.resistance!,
       plus: dto.a,
       minus: dto.b,
-    };
+    });
   }
   return zElectricalComponent.parse({
     id: dto.componentId,
@@ -60,7 +61,7 @@ export function componentToDTO(entity: ElectricalComponentWithID): ElectricalCom
     resistance: getResistance(entity),
     emf: getElectromotiveForce(entity),
     a: "a" in entity ? entity.a : entity.plus,
-    b: "b" in entity ? entity.b : entity.plus,
+    b: "b" in entity ? entity.b : entity.minus,
   };
 }
 
