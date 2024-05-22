@@ -69,7 +69,6 @@ test("solve slae test", () => {
   const newComponents = simulator.rebuildShema(simulator.findBranches());
   const newSimulator = new SimpleSimulator(newComponents);
   const actualBranches = newSimulator.findBranches();
-  console.log(actualBranches);
   const actgMatrix = newSimulator.buildGMatrix(actualNodes, actualBranches);
   const actCurrVect = newSimulator.findCurrentForce(actualNodes, actualBranches);
   const acrSolve = newSimulator.solveSLAE(actgMatrix, actCurrVect);
