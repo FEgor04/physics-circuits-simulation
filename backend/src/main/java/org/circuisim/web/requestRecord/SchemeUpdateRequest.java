@@ -15,7 +15,6 @@ public record SchemeUpdateRequest(
 
         @Schema(description = "Embedded status", example = "True") @NotNull
         boolean isEmbedded,
-
         @RequestBody
         List<ElectricalComponentDto> electricalComponentDto
 ) {
