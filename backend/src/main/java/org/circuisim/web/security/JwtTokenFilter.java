@@ -14,9 +14,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
+import java.util.Arrays;
+import java.util.List;
+
 @AllArgsConstructor
 public class JwtTokenFilter extends GenericFilterBean {
 
+    private final String[] allowedPaths = {"login", "refresh", "docs", "swagger", "h2", "auth", "refresh"};
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
@@ -26,10 +30,7 @@ public class JwtTokenFilter extends GenericFilterBean {
                          final FilterChain filterChain) {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         String bearerToken = httpRequest.getHeader("Authorization");
-        if (httpRequest.getServletPath().contains("login") || httpRequest.getServletPath().contains("register")
-                || httpRequest.getServletPath().contains("swagger") || httpRequest.getServletPath().contains("docs")
-                || httpRequest.getServletPath().contains("h2") || httpRequest.getServletPath().contains("auth")
-                || httpRequest.getServletPath().contains("refresh")) {
+        if (Arrays.stream(this.allowedPaths).anyMatch(it -> httpRequest.getPathInfo().contains(it))) {
             logger.info("Request to /login or /register. Passing it on without checking JWT");
             filterChain.doFilter(servletRequest, servletResponse);
             return;
