@@ -88,9 +88,9 @@ public class SchemeServiceImpl implements SchemeService {
             } else {
                 schemeViewUsers.add(user);
             }
-            scheme.setViewers(schemeViewUsers);
-            scheme.setRedactors(schemeRedactorsUsers);
         }
+        scheme.setViewers(schemeViewUsers);
+        scheme.setRedactors(schemeRedactorsUsers);
         save(scheme);
     }
 
@@ -180,7 +180,6 @@ public class SchemeServiceImpl implements SchemeService {
     }
 
     public void removePermissionForUser(User user, Set<User> schemeRedactorsUsers, Set<User> schemeViewUsers) {
-
         schemeViewUsers.remove(user);
         schemeRedactorsUsers.remove(user);
     }
