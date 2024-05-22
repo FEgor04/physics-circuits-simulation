@@ -25,7 +25,7 @@ public interface SchemeService {
 
     void addPermission(Long schemeId, List<SetPermissionsRequest> request);
 
-    void removePermission(Long schemeId, List<DeletePermissionsRequest> requests);
+    void removePermission(Long schemeId, DeletePermissionsRequest requests);
 
     List<GetUsersPermissionsResponse> getUsersById(Long id);
 

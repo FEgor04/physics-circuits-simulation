@@ -100,13 +100,13 @@ public class SchemeServiceImpl implements SchemeService {
 
 
     @Override
-    public void removePermission(Long schemeId, List<DeletePermissionsRequest> requests) {
+    public void removePermission(Long schemeId, DeletePermissionsRequest requests) {
         var scheme = getById(schemeId);
         checkAuthorSchemePermissionDelete(scheme, requests);
         Set<User> schemeViewUsers = scheme.getViewers();
         Set<User> schemeRedactorsUsers = scheme.getRedactors();
-        for (var request : requests) {
-            var user = userService.getByEmail(request.username());
+        for (var request : requests.usernames()) {
+            var user = userService.getByEmail(request);
             removePermissionForUser(user, schemeRedactorsUsers, schemeViewUsers);
         }
         scheme.setRedactors(schemeRedactorsUsers);
@@ -197,9 +197,9 @@ public class SchemeServiceImpl implements SchemeService {
         }
     }
 
-    private void checkAuthorSchemePermissionDelete(Scheme scheme, List<DeletePermissionsRequest> requests) {
-        for (var request : requests) {
-            if (request.username().equals(scheme.getAuthor().getUsername())) {
+    private void checkAuthorSchemePermissionDelete(Scheme scheme, DeletePermissionsRequest requests) {
+        for (var request : requests.usernames()) {
+            if (request.equals(scheme.getAuthor().getUsername())) {
                 throw new AuthorPermissionsConflictException("You cannot change your access!");
             }
         }

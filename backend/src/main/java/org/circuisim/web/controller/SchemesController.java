@@ -95,7 +95,7 @@ public class SchemesController {
     @DeleteMapping("{id}/permissions")
     public ResponseEntity<String> deletePermissionsByIdScheme(
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
-            @RequestBody List<DeletePermissionsRequest> request
+            @RequestBody DeletePermissionsRequest request
     ) {
         schemeService.removePermission(id, request);
         return ResponseEntity.noContent().build();
