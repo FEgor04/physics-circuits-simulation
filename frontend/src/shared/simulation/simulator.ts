@@ -608,6 +608,40 @@ export class SimpleSimulator implements CircuitSimulator {
       }
     }
 
+    // Check for voltmeter to ampermeter paths
+    const voltmeters: string[] = [];
+    const ammeters: Set<string> = new Set();
+
+    for (const component of this.components) {
+      if (component._type === "voltmeter") {
+        voltmeters.push(`${component.a.x},${component.a.y}`);
+        voltmeters.push(`${component.b.x},${component.b.y}`);
+      } else if (component._type === "ampermeter") {
+        ammeters.add(`${component.a.x},${component.a.y}`);
+        ammeters.add(`${component.b.x},${component.b.y}`);
+      }
+    }
+
+    const hasPathToAmpermeter = (startNode: string, visited: Set<string> = new Set()): boolean => {
+      if (ammeters.has(startNode)) return true;
+      visited.add(startNode);
+      const neighbors = adjacencyList.get(startNode) || new Set();
+      for (const neighbor of neighbors) {
+        if (!visited.has(neighbor)) {
+          if (hasPathToAmpermeter(neighbor, visited)) {
+            return true;
+          }
+        }
+      }
+      return false;
+    };
+
+    for (const voltmeterNode of voltmeters) {
+      if (hasPathToAmpermeter(voltmeterNode)) {
+        return "voltmeterError";
+      }
+    }
+
     return undefined;
   }
 }

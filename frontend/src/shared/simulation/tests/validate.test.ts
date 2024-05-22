@@ -177,3 +177,39 @@ test("closed loop scheme with 2 circuit", () => {
   const error = simulation.validateSchema();
   expect(error).toBe(undefined);
 });
+
+test("closed loop scheme with voltmeter error", () => {
+  const components: ElectricalComponentWithID[] = [
+    {
+      id: 0,
+      _type: "source",
+      plus: { x: 0, y: 0 },
+      minus: { x: 1, y: 0 },
+      internalResistance: 5,
+      electromotiveForce: 12,
+    },
+
+    { id: 1, _type: "wire", a: { x: 1, y: 0 }, b: { x: 5, y: 0 } },
+    { id: 2, _type: "wire", a: { x: 5, y: 0 }, b: { x: 5, y: 2 } },
+
+    { id: 3, _type: "ampermeter", a: { x: 5, y: 2 }, b: { x: 4, y: 2 }, currency: 5 },
+
+    { id: 4, _type: "wire", a: { x: 4, y: 2 }, b: { x: 3, y: 2 } },
+
+    { _type: "resistor", a: { x: 3, y: 2 }, b: { x: 2, y: 2 }, resistance: 7, id: 5 },
+
+    { id: 6, _type: "wire", a: { x: 2, y: 2 }, b: { x: 0, y: 2 } },
+
+    { id: 7, _type: "wire", a: { x: 0, y: 2 }, b: { x: 0, y: 0 } },
+
+    { id: 8, _type: "wire", a: { x: 4, y: 2 }, b: { x: 4, y: 3 } },
+
+    { id: 9, _type: "voltmeter", a: { x: 4, y: 3 }, b: { x: 5, y: 3 }, voltage: 5 },
+
+    { id: 10, _type: "wire", a: { x: 5, y: 3 }, b: { x: 5, y: 2 } },
+  ];
+
+  const simulation = new SimpleSimulator(components);
+  const error = simulation.validateSchema();
+  expect(error).toBe("voltmeterError");
+});
