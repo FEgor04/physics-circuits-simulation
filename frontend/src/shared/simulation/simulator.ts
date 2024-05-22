@@ -549,6 +549,67 @@ export class SimpleSimulator implements CircuitSimulator {
   validateSchema(): keyof typeof schemaErrors | undefined {
     const adjacencyList: Map<string, Set<string>> = new Map();
 
+    const branches = this.findBranches();
+    for (const branch of branches) {
+      let c = 0;
+      for (const comp of branch.components) {
+        if (comp._type == "ampermeter" || comp._type == "voltmeter") {
+          c += 1;
+        }
+        if (c >= 2) {
+          return "voltmeterError";
+        }
+      }
+    }
+
+    function areCoordinatesEqual(a1: Point, b1: Point, a2: Point, b2: Point): boolean {
+      return (
+        (a1.x === a2.x && a1.y === a2.y && b1.x === b2.x && b1.y === b2.y) ||
+        (a1.x === b2.x && a1.y === b2.y && b1.x === a2.x && b1.y === a2.y)
+      );
+    }
+
+    function hasOnlyVoltmeterAndWire(components: ElectricalComponentWithID[]): boolean {
+      return components.every((component) => component._type === "voltmeter" || component._type === "wire");
+    }
+
+    function hasVoltmeterWithOtherComponents(components: ElectricalComponentWithID[]): boolean {
+      return (
+        components.some((component) => component._type === "voltmeter") &&
+        components.some((component) => component._type !== "voltmeter" && component._type !== "wire")
+      );
+    }
+
+    function hasOnlyAmpermeter(components: ElectricalComponentWithID[]): boolean {
+      return components.every((component) => component._type === "ampermeter" || component._type === "wire");
+    }
+
+    // Проходим по всем парам ветвей
+    for (let i = 0; i < branches.length; i++) {
+      for (let j = i + 1; j < branches.length; j++) {
+        const branch1 = branches[i];
+        const branch2 = branches[j];
+
+        if (areCoordinatesEqual(branch1.a, branch1.b, branch2.a, branch2.b)) {
+          const isBranch1OnlyVoltmeterAndWire = hasOnlyVoltmeterAndWire(branch1.components);
+          const isBranch2OnlyVoltmeterAndWire = hasOnlyVoltmeterAndWire(branch2.components);
+          const isBranch1VoltmeterWithOther = hasVoltmeterWithOtherComponents(branch1.components);
+          const isBranch2VoltmeterWithOther = hasVoltmeterWithOtherComponents(branch2.components);
+          const isBranch1OnlyAmpermeter = hasOnlyAmpermeter(branch1.components);
+          const isBranch2OnlyAmpermeter = hasOnlyAmpermeter(branch2.components);
+
+          if (
+            (isBranch1OnlyVoltmeterAndWire && isBranch2OnlyAmpermeter) ||
+            (isBranch2OnlyVoltmeterAndWire && isBranch1OnlyAmpermeter) ||
+            (isBranch1VoltmeterWithOther && isBranch2OnlyAmpermeter) ||
+            (isBranch2VoltmeterWithOther && isBranch1OnlyAmpermeter)
+          ) {
+            return "voltmeterError";
+          }
+        }
+      }
+    }
+
     // Helper function to add edge to the graph
     const addEdge = (a: Point, b: Point) => {
       const aKey = `${a.x},${a.y}`;
@@ -605,40 +666,6 @@ export class SimpleSimulator implements CircuitSimulator {
     for (const node of adjacencyList.keys()) {
       if ((adjacencyList.get(node)?.size || 0) <= 1) {
         return "noClosedLoop";
-      }
-    }
-
-    // Check for voltmeter to ampermeter paths
-    const voltmeters: string[] = [];
-    const ammeters: Set<string> = new Set();
-
-    for (const component of this.components) {
-      if (component._type === "voltmeter") {
-        voltmeters.push(`${component.a.x},${component.a.y}`);
-        voltmeters.push(`${component.b.x},${component.b.y}`);
-      } else if (component._type === "ampermeter") {
-        ammeters.add(`${component.a.x},${component.a.y}`);
-        ammeters.add(`${component.b.x},${component.b.y}`);
-      }
-    }
-
-    const hasPathToAmpermeter = (startNode: string, visited: Set<string> = new Set()): boolean => {
-      if (ammeters.has(startNode)) return true;
-      visited.add(startNode);
-      const neighbors = adjacencyList.get(startNode) || new Set();
-      for (const neighbor of neighbors) {
-        if (!visited.has(neighbor)) {
-          if (hasPathToAmpermeter(neighbor, visited)) {
-            return true;
-          }
-        }
-      }
-      return false;
-    };
-
-    for (const voltmeterNode of voltmeters) {
-      if (hasPathToAmpermeter(voltmeterNode)) {
-        return "voltmeterError";
       }
     }
 
