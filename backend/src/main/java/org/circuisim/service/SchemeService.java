@@ -1,9 +1,12 @@
 package org.circuisim.service;
 
+import org.circuisim.domain.User;
 import org.circuisim.domain.simulation.Scheme;
+import org.circuisim.web.dto.UserDto;
 import org.circuisim.web.requestRecord.SchemeCreateRequest;
 import org.circuisim.web.requestRecord.SetPermissionsRequest;
 import org.circuisim.web.responseRecord.GetUsersPermissionsResponse;
+import org.circuisim.web.responseRecord.UserPermissionResponse;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
@@ -30,4 +33,6 @@ public interface SchemeService {
     void updateSchemeName(String schemeName, Long schemeId);
 
     void updateSchemeEmbeddedStatus(boolean newEmbedded, Long schemeId);
+
+    List<UserPermissionResponse> getAllUsersPermissionsBySchemeId(String username, Long id);
 }

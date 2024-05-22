@@ -3,17 +3,16 @@ package org.circuisim.web.controller;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.circuisim.exception.AccessDeniedException;
 import org.circuisim.service.ElectricalComponentService;
 import org.circuisim.service.SchemeService;
-import org.circuisim.web.dto.ElectricalComponentDto;
 import org.circuisim.web.mapper.SchemeMapper;
+import org.circuisim.web.mapper.UserMapper;
 import org.circuisim.web.requestRecord.SchemeCreateRequest;
 import org.circuisim.web.requestRecord.SchemeUpdateRequest;
 import org.circuisim.web.requestRecord.SetPermissionsRequest;
+import org.circuisim.web.responseRecord.GetAllUsersPermissions;
 import org.circuisim.web.responseRecord.GetUsersPermissionsResponse;
 import org.circuisim.web.responseRecord.SchemeResponse;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +54,14 @@ public class SchemesController {
             @AuthenticationPrincipal UserDetails userDetails
     ) {
         return schemeMapper.toResponse(schemeService.getByIdAndUsername(userDetails.getUsername(), id), userDetails.getUsername());
+    }
+
+    @GetMapping("{id}/permissions")
+    public GetAllUsersPermissions getAllUsersPermissionsBySchemeId(
+            @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        return new GetAllUsersPermissions(schemeService.getAllUsersPermissionsBySchemeId(userDetails.getUsername(), id));
     }
 
     @GetMapping("{id}/users")

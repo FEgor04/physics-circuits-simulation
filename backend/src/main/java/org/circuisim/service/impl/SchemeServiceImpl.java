@@ -10,9 +10,11 @@ import org.circuisim.exception.ResourceNotFoundException;
 import org.circuisim.repository.SchemeRepository;
 import org.circuisim.service.SchemeService;
 import org.circuisim.service.UserService;
+import org.circuisim.web.dto.UserDto;
 import org.circuisim.web.requestRecord.SchemeCreateRequest;
 import org.circuisim.web.requestRecord.SetPermissionsRequest;
 import org.circuisim.web.responseRecord.GetUsersPermissionsResponse;
+import org.circuisim.web.responseRecord.UserPermissionResponse;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -153,11 +155,36 @@ public class SchemeServiceImpl implements SchemeService {
         save(scheme);
     }
 
+    @Override
+    public List<UserPermissionResponse> getAllUsersPermissionsBySchemeId(String username, Long id) {
+        var scheme = getById(id);
+        var users = scheme.getViewers();
+        var list = createUserResponseListWithPermissionVIEW(users);
+        list.addAll(createUserResponseListWithPermissionEDIT(scheme.getRedactors()));
+        return list;
+    }
+
     private boolean checkAccessSchemeForUser(Scheme scheme, User user) {
         return scheme.isEmbedded() ||
                 scheme.getRedactors().contains(user) ||
                 scheme.getViewers().contains(user) ||
                 scheme.getAuthor().equals(user);
+    }
+
+    private List<UserPermissionResponse> createUserResponseListWithPermissionEDIT(Set<User> list) {
+        List<UserPermissionResponse> userPermissionResponses = new ArrayList<>();
+        for (var user : list) {
+            userPermissionResponses.add(new UserPermissionResponse(user.getId(), user.getUsername(), user.getName(), Permission.EDIT));
+        }
+        return userPermissionResponses;
+    }
+
+    private List<UserPermissionResponse> createUserResponseListWithPermissionVIEW(Set<User> list) {
+        List<UserPermissionResponse> userPermissionResponses = new ArrayList<>();
+        for (var user : list) {
+            userPermissionResponses.add(new UserPermissionResponse(user.getId(), user.getUsername(), user.getName(), Permission.VIEW));
+        }
+        return userPermissionResponses;
     }
 
 
