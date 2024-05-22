@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateScheme } from "@/shared/api";
 import { ElectricalComponentWithID } from "@/shared/simulation";
-import { componentToDTO } from "./transform";
 import { getSchemeByIDQueryOptions } from "./get-scheme";
+import { componentToDTO } from "./transform";
 
 export function useUpdateSchemeMutation() {
   const queryClient = useQueryClient();

@@ -10,7 +10,6 @@ export function SignUpPage({ redirect }: { redirect: string | undefined }) {
   const navigate = useNavigate({});
   const { mutate, isPending, isError, error } = useSignUpByEmailMutation();
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     mutate(values, {
       onSuccess: () => {
         void navigate({ to: redirect ?? "/schemes" });

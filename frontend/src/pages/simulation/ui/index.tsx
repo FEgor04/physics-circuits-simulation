@@ -1,3 +1,4 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { RotateCcw } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -10,7 +11,7 @@ import { DeleteComponentProvider } from "@/features/delete-component";
 import { GetMeasurementProvider } from "@/features/measurment";
 import { SelectComponentProvider, SelectComponentState } from "@/features/select-component";
 import { UpdateComponentProvider } from "@/features/update-component";
-import { Scheme, useUpdateSchemeMutation } from "@/entities/scheme";
+import { Scheme, getSchemeByIDQueryOptions, useUpdateSchemeMutation } from "@/entities/scheme";
 import { schemaErrors } from "@/shared/simulation/errors";
 import { Button } from "@/shared/ui/button";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
@@ -22,7 +23,11 @@ type Props = {
   scheme: Scheme;
 };
 
-export function Simulation({ mode, setMode, scheme }: Props) {
+export function Simulation({ mode, setMode, scheme: initialScheme }: Props) {
+  const { data: scheme } = useSuspenseQuery({
+    ...getSchemeByIDQueryOptions(initialScheme.id),
+    initialData: initialScheme,
+  });
   const {
     components,
     onAddComponent,
@@ -58,7 +63,6 @@ export function Simulation({ mode, setMode, scheme }: Props) {
         selected={selected}
         onSelect={(selected) => {
           setSelected((oldSelected) => {
-            console.log("New selected is", selected);
             if (selected?.type == "point" && oldSelected?.type == "point") {
               onAddComponent({ _type: "wire", a: oldSelected.point, b: selected.point });
               return undefined;
