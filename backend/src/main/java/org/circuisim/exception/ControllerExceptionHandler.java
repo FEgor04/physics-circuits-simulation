@@ -52,7 +52,7 @@ public class ControllerExceptionHandler {
     }
 
     @ExceptionHandler(value = {BadCredentialsException.class, io.jsonwebtoken.security.SignatureException.class,
-            MalformedJwtException.class, ExpiredJwtException.class, io.jsonwebtoken.security.WeakKeyException.class})
+            MalformedJwtException.class, ExpiredJwtException.class})
     public ResponseEntity<ErrorMessage> badCredentialsException(Exception ex, WebRequest request) {
         ErrorMessage message = new ErrorMessage(HttpStatus.UNAUTHORIZED.value(), new Date(), UNAUTHORIZED_EXCEPTION, ex.getMessage());
 

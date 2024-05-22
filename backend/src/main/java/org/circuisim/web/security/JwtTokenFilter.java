@@ -28,7 +28,8 @@ public class JwtTokenFilter extends GenericFilterBean {
         String bearerToken = httpRequest.getHeader("Authorization");
         if (httpRequest.getServletPath().contains("login") || httpRequest.getServletPath().contains("register")
                 || httpRequest.getServletPath().contains("swagger") || httpRequest.getServletPath().contains("docs")
-                || httpRequest.getServletPath().contains("h2") || httpRequest.getServletPath().contains("auth")) {
+                || httpRequest.getServletPath().contains("h2") || httpRequest.getServletPath().contains("auth")
+                || httpRequest.getServletPath().contains("refresh")) {
             logger.info("Request to /login or /register. Passing it on without checking JWT");
             filterChain.doFilter(servletRequest, servletResponse);
             return;
@@ -48,7 +49,7 @@ public class JwtTokenFilter extends GenericFilterBean {
                 httpResponse.getWriter().println("No JWT token");
                 return;
             }
-        } catch (io.jsonwebtoken.security.SignatureException | MalformedJwtException | ExpiredJwtException | WeakKeyException e) {
+        } catch (io.jsonwebtoken.security.SignatureException | MalformedJwtException | ExpiredJwtException e) {
             var httpResponse = (HttpServletResponse) servletResponse;
             httpResponse.setStatus(401);
             httpResponse.getWriter().println("Invalid JWT token");
