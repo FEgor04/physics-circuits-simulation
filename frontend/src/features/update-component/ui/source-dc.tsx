@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { WithID, SourceDC } from "@/shared/simulation";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/shared/ui/form";
@@ -30,6 +31,7 @@ export function UpdateSourceDC({ defaultValue }: Props) {
 
   function onSubmit(values: z.infer<typeof schema>) {
     onUpdate({ ...defaultValue, ...values });
+    toast.success("Источник сохранен!");
   }
 
   return (

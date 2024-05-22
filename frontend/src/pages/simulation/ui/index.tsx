@@ -82,10 +82,21 @@ export function Simulation({ mode, setMode, scheme: initialScheme }: Props) {
                       {mode == "editing" && <ComponentChooseBar />}
                       <Button
                         onClick={() => {
-                          mutate({
-                            ...scheme,
-                            components,
-                          });
+                          const toastId = toast.loading("Сохраняем схему...");
+                          mutate(
+                            {
+                              ...scheme,
+                              components,
+                            },
+                            {
+                              onSuccess: () => {
+                                toast.success("Схема успешно сохранена", { id: toastId });
+                              },
+                              onError: (err) => {
+                                toast.error("Ошибка! " + err.message, { id: toastId });
+                              },
+                            },
+                          );
                         }}
                         disabled={isPending}
                       >
