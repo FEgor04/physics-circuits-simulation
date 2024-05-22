@@ -59,7 +59,7 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<ErrorMessage>(message, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(value = {IllegalStateException.class})
+    @ExceptionHandler(value = {IllegalStateException.class,AuthorPermissionsConflictException.class})
     public ResponseEntity<ErrorMessage> illegalStateExceptionHandler(Exception ex, WebRequest request) {
         ErrorMessage message = new ErrorMessage(HttpStatus.CONFLICT.value(), new Date(), request.getDescription(false), ex.getMessage());
 

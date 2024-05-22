@@ -6,11 +6,13 @@ import org.circuisim.domain.Permission;
 import org.circuisim.domain.User;
 import org.circuisim.domain.simulation.Scheme;
 import org.circuisim.exception.AccessDeniedException;
+import org.circuisim.exception.AuthorPermissionsConflictException;
 import org.circuisim.exception.ResourceNotFoundException;
 import org.circuisim.repository.SchemeRepository;
 import org.circuisim.service.SchemeService;
 import org.circuisim.service.UserService;
 import org.circuisim.web.dto.UserDto;
+import org.circuisim.web.requestRecord.DeletePermissionsRequest;
 import org.circuisim.web.requestRecord.SchemeCreateRequest;
 import org.circuisim.web.requestRecord.SetPermissionsRequest;
 import org.circuisim.web.responseRecord.GetUsersPermissionsResponse;
@@ -37,9 +39,6 @@ public class SchemeServiceImpl implements SchemeService {
         var scheme = new Scheme();
         scheme.setName(schemeRequest.name());
         scheme.setAuthor(userService.getByEmail(userDetails.getUsername()));
-        Set<User> set = new HashSet<>();
-        set.add(scheme.getAuthor());
-        scheme.setRedactors(set);
         scheme = this.save(scheme);
         return scheme;
     }
@@ -74,47 +73,40 @@ public class SchemeServiceImpl implements SchemeService {
 
     @Override
     public void addPermission(Long schemeId, List<SetPermissionsRequest> requests) {
+
         var scheme = getById(schemeId);
+        checkAuthorSchemePermissionAdd(scheme, requests);
+        Set<User> schemeViewUsers = new HashSet<>();
+        Set<User> schemeRedactorsUsers = new HashSet<>();
         for (var request : requests) {
             var permission = request.permission();
-            Set<User> schemeUsers;
-            if (permission.equals(Permission.EDIT)) {
-                schemeUsers = scheme.getRedactors();
-            } else {
-                schemeUsers = scheme.getViewers();
-            }
+
             var user = userService.getByEmail(request.username());
-            schemeUsers.add(user);
+
             if (permission.equals(Permission.EDIT)) {
-                scheme.setRedactors(schemeUsers);
+                schemeRedactorsUsers.add(user);
             } else {
-                scheme.setViewers(schemeUsers);
+                schemeViewUsers.add(user);
             }
         }
+        scheme.setViewers(schemeViewUsers);
+        scheme.setRedactors(schemeRedactorsUsers);
         save(scheme);
     }
 
+
     @Override
-    public void removePermission(Long schemeId, List<SetPermissionsRequest> requests) {
-        Set<User> schemeUsers;
+    public void removePermission(Long schemeId, DeletePermissionsRequest requests) {
         var scheme = getById(schemeId);
-        for (var request : requests) {
-            var permission = request.permission();
-            if (permission.equals(Permission.EDIT)) {
-                schemeUsers = scheme.getRedactors();
-            } else {
-                schemeUsers = scheme.getViewers();
-            }
-            var user = userService.getByEmail(request.username());
-            schemeUsers.remove(user);
-
-
-            if (permission.equals(Permission.EDIT)) {
-                scheme.setRedactors(schemeUsers);
-            } else {
-                scheme.setViewers(schemeUsers);
-            }
+        checkAuthorSchemePermissionDelete(scheme, requests);
+        Set<User> schemeViewUsers = scheme.getViewers();
+        Set<User> schemeRedactorsUsers = scheme.getRedactors();
+        for (var request : requests.usernames()) {
+            var user = userService.getByEmail(request);
+            removePermissionForUser(user, schemeRedactorsUsers, schemeViewUsers);
         }
+        scheme.setRedactors(schemeRedactorsUsers);
+        scheme.setViewers(schemeViewUsers);
         save(scheme);
     }
 
@@ -185,6 +177,27 @@ public class SchemeServiceImpl implements SchemeService {
             userPermissionResponses.add(new UserPermissionResponse(user.getId(), user.getUsername(), user.getName(), Permission.VIEW));
         }
         return userPermissionResponses;
+    }
+
+    public void removePermissionForUser(User user, Set<User> schemeRedactorsUsers, Set<User> schemeViewUsers) {
+        schemeViewUsers.remove(user);
+        schemeRedactorsUsers.remove(user);
+    }
+
+    private void checkAuthorSchemePermissionAdd(Scheme scheme, List<SetPermissionsRequest> requests) {
+        for (var request : requests) {
+            if (request.username().equals(scheme.getAuthor().getUsername())) {
+                throw new AuthorPermissionsConflictException("You cannot change your access!");
+            }
+        }
+    }
+
+    private void checkAuthorSchemePermissionDelete(Scheme scheme, DeletePermissionsRequest requests) {
+        for (var request : requests.usernames()) {
+            if (request.equals(scheme.getAuthor().getUsername())) {
+                throw new AuthorPermissionsConflictException("You cannot change your access!");
+            }
+        }
     }
 
 
