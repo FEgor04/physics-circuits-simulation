@@ -12,8 +12,8 @@ export function SchemeCard({
   preview: React.PropsWithChildren["children"];
 }) {
   return (
-    <Card className="border-4 border-black">
-      <div className="h-80 border-b-2 border-black">
+    <Card>
+      <div className="h-80">
         <Link to="/schemes/$scheme" params={{ scheme: String(scheme.id) }} search={{ mode: "editing" }}>
           {preview}
         </Link>
