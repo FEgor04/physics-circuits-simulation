@@ -45,7 +45,7 @@ function Component() {
             src={sample}
           />
         </div>
-        <div className="grid grid-cols-3 gap-4 md:gap-8">
+        <div className="grid grid-cols-3 gap-4 md:gap-8 mt-16">
           <Card>
             <CardHeader>
               <CardTitle>Создавайте схемы</CardTitle>
