@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Delete } from "lucide-react";
+import { Delete, TreePalm } from "lucide-react";
 import React from "react";
 import { getMeQueryOptions } from "@/entities/principal";
 import { SchemeID } from "@/entities/scheme";
@@ -45,11 +45,16 @@ function Permissions({ schemeId }: Props) {
   });
   return (
     <div>
-      <h6>Права пользователей</h6>
+      <h6 className="text-sm font-medium">Права пользователей</h6>
       <div>
         {permissions.map((it) => (
           <PermissionItem schemeId={schemeId} key={it.user.id} permission={it} />
         ))}
+        {permissions.length == 0 && (
+          <p className="flex w-full flex-row items-center justify-center space-x-2 py-4 text-sm">
+            <span>Тут пока пусто</span>
+          </p>
+        )}
       </div>
     </div>
   );
