@@ -74,7 +74,7 @@ export function SVGRenderer<T extends ElectricalComponentWithID>({ component, sr
         data-dragging={isDragging}
         className="filter-primary data-[dragging=true]:opacity-50"
       >
-        <image x={0} y={0} width={48} href={abstractMeasurer} />
+        <image x={0} y={0} width={svgSize} href={abstractMeasurer} />
         <text
           id="dynamicText"
           x={"50%"}
