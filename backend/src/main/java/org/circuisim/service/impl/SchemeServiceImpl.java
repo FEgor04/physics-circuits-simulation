@@ -6,7 +6,7 @@ import org.circuisim.domain.Permission;
 import org.circuisim.domain.User;
 import org.circuisim.domain.simulation.Scheme;
 import org.circuisim.exception.AccessDeniedException;
-import org.circuisim.exception.ConflictException;
+import org.circuisim.exception.AuthorPermissionsConflictException;
 import org.circuisim.exception.ResourceNotFoundException;
 import org.circuisim.repository.SchemeRepository;
 import org.circuisim.service.SchemeService;
@@ -192,7 +192,7 @@ public class SchemeServiceImpl implements SchemeService {
     private void checkAuthorSchemePermissionAdd(Scheme scheme, List<SetPermissionsRequest> requests) {
         for (var request : requests) {
             if (request.username().equals(scheme.getAuthor().getUsername())) {
-                throw new ConflictException("You cannot change your access!");
+                throw new AuthorPermissionsConflictException("You cannot change your access!");
             }
         }
     }
@@ -200,7 +200,7 @@ public class SchemeServiceImpl implements SchemeService {
     private void checkAuthorSchemePermissionDelete(Scheme scheme, List<DeletePermissionsRequest> requests) {
         for (var request : requests) {
             if (request.username().equals(scheme.getAuthor().getUsername())) {
-                throw new ConflictException("You cannot change your access!");
+                throw new AuthorPermissionsConflictException("You cannot change your access!");
             }
         }
     }
