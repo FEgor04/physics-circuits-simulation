@@ -6,6 +6,7 @@
  * OpenAPI spec version: 1.0.0
  */
 import type {
+  GetAllUsersPermissions,
   GetUserResponse,
   GetUsersPermissionsResponse,
   JwtResponse,
@@ -43,6 +44,10 @@ export const updateScheme = (
 
 export const deleteSchemeById = (id: number, options?: SecondParameter<typeof customInstance>) => {
   return customInstance<string>({ url: `/api/schemes/${id}`, method: "DELETE" }, options);
+};
+
+export const getAllUsersPermissionsBySchemeId = (id: number, options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<GetAllUsersPermissions>({ url: `/api/schemes/${id}/permissions`, method: "GET" }, options);
 };
 
 export const setPermissionsByIdScheme = (
@@ -166,6 +171,9 @@ export const getAllUsersBySchemeId = (id: number, options?: SecondParameter<type
 export type GetSchemeByIdResult = NonNullable<Awaited<ReturnType<typeof getSchemeById>>>;
 export type UpdateSchemeResult = NonNullable<Awaited<ReturnType<typeof updateScheme>>>;
 export type DeleteSchemeByIdResult = NonNullable<Awaited<ReturnType<typeof deleteSchemeById>>>;
+export type GetAllUsersPermissionsBySchemeIdResult = NonNullable<
+  Awaited<ReturnType<typeof getAllUsersPermissionsBySchemeId>>
+>;
 export type SetPermissionsByIdSchemeResult = NonNullable<Awaited<ReturnType<typeof setPermissionsByIdScheme>>>;
 export type DeletePermissionsByIdSchemeResult = NonNullable<Awaited<ReturnType<typeof deletePermissionsByIdScheme>>>;
 export type GetAllSchemesResult = NonNullable<Awaited<ReturnType<typeof getAllSchemes>>>;
