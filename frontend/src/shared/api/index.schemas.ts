@@ -5,6 +5,39 @@
  * Sample API of the Physics project engine
  * OpenAPI spec version: 1.0.0
  */
+/**
+ * User permission
+ */
+export type UserPermissionResponsePermission =
+  (typeof UserPermissionResponsePermission)[keyof typeof UserPermissionResponsePermission];
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const UserPermissionResponsePermission = {
+  EDIT: "EDIT",
+  VIEW: "VIEW",
+} as const;
+
+/**
+ * Response for getting user details
+ */
+export interface UserPermissionResponse {
+  /** User email */
+  readonly email: string;
+  /** User ID */
+  readonly id: number;
+  /** User name */
+  readonly name: string;
+  /** User permission */
+  readonly permission: UserPermissionResponsePermission;
+}
+
+/**
+ * Response for getting user permissions
+ */
+export interface GetAllUsersPermissions {
+  permissions?: UserPermissionResponse[];
+}
+
 export type GetUsersPermissionsResponsePermission =
   (typeof GetUsersPermissionsResponsePermission)[keyof typeof GetUsersPermissionsResponsePermission];
 
@@ -47,16 +80,6 @@ export interface SignUpAdminRequest {
 }
 
 /**
- * Error message model
- */
-export interface ErrorMessage {
-  description?: string;
-  message?: string;
-  statusCode?: number;
-  timestamp?: string;
-}
-
-/**
  * JWT Response
  */
 export interface JwtResponse {
@@ -70,6 +93,16 @@ export interface JwtResponse {
   refreshToken: string;
   /** Username */
   username: string;
+}
+
+/**
+ * Error message model
+ */
+export interface ErrorMessage {
+  description?: string;
+  message?: string;
+  statusCode?: number;
+  timestamp?: string;
 }
 
 export interface SignUpRequest {
@@ -89,6 +122,8 @@ export interface SchemeResponse {
   readonly components?: ElectricalComponentDto[];
   /** Scheme id */
   readonly id: number;
+  /** Embedded status */
+  readonly isEmbedded: boolean;
   /** Scheme id */
   readonly name: string;
 }
@@ -123,6 +158,8 @@ export interface SetPermissionsRequest {
  */
 export interface SchemeUpdateRequest {
   electricalComponentDto?: ElectricalComponentDto[];
+  /** Embedded status */
+  isEmbedded: boolean;
   /** Scheme new name */
   schemeName: string;
 }

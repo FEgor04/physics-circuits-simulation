@@ -58,7 +58,6 @@ export function useSimulationState(components: Array<ElectricalComponentWithID>)
       return { ...newComponent, id };
     },
     onUpdateComponent: function (component: ElectricalComponentWithID): void {
-      console.log("Update component", component);
       setSchema((old) => [...old.filter((it) => it.id != component.id), component]);
     },
     onUpdateComponentCoords: function (id: number, dx: number, dy: number): void {

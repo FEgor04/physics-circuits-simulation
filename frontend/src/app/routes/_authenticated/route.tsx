@@ -5,8 +5,7 @@ import { getMeQueryOptions } from "@/entities/principal";
 export const Route = createFileRoute("/_authenticated")({
   beforeLoad: async ({ context, location }) => {
     try {
-      const me = await context.queryClient.ensureQueryData(getMeQueryOptions());
-      console.log(me);
+      await context.queryClient.ensureQueryData(getMeQueryOptions());
     } catch (e) {
       if (e instanceof AxiosError && e.response?.status == 401) {
         throw redirect({

@@ -18,6 +18,7 @@ export function fromDTO(dto: SchemeResponse): Scheme {
     authorName: dto.authorName,
     name: dto.name,
     components: dto.components?.map(componentFromDTO) ?? [],
+    isEmbedded: dto.isEmbedded,
   };
 }
 

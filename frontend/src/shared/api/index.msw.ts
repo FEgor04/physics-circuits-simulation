@@ -7,7 +7,13 @@
  */
 import { faker } from "@faker-js/faker";
 import { HttpResponse, delay, http } from "msw";
-import type { GetUserResponse, GetUsersPermissionsResponse, JwtResponse, SchemeResponse } from "./index.schemas";
+import type {
+  GetAllUsersPermissions,
+  GetUserResponse,
+  GetUsersPermissionsResponse,
+  JwtResponse,
+  SchemeResponse,
+} from "./index.schemas";
 
 export const getGetSchemeByIdResponseMock = (overrideResponse: Partial<SchemeResponse> = {}): SchemeResponse => ({
   authorName: faker.word.sample(),
@@ -30,6 +36,7 @@ export const getGetSchemeByIdResponseMock = (overrideResponse: Partial<SchemeRes
     undefined,
   ]),
   id: faker.number.int({ min: undefined, max: undefined }),
+  isEmbedded: faker.datatype.boolean(),
   name: faker.word.sample(),
   ...overrideResponse,
 });
@@ -37,6 +44,21 @@ export const getGetSchemeByIdResponseMock = (overrideResponse: Partial<SchemeRes
 export const getUpdateSchemeResponseMock = (): string => faker.word.sample();
 
 export const getDeleteSchemeByIdResponseMock = (): string => faker.word.sample();
+
+export const getGetAllUsersPermissionsBySchemeIdResponseMock = (
+  overrideResponse: Partial<GetAllUsersPermissions> = {},
+): GetAllUsersPermissions => ({
+  permissions: faker.helpers.arrayElement([
+    Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
+      email: faker.word.sample(),
+      id: faker.number.int({ min: undefined, max: undefined }),
+      name: faker.word.sample(),
+      permission: faker.helpers.arrayElement(["EDIT", "VIEW"] as const),
+    })),
+    undefined,
+  ]),
+  ...overrideResponse,
+});
 
 export const getSetPermissionsByIdSchemeResponseMock = (): string => faker.word.sample();
 
@@ -71,6 +93,7 @@ export const getGetAllSchemesResponseMock = (): SchemeResponse[] =>
       undefined,
     ]),
     id: faker.number.int({ min: undefined, max: undefined }),
+    isEmbedded: faker.datatype.boolean(),
     name: faker.word.sample(),
   }));
 
@@ -95,6 +118,7 @@ export const getCreateNewSchemeResponseMock = (overrideResponse: Partial<SchemeR
     undefined,
   ]),
   id: faker.number.int({ min: undefined, max: undefined }),
+  isEmbedded: faker.datatype.boolean(),
   name: faker.word.sample(),
   ...overrideResponse,
 });
@@ -213,6 +237,31 @@ export const getDeleteSchemeByIdMockHandler = (
             ? overrideResponse(info)
             : overrideResponse
           : getDeleteSchemeByIdResponseMock(),
+      ),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  });
+};
+
+export const getGetAllUsersPermissionsBySchemeIdMockHandler = (
+  overrideResponse?:
+    | GetAllUsersPermissions
+    | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => GetAllUsersPermissions),
+) => {
+  return http.get("*/api/schemes/:id/permissions", async (info) => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse !== undefined
+          ? typeof overrideResponse === "function"
+            ? overrideResponse(info)
+            : overrideResponse
+          : getGetAllUsersPermissionsBySchemeIdResponseMock(),
       ),
       {
         status: 200,
@@ -482,6 +531,7 @@ export const getPhysicsCircuitsSimulationEngineMock = () => [
   getGetSchemeByIdMockHandler(),
   getUpdateSchemeMockHandler(),
   getDeleteSchemeByIdMockHandler(),
+  getGetAllUsersPermissionsBySchemeIdMockHandler(),
   getSetPermissionsByIdSchemeMockHandler(),
   getDeletePermissionsByIdSchemeMockHandler(),
   getGetAllSchemesMockHandler(),
