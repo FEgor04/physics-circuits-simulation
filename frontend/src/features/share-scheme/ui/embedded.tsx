@@ -1,5 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Clipboard } from "lucide-react";
+import { ClipboardCheck, ClipboardCopy } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { SchemeID, getSchemeByIDQueryOptions, useUpdateSchemeMutation } from "@/entities/scheme";
 import { Button } from "@/shared/ui/button";
@@ -18,26 +19,31 @@ export function EmbeddedModeForm({ schemeId }: { schemeId: SchemeID }) {
   }
 
   const link = `https://physics.efedorov.spb.su/embed/${data.id}`;
+  const [isCopied, setIsCopied] = useState(false);
 
   return (
-    <div className="space-y-4 p-4">
+    <div className="space-y-4">
       <div className="flex flex-row items-center justify-between">
         <Label>Вложенный режим</Label>
         <Switch checked={data.isEmbedded} onCheckedChange={toggleEmbedded} disabled={isPending} />
       </div>
       {data.isEmbedded && (
-        <div className="flex flex-row items-center justify-between">
-          <p className="font-xs text-muted-foreground">{link}</p>
+        <div className="flex flex-row items-center justify-between border bg-muted pl-2 text-muted-foreground">
+          <a href={link} className="text-sm underline">
+            {link}
+          </a>
           <Button
             size="icon"
             variant="ghost"
+            className="p-0"
             onClick={() => {
               navigator.clipboard.writeText(link).then(() => {
+                setIsCopied(true);
                 toast.info("Ссылка скопирована в буфер обмена");
               });
             }}
           >
-            <Clipboard />
+            {isCopied ? <ClipboardCheck /> : <ClipboardCopy />}
           </Button>
         </div>
       )}
