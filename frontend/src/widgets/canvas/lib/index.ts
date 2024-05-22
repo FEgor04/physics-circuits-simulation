@@ -1,5 +1,5 @@
-import { svgSize } from "@/shared/assets/circuit";
 import { Point } from "@/shared/simulation/types";
+import { getZoomCoefficient } from "@/shared/embed/utility.ts";
 
 /**
  * width, height:
@@ -18,7 +18,7 @@ export type CanvasParams = {
 };
 
 export function transformVirtualToCanvas(point: Point, params: CanvasParams): Point {
-  const coefficient = svgSize;
+  const coefficient = getZoomCoefficient();
   return {
     x: point.x * coefficient + params.width / 2,
     y: params.height / 2 - point.y * coefficient,

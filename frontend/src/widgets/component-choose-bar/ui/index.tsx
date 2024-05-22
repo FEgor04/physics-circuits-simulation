@@ -1,6 +1,5 @@
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
-import { svgSize } from "@/shared/assets/circuit";
 import ampermeterSvg from "@/shared/assets/circuit/ampermater.svg";
 import sourceSvg from "@/shared/assets/circuit/battery.svg";
 import sourceDCSvg from "@/shared/assets/circuit/DC_source.svg";
@@ -11,6 +10,7 @@ import { Ampermeter, ElectricalComponent, Source, Voltmeter } from "@/shared/sim
 import { Resistor, SourceDC } from "@/shared/simulation/types";
 import { ResizablePanel } from "@/shared/ui/resizable.tsx";
 import "./style.css";
+import { getZoomCoefficient } from "@/shared/embed/utility.ts";
 
 export function ComponentChooseBar() {
   return (
@@ -53,6 +53,7 @@ function Item<T extends ElectricalComponent>({
       _type: type,
     },
   });
+  const svgSize = getZoomCoefficient();
   const height = type == "resistor" ? svgSize / 2 : svgSize;
   return (
     <img

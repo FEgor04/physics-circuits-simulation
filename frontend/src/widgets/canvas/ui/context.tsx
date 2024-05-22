@@ -1,8 +1,8 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useContext, createContext } from "react";
-import { svgSize } from "@/shared/assets/circuit";
 import { Point } from "@/shared/simulation/types";
 import { CanvasParams, transformVirtualToCanvas } from "../lib";
+import { getZoomCoefficient } from "@/shared/embed/utility.ts";
 
 export type CanvasState = {
   canvasParams: CanvasParams;
@@ -29,6 +29,6 @@ export const useTransformVirtualToCanvas = () => {
 
 export const useCanvasGrid = () =>
   useCanvasContext(() => {
-    const coefficient = svgSize;
+    const coefficient = getZoomCoefficient();
     return coefficient;
   });

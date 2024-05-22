@@ -1,7 +1,6 @@
 import { Canvas } from "@/widgets/canvas";
+import { GetMeasurementProvider } from "@/features/measurment";
 import { SelectComponentProvider } from "@/features/select-component";
-import { ElectricalComponentWithID } from "@/shared/simulation";
-
 export function SimulationEmbedded() {
   const components: Array<ElectricalComponentWithID> = [
     {
@@ -15,12 +14,15 @@ export function SimulationEmbedded() {
 
   return (
     <SelectComponentProvider selected={undefined} onSelect={() => {}}>
-      <Canvas
-        components={components}
-        onUpdateComponentCoords={() => {}}
-        onAddComponent={() => {}}
-        onUpdateComponent={() => {}}
-      />
+      <GetMeasurementProvider getCurrentMeasurement={() => 0}>
+        <Canvas
+          components={components}
+          onUpdateComponentCoords={() => {}}
+          onAddComponent={() => {}}
+          onUpdateComponent={() => {}}
+        />
+      </GetMeasurementProvider>
     </SelectComponentProvider>
   );
 }
+import { ElectricalComponentWithID } from "@/shared/simulation";
