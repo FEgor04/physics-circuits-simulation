@@ -6,6 +6,7 @@ import org.circuisim.domain.Permission;
 import org.circuisim.domain.User;
 import org.circuisim.domain.simulation.Scheme;
 import org.circuisim.exception.AccessDeniedException;
+import org.circuisim.exception.ConflictException;
 import org.circuisim.exception.ResourceNotFoundException;
 import org.circuisim.repository.SchemeRepository;
 import org.circuisim.service.SchemeService;
@@ -75,7 +76,9 @@ public class SchemeServiceImpl implements SchemeService {
 
     @Override
     public void addPermission(Long schemeId, List<SetPermissionsRequest> requests) {
+
         var scheme = getById(schemeId);
+        checkAuthorSchemePermissionAdd(scheme, requests);
         Set<User> schemeViewUsers = scheme.getViewers();
         Set<User> schemeRedactorsUsers = scheme.getRedactors();
         for (var request : requests) {
@@ -95,9 +98,11 @@ public class SchemeServiceImpl implements SchemeService {
         save(scheme);
     }
 
+
     @Override
     public void removePermission(Long schemeId, List<DeletePermissionsRequest> requests) {
         var scheme = getById(schemeId);
+        checkAuthorSchemePermissionDelete(scheme, requests);
         Set<User> schemeViewUsers = scheme.getViewers();
         Set<User> schemeRedactorsUsers = scheme.getRedactors();
         for (var request : requests) {
@@ -179,8 +184,25 @@ public class SchemeServiceImpl implements SchemeService {
     }
 
     public void removePermissionForUser(User user, Set<User> schemeRedactorsUsers, Set<User> schemeViewUsers) {
+
         schemeViewUsers.remove(user);
         schemeRedactorsUsers.remove(user);
+    }
+
+    private void checkAuthorSchemePermissionAdd(Scheme scheme, List<SetPermissionsRequest> requests) {
+        for (var request : requests) {
+            if (request.username().equals(scheme.getAuthor().getUsername())) {
+                throw new ConflictException("You cannot change your access!");
+            }
+        }
+    }
+
+    private void checkAuthorSchemePermissionDelete(Scheme scheme, List<DeletePermissionsRequest> requests) {
+        for (var request : requests) {
+            if (request.username().equals(scheme.getAuthor().getUsername())) {
+                throw new ConflictException("You cannot change your access!");
+            }
+        }
     }
 
 
