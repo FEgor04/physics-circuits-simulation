@@ -1,6 +1,6 @@
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
-import { svgSize } from "@/shared/assets/circuit";
+import { useGetZoomCoefficient } from "@/features/zoom-provider";
 import ampermeterSvg from "@/shared/assets/circuit/ampermater.svg";
 import sourceSvg from "@/shared/assets/circuit/battery.svg";
 import sourceDCSvg from "@/shared/assets/circuit/DC_source.svg";
@@ -53,6 +53,7 @@ function Item<T extends ElectricalComponent>({
       _type: type,
     },
   });
+  const svgSize = useGetZoomCoefficient();
   const height = type == "resistor" ? svgSize / 2 : svgSize;
   return (
     <img

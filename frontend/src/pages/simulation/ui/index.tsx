@@ -11,6 +11,7 @@ import { DeleteComponentProvider } from "@/features/delete-component";
 import { GetMeasurementProvider } from "@/features/measurment";
 import { SelectComponentProvider, SelectComponentState } from "@/features/select-component";
 import { UpdateComponentProvider } from "@/features/update-component";
+import { GetZoomCoefficientProvider } from "@/features/zoom-provider";
 import { Scheme, getSchemeByIDQueryOptions, useUpdateSchemeMutation } from "@/entities/scheme";
 import { schemaErrors } from "@/shared/simulation/errors";
 import { Button } from "@/shared/ui/button";
@@ -71,56 +72,58 @@ export function Simulation({ mode, setMode, scheme: initialScheme }: Props) {
           });
         }}
       >
-        <DeleteComponentProvider onDeleteComponent={onDeleteComponent}>
-          <AddComponentContextProvider onAddComponent={(c) => onAddComponent(c).id}>
-            <UpdateComponentProvider onUpdateComponent={onUpdateComponent}>
-              <GetMeasurementProvider getCurrentMeasurement={(id: number) => getMeasurementForComponent(id)}>
-                <ResizablePanelGroup direction="horizontal">
-                  <div className="space-y-8 border-r-4 bg-white p-4">
-                    {mode == "editing" && <ComponentChooseBar />}
-                    <Button
-                      onClick={() => {
-                        mutate({
-                          ...scheme,
-                          components,
-                        });
-                      }}
-                      disabled={isPending}
-                    >
-                      {isPending && <RotateCcw className="mr-2 size-4 animate-spin" />}
-                      Сохранить
-                    </Button>
-                  </div>
-                  <ResizableHandle />
-                  <CanvasPanel
-                    components={components}
-                    onAddComponent={onAddComponent}
-                    onUpdateComponent={onUpdateComponent}
-                    onUpdateComponentCoords={onUpdateComponentCoords}
+        <GetZoomCoefficientProvider zoomCoefficient={48}>
+          <DeleteComponentProvider onDeleteComponent={onDeleteComponent}>
+            <AddComponentContextProvider onAddComponent={(c) => onAddComponent(c).id}>
+              <UpdateComponentProvider onUpdateComponent={onUpdateComponent}>
+                <GetMeasurementProvider getCurrentMeasurement={(id: number) => getMeasurementForComponent(id)}>
+                  <ResizablePanelGroup direction="horizontal">
+                    <div className="space-y-8 border-r-4 bg-white p-4">
+                      {mode == "editing" && <ComponentChooseBar />}
+                      <Button
+                        onClick={() => {
+                          mutate({
+                            ...scheme,
+                            components,
+                          });
+                        }}
+                        disabled={isPending}
+                      >
+                        {isPending && <RotateCcw className="mr-2 size-4 animate-spin" />}
+                        Сохранить
+                      </Button>
+                    </div>
+                    <ResizableHandle />
+                    <CanvasPanel
+                      components={components}
+                      onAddComponent={onAddComponent}
+                      onUpdateComponent={onUpdateComponent}
+                      onUpdateComponentCoords={onUpdateComponentCoords}
+                    />
+                    {mode == "editing" ? (
+                      <>
+                        <ResizableHandle />
+                        <ComponentSettingsBar selectedComponent={selectedComponent} />
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                  </ResizablePanelGroup>
+                  <StateButton
+                    isSimulation={mode == "simulation"}
+                    onChange={() => {
+                      if (mode == "editing" && errors != undefined) {
+                        toast.error(`Ошибка! ${schemaErrors[errors]}`);
+                        return;
+                      }
+                      setMode(mode == "simulation" ? "editing" : "simulation");
+                    }}
                   />
-                  {mode == "editing" ? (
-                    <>
-                      <ResizableHandle />
-                      <ComponentSettingsBar selectedComponent={selectedComponent} />
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                </ResizablePanelGroup>
-                <StateButton
-                  isSimulation={mode == "simulation"}
-                  onChange={() => {
-                    if (mode == "editing" && errors != undefined) {
-                      toast.error(`Ошибка! ${schemaErrors[errors]}`);
-                      return;
-                    }
-                    setMode(mode == "simulation" ? "editing" : "simulation");
-                  }}
-                />
-              </GetMeasurementProvider>
-            </UpdateComponentProvider>
-          </AddComponentContextProvider>
-        </DeleteComponentProvider>
+                </GetMeasurementProvider>
+              </UpdateComponentProvider>
+            </AddComponentContextProvider>
+          </DeleteComponentProvider>
+        </GetZoomCoefficientProvider>
       </SelectComponentProvider>
     </div>
   );
