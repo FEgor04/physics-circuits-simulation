@@ -37,6 +37,13 @@ public class ElectricalComponentServiceImpl implements ElectricalComponentServic
         }
     }
 
+    @Override
+    public void deleteComponents(List<ElectricalComponentDto> components, Long schemeId) {
+        for (var component : components) {
+            repository.deleteById(new ElectricalComponentPK(component.getComponentId(), schemeId));
+        }
+    }
+
     private void createElectricalComponentFromDto(Long schemeId, ElectricalComponentDto electricalComponentDto) {
         var scheme = schemeService.getById(schemeId);
         var component = new ElectricalComponent();

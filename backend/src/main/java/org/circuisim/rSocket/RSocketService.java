@@ -32,7 +32,8 @@ public class RSocketService {
             case "updateComponentEvent":
                 UpdateComponentEvent updateComponentEvent = (UpdateComponentEvent) request.getEvent();
                 var scheme = schemeService.getById(request.getSchemeId());
-                electricalComponentService.updateComponents(updateComponentEvent.components, scheme.getName(), scheme.getId());
+                schemeService.updateSchemeName(scheme.getName(), scheme.getId());
+                electricalComponentService.updateComponents(updateComponentEvent.components, scheme.getId());
                 break;
             case "userConnectedEvent":
                 UserConnectedEvent userConnectedEvent = (UserConnectedEvent) request.getEvent();

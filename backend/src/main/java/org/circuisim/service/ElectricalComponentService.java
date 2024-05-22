@@ -13,4 +13,5 @@ public interface ElectricalComponentService {
 
     void updateComponents(List<ElectricalComponentDto> list, Long schemeId);
 
+    void deleteComponents(List<ElectricalComponentDto> components, Long schemeId);
 }
