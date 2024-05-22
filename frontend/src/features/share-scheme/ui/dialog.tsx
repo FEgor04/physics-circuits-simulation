@@ -8,6 +8,7 @@ import { Skeleton } from "@/shared/ui/skeleton";
 import { getSchemePermissionsQO } from "../api/get-permissions";
 import { PermissionsEntry } from "../model/permission";
 import { InviteUserForm } from "./form";
+import { Separator } from "@/shared/ui/separator";
 
 type Props = {
   open: boolean;
@@ -24,6 +25,7 @@ export function ShareDialog({ schemeId, ...props }: Props) {
         </DialogHeader>
         <React.Suspense fallback={<Skeleton className="h-16 w-full" />}>
           <Permissions schemeId={schemeId} {...props} />
+          <Separator orientation="horizontal" />
           <InviteUserForm schemeId={schemeId} />
         </React.Suspense>
       </DialogContent>
