@@ -1,5 +1,7 @@
 package org.circuisim.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.boot.json.JsonParseException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -24,8 +26,8 @@ public class ControllerExceptionHandler {
     private final String VALIDATION_EXCEPTION = "Validation exception";
     private final String INVALID_INPUT_EXCEPTION = "Invalid input";
     private final String NOT_FOUND_EXCEPTION = "Not found";
-    private final String UNAUTHORIZED_EXCEPTION = "Invalid password or email!";
-    private final String ACCESS_DENIED = "You do not have permission to delete!";
+    private final String UNAUTHORIZED_EXCEPTION = "Invalid password, email or JWT token!";
+    private final String ACCESS_DENIED = "You do not have permission!";
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorMessage> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
@@ -49,14 +51,15 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<ErrorMessage>(message, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = {BadCredentialsException.class})
+    @ExceptionHandler(value = {BadCredentialsException.class, io.jsonwebtoken.security.SignatureException.class,
+            MalformedJwtException.class, ExpiredJwtException.class})
     public ResponseEntity<ErrorMessage> badCredentialsException(Exception ex, WebRequest request) {
         ErrorMessage message = new ErrorMessage(HttpStatus.UNAUTHORIZED.value(), new Date(), UNAUTHORIZED_EXCEPTION, ex.getMessage());
 
         return new ResponseEntity<ErrorMessage>(message, HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler(value = {IllegalStateException.class})
+    @ExceptionHandler(value = {IllegalStateException.class,AuthorPermissionsConflictException.class})
     public ResponseEntity<ErrorMessage> illegalStateExceptionHandler(Exception ex, WebRequest request) {
         ErrorMessage message = new ErrorMessage(HttpStatus.CONFLICT.value(), new Date(), request.getDescription(false), ex.getMessage());
 
@@ -69,6 +72,7 @@ public class ControllerExceptionHandler {
 
         return new ResponseEntity<ErrorMessage>(message, HttpStatus.FORBIDDEN);
     }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorMessage> globalExceptionHandler(Exception ex, WebRequest request) {

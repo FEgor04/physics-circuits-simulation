@@ -33,6 +33,7 @@ describe("Update component coords", () => {
         x: 2,
         y: 1,
       },
+      internalResistance: 5,
       electromotiveForce: 10,
     };
     const actual = updateComponentCoords(before, 10, -10);

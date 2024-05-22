@@ -11,7 +11,6 @@ public interface ElectricalComponentService {
 
     void save(ElectricalComponent electricalComponent);
 
-    void updateComponents(List<ElectricalComponentDto> electricalComponentDto, String schemeName, Long schemeId);
+    void updateComponents(List<ElectricalComponentDto> list, Long schemeId);
 
-    void deleteComponents(List<ElectricalComponentDto> components, Long schemeId);
 }

@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    username: sa
+    password: sa
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+  rsocket:
+    server:
+      port: 7000
+
+security:
+  jwt:
+    secret: bnF0amhvaWFob2loanE5ZXdqADlyZWlvZmppZmppc2RqZnBkamZwb3Nkam9zZGZramZvcGpzACD
+    access: 1000
+    refresh: 10000
+  admin:
+    data:
+      key: adminKey
+      adminUsername: adminUsername
+      adminPassword: admin
+      adminName: adminName

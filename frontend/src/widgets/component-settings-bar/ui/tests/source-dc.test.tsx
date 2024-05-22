@@ -13,6 +13,7 @@ const setup = () => {
     plus: { x: 0, y: 0 },
     minus: { x: 1, y: 0 },
     electromotiveForce: 100,
+    internalResistance: 5,
   };
   const user = userEvent.setup();
   const onDeleteComponent = vi.fn().mockImplementation(console.log);
