@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateScheme } from "@/shared/api";
 import { ElectricalComponentWithID } from "@/shared/simulation";
 import { componentToDTO } from "./transform";
+import { getSchemeByIDQueryOptions } from "./get-scheme";
 
 export function useUpdateSchemeMutation() {
   const queryClient = useQueryClient();
@@ -19,8 +20,9 @@ export function useUpdateSchemeMutation() {
       });
       return data.data;
     },
-    onSuccess: () => {
+    onSuccess: (_, args) => {
       queryClient.invalidateQueries({ queryKey: ["schemes"] });
+      queryClient.invalidateQueries(getSchemeByIDQueryOptions(args.id));
     },
   });
 }
