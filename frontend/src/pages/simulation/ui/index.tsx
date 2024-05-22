@@ -4,10 +4,10 @@ import { toast } from "sonner";
 import { CanvasPanel } from "@/widgets/canvas";
 import { ComponentChooseBar } from "@/widgets/component-choose-bar";
 import { ComponentSettingsBar } from "@/widgets/component-settings-bar";
-import { ComponentValuesBar } from "@/widgets/component-values-bar";
 import { StateButton } from "@/widgets/state-button";
 import { AddComponentContextProvider } from "@/features/add-component";
 import { DeleteComponentProvider } from "@/features/delete-component";
+import { GetMeasurementProvider } from "@/features/measurment";
 import { SelectComponentProvider, SelectComponentState } from "@/features/select-component";
 import { UpdateComponentProvider } from "@/features/update-component";
 import { Scheme, useUpdateSchemeMutation } from "@/entities/scheme";
@@ -43,19 +43,14 @@ export function Simulation({ mode, setMode, scheme }: Props) {
     return undefined;
   }, [selected, components]);
 
-  const selectedComponentMeasurements = useMemo(() => {
-    if (
-      selectedComponent == undefined ||
-      (selectedComponent._type != "ampermeter" && selectedComponent._type != "voltmeter")
-    ) {
-      return undefined;
-    }
-    const measurements = simulator.getMeasurementsForComponent(selectedComponent.id);
-    if (selectedComponent._type == "ampermeter") {
+  const getMeasurementForComponent = (id: number) => {
+    if (mode == "editing") return undefined;
+    const measurements = simulator.getMeasurementsForComponent(id);
+    if (measurements.currency != 0) {
       return measurements.currency;
     }
     return measurements.voltage;
-  }, [selectedComponent, simulator]);
+  };
 
   return (
     <div className="h-screen">
@@ -75,55 +70,50 @@ export function Simulation({ mode, setMode, scheme }: Props) {
         <DeleteComponentProvider onDeleteComponent={onDeleteComponent}>
           <AddComponentContextProvider onAddComponent={(c) => onAddComponent(c).id}>
             <UpdateComponentProvider onUpdateComponent={onUpdateComponent}>
-              <ResizablePanelGroup direction="horizontal">
-                <div className="space-y-8 border-r-4 bg-white p-4">
+              <GetMeasurementProvider getCurrentMeasurement={(id: number) => getMeasurementForComponent(id)}>
+                <ResizablePanelGroup direction="horizontal">
+                  <div className="space-y-8 border-r-4 bg-white p-4">
+                    {mode == "editing" && <ComponentChooseBar />}
+                    <Button
+                      onClick={() => {
+                        mutate({
+                          ...scheme,
+                          components,
+                        });
+                      }}
+                      disabled={isPending}
+                    >
+                      {isPending && <RotateCcw className="mr-2 size-4 animate-spin" />}
+                      Сохранить
+                    </Button>
+                  </div>
+                  <ResizableHandle />
+                  <CanvasPanel
+                    components={components}
+                    onAddComponent={onAddComponent}
+                    onUpdateComponent={onUpdateComponent}
+                    onUpdateComponentCoords={onUpdateComponentCoords}
+                  />
                   {mode == "editing" ? (
-                    <ComponentChooseBar />
+                    <>
+                      <ResizableHandle />
+                      <ComponentSettingsBar selectedComponent={selectedComponent} />
+                    </>
                   ) : (
-                    (selectedComponent?._type == "ampermeter" || selectedComponent?._type == "voltmeter") &&
-                    selectedComponentMeasurements !== undefined && (
-                      <ComponentValuesBar type={selectedComponent._type} measurements={selectedComponentMeasurements} />
-                    )
+                    <></>
                   )}
-                  <Button
-                    onClick={() => {
-                      mutate({
-                        ...scheme,
-                        components,
-                      });
-                    }}
-                    disabled={isPending}
-                  >
-                    {isPending && <RotateCcw className="mr-2 size-4 animate-spin" />}
-                    Сохранить
-                  </Button>
-                </div>
-                <ResizableHandle />
-                <CanvasPanel
-                  components={components}
-                  onAddComponent={onAddComponent}
-                  onUpdateComponent={onUpdateComponent}
-                  onUpdateComponentCoords={onUpdateComponentCoords}
+                </ResizablePanelGroup>
+                <StateButton
+                  isSimulation={mode == "simulation"}
+                  onChange={() => {
+                    if (mode == "editing" && errors != undefined) {
+                      toast.error(`Ошибка! ${schemaErrors[errors]}`);
+                      return;
+                    }
+                    setMode(mode == "simulation" ? "editing" : "simulation");
+                  }}
                 />
-                {mode == "editing" ? (
-                  <>
-                    <ResizableHandle />
-                    <ComponentSettingsBar selectedComponent={selectedComponent} />
-                  </>
-                ) : (
-                  <></>
-                )}
-              </ResizablePanelGroup>
-              <StateButton
-                isSimulation={mode == "simulation"}
-                onChange={() => {
-                  if (mode == "editing" && errors != undefined) {
-                    toast.error(`Ошибка! ${schemaErrors[errors]}`);
-                    return;
-                  }
-                  setMode(mode == "simulation" ? "editing" : "simulation");
-                }}
-              />
+              </GetMeasurementProvider>
             </UpdateComponentProvider>
           </AddComponentContextProvider>
         </DeleteComponentProvider>
