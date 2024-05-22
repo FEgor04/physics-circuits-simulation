@@ -6,10 +6,12 @@
  * OpenAPI spec version: 1.0.0
  */
 import type {
+  DeletePermissionsRequest,
   GetAllUsersPermissions,
   GetUserResponse,
   GetUsersPermissionsResponse,
   JwtResponse,
+  Message,
   SchemeCreateRequest,
   SchemeResponse,
   SchemeUpdateRequest,
@@ -68,7 +70,7 @@ export const setPermissionsByIdScheme = (
 
 export const deletePermissionsByIdScheme = (
   id: number,
-  setPermissionsRequest: SetPermissionsRequest[],
+  deletePermissionsRequest: DeletePermissionsRequest,
   options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<string>(
@@ -76,7 +78,7 @@ export const deletePermissionsByIdScheme = (
       url: `/api/schemes/${id}/permissions`,
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      data: setPermissionsRequest,
+      data: deletePermissionsRequest,
     },
     options,
   );
@@ -168,6 +170,10 @@ export const getAllUsersBySchemeId = (id: number, options?: SecondParameter<type
   return customInstance<GetUsersPermissionsResponse[]>({ url: `/api/schemes/${id}/users`, method: "GET" }, options);
 };
 
+export const doNothing = (options?: SecondParameter<typeof customInstance>) => {
+  return customInstance<Message>({ url: `/api/rSocket`, method: "GET" }, options);
+};
+
 export type GetSchemeByIdResult = NonNullable<Awaited<ReturnType<typeof getSchemeById>>>;
 export type UpdateSchemeResult = NonNullable<Awaited<ReturnType<typeof updateScheme>>>;
 export type DeleteSchemeByIdResult = NonNullable<Awaited<ReturnType<typeof deleteSchemeById>>>;
@@ -185,3 +191,4 @@ export type LoginResult = NonNullable<Awaited<ReturnType<typeof login>>>;
 export type GetUserByIdResult = NonNullable<Awaited<ReturnType<typeof getUserById>>>;
 export type GetCurrentUserResult = NonNullable<Awaited<ReturnType<typeof getCurrentUser>>>;
 export type GetAllUsersBySchemeIdResult = NonNullable<Awaited<ReturnType<typeof getAllUsersBySchemeId>>>;
+export type DoNothingResult = NonNullable<Awaited<ReturnType<typeof doNothing>>>;
