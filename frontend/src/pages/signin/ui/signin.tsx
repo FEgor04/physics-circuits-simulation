@@ -10,7 +10,7 @@ export function SignInPage({ redirect }: { redirect: string | undefined }) {
 
   return (
     <div className="mt-8">
-      <Card className="mx-auto max-w-md border-4 border-black">
+      <Card className="mx-auto max-w-md">
         <CardHeader>
           <CardTitle>Вход в систему</CardTitle>
         </CardHeader>
