@@ -39,9 +39,6 @@ public class SchemeServiceImpl implements SchemeService {
         var scheme = new Scheme();
         scheme.setName(schemeRequest.name());
         scheme.setAuthor(userService.getByEmail(userDetails.getUsername()));
-        Set<User> set = new HashSet<>();
-        set.add(scheme.getAuthor());
-        scheme.setRedactors(set);
         scheme = this.save(scheme);
         return scheme;
     }
@@ -79,13 +76,12 @@ public class SchemeServiceImpl implements SchemeService {
 
         var scheme = getById(schemeId);
         checkAuthorSchemePermissionAdd(scheme, requests);
-        Set<User> schemeViewUsers = scheme.getViewers();
-        Set<User> schemeRedactorsUsers = scheme.getRedactors();
+        Set<User> schemeViewUsers = new HashSet<>();
+        Set<User> schemeRedactorsUsers = new HashSet<>();
         for (var request : requests) {
             var permission = request.permission();
 
             var user = userService.getByEmail(request.username());
-            removePermissionForUser(user, schemeRedactorsUsers, schemeViewUsers);
 
             if (permission.equals(Permission.EDIT)) {
                 schemeRedactorsUsers.add(user);
