@@ -1,6 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 import { SchemeID } from "@/entities/scheme";
 import { Button } from "@/shared/ui/button";
@@ -10,9 +12,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { getSchemePermissionsQO } from "../api/get-permissions";
 import { useUpdateSchemePermissionsMutation } from "../api/set-permissions";
 import { PermissionType } from "../model/permission";
-import { toast } from "sonner";
-import { AXIOS_INSTANCE } from "@/shared/api/instance";
-import { AxiosError, isAxiosError } from "axios";
 
 const schema = z.object({
   email: z.string().email(),
@@ -20,7 +19,7 @@ const schema = z.object({
 });
 
 type Props = {
-  schemaId: SchemeID;
+  schemeId: SchemeID;
 };
 
 export function InviteUserForm({ schemeId }: Props) {
@@ -69,6 +68,7 @@ export function InviteUserForm({ schemeId }: Props) {
 
   return (
     <Form {...form}>
+      <h6>Пригласить пользователя</h6>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}

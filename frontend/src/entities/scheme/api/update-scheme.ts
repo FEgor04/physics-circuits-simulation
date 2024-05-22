@@ -6,10 +6,16 @@ import { componentToDTO } from "./transform";
 export function useUpdateSchemeMutation() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (params: { id: number; components: Array<ElectricalComponentWithID>; name: string }) => {
+    mutationFn: async (params: {
+      id: number;
+      components: Array<ElectricalComponentWithID>;
+      name: string;
+      isEmbedded: boolean;
+    }) => {
       const data = await updateScheme(params.id, {
         schemeName: params.name,
         electricalComponentDto: params.components.map(componentToDTO),
+        isEmbedded: params.isEmbedded,
       });
       return data.data;
     },

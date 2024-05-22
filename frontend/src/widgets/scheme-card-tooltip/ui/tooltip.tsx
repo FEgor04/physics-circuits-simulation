@@ -2,11 +2,11 @@ import { Dialog } from "@radix-ui/react-dialog";
 import { MoreHorizontal, PencilLine, Share2, Trash } from "lucide-react";
 import { useState } from "react";
 import { RenameSchemeDialogContent } from "@/features/rename-scheme";
+import { ShareSchemeDialog } from "@/features/share-scheme";
 import { Scheme } from "@/entities/scheme";
 import { useDeleteSchemeMutation } from "@/entities/scheme";
 import { Button } from "@/shared/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/ui/dropdown-menu";
-import { ShareSchemeDialog } from "@/features/share-scheme";
 
 type Props = {
   scheme: Scheme;
@@ -30,7 +30,7 @@ export function SchemeCardTooltip(props: Props) {
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={() => setRenameOpen(true)}>
             <PencilLine className="mr-2 size-4" />
-            Переименовать{" "}
+            Переименовать
           </DropdownMenuItem>
           <DeleteSchemeItem {...props} />
         </DropdownMenuContent>
@@ -38,7 +38,9 @@ export function SchemeCardTooltip(props: Props) {
       <Dialog open={isRenameOpen} onOpenChange={setRenameOpen}>
         <RenameSchemeDialogContent {...props} />
       </Dialog>
-      <ShareSchemeDialog open={isShareOpen} setOpen={setShareOpen} schemeId={props.scheme.id} />
+      <Dialog open={isShareOpen} onOpenChange={setShareOpen}>
+        <ShareSchemeDialog schemeId={props.scheme.id} />
+      </Dialog>
     </>
   );
 }
