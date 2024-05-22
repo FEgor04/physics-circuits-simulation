@@ -32,4 +32,14 @@ class AuthControllerTest {
     void refreshBadJwtTokenShouldReturnUnauthorized() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/refresh").content("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdXBlcm1hbkBnbWFpbC5jb20iLCJpZCI6MSwicm9sZXMiOlsiQURNSU4iXSwiaWF0IjoxNzE2MzA5NjExLCJleHAiOjE3MTYzMTMyMTF9.E8BMSqQBU2qjlZXTaMu47iV0pTEXEcX2_NzqQQO7dODLNWOcfFxdgJEuvVZxia3Kr2lgOuxr8fg_y0A4r9x1e111w").header("Authorization", "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdXBlcm1hbkBnbWFpbC5jb20iLCJpZCI6MSwicm9sZXMiOlsiQURNSU4iXSwiaWF0IjoxNzE2MzA5NjExLCJleHAiOjE3MTYzMTMyMTF9.E8BMSqQBU2qjlZXTaMu47iV0pTEXEcX2_NzqQQO7dODLNWOcfFxdgJEuvVZxia3Kr2lgOuxr8fg_y0A4r9x1e111w")).andDo(print()).andExpect(status().is(401));
     }
+
+    @Test
+    void refreshBadJwtRefreshTokenShouldReturnUnauthorized() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/refresh").content("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdXBlcm1hbkBnbWFpbC5jb20iLCJpZCI6MSwicm9sZXMiOlsiQURNSU4iXSwiaWF0IjoxNzE2MzA5NjExLCJleHAiOjE3MTYzMTMyMTF9.E8BMSqQBU2qjlZXTaMu47iV0pTEXEcX2_NzqQQO7dODLNWOcfFxdgJEuvVZxia3Kr2lgOuxr8fg_y0A4r9x1e123w").header("Authorization", "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdXBlcm1hbkBnbWFpbC5jb20iLCJpZCI6MSwicm9sZXMiOlsiQURNSU4iXSwiaWF0IjoxNzE2MzA5NjExLCJleHAiOjE3MTYzMTMyMTF9.E8BMSqQBU2qjlZXTaMu47iV0pTEXEcX2_NzqQQO7dODLNWOcfFxdgJEuvVZxia3Kr2lgOuxr8fg_y0A4r9x1e111w")).andDo(print()).andExpect(status().is(401));
+    }
+
+    @Test
+    void refreshWithoutAccessTokenShouldReturnUnauthorized() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/refresh").content("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdXBlcm1hbkBnbWFpbC5jb20iLCJpZCI6MSwicm9sZXMiOlsiQURNSU4iXSwiaWF0IjoxNzE2MzA5NjExLCJleHAiOjE3MTYzMTMyMTF9.E8BMSqQBU2qjlZXTaMu47iV0pTEXEcX2_NzqQQO7dODLNWOcfFxdgJEuvVZxia3Kr2lgOuxr8fg_y0A4r9x1e123w")).andDo(print()).andExpect(status().is(401));
+    }
 }
