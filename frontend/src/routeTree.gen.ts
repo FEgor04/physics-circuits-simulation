@@ -13,9 +13,9 @@
 import { Route as rootRoute } from "./app/routes/__root";
 import { Route as SignupImport } from "./app/routes/signup";
 import { Route as SigninImport } from "./app/routes/signin";
-import { Route as EmbedImport } from "./app/routes/embed";
 import { Route as AuthenticatedRouteImport } from "./app/routes/_authenticated/route";
 import { Route as IndexImport } from "./app/routes/index";
+import { Route as EmbedSchemeImport } from "./app/routes/embed.$scheme";
 import { Route as AuthenticatedSchemesIndexImport } from "./app/routes/_authenticated/schemes.index";
 import { Route as AuthenticatedSchemesSchemeImport } from "./app/routes/_authenticated/schemes.$scheme";
 
@@ -31,11 +31,6 @@ const SigninRoute = SigninImport.update({
   getParentRoute: () => rootRoute,
 } as any);
 
-const EmbedRoute = EmbedImport.update({
-  path: "/embed",
-  getParentRoute: () => rootRoute,
-} as any);
-
 const AuthenticatedRouteRoute = AuthenticatedRouteImport.update({
   id: "/_authenticated",
   getParentRoute: () => rootRoute,
@@ -43,6 +38,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteImport.update({
 
 const IndexRoute = IndexImport.update({
   path: "/",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const EmbedSchemeRoute = EmbedSchemeImport.update({
+  path: "/embed/$scheme",
   getParentRoute: () => rootRoute,
 } as any);
 
@@ -76,13 +76,6 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthenticatedRouteImport;
       parentRoute: typeof rootRoute;
     };
-    "/embed": {
-      id: "/embed";
-      path: "/embed";
-      fullPath: "/embed";
-      preLoaderRoute: typeof EmbedImport;
-      parentRoute: typeof rootRoute;
-    };
     "/signin": {
       id: "/signin";
       path: "/signin";
@@ -95,6 +88,13 @@ declare module "@tanstack/react-router" {
       path: "/signup";
       fullPath: "/signup";
       preLoaderRoute: typeof SignupImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/embed/$scheme": {
+      id: "/embed/$scheme";
+      path: "/embed/$scheme";
+      fullPath: "/embed/$scheme";
+      preLoaderRoute: typeof EmbedSchemeImport;
       parentRoute: typeof rootRoute;
     };
     "/_authenticated/schemes/$scheme": {
@@ -122,9 +122,9 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedSchemesSchemeRoute,
     AuthenticatedSchemesIndexRoute,
   }),
-  EmbedRoute,
   SigninRoute,
   SignupRoute,
+  EmbedSchemeRoute,
 });
 
 /* prettier-ignore-end */
