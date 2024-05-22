@@ -3,14 +3,10 @@ import { SimpleSimulator } from "../simulator";
 import { ElectricalComponentWithID } from "../types";
 
 test("voltmetr test", () => {
-  const expectedVoltage: number = 9.157566302652105;
-  const actualNodes = [
-    { x: 0, y: 5 },
-    { x: 4, y: 0 },
-    { x: 6, y: 5 },
-  ];
-
-  const acrSolve: number[] = [-9.157566302652105, 0.29641185647425866, 0];
+  const expectedVoltage = {
+    currency: 0,
+    voltage: 9.157566302652105,
+  };
 
   const components: ElectricalComponentWithID[] = [
     { _type: "wire", a: { x: 0, y: 1 }, b: { x: 0, y: 0 }, id: 0 },
@@ -69,9 +65,7 @@ test("voltmetr test", () => {
   ];
 
   const simulator = new SimpleSimulator(components);
-  const newComponents = simulator.rebuildShema(simulator.findBranches());
-  const newSimulator = new SimpleSimulator(newComponents);
-  const voltage = newSimulator.getVoltageForVoltmetr(27, newSimulator.findBranches(), actualNodes, acrSolve);
+  const voltage = simulator.getMeasurementsForComponent(27);
 
   expect(voltage).toStrictEqual(expectedVoltage);
 });

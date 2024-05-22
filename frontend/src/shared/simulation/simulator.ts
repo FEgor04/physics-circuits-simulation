@@ -417,6 +417,10 @@ export class SimpleSimulator implements CircuitSimulator {
         }
       }
     }
+    if (deletedNodesA.length == 0) {
+      return this.components;
+    }
+
     // a <- b
     for (let i = 0; i < deletedNodesA.length; i++) {
       for (let j = 0; j < tempBranches.length; j++) {
@@ -526,8 +530,13 @@ export class SimpleSimulator implements CircuitSimulator {
   public getMeasurementsForComponent(id: ElectricalComponentID): { currency: number; voltage: number } {
     let currency = 0;
     let voltage = 0;
-    const nodes = this.findNodes();
-    const branches = this.findBranches();
+    let nodes = this.findNodes();
+    let branches = this.findBranches();
+    if (nodes.length > 2) {
+      this.components = this.rebuildShema(branches);
+    }
+    nodes = this.findNodes();
+    branches = this.findBranches();
     const gMatrix = this.buildGMatrix(nodes, branches);
     const currentList = this.findCurrentForce(nodes, branches);
     const tensionList = this.solveSLAE(gMatrix, currentList);
