@@ -1,10 +1,12 @@
 package org.circuisim.web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.circuisim.service.AuthService;
 import org.circuisim.service.UserService;
 import org.circuisim.web.dto.UserDto;
 import org.circuisim.web.dto.auth.JwtRequest;
+import org.circuisim.web.requestRecord.SignUpRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -30,6 +32,8 @@ class AuthControllerTest {
     private UserService userService;
     @Autowired
     private AuthService authService;
+    @Autowired
+    private ObjectMapper mapper;
 
     @Test
     void refreshNoJwtTokenShouldReturnUnauthorized() throws Exception {
@@ -52,9 +56,17 @@ class AuthControllerTest {
 
     @Test
     void refreshWithoutAccessTokenWithGoodRefreshTokenShouldReturnOk() throws Exception {
-        var user = this.userService.create(new UserDto(null, "Test", "test1@test.com", "123456"));
+        var user = this.userService.create(new UserDto(null, "Test", "test5@test.com", "123456"));
         var token = this.authService.login(new JwtRequest(user.getEmail(), "123456"));
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/refresh").content(token.getRefreshToken()))
+                .andDo(print()).andExpect(status().isOk());
+    }
+
+    @Test
+    void registerShouldBeAvailableWithoutJWT() throws Exception {
+        var request = new SignUpRequest("newuser@gmail.com", "password", "New User");
+        var json = mapper.writeValueAsString(request);
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/register").content(json).contentType("application/json"))
                 .andDo(print()).andExpect(status().isOk());
     }
 }

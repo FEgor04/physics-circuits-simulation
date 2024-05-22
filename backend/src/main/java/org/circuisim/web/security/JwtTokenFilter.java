@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class JwtTokenFilter extends GenericFilterBean {
 
-    private final String[] allowedPaths = {"login", "refresh", "docs", "swagger", "h2", "auth", "refresh"};
+    private final String[] allowedPaths = {"docs", "swagger", "h2", "auth"};
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
