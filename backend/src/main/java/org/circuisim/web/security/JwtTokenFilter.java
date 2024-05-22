@@ -2,6 +2,7 @@ package org.circuisim.web.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.WeakKeyException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -47,7 +48,7 @@ public class JwtTokenFilter extends GenericFilterBean {
                 httpResponse.getWriter().println("No JWT token");
                 return;
             }
-        } catch (io.jsonwebtoken.security.SignatureException | MalformedJwtException | ExpiredJwtException e) {
+        } catch (io.jsonwebtoken.security.SignatureException | MalformedJwtException | ExpiredJwtException | WeakKeyException e) {
             var httpResponse = (HttpServletResponse) servletResponse;
             httpResponse.setStatus(401);
             httpResponse.getWriter().println("Invalid JWT token");
