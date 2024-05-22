@@ -2,11 +2,11 @@ import "./style.css";
 import { useDraggable } from "@dnd-kit/core";
 import { useGetMeasurement } from "@/features/measurment";
 import { useOnSelectComponent, useSelectedComponent } from "@/features/select-component";
+import { useGetZoomCoefficient } from "@/features/zoom-provider";
 import abstractMeasurer from "@/shared/assets/circuit/voltmeter_template.svg";
 import { assertNever } from "@/shared/lib/types";
 import { ElectricalComponent, ElectricalComponentWithID, Point } from "@/shared/simulation/types.ts";
 import { useTransformVirtualToCanvas } from "./context";
-import { useGetZoomCoefficient } from "@/features/zoom-provider";
 
 function getFirstPoint(component: ElectricalComponent): Point {
   if (component._type == "sourceDC" || component._type == "source") {

@@ -1,6 +1,8 @@
 import { Canvas } from "@/widgets/canvas";
 import { GetMeasurementProvider } from "@/features/measurment";
 import { SelectComponentProvider } from "@/features/select-component";
+import { GetZoomCoefficientProvider } from "@/features/zoom-provider";
+import { ElectricalComponentWithID } from "@/shared/simulation";
 export function SimulationEmbedded() {
   const components: Array<ElectricalComponentWithID> = [
     {
@@ -27,5 +29,3 @@ export function SimulationEmbedded() {
     </GetZoomCoefficientProvider>
   );
 }
-import { GetZoomCoefficientProvider } from "@/features/zoom-provider";
-import { ElectricalComponentWithID } from "@/shared/simulation";

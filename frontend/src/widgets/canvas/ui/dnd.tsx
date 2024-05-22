@@ -1,7 +1,7 @@
 import { DndContext, MouseSensor, TouchSensor, useSensor } from "@dnd-kit/core";
 import { createSnapModifier } from "@dnd-kit/modifiers";
-import { ElectricalComponentID } from "@/shared/simulation";
 import { useGetZoomCoefficient } from "@/features/zoom-provider";
+import { ElectricalComponentID } from "@/shared/simulation";
 
 type Props = React.PropsWithChildren<{
   onUpdateComponentCoords: (id: ElectricalComponentID, deltaX: number, deltaY: number) => void;
