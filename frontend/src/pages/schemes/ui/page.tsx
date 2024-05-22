@@ -5,6 +5,7 @@ import { CreateSchemeButton } from "@/features/create-scheme";
 import { SelectComponentProvider } from "@/features/select-component";
 import { Scheme, getSchemesQueryOptions } from "@/entities/scheme";
 import { SchemeCard } from "@/entities/scheme";
+import { GetMeasurementProvider } from "@/features/measurment";
 
 type Props = {
   schemes: Array<Scheme>;
@@ -26,12 +27,14 @@ export function SchemesPage({ schemes: initialSchemes }: Props) {
             tooltip={<SchemeCardTooltip scheme={scheme} />}
             preview={
               <SelectComponentProvider selected={undefined} onSelect={() => {}}>
-                <Canvas
-                  components={scheme.components}
-                  onUpdateComponentCoords={() => {}}
-                  onAddComponent={() => {}}
-                  onUpdateComponent={() => {}}
-                />
+                <GetMeasurementProvider getCurrentMeasurement={() => undefined}>
+                  <Canvas
+                    components={scheme.components}
+                    onUpdateComponentCoords={() => {}}
+                    onAddComponent={() => {}}
+                    onUpdateComponent={() => {}}
+                  />
+                </GetMeasurementProvider>
               </SelectComponentProvider>
             }
           />
