@@ -3,6 +3,7 @@ package org.circuisim.service;
 import org.circuisim.domain.User;
 import org.circuisim.domain.simulation.Scheme;
 import org.circuisim.web.dto.UserDto;
+import org.circuisim.web.requestRecord.DeletePermissionsRequest;
 import org.circuisim.web.requestRecord.SchemeCreateRequest;
 import org.circuisim.web.requestRecord.SetPermissionsRequest;
 import org.circuisim.web.responseRecord.GetUsersPermissionsResponse;
@@ -24,7 +25,7 @@ public interface SchemeService {
 
     void addPermission(Long schemeId, List<SetPermissionsRequest> request);
 
-    void removePermission(Long schemeId, List<SetPermissionsRequest> request);
+    void removePermission(Long schemeId, List<DeletePermissionsRequest> requests);
 
     List<GetUsersPermissionsResponse> getUsersById(Long id);
 

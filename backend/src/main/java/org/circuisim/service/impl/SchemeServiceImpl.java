@@ -11,6 +11,7 @@ import org.circuisim.repository.SchemeRepository;
 import org.circuisim.service.SchemeService;
 import org.circuisim.service.UserService;
 import org.circuisim.web.dto.UserDto;
+import org.circuisim.web.requestRecord.DeletePermissionsRequest;
 import org.circuisim.web.requestRecord.SchemeCreateRequest;
 import org.circuisim.web.requestRecord.SetPermissionsRequest;
 import org.circuisim.web.responseRecord.GetUsersPermissionsResponse;
@@ -75,46 +76,36 @@ public class SchemeServiceImpl implements SchemeService {
     @Override
     public void addPermission(Long schemeId, List<SetPermissionsRequest> requests) {
         var scheme = getById(schemeId);
+        Set<User> schemeViewUsers = scheme.getViewers();
+        Set<User> schemeRedactorsUsers = scheme.getRedactors();
         for (var request : requests) {
             var permission = request.permission();
-            Set<User> schemeUsers;
-            if (permission.equals(Permission.EDIT)) {
-                schemeUsers = scheme.getRedactors();
-            } else {
-                schemeUsers = scheme.getViewers();
-            }
+
             var user = userService.getByEmail(request.username());
-            schemeUsers.add(user);
+            removePermissionForUser(user, schemeRedactorsUsers, schemeViewUsers);
+
             if (permission.equals(Permission.EDIT)) {
-                scheme.setRedactors(schemeUsers);
+                schemeRedactorsUsers.add(user);
             } else {
-                scheme.setViewers(schemeUsers);
+                schemeViewUsers.add(user);
             }
+            scheme.setViewers(schemeViewUsers);
+            scheme.setRedactors(schemeRedactorsUsers);
         }
         save(scheme);
     }
 
     @Override
-    public void removePermission(Long schemeId, List<SetPermissionsRequest> requests) {
-        Set<User> schemeUsers;
+    public void removePermission(Long schemeId, List<DeletePermissionsRequest> requests) {
         var scheme = getById(schemeId);
+        Set<User> schemeViewUsers = scheme.getViewers();
+        Set<User> schemeRedactorsUsers = scheme.getRedactors();
         for (var request : requests) {
-            var permission = request.permission();
-            if (permission.equals(Permission.EDIT)) {
-                schemeUsers = scheme.getRedactors();
-            } else {
-                schemeUsers = scheme.getViewers();
-            }
             var user = userService.getByEmail(request.username());
-            schemeUsers.remove(user);
-
-
-            if (permission.equals(Permission.EDIT)) {
-                scheme.setRedactors(schemeUsers);
-            } else {
-                scheme.setViewers(schemeUsers);
-            }
+            removePermissionForUser(user, schemeRedactorsUsers, schemeViewUsers);
         }
+        scheme.setRedactors(schemeRedactorsUsers);
+        scheme.setViewers(schemeViewUsers);
         save(scheme);
     }
 
@@ -185,6 +176,11 @@ public class SchemeServiceImpl implements SchemeService {
             userPermissionResponses.add(new UserPermissionResponse(user.getId(), user.getUsername(), user.getName(), Permission.VIEW));
         }
         return userPermissionResponses;
+    }
+
+    public void removePermissionForUser(User user, Set<User> schemeRedactorsUsers, Set<User> schemeViewUsers) {
+        schemeViewUsers.remove(user);
+        schemeRedactorsUsers.remove(user);
     }
 
 

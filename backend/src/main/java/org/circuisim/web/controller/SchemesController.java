@@ -9,6 +9,7 @@ import org.circuisim.service.ElectricalComponentService;
 import org.circuisim.service.SchemeService;
 import org.circuisim.web.mapper.SchemeMapper;
 import org.circuisim.web.mapper.UserMapper;
+import org.circuisim.web.requestRecord.DeletePermissionsRequest;
 import org.circuisim.web.requestRecord.SchemeCreateRequest;
 import org.circuisim.web.requestRecord.SchemeUpdateRequest;
 import org.circuisim.web.requestRecord.SetPermissionsRequest;
@@ -94,7 +95,7 @@ public class SchemesController {
     @DeleteMapping("{id}/permissions")
     public ResponseEntity<String> deletePermissionsByIdScheme(
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
-            @RequestBody List<SetPermissionsRequest> request
+            @RequestBody List<DeletePermissionsRequest> request
     ) {
         schemeService.removePermission(id, request);
         return ResponseEntity.noContent().build();
