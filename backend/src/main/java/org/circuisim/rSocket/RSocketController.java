@@ -46,31 +46,38 @@ public class RSocketController {
 
     @ConnectMapping("shell-client")
     void connectShellClientAndAskForTelemetry(RSocketRequester requester,
-                                              @Payload ConnectRequest connectRequest) {
+                                              @Payload Message message) {
 
         requester.rsocket()
                 .onClose()
                 .doFirst(() -> {
                     // Add all new clients to a client list
-                    log.info("Client: {} CONNECTED.", connectRequest.getUserId());
-                    clients.getOrDefault(connectRequest.getSchemeId(), new ArrayList<>()).add(requester);
+                    log.info("Client: {} CONNECTED.", message.getUserId());
+
+                    if (clients.containsKey(message.getSchemeId())) {
+                        clients.get(message.getSchemeId()).add(requester);
+                    } else {
+                        List<RSocketRequester> list = new ArrayList<>();
+                        list.add(requester);
+                        clients.put(message.getSchemeId(), list);
+                    }
                 })
                 .doOnError(error -> {
                     // Warn when channels are closed by clients
-                    log.warn("Channel to client {} CLOSED", connectRequest.getUserId());
+                    log.warn("Channel to client {} CLOSED", message.getUserId());
                 })
                 .doFinally(consumer -> {
                     // Remove disconnected clients from the client list
-                    clients.getOrDefault(connectRequest.getSchemeId(), new ArrayList<>()).remove(requester);
-                    log.info("Client {} DISCONNECTED", connectRequest.getUserId());
+                    clients.getOrDefault(message.getSchemeId(), new ArrayList<>()).remove(requester);
+                    log.info("Client {} DISCONNECTED", message.getUserId());
                 })
                 .subscribe();
 
-//        // Callback to client, confirming connection
+        // Callback to client, confirming connection
 //        requester.route("client-status")
 //                .data("OPEN")
 //                .retrieveFlux(String.class)
-//                .doOnNext(s -> log.info("Client: {} Free Memory: {}.", connectRequest.getUserId(), s))
+//                .doOnNext(s -> log.info("Client: {} Free Memory: {}.", message.getUserId(), s))
 //                .subscribe();
     }
 
