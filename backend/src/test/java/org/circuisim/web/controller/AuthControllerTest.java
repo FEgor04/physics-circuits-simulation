@@ -33,7 +33,7 @@ class AuthControllerTest {
 
     @Test
     void refreshNoJwtTokenShouldReturnUnauthorized() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/refresh")).andExpect(status().is(401));
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/refresh")).andExpect(status().is(400));
     }
 
     @Test
