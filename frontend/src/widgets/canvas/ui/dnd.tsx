@@ -1,7 +1,7 @@
 import { DndContext, MouseSensor, TouchSensor, useSensor } from "@dnd-kit/core";
 import { createSnapModifier } from "@dnd-kit/modifiers";
 import { ElectricalComponentID } from "@/shared/simulation";
-import { useCanvasGrid } from "./context";
+import { useGetZoomCoefficient } from "@/features/zoom-provider";
 
 type Props = React.PropsWithChildren<{
   onUpdateComponentCoords: (id: ElectricalComponentID, deltaX: number, deltaY: number) => void;
@@ -19,7 +19,7 @@ export function CanvasDndContext({ children, onUpdateComponentCoords }: Props) {
     },
   });
 
-  const gridSize = useCanvasGrid();
+  const gridSize = useGetZoomCoefficient();
   return (
     <DndContext
       modifiers={[createSnapModifier(gridSize)]}

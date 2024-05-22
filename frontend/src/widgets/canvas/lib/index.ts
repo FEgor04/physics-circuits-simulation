@@ -1,5 +1,5 @@
+import { zoomCoefficientValues } from "@/features/zoom-provider";
 import { Point } from "@/shared/simulation/types";
-import { getZoomCoefficient } from "@/shared/embed/utility.ts";
 
 /**
  * width, height:
@@ -15,12 +15,12 @@ export type CanvasParams = {
   height: number;
   schemeWidth: number;
   schemeHeight: number;
+  zoomCoefficient: zoomCoefficientValues;
 };
 
 export function transformVirtualToCanvas(point: Point, params: CanvasParams): Point {
-  const coefficient = getZoomCoefficient();
   return {
-    x: point.x * coefficient + params.width / 2,
-    y: params.height / 2 - point.y * coefficient,
+    x: point.x * params.zoomCoefficient + params.width / 2,
+    y: params.height / 2 - point.y * params.zoomCoefficient,
   };
 }

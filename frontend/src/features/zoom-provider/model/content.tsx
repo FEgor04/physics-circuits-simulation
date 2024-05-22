@@ -1,7 +1,9 @@
 import { createContext, useContext } from "react";
 
+export type zoomCoefficientValues = 24 | 48;
+
 export type State = {
-  zoomCoefficient: 24 | 48;
+  zoomCoefficient: zoomCoefficientValues;
 };
 
 export const context = createContext<State | null>(null);

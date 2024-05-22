@@ -6,7 +6,7 @@ import abstractMeasurer from "@/shared/assets/circuit/voltmeter_template.svg";
 import { assertNever } from "@/shared/lib/types";
 import { ElectricalComponent, ElectricalComponentWithID, Point } from "@/shared/simulation/types.ts";
 import { useTransformVirtualToCanvas } from "./context";
-import { getZoomCoefficient } from "@/shared/embed/utility.ts";
+import { useGetZoomCoefficient } from "@/features/zoom-provider";
 
 function getFirstPoint(component: ElectricalComponent): Point {
   if (component._type == "sourceDC" || component._type == "source") {
@@ -51,7 +51,7 @@ export function SVGRenderer<T extends ElectricalComponentWithID>({ component, sr
   const isSelected = selectedComponent?.type == "component" && selectedComponent.id == component.id;
   const aTransformed = transformer(getFirstPoint(component));
   const bTransformed = transformer(getSecondPoint(component));
-  const svgSize = getZoomCoefficient();
+  const svgSize = useGetZoomCoefficient();
   const height = component._type == "resistor" ? svgSize / 2 : svgSize;
   const getMeasurement = useGetMeasurement();
   if (

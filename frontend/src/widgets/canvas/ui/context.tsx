@@ -2,7 +2,6 @@
 import { useContext, createContext } from "react";
 import { Point } from "@/shared/simulation/types";
 import { CanvasParams, transformVirtualToCanvas } from "../lib";
-import { getZoomCoefficient } from "@/shared/embed/utility.ts";
 
 export type CanvasState = {
   canvasParams: CanvasParams;
@@ -26,9 +25,3 @@ export const useTransformVirtualToCanvas = () => {
     return transformVirtualToCanvas(point, canvasParams);
   };
 };
-
-export const useCanvasGrid = () =>
-  useCanvasContext(() => {
-    const coefficient = getZoomCoefficient();
-    return coefficient;
-  });

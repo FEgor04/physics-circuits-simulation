@@ -4,6 +4,7 @@ import { SchemeCardTooltip } from "@/widgets/scheme-card-tooltip";
 import { CreateSchemeButton } from "@/features/create-scheme";
 import { GetMeasurementProvider } from "@/features/measurment";
 import { SelectComponentProvider } from "@/features/select-component";
+import { GetZoomCoefficientProvider } from "@/features/zoom-provider";
 import { Scheme, getSchemesQueryOptions } from "@/entities/scheme";
 import { SchemeCard } from "@/entities/scheme";
 
@@ -26,16 +27,18 @@ export function SchemesPage({ schemes: initialSchemes }: Props) {
             scheme={scheme}
             tooltip={<SchemeCardTooltip scheme={scheme} />}
             preview={
-              <GetMeasurementProvider getCurrentMeasurement={() => undefined}>
-                <SelectComponentProvider selected={undefined} onSelect={() => {}}>
-                  <Canvas
-                    components={scheme.components}
-                    onUpdateComponentCoords={() => {}}
-                    onAddComponent={() => {}}
-                    onUpdateComponent={() => {}}
-                  />
-                </SelectComponentProvider>
-              </GetMeasurementProvider>
+              <GetZoomCoefficientProvider zoomCoefficient={24}>
+                <GetMeasurementProvider getCurrentMeasurement={() => undefined}>
+                  <SelectComponentProvider selected={undefined} onSelect={() => {}}>
+                    <Canvas
+                      components={scheme.components}
+                      onUpdateComponentCoords={() => {}}
+                      onAddComponent={() => {}}
+                      onUpdateComponent={() => {}}
+                    />
+                  </SelectComponentProvider>
+                </GetMeasurementProvider>
+              </GetZoomCoefficientProvider>
             }
           />
         ))}

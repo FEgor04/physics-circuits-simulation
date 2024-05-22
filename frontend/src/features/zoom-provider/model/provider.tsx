@@ -1,10 +1,10 @@
 import "react";
-import { State, context as GetZoomCoefficientProvider } from "./content.tsx";
+import { State, context as GetZoomCoefficientContext } from "./content.tsx";
 
 type Props = React.PropsWithChildren<State>;
 
-export const GetMeasurementProvider: React.FC<Props> = ({ children, zoomCoefficient }) => {
+export const GetZoomCoefficientProvider: React.FC<Props> = ({ children, zoomCoefficient }) => {
   return (
-    <GetZoomCoefficientProvider.Provider value={{ zoomCoefficient }}>{children}</GetZoomCoefficientProvider.Provider>
+    <GetZoomCoefficientContext.Provider value={{ zoomCoefficient }}>{children}</GetZoomCoefficientContext.Provider>
   );
 };

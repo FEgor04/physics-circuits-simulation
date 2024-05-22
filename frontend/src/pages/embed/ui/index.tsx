@@ -13,16 +13,19 @@ export function SimulationEmbedded() {
   ];
 
   return (
-    <SelectComponentProvider selected={undefined} onSelect={() => {}}>
-      <GetMeasurementProvider getCurrentMeasurement={() => 0}>
-        <Canvas
-          components={components}
-          onUpdateComponentCoords={() => {}}
-          onAddComponent={() => {}}
-          onUpdateComponent={() => {}}
-        />
-      </GetMeasurementProvider>
-    </SelectComponentProvider>
+    <GetZoomCoefficientProvider zoomCoefficient={24}>
+      <SelectComponentProvider selected={undefined} onSelect={() => {}}>
+        <GetMeasurementProvider getCurrentMeasurement={() => 0}>
+          <Canvas
+            components={components}
+            onUpdateComponentCoords={() => {}}
+            onAddComponent={() => {}}
+            onUpdateComponent={() => {}}
+          />
+        </GetMeasurementProvider>
+      </SelectComponentProvider>
+    </GetZoomCoefficientProvider>
   );
 }
+import { GetZoomCoefficientProvider } from "@/features/zoom-provider";
 import { ElectricalComponentWithID } from "@/shared/simulation";

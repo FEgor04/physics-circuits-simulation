@@ -2,7 +2,6 @@ import "react";
 import { DndContext, DragEndEvent, Modifier, MouseSensor, TouchSensor, useSensor } from "@dnd-kit/core";
 import { snapCenterToCursor } from "@dnd-kit/modifiers";
 import { getEventCoordinates } from "@dnd-kit/utilities";
-import { getZoomCoefficient } from "@/shared/embed/utility.ts";
 import type { OmitBetter } from "@/shared/lib/types";
 import { ElectricalComponent, Point } from "@/shared/simulation/types";
 import { context as AddComponentContext, State } from "./context";
@@ -33,7 +32,8 @@ function componentAtCoords(
 export const AddComponentContextProvider: React.FC<Props> = ({ children, ...props }) => {
   const mouseSensor = useSensor(MouseSensor);
   const touchSensor = useSensor(TouchSensor);
-  const gridSize = getZoomCoefficient();
+  const gridSize = 48; // Fuck this shit idk how to provide same grid size everywhere
+  // But this provider will be used only in full opened canvas
   const snapToGrid: Modifier = ({ activatorEvent, over, draggingNodeRect, transform }) => {
     if (!over) return transform;
     if (!draggingNodeRect) return transform;
@@ -78,7 +78,7 @@ export const AddComponentContextProvider: React.FC<Props> = ({ children, ...prop
           }
           const { x, y } = getCoordsFromEvent(e)!;
           const rect = over.rect;
-          const zoom = getZoomCoefficient();
+          const zoom = gridSize;
 
           const xCanvas = x - rect.left;
           const yCanvas = y - rect.top;
