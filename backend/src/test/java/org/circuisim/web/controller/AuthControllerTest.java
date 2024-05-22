@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -25,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @RequiredArgsConstructor
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class AuthControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -56,7 +58,7 @@ class AuthControllerTest {
 
     @Test
     void refreshWithoutAccessTokenWithGoodRefreshTokenShouldReturnOk() throws Exception {
-        var user = this.userService.create(new UserDto(null, "Test", "test5@test.com", "123456"));
+        var user = this.userService.create(new UserDto(null, "Test", "test1@test.com", "123456"));
         var token = this.authService.login(new JwtRequest(user.getEmail(), "123456"));
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/refresh").content(token.getRefreshToken()))
                 .andDo(print()).andExpect(status().isOk());
