@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Clipboard, ClipboardCheck, ClipboardCopy } from "lucide-react";
+import { ClipboardCheck, ClipboardCopy } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { SchemeID, getSchemeByIDQueryOptions, useUpdateSchemeMutation } from "@/entities/scheme";
