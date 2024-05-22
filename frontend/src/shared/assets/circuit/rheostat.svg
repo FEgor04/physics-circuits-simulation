@@ -3,46 +3,23 @@
 
 <svg
    width="48"
-   height="22.707108"
+   height="26.018661"
    version="1.1"
    id="svg742"
-   sodipodi:docname="SVG_SOURCE.svg"
-   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
      id="defs742">
     <linearGradient
-       id="swatch2"
-       inkscape:swatch="solid">
+       id="swatch2">
       <stop
          style="stop-color:#ffffff;stop-opacity:0;"
          offset="0"
          id="stop2" />
     </linearGradient>
   </defs>
-  <sodipodi:namedview
-     id="namedview742"
-     pagecolor="#505050"
-     bordercolor="#eeeeee"
-     borderopacity="1"
-     inkscape:showpageshadow="0"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#505050"
-     inkscape:zoom="4.5446348"
-     inkscape:cx="59.630754"
-     inkscape:cy="1127.8134"
-     inkscape:window-width="1920"
-     inkscape:window-height="991"
-     inkscape:window-x="-9"
-     inkscape:window-y="-9"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="g182" />
   <g
-     transform="translate(-48,-571)"
+     transform="translate(205.92542,-553.48617)"
      style="font-family:Sans-Serif"
      stroke-width="2"
      stroke="#000000"
@@ -416,26 +393,25 @@
     </g>
     <g
        transform="translate(48,576)"
-       id="g57"
-       inkscape:export-filename="svgs\rheostat.svg"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       id="g57">
       <rect
          fill="#ffffff"
-         y="4"
-         x="12"
+         y="-13.893028"
+         x="-241.92542"
          height="8"
          width="24"
          id="rect55"
          style="fill:#ffffff;fill-opacity:0" />
       <path
-         d="M 15,17 34,-2"
-         id="path56" />
+         d="m -240.71134,2.7352654 20.70772,-22.3307644"
+         id="path56"
+         style="stroke-width:2.26357" />
       <path
-         d="m 29,-3 6,6 2,-8"
+         d="m -225.39652,-20.346683 5.99223,6.501442 1.99741,-8.668589"
          fill="#000000"
          stroke="none"
-         id="path57" />
+         id="path57"
+         style="stroke-width:2.08055" />
     </g>
     <g
        transform="translate(112,608)"
@@ -584,10 +560,7 @@
        id="text80">Potentiometer</text>
     <g
        transform="translate(112,720)"
-       id="g83"
-       inkscape:export-filename="svgs\capacitor.svg"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       id="g83">
       <path
          d="M 0,8 H 21"
          id="path80" />
@@ -776,10 +749,7 @@
        id="text117">Feed-through capacitor</text>
     <g
        transform="translate(112,864)"
-       id="g117"
-       inkscape:export-filename="svgs\inductor.svg"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       id="g117">
       <path
          d="m 0,8 h 8 a 4,5.3333333 0 0 1 8,0 4,5.3333333 0 0 1 8,0 4,5.3333333 0 0 1 8,0 4,5.3333333 0 0 1 8,0 h 8"
          id="path117" />
@@ -915,10 +885,7 @@
     <g
        fill="#000000"
        transform="translate(112,1088)"
-       id="g138"
-       inkscape:export-filename="svgs\diode.svg"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       id="g138">
       <path
          d="M 0,8 H 48"
          id="path136" />
@@ -932,10 +899,7 @@
     <g
        fill="#000000"
        transform="translate(112,1120)"
-       id="g145"
-       inkscape:export-filename="svgs\led.svg"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       id="g145">
       <path
          d="M 0,8 H 48"
          id="path139" />
@@ -1098,10 +1062,7 @@
        id="g182">
       <path
          d="M 0,8 H 48"
-         id="path176"
-         inkscape:export-filename="svgs\led_active.svg"
-         inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96" />
+         id="path176" />
       <path
          d="M 31,8 18,2 V 14 L 31,8"
          id="path177"
@@ -1461,10 +1422,7 @@
        id="text251">Diode for alternating current (DIAC)</text>
     <g
        transform="translate(144,1504)"
-       id="g254"
-       inkscape:export-filename="gnd.svg"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       id="g254">
       <path
          d="M 8,0 V 4"
          id="path251" />
@@ -1558,10 +1516,7 @@
     </g>
     <g
        transform="translate(112,1664)"
-       id="g272"
-       inkscape:export-filename="svgs\battery.svg"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       id="g272">
       <path
          d="M 0,8 H 15"
          id="path267" />
@@ -1584,10 +1539,7 @@
     <g
        transform="translate(112,1696)"
        id="g277"
-       style="fill:none"
-       inkscape:export-filename="svgs\DC_source.svg"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       style="fill:none">
       <circle
          fill="#ffffff"
          stroke-width="4"
@@ -1620,10 +1572,7 @@
     <g
        transform="translate(112,1760)"
        id="g280"
-       style="fill:none"
-       inkscape:export-filename="svgs\AC_source.svg"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       style="fill:none">
       <circle
          fill="#ffffff"
          stroke-width="4"
@@ -1655,10 +1604,7 @@
          cx="24"
          r="20"
          id="circle280"
-         style="fill:#ffffff;fill-opacity:0"
-         inkscape:export-filename="..\..\IdeaProjects\physics-circuits-simulation\frontend\src\shared\assets\circuit\DC_source.svg"
-         inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96" />
+         style="fill:#ffffff;fill-opacity:0" />
       <path
          d="M 0,24 H 4"
          id="path281" />
@@ -1827,17 +1773,11 @@
     <g
        fill="#ffffff"
        transform="translate(112,2096)"
-       id="g310"
-       inkscape:export-filename="svgs\key.svg"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       id="g310">
       <path
          d="M 0,8 H 9.4716372"
          id="path307"
-         style="stroke-width:2;stroke-dasharray:none"
-         inkscape:export-filename="key.svg"
-         inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96" />
+         style="stroke-width:2;stroke-dasharray:none" />
       <path
          d="M 48,8 H 38.695486"
          id="path308"
@@ -1862,17 +1802,11 @@
     <g
        fill="#ffffff"
        transform="translate(112,2144)"
-       id="g313"
-       inkscape:export-filename="svgs\key_closed.svg"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       id="g313">
       <path
          d="M 0,8 H 9.194494"
          id="path310"
-         style="stroke-width:2;stroke-dasharray:none"
-         inkscape:export-filename="key_closedsvg"
-         inkscape:export-xdpi="96"
-         inkscape:export-ydpi="96" />
+         style="stroke-width:2;stroke-dasharray:none" />
       <path
          d="M 48,8 H 39.025546"
          id="path311"
@@ -5107,10 +5041,7 @@
     <path
        d="M 83.029593,552 H 96"
        id="path51"
-       style="font-family:Sans-Serif;fill-rule:nonzero;stroke-width:2;stroke-dasharray:none"
-       inkscape:export-filename="svgs\resistor.svg"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       style="font-family:Sans-Serif;fill-rule:nonzero;stroke-width:2;stroke-dasharray:none" />
     <rect
        fill="#ffffff"
        y="4"
@@ -5125,12 +5056,9 @@
        id="path9"
        style="font-family:Sans-Serif;fill-rule:nonzero;stroke-width:2;stroke-dasharray:none" />
     <g
-       transform="translate(21.756898,1685.731)"
+       transform="translate(-71.598033,923.95477)"
        id="g5"
-       style="fill:none"
-       inkscape:export-filename="svgs\voltmeter.svg"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       style="fill:none">
       <circle
          fill="#ffffff"
          stroke-width="4"
@@ -5151,18 +5079,15 @@
     <text
        stroke="none"
        fill="#000000"
-       x="36.839527"
-       y="1737.8109"
+       x="-55.529869"
+       y="967.90692"
        style="font-weight:normal;font-size:25.0554px;text-anchor:start;stroke-width:4.69788"
        id="text81"
        transform="scale(1.0106695,0.98944314)">V</text>
     <g
        transform="translate(23.297176,1744.2616)"
        id="g116"
-       style="fill:none"
-       inkscape:export-filename="Ampermeter.svg"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96">
+       style="fill:none">
       <circle
          fill="#ffffff"
          stroke-width="4"
@@ -5189,14 +5114,11 @@
        id="text118"
        transform="scale(1.0106695,0.98944314)">A</text>
     <path
-       d="M 83.029593,584 H 96"
+       d="m -170.89582,566.10697 h 12.97041"
        id="path3"
-       style="font-family:Sans-Serif;fill-rule:nonzero;stroke-width:2;stroke-dasharray:none"
-       inkscape:export-filename="svgs\resistor.svg"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
+       style="font-family:Sans-Serif;fill-rule:nonzero;stroke-width:2;stroke-dasharray:none" />
     <path
-       d="M 48,584 H 60.923946"
+       d="m -205.92541,566.10697 h 12.92394"
        id="path4"
        style="font-family:Sans-Serif;fill-rule:nonzero;stroke-width:2;stroke-dasharray:none" />
   </g>

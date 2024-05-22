@@ -54,7 +54,7 @@ export function SVGRenderer<T extends ElectricalComponentWithID>({ component, sr
   const aTransformed = transformer(getFirstPoint(component));
   const bTransformed = transformer(getSecondPoint(component));
   const svgSize = useGetZoomCoefficient();
-  const height = component._type == "resistor" ? svgSize / 2 : svgSize;
+  const height = component._type == "resistor"? svgSize / 2 : svgSize;
   const getMeasurement = useGetMeasurement();
   if (
     (component._type == "voltmeter" || component._type == "ampermeter") &&
