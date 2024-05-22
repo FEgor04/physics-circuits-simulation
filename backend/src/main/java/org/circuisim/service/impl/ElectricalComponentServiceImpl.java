@@ -28,9 +28,7 @@ public class ElectricalComponentServiceImpl implements ElectricalComponentServic
     }
 
     @Override
-    public void updateComponents(List<ElectricalComponentDto> list, String schemeName, Long schemeId, boolean newEmbeddedStatus) {
-        schemeService.updateSchemeName(schemeName, schemeId);
-        schemeService.updateSchemeEmbeddedStatus(newEmbeddedStatus, schemeId);
+    public void updateComponents(List<ElectricalComponentDto> list, Long schemeId) {
         for (ElectricalComponentDto electricalComponentDto : list) {
             var electricalComponent1 = repository.findById(
                     new ElectricalComponentPK(electricalComponentDto.componentId, schemeId)

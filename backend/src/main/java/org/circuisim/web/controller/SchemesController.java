@@ -69,8 +69,9 @@ public class SchemesController {
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
             @RequestBody SchemeUpdateRequest schemeUpdateRequest
     ) {
-        electricalComponentService.updateComponents(schemeUpdateRequest.electricalComponentDto(),
-                schemeUpdateRequest.schemeName(), id, schemeUpdateRequest.isEmbedded());
+        schemeService.updateSchemeName(schemeUpdateRequest.schemeName(), id);
+        schemeService.updateSchemeEmbeddedStatus(schemeUpdateRequest.isEmbedded(), id);
+        electricalComponentService.updateComponents(schemeUpdateRequest.electricalComponentDto(), id);
         return ResponseEntity.noContent().build();
     }
 
