@@ -1,7 +1,7 @@
-import { Button } from "@/shared/ui/button";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import sample from "@/shared/assets/circuit/sample.png";
 import { Github } from "lucide-react";
+import sample from "@/shared/assets/circuit/sample.png";
+import { Button } from "@/shared/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
 
 export const Route = createFileRoute("/")({

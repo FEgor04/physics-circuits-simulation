@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Delete, TreePalm } from "lucide-react";
+import { Delete } from "lucide-react";
 import React from "react";
 import { getMeQueryOptions } from "@/entities/principal";
 import { SchemeID } from "@/entities/scheme";
