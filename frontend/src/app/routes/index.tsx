@@ -41,11 +41,11 @@ function Component() {
           </div>
           <img
             alt="Hero"
-            className="mx-auto aspect-square overflow-hidden rounded-xl object-cover object-center sm:w-2/3"
+            className="mx-auto aspect-square overflow-hidden rounded-xl object-contain object-center sm:w-2/3"
             src={sample}
           />
         </div>
-        <div className="grid grid-cols-3 gap-4 md:gap-8 mt-16">
+        <div className="mt-16 grid grid-cols-3 gap-4 md:gap-8">
           <Card>
             <CardHeader>
               <CardTitle>Создавайте схемы</CardTitle>
