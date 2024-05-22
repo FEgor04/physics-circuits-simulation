@@ -70,7 +70,6 @@ public class AuthServiceImplTest {
         assertEquals(response.getId(), clientId);
         assertNotNull(response.getAccessToken());
         assertNotNull(response.getRefreshToken());
-        System.out.println(LocalDateTime.now().toLocalTime() + "[login_shouldAuthorizeUserAndReturnJwtResponseWithToken] passed!");
     }
 
     @Test
@@ -89,7 +88,6 @@ public class AuthServiceImplTest {
         verifyNoInteractions(jwtTokenProvider);
         assertThrows(ResourceNotFoundException.class,
                 () -> authService.login(request));
-        System.out.println(LocalDateTime.now().toLocalTime() + "[login_shouldRejectUserAuthorizationDueToIncorrectUserName] passed!");
     }
 
     @Test
@@ -107,14 +105,12 @@ public class AuthServiceImplTest {
 
         verify(jwtTokenProvider).refreshUserTokens(refreshToken);
         assertEquals(testResponse, response);
-        System.out.println(LocalDateTime.now().toLocalTime() + "[refresh_shouldRefreshClientToken] passed!");
     }
 
     @Test
     void response_shouldThrowsSignatureExceptionResponseWithIncorrectAccessToken(){
         String incorrectAccessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzdXBlcm1hbkBnbWFpbC5jb20iLCJpZCI6MSwicm9sZXMiOlsiQURNSU4iXSwiaWF0IjoxNzE2MzA1Njk5LCJleHAiOjE3MTYzMDkyOTl9.Xf9plmYSNveojOBBTSJ9gzuvVAWPGAuPshAkLTT-DBlocctzqxI4vtUSIoVmWaNbnPFChouHklFFuSy7WFik_A123";
         assertDoesNotThrow(() -> jwtTokenProvider.getAuthentication(incorrectAccessToken));
-        System.out.println(LocalDateTime.now().toLocalTime() + "[response_shouldThrowsSignatureExceptionResponseWithIncorrectAccessToken] passed!");
     }
 
 }
