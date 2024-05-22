@@ -1,11 +1,13 @@
 import { permission } from "process";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import React from "react";
+import { getMeQueryOptions } from "@/entities/principal";
 import { SchemeID } from "@/entities/scheme";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/shared/ui/dialog";
 import { Skeleton } from "@/shared/ui/skeleton";
 import { getSchemePermissionsQO } from "../api/get-permissions";
 import { PermissionsEntry } from "../model/permission";
+import { InviteUserForm } from "./form";
 
 type Props = {
   open: boolean;
@@ -22,6 +24,7 @@ export function ShareDialog({ schemeId, ...props }: Props) {
         </DialogHeader>
         <React.Suspense fallback={<Skeleton className="h-16 w-full" />}>
           <Permissions schemeId={schemeId} {...props} />
+          <InviteUserForm schemeId={schemeId} />
         </React.Suspense>
       </DialogContent>
     </Dialog>
@@ -29,7 +32,11 @@ export function ShareDialog({ schemeId, ...props }: Props) {
 }
 
 function Permissions({ schemeId }: Props) {
-  const { data: permissions } = useSuspenseQuery(getSchemePermissionsQO(schemeId));
+  const { data: principalId } = useSuspenseQuery({ ...getMeQueryOptions(), select: (it) => it.id });
+  const { data: permissions } = useSuspenseQuery({
+    ...getSchemePermissionsQO(schemeId),
+    select: (it) => it.filter((entry) => entry.user.id != principalId),
+  });
   return (
     <>
       {permissions.map((it) => (

@@ -6,6 +6,7 @@ import { Scheme } from "@/entities/scheme";
 import { useDeleteSchemeMutation } from "@/entities/scheme";
 import { Button } from "@/shared/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/shared/ui/dropdown-menu";
+import { ShareSchemeDialog } from "@/features/share-scheme";
 
 type Props = {
   scheme: Scheme;
@@ -13,6 +14,7 @@ type Props = {
 
 export function SchemeCardTooltip(props: Props) {
   const [isRenameOpen, setRenameOpen] = useState(false);
+  const [isShareOpen, setShareOpen] = useState(false);
 
   return (
     <>
@@ -23,7 +25,7 @@ export function SchemeCardTooltip(props: Props) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => setShareOpen(true)}>
             <Share2 className="mr-2 size-4" /> Поделиться
           </DropdownMenuItem>
           <DropdownMenuItem onSelect={() => setRenameOpen(true)}>
@@ -36,6 +38,7 @@ export function SchemeCardTooltip(props: Props) {
       <Dialog open={isRenameOpen} onOpenChange={setRenameOpen}>
         <RenameSchemeDialogContent {...props} />
       </Dialog>
+      <ShareSchemeDialog open={isShareOpen} setOpen={setShareOpen} schemeId={props.scheme.id} />
     </>
   );
 }
