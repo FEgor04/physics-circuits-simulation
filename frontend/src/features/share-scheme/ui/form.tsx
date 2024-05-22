@@ -10,6 +10,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { getSchemePermissionsQO } from "../api/get-permissions";
 import { useUpdateSchemePermissionsMutation } from "../api/set-permissions";
 import { PermissionType } from "../model/permission";
+import { toast } from "sonner";
+import { AXIOS_INSTANCE } from "@/shared/api/instance";
+import { AxiosError, isAxiosError } from "axios";
 
 const schema = z.object({
   email: z.string().email(),
@@ -41,10 +44,27 @@ export function InviteUserForm({ schemeId }: Props) {
         .filter((it) => it.email != values.email),
       values,
     ];
-    mutate({
-      schemeId,
-      permissions: newPermissions,
-    });
+    const toastId = toast.loading("Обновляем права схемы");
+    mutate(
+      {
+        schemeId,
+        permissions: newPermissions,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Права схемы успешно обновлены", { id: toastId });
+        },
+        onError: (err) => {
+          if (isAxiosError(err)) {
+            if (err.response?.status == 404 && err.response.data.message == "User not found") {
+              toast.error("Ошибка! Нет пользователя с такой почтой", { id: toastId });
+            }
+          } else {
+            toast.error("Ошибка! " + err.message, { id: toastId });
+          }
+        },
+      },
+    );
   }
 
   return (
