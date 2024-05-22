@@ -14,6 +14,7 @@ function getFirstPoint(component: ElectricalComponent): Point {
   }
   if (
     component._type == "resistor" ||
+    component._type == "rheostat" ||
     component._type == "wire" ||
     component._type == "voltmeter" ||
     component._type == "ampermeter"
@@ -29,6 +30,7 @@ function getSecondPoint(component: ElectricalComponent): Point {
     return component.plus;
   } else if (
     component._type == "resistor" ||
+    component._type == "rheostat" ||
     component._type == "wire" ||
     component._type == "voltmeter" ||
     component._type == "ampermeter"

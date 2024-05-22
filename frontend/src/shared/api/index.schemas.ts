@@ -187,6 +187,7 @@ export const ElectricalComponentDtoType = {
   SOURCE_DC: "SOURCE_DC",
   VOLTMETER: "VOLTMETER",
   AMPERMETER: "AMPERMETER",
+  RHEOSTAT: "RHEOSTAT",
 } as const;
 
 /**

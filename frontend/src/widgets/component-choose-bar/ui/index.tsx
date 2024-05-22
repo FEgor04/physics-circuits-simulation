@@ -5,9 +5,10 @@ import ampermeterSvg from "@/shared/assets/circuit/ampermater.svg";
 import sourceSvg from "@/shared/assets/circuit/battery.svg";
 import sourceDCSvg from "@/shared/assets/circuit/DC_source.svg";
 import resistorSvg from "@/shared/assets/circuit/resistor.svg";
+import rheostatSvg from "@/shared/assets/circuit/rheostat.svg";
 import voltmeterSvg from "@/shared/assets/circuit/voltmeter.svg";
 import { OmitBetter } from "@/shared/lib/types";
-import { Ampermeter, ElectricalComponent, Source, Voltmeter } from "@/shared/simulation";
+import { Ampermeter, ElectricalComponent, Rheostat, Source, Voltmeter } from "@/shared/simulation";
 import { Resistor, SourceDC } from "@/shared/simulation/types";
 import { ResizablePanel } from "@/shared/ui/resizable.tsx";
 import "./style.css";
@@ -32,6 +33,7 @@ export function ComponentChooseBar() {
         <Item<Source> type="source" defaultValues={{ electromotiveForce: 20, internalResistance: 5 }} src={sourceSvg} />
         <Item<Ampermeter> type="ampermeter" defaultValues={{ currency: "unknown" }} src={ampermeterSvg} />
         <Item<Voltmeter> type="voltmeter" defaultValues={{ voltage: "unknown" }} src={voltmeterSvg} />
+        <Item<Rheostat> type="rheostat" defaultValues={{ resistance: 10 }} src={rheostatSvg} />
       </div>
     </ResizablePanel>
   );

@@ -6,10 +6,12 @@ import { SourceDCSettings } from "./source-dc-settings.tsx";
 import { SourceSettings } from "./source-settings.tsx";
 import { VoltmeterSettings } from "./voltmeter-settings.tsx";
 import { WireSettings } from "./wire-settings.tsx";
+import { RheostatSettings } from "@/widgets/component-settings-bar/ui/rheostat-settings.tsx";
 
 export function GenericSettings({ component }: { component: ElectricalComponentWithID | undefined }) {
   if (component == null) return <div className="w-full p-4">Выберите компонент для изменения</div>;
   if (component._type == "resistor") return <ResistorSettings component={component} />;
+  if (component._type == "rheostat") return <RheostatSettings component={component} />;
   if (component._type == "sourceDC") return <SourceDCSettings component={component} />;
   if (component._type == "source") return <SourceSettings component={component} />;
   if (component._type == "ampermeter") return <AmpermeterSettings component={component} />;
