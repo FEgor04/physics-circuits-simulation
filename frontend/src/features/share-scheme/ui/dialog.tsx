@@ -4,11 +4,11 @@ import React from "react";
 import { getMeQueryOptions } from "@/entities/principal";
 import { SchemeID } from "@/entities/scheme";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/shared/ui/dialog";
+import { Separator } from "@/shared/ui/separator";
 import { Skeleton } from "@/shared/ui/skeleton";
 import { getSchemePermissionsQO } from "../api/get-permissions";
 import { PermissionsEntry } from "../model/permission";
 import { InviteUserForm } from "./form";
-import { Separator } from "@/shared/ui/separator";
 
 type Props = {
   open: boolean;

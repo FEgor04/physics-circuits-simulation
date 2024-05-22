@@ -1,26 +1,50 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { SchemeID } from "@/entities/scheme";
 import { Button } from "@/shared/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/shared/ui/form";
 import { Input } from "@/shared/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
+import { getSchemePermissionsQO } from "../api/get-permissions";
+import { useUpdateSchemePermissionsMutation } from "../api/set-permissions";
+import { PermissionType } from "../model/permission";
 
 const schema = z.object({
   email: z.string().email(),
-  permission: z.enum(["VEIW", "EDIT"]),
+  permission: z.enum(["VIEW", "EDIT"]),
 });
+
+type Props = {
+  schemaId: SchemeID;
+};
 
 export function InviteUserForm({ schemeId }: Props) {
   const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues: {
-      permission: "VEIW",
+      permission: "VIEW",
     },
   });
 
+  const { mutate, isPending } = useUpdateSchemePermissionsMutation();
+  const { data } = useSuspenseQuery(getSchemePermissionsQO(schemeId));
+
   function onSubmit(values: z.infer<typeof schema>) {
-    console.log(values);
+    const newPermissions: Array<{ email: string; permission: PermissionType }> = [
+      ...(data ?? [])
+        .map((it) => ({
+          email: it.user.email,
+          permission: it.type,
+        }))
+        .filter((it) => it.email != values.email),
+      values,
+    ];
+    mutate({
+      schemeId,
+      permissions: newPermissions,
+    });
   }
 
   return (
@@ -61,7 +85,9 @@ export function InviteUserForm({ schemeId }: Props) {
           )}
         />
         <FormItem>
-          <Button>Добавить</Button>
+          <Button type="submit" disabled={isPending}>
+            Добавить
+          </Button>
         </FormItem>
       </form>
     </Form>
