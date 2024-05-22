@@ -30,6 +30,7 @@ export function UpdateSource({ defaultValue }: Props) {
 
   function onSubmit(values: z.infer<typeof schema>) {
     onUpdate({ ...defaultValue, ...values });
+    toast.success("Источник сохранен!");
   }
 
   return (

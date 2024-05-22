@@ -6,6 +6,7 @@ import { WithID, SourceDC } from "@/shared/simulation";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/shared/ui/form";
 import { Input } from "@/shared/ui/input";
 import { useOnUpdateComponent } from "../model/hooks";
+import { toast } from "sonner";
 
 type Props = {
   defaultValue: WithID<SourceDC>;
@@ -30,6 +31,7 @@ export function UpdateSourceDC({ defaultValue }: Props) {
 
   function onSubmit(values: z.infer<typeof schema>) {
     onUpdate({ ...defaultValue, ...values });
+    toast.success("Источник сохранен!");
   }
 
   return (

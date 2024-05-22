@@ -29,6 +29,7 @@ export function UpdateResistor({ defaultValue }: Props) {
 
   function onSubmit(values: z.infer<typeof schema>) {
     onUpdate({ ...defaultValue, ...values });
+    toast.success("Резистор сохранен!");
   }
 
   return (
