@@ -12,6 +12,7 @@ describe("trasnformation function", () => {
       height: 500,
       schemeWidth: 10,
       schemeHeight: 10,
+      zoomCoefficient: 48,
     };
     const expected = {
       x: containerParams.width / 2,
