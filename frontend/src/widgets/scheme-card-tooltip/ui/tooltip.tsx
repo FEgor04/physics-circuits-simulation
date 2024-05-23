@@ -51,7 +51,7 @@ function DeleteSchemeItem({ scheme }: Props) {
     mutate({ id: scheme.id });
   }
   return (
-    <DropdownMenuItem onClick={() => onClick()} disabled={isPending || scheme.canEdit}>
+    <DropdownMenuItem onClick={() => onClick()} disabled={isPending || !scheme.canEdit}>
       <Trash className="mr-2 size-4" /> Удалить
     </DropdownMenuItem>
   );

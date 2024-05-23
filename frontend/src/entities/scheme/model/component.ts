@@ -20,6 +20,10 @@ export const zResistor = zWire.extend({
   resistance: z.number(),
 });
 
+export const zRheostat = zResistor.extend({
+  _type: z.literal("rheostat"),
+});
+
 export const zSource = componentBase.extend({
   _type: z.literal("source"),
   electromotiveForce: z.number(),
@@ -43,6 +47,7 @@ export const zVoltmeter = zWire.extend({
 export const zElectricalComponent = z.discriminatedUnion("_type", [
   zWire,
   zResistor,
+  zRheostat,
   zSource,
   zSourceDC,
   zAmpermeter,

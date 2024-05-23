@@ -4,6 +4,7 @@ import {
   ElectricalComponent,
   ElectricalComponentWithID,
   Resistor,
+  Rheostat,
   Voltmeter,
   Wire,
   WithID,
@@ -22,7 +23,7 @@ export function fromDTO(dto: SchemeResponse): Scheme {
   };
 }
 
-const componentsTypes = ["wire", "resistor", "voltmeter", "ampermeter"] as const;
+const componentsTypes = ["wire", "resistor", "voltmeter", "ampermeter", "rheostat"] as const;
 
 export function componentFromDTO(dto: ElectricalComponentDto): WithID<ElectricalComponentWithID> {
   if (dto.type == "SOURCE_DC") {
@@ -52,7 +53,7 @@ export function componentFromDTO(dto: ElectricalComponentDto): WithID<Electrical
     b: dto.b,
     resistance: dto.resistance,
     electromotiveForce: dto.emf,
-  }) as WithID<Resistor | Wire | Ampermeter | Voltmeter>;
+  }) as WithID<Resistor | Wire | Ampermeter | Voltmeter | Rheostat>;
 }
 
 export function componentToDTO(entity: ElectricalComponentWithID): ElectricalComponentDto {

@@ -25,10 +25,9 @@ import java.util.regex.Pattern;
 public class JwtTokenFilter extends GenericFilterBean {
 
     private final String[] allowedPaths = {"docs", "swagger", "h2", "auth"};
-    private static final String schemesPathPattern = "/api/schemes/(\\d+)";
     private final JwtTokenProvider jwtTokenProvider;
     private final SchemeService schemeService;
-    private final Pattern pattern = Pattern.compile("/api/schemes/(\\d+)");
+    private final Pattern pattern = Pattern.compile("^/api/schemes/(\\d+)$");
 
     @Override
     @SneakyThrows
