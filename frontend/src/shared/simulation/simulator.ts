@@ -551,12 +551,20 @@ export class SimpleSimulator implements CircuitSimulator {
 
     const branches = this.findBranches();
     for (const branch of branches) {
-      let c = 0;
+      let v = 0;
+      let a = 0;
       for (const comp of branch.components) {
-        if (comp._type == "ampermeter" || comp._type == "voltmeter") {
-          c += 1;
+        if (comp._type == "ampermeter") {
+          a += 1;
+        } else if (comp._type == "voltmeter") {
+          v += 1;
         }
-        if (c >= 2) {
+
+        if (v >= 2) {
+          return "moreThenOneVoltmeter";
+        } else if (a >= 2) {
+          return "moreThenOneAmpermeter";
+        } else if (a + v >= 2) {
           return "voltmeterError";
         }
       }
