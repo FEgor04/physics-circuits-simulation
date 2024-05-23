@@ -58,6 +58,7 @@ jobs:
     - name: Build
       run: pnpm run build
   docker:
+    needs: [build, test]
     defaults:
       run:
         working-directory: ./frontend
