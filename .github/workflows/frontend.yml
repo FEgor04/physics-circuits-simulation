@@ -68,6 +68,7 @@ jobs:
       pull-requests: write
 
     steps:
+      - uses: actions/checkout@v4
       - name: Docker Login
         run: docker login ${{ secrets.REGISTRY_URI }} -u ${{ secrets.REGISTRY_KEYID }} -p ${{ secrets.REGISTRY_KEY_SECRET }}
       - name: Build Docker Image
