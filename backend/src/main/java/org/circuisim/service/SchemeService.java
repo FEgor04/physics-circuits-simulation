@@ -13,6 +13,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.List;
 
 public interface SchemeService {
+    Scheme getByIdAndWithoutUserDetails(Long id);
+
+
     Scheme save(Scheme scheme);
 
     Scheme create(SchemeCreateRequest schemeCreateRequest, UserDetails userDetails);

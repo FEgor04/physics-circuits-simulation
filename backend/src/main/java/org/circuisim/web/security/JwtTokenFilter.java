@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.circuisim.service.SchemeService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
@@ -21,7 +22,9 @@ import java.util.List;
 public class JwtTokenFilter extends GenericFilterBean {
 
     private final String[] allowedPaths = {"docs", "swagger", "h2", "auth"};
+    private final String schemesPathPattern = "^/api/schemes/\\d+$";
     private final JwtTokenProvider jwtTokenProvider;
+    private final SchemeService schemeService;
 
     @Override
     @SneakyThrows
@@ -35,6 +38,12 @@ public class JwtTokenFilter extends GenericFilterBean {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
+        if (httpRequest.getRequestURI().matches(schemesPathPattern) && "GET".equalsIgnoreCase(httpRequest.getMethod())) {
+
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
         try {
             if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
                 bearerToken = bearerToken.substring(7);
