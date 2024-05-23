@@ -44,7 +44,7 @@ public class JwtTokenFilter extends GenericFilterBean {
 
         var matches = pattern.matcher(httpRequest.getRequestURI());
         var matchFound = matches.find();
-        if (matchFound && "GET".equalsIgnoreCase(httpRequest.getMethod())) {
+        if ((bearerToken == null || !bearerToken.startsWith("Bearer ")) && matchFound && "GET".equalsIgnoreCase(httpRequest.getMethod())) {
             Scheme scheme = schemeService.getById(Long.parseLong(matches.group(1)));
             if (scheme.isEmbedded()) {
                 filterChain.doFilter(servletRequest, servletResponse);
