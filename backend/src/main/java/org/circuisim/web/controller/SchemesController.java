@@ -95,9 +95,14 @@ public class SchemesController {
     @DeleteMapping("{id}/permissions")
     public ResponseEntity<String> deletePermissionsByIdScheme(
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
-            @RequestBody DeletePermissionsRequest request
+            @RequestBody DeletePermissionsRequest request,
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        schemeService.removePermission(id, request);
+        if (schemeService.getById(id).getAuthor().getUsername().equals(userDetails.getUsername())) {
+            schemeService.removePermission(id, request);
+        } else {
+            throw new AccessDeniedException();
+        }
         return ResponseEntity.noContent().build();
     }
 
