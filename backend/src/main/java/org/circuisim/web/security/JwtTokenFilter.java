@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.circuisim.domain.simulation.Scheme;
 import org.circuisim.service.SchemeService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,14 +18,17 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @AllArgsConstructor
 public class JwtTokenFilter extends GenericFilterBean {
 
     private final String[] allowedPaths = {"docs", "swagger", "h2", "auth"};
-    private final String schemesPathPattern = "^/api/schemes/\\d+$";
+    private static final String schemesPathPattern = "/api/schemes/(\\d+)";
     private final JwtTokenProvider jwtTokenProvider;
     private final SchemeService schemeService;
+    private final Pattern pattern = Pattern.compile("/api/schemes/(\\d+)");
 
     @Override
     @SneakyThrows
@@ -38,10 +42,15 @@ public class JwtTokenFilter extends GenericFilterBean {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
-        if (httpRequest.getRequestURI().matches(schemesPathPattern) && "GET".equalsIgnoreCase(httpRequest.getMethod())) {
 
-            filterChain.doFilter(servletRequest, servletResponse);
-            return;
+        var matches = pattern.matcher(httpRequest.getRequestURI());
+        var matchFound = matches.find();
+        if (matchFound && "GET".equalsIgnoreCase(httpRequest.getMethod())) {
+            Scheme scheme = schemeService.getById(Long.parseLong(matches.group(1)));
+            if (scheme.isEmbedded()) {
+                filterChain.doFilter(servletRequest, servletResponse);
+                return;
+            }
         }
 
         try {
