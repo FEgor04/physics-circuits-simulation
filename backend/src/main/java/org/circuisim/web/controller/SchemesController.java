@@ -54,7 +54,11 @@ public class SchemesController {
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
-        return schemeMapper.toResponse(schemeService.getByIdAndUsername(userDetails.getUsername(), id), userDetails.getUsername());
+        if (userDetails != null) {
+            return schemeMapper.toResponse(schemeService.getByIdAndUsername(userDetails.getUsername(), id), userDetails.getUsername());
+        } else {
+            return schemeMapper.toResponseWithoutUsername(schemeService.getByIdAndWithoutUserDetails(id));
+        }
     }
 
     @GetMapping("{id}/permissions")

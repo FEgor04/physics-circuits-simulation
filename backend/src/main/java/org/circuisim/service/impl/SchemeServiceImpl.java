@@ -44,6 +44,15 @@ public class SchemeServiceImpl implements SchemeService {
     }
 
     @Override
+    public Scheme getByIdAndWithoutUserDetails(Long id) {
+        var scheme = getById(id);
+        if (!scheme.isEmbedded()) {
+            throw new AccessDeniedException();
+        }
+        return scheme;
+    }
+
+    @Override
     public Scheme save(Scheme scheme) {
         return schemeRepository.save(scheme);
     }
