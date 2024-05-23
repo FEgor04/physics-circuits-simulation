@@ -12,7 +12,6 @@ import type {
   GetUserResponse,
   GetUsersPermissionsResponse,
   JwtResponse,
-  Message,
   SchemeResponse,
 } from "./index.schemas";
 
@@ -32,7 +31,15 @@ export const getGetSchemeByIdResponseMock = (overrideResponse: Partial<SchemeRes
       componentId: faker.number.int({ min: undefined, max: undefined }),
       emf: faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), undefined]),
       resistance: faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), undefined]),
-      type: faker.helpers.arrayElement(["WIRE", "RESISTOR", "SOURCE", "SOURCE_DC", "VOLTMETER", "AMPERMETER"] as const),
+      type: faker.helpers.arrayElement([
+        "WIRE",
+        "RESISTOR",
+        "SOURCE",
+        "SOURCE_DC",
+        "VOLTMETER",
+        "AMPERMETER",
+        "RHEOSTAT",
+      ] as const),
     })),
     undefined,
   ]),
@@ -89,6 +96,7 @@ export const getGetAllSchemesResponseMock = (): SchemeResponse[] =>
           "SOURCE_DC",
           "VOLTMETER",
           "AMPERMETER",
+          "RHEOSTAT",
         ] as const),
       })),
       undefined,
@@ -114,7 +122,15 @@ export const getCreateNewSchemeResponseMock = (overrideResponse: Partial<SchemeR
       componentId: faker.number.int({ min: undefined, max: undefined }),
       emf: faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), undefined]),
       resistance: faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), undefined]),
-      type: faker.helpers.arrayElement(["WIRE", "RESISTOR", "SOURCE", "SOURCE_DC", "VOLTMETER", "AMPERMETER"] as const),
+      type: faker.helpers.arrayElement([
+        "WIRE",
+        "RESISTOR",
+        "SOURCE",
+        "SOURCE_DC",
+        "VOLTMETER",
+        "AMPERMETER",
+        "RHEOSTAT",
+      ] as const),
     })),
     undefined,
   ]),
@@ -179,150 +195,6 @@ export const getGetAllUsersBySchemeIdResponseMock = (): GetUsersPermissionsRespo
     permission: faker.helpers.arrayElement(["EDIT", "VIEW"] as const),
     username: faker.word.sample(),
   }));
-
-export const getDoNothingResponseMock = (overrideResponse: Partial<Message> = {}): Message => ({
-  event: faker.helpers.arrayElement([
-    faker.helpers.arrayElement([
-      {
-        components: faker.helpers.arrayElement([
-          Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
-            a: {
-              x: faker.number.int({ min: undefined, max: undefined }),
-              y: faker.number.int({ min: undefined, max: undefined }),
-            },
-            b: {
-              x: faker.number.int({ min: undefined, max: undefined }),
-              y: faker.number.int({ min: undefined, max: undefined }),
-            },
-            componentId: faker.number.int({ min: undefined, max: undefined }),
-            emf: faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), undefined]),
-            resistance: faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), undefined]),
-            type: faker.helpers.arrayElement([
-              "WIRE",
-              "RESISTOR",
-              "SOURCE",
-              "SOURCE_DC",
-              "VOLTMETER",
-              "AMPERMETER",
-            ] as const),
-          })),
-          undefined,
-        ]),
-        type: faker.helpers.arrayElement(["DELETE"] as const),
-      },
-      {
-        components: faker.helpers.arrayElement([
-          Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
-            a: {
-              x: faker.number.int({ min: undefined, max: undefined }),
-              y: faker.number.int({ min: undefined, max: undefined }),
-            },
-            b: {
-              x: faker.number.int({ min: undefined, max: undefined }),
-              y: faker.number.int({ min: undefined, max: undefined }),
-            },
-            componentId: faker.number.int({ min: undefined, max: undefined }),
-            emf: faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), undefined]),
-            resistance: faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), undefined]),
-            type: faker.helpers.arrayElement([
-              "WIRE",
-              "RESISTOR",
-              "SOURCE",
-              "SOURCE_DC",
-              "VOLTMETER",
-              "AMPERMETER",
-            ] as const),
-          })),
-          undefined,
-        ]),
-        type: faker.helpers.arrayElement(["UPDATE"] as const),
-      },
-      {
-        components: faker.helpers.arrayElement([
-          Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
-            a: {
-              x: faker.number.int({ min: undefined, max: undefined }),
-              y: faker.number.int({ min: undefined, max: undefined }),
-            },
-            b: {
-              x: faker.number.int({ min: undefined, max: undefined }),
-              y: faker.number.int({ min: undefined, max: undefined }),
-            },
-            componentId: faker.number.int({ min: undefined, max: undefined }),
-            emf: faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), undefined]),
-            resistance: faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), undefined]),
-            type: faker.helpers.arrayElement([
-              "WIRE",
-              "RESISTOR",
-              "SOURCE",
-              "SOURCE_DC",
-              "VOLTMETER",
-              "AMPERMETER",
-            ] as const),
-          })),
-          undefined,
-        ]),
-        type: faker.helpers.arrayElement(["SELECT"] as const),
-      },
-      {
-        schemeId: faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), undefined]),
-        type: faker.helpers.arrayElement(["CONNECT"] as const),
-        userDto: faker.helpers.arrayElement([
-          {
-            email: faker.word.sample(),
-            id: faker.number.int({ min: undefined, max: undefined }),
-            name: faker.word.sample(),
-            password: faker.word.sample(),
-          },
-          undefined,
-        ]),
-      },
-      {
-        type: faker.helpers.arrayElement(["DISCONNECT"] as const),
-        userDto: faker.helpers.arrayElement([
-          {
-            email: faker.word.sample(),
-            id: faker.number.int({ min: undefined, max: undefined }),
-            name: faker.word.sample(),
-            password: faker.word.sample(),
-          },
-          undefined,
-        ]),
-      },
-      {
-        components: faker.helpers.arrayElement([
-          Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({
-            a: {
-              x: faker.number.int({ min: undefined, max: undefined }),
-              y: faker.number.int({ min: undefined, max: undefined }),
-            },
-            b: {
-              x: faker.number.int({ min: undefined, max: undefined }),
-              y: faker.number.int({ min: undefined, max: undefined }),
-            },
-            componentId: faker.number.int({ min: undefined, max: undefined }),
-            emf: faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), undefined]),
-            resistance: faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), undefined]),
-            type: faker.helpers.arrayElement([
-              "WIRE",
-              "RESISTOR",
-              "SOURCE",
-              "SOURCE_DC",
-              "VOLTMETER",
-              "AMPERMETER",
-            ] as const),
-          })),
-          undefined,
-        ]),
-        type: faker.helpers.arrayElement(["ADD"] as const),
-      },
-    ]),
-    undefined,
-  ]),
-  schemeId: faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), undefined]),
-  userId: faker.helpers.arrayElement([faker.number.int({ min: undefined, max: undefined }), undefined]),
-  ...overrideResponse,
-});
 
 export const getGetSchemeByIdMockHandler = (
   overrideResponse?: SchemeResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => SchemeResponse),
@@ -672,29 +544,6 @@ export const getGetAllUsersBySchemeIdMockHandler = (
     );
   });
 };
-
-export const getDoNothingMockHandler = (
-  overrideResponse?: Message | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Message),
-) => {
-  return http.get("*/api/rSocket", async (info) => {
-    await delay(1000);
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse !== undefined
-          ? typeof overrideResponse === "function"
-            ? overrideResponse(info)
-            : overrideResponse
-          : getDoNothingResponseMock(),
-      ),
-      {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  });
-};
 export const getPhysicsCircuitsSimulationEngineMock = () => [
   getGetSchemeByIdMockHandler(),
   getUpdateSchemeMockHandler(),
@@ -711,5 +560,4 @@ export const getPhysicsCircuitsSimulationEngineMock = () => [
   getGetUserByIdMockHandler(),
   getGetCurrentUserMockHandler(),
   getGetAllUsersBySchemeIdMockHandler(),
-  getDoNothingMockHandler(),
 ];

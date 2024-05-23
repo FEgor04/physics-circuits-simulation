@@ -152,7 +152,7 @@ export class SimpleSimulator implements CircuitSimulator {
     let totalResistance = 0;
 
     for (const component of branch.components) {
-      if (component._type === "resistor") {
+      if (component._type === "resistor" || component._type === "rheostat") {
         totalResistance += component.resistance;
       }
       if (component._type === "sourceDC" || component._type === "source") {
@@ -251,7 +251,7 @@ export class SimpleSimulator implements CircuitSimulator {
     let totalResistance = 0;
 
     for (const component of branch.components) {
-      if (component._type === "resistor") {
+      if (component._type === "resistor" || component._type === "rheostat") {
         totalResistance += component.resistance;
       }
       if (component._type === "sourceDC" || component._type === "source") {
@@ -629,6 +629,7 @@ export class SimpleSimulator implements CircuitSimulator {
       if (
         component._type === "wire" ||
         component._type === "resistor" ||
+        component._type === "rheostat" ||
         component._type === "voltmeter" ||
         component._type === "ampermeter"
       ) {

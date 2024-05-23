@@ -4,6 +4,7 @@ import { ElectricalComponent, ElectricalComponentID, ElectricalComponentWithID }
 export function updateComponentCoords<T extends ElectricalComponent>(component: T, dx: number, dy: number): T {
   if (
     component._type == "resistor" ||
+    component._type == "rheostat" ||
     component._type == "wire" ||
     component._type == "voltmeter" ||
     component._type == "ampermeter"

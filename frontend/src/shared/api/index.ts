@@ -11,7 +11,6 @@ import type {
   GetUserResponse,
   GetUsersPermissionsResponse,
   JwtResponse,
-  Message,
   SchemeCreateRequest,
   SchemeResponse,
   SchemeUpdateRequest,
@@ -170,10 +169,6 @@ export const getAllUsersBySchemeId = (id: number, options?: SecondParameter<type
   return customInstance<GetUsersPermissionsResponse[]>({ url: `/api/schemes/${id}/users`, method: "GET" }, options);
 };
 
-export const doNothing = (options?: SecondParameter<typeof customInstance>) => {
-  return customInstance<Message>({ url: `/api/rSocket`, method: "GET" }, options);
-};
-
 export type GetSchemeByIdResult = NonNullable<Awaited<ReturnType<typeof getSchemeById>>>;
 export type UpdateSchemeResult = NonNullable<Awaited<ReturnType<typeof updateScheme>>>;
 export type DeleteSchemeByIdResult = NonNullable<Awaited<ReturnType<typeof deleteSchemeById>>>;
@@ -191,4 +186,3 @@ export type LoginResult = NonNullable<Awaited<ReturnType<typeof login>>>;
 export type GetUserByIdResult = NonNullable<Awaited<ReturnType<typeof getUserById>>>;
 export type GetCurrentUserResult = NonNullable<Awaited<ReturnType<typeof getCurrentUser>>>;
 export type GetAllUsersBySchemeIdResult = NonNullable<Awaited<ReturnType<typeof getAllUsersBySchemeId>>>;
-export type DoNothingResult = NonNullable<Awaited<ReturnType<typeof doNothing>>>;

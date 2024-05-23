@@ -12,110 +12,6 @@ export interface DeletePermissionsRequest {
   usernames: string[];
 }
 
-export type UserSelectedEventType = (typeof UserSelectedEventType)[keyof typeof UserSelectedEventType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UserSelectedEventType = {
-  SELECT: "SELECT",
-} as const;
-
-export interface UserSelectedEvent {
-  components?: ElectricalComponentDto[];
-  type: UserSelectedEventType;
-}
-
-/**
- * DTO for User
- */
-export interface UserDto {
-  /** Email address of the user */
-  email: string;
-  /** Unique identifier of the user */
-  id: number;
-  /** Name of the user */
-  name: string;
-  /** Password of the user */
-  password: string;
-}
-
-export type UserDisconnectedEventType = (typeof UserDisconnectedEventType)[keyof typeof UserDisconnectedEventType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UserDisconnectedEventType = {
-  DISCONNECT: "DISCONNECT",
-} as const;
-
-export interface UserDisconnectedEvent {
-  type: UserDisconnectedEventType;
-  userDto?: UserDto;
-}
-
-export type UserConnectedEventType = (typeof UserConnectedEventType)[keyof typeof UserConnectedEventType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UserConnectedEventType = {
-  CONNECT: "CONNECT",
-} as const;
-
-export interface UserConnectedEvent {
-  schemeId?: number;
-  type: UserConnectedEventType;
-  userDto?: UserDto;
-}
-
-export type UpdateComponentEventType = (typeof UpdateComponentEventType)[keyof typeof UpdateComponentEventType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const UpdateComponentEventType = {
-  UPDATE: "UPDATE",
-} as const;
-
-export interface UpdateComponentEvent {
-  components?: ElectricalComponentDto[];
-  type: UpdateComponentEventType;
-}
-
-export interface Message {
-  event?: Event;
-  schemeId?: number;
-  userId?: number;
-}
-
-export type DeleteComponentsEventType = (typeof DeleteComponentsEventType)[keyof typeof DeleteComponentsEventType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const DeleteComponentsEventType = {
-  DELETE: "DELETE",
-} as const;
-
-export interface DeleteComponentsEvent {
-  components?: ElectricalComponentDto[];
-  type: DeleteComponentsEventType;
-}
-
-/**
- * Event
- */
-export type Event =
-  | DeleteComponentsEvent
-  | UpdateComponentEvent
-  | UserSelectedEvent
-  | UserConnectedEvent
-  | UserDisconnectedEvent
-  | AddComponentsEvent;
-
-export type AddComponentsEventType = (typeof AddComponentsEventType)[keyof typeof AddComponentsEventType];
-
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const AddComponentsEventType = {
-  ADD: "ADD",
-} as const;
-
-export interface AddComponentsEvent {
-  components?: ElectricalComponentDto[];
-  type: AddComponentsEventType;
-}
-
 /**
  * User permission
  */
@@ -298,6 +194,7 @@ export const ElectricalComponentDtoType = {
   SOURCE_DC: "SOURCE_DC",
   VOLTMETER: "VOLTMETER",
   AMPERMETER: "AMPERMETER",
+  RHEOSTAT: "RHEOSTAT",
 } as const;
 
 /**

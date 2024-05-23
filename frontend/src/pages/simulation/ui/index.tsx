@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { CanvasPanel } from "@/widgets/canvas";
 import { ComponentChooseBar } from "@/widgets/component-choose-bar";
 import { ComponentSettingsBar } from "@/widgets/component-settings-bar";
+import { RheostatKnob } from "@/widgets/rheostat-knob-bar";
 import { StateButton } from "@/widgets/state-button";
 import { AddComponentContextProvider } from "@/features/add-component";
 import { DeleteComponentProvider } from "@/features/delete-component";
@@ -78,8 +79,12 @@ export function Simulation({ mode, setMode, scheme: initialScheme }: Props) {
               <UpdateComponentProvider onUpdateComponent={onUpdateComponent}>
                 <GetMeasurementProvider getCurrentMeasurement={(id: number) => getMeasurementForComponent(id)}>
                   <ResizablePanelGroup direction="horizontal">
-                    <div className="space-y-8 border-r-4 bg-white p-4">
-                      {mode == "editing" && <ComponentChooseBar />}
+                    <div className="w-60 space-y-8 border-r-4 bg-white p-4">
+                      {mode == "editing" ? (
+                        <ComponentChooseBar />
+                      ) : (
+                        selectedComponent?._type == "rheostat" && <RheostatKnob component={selectedComponent} />
+                      )}
                       <Button
                         onClick={() => {
                           const toastId = toast.loading("Сохраняем схему...");

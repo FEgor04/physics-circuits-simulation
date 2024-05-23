@@ -34,6 +34,10 @@ export type Resistor = Omit<Wire, "_type"> & {
   resistance: number;
 };
 
+export type Rheostat = Omit<Resistor, "_type"> & {
+  _type: "rheostat";
+};
+
 export type Source = {
   _type: "source";
   plus: Point;
@@ -59,7 +63,7 @@ export type Ampermeter = Omit<Wire, "_type"> & {
   currency: number | "unknown";
 };
 
-export type ElectricalComponent = Wire | Resistor | Source | Voltmeter | Ampermeter | SourceDC;
+export type ElectricalComponent = Wire | Resistor | Source | Voltmeter | Ampermeter | SourceDC | Rheostat;
 
 export type ElectricalComponentID = number;
 
