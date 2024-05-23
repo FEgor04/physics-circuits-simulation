@@ -62,7 +62,10 @@ export function SVGRenderer<T extends ElectricalComponentWithID>({ component, sr
   ) {
     const measure = getMeasurement(component.id) ?? 0;
     const units = component._type == "voltmeter" ? "В" : "А";
-    const measureStr = measure != Infinity ? `${Math.round((measure ?? 0) * 100) / 100} ${units}` : "Inf";
+    const measureStr =
+      measure != Infinity
+        ? `${(measure ?? 0) > 10 ? Math.round(measure ?? 0) : Math.round((measure ?? 0) * 10) / 10}${units}`
+        : "Inf";
     return (
       <svg
         x={aTransformed.x + (transform?.x ?? 0)}
