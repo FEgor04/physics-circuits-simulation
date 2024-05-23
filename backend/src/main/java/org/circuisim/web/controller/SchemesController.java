@@ -86,9 +86,14 @@ public class SchemesController {
     @PutMapping("{id}/permissions")
     public ResponseEntity<String> setPermissionsByIdScheme(
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
-            @RequestBody List<SetPermissionsRequest> request
+            @RequestBody List<SetPermissionsRequest> request,
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        schemeService.addPermission(id, request);
+        if (schemeService.getById(id).getAuthor().getUsername().equals(userDetails.getUsername())) {
+            schemeService.addPermission(id, request);
+        } else {
+            throw new AccessDeniedException();
+        }
         return ResponseEntity.noContent().build();
     }
 
