@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { LogOut } from "lucide-react";
+import { CircuitBoard, LogOut } from "lucide-react";
 import { getMeQueryOptions, useSignOutMutation } from "@/entities/principal";
 import { Avatar, AvatarFallback } from "@/shared/ui/avatar";
 import { Button } from "@/shared/ui/button";
@@ -9,6 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/shared/ui/dropdown-menu";
 import { PrincipalSettingsMenuFallback } from "./fallback";
@@ -33,8 +34,15 @@ export function PrincipalDropdownMenu() {
           <AvatarFallback>{principal.fullName[0]}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>{principal.fullName}</DropdownMenuLabel>
+      <DropdownMenuContent align="end">
+        <div className="space-y-0.5">
+          <DropdownMenuLabel className="pb-0">{principal.fullName}</DropdownMenuLabel>
+          <DropdownMenuLabel className="pt-0 text-sm font-normal text-muted-foreground">
+            {principal.email}
+          </DropdownMenuLabel>
+        </div>
+        <DropdownMenuSeparator />
+        <SchemesItem />
         <LogOutItem />
       </DropdownMenuContent>
     </DropdownMenu>
@@ -57,8 +65,24 @@ function LogOutItem() {
         });
       }}
     >
-      <LogOut />
+      <LogOut className="mr-2 size-4" />
       Выйти
+    </DropdownMenuItem>
+  );
+}
+
+function SchemesItem() {
+  const navigate = useNavigate();
+  return (
+    <DropdownMenuItem
+      onSelect={() => {
+        navigate({
+          to: "/schemes",
+        });
+      }}
+    >
+      <CircuitBoard className="mr-2 size-4" />
+      Схемы
     </DropdownMenuItem>
   );
 }

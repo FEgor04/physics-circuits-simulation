@@ -68,7 +68,7 @@ export function InviteUserForm({ schemeId }: Props) {
 
   return (
     <Form {...form}>
-      <h6>Пригласить пользователя</h6>
+      <h6 className="text-sm font-medium">Пригласить пользователя</h6>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}

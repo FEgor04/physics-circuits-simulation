@@ -54,7 +54,11 @@ public class SchemesController {
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
-        return schemeMapper.toResponse(schemeService.getByIdAndUsername(userDetails.getUsername(), id), userDetails.getUsername());
+        if (userDetails != null) {
+            return schemeMapper.toResponse(schemeService.getByIdAndUsername(userDetails.getUsername(), id), userDetails.getUsername());
+        } else {
+            return schemeMapper.toResponseWithoutUsername(schemeService.getByIdAndWithoutUserDetails(id));
+        }
     }
 
     @GetMapping("{id}/permissions")
@@ -86,18 +90,28 @@ public class SchemesController {
     @PutMapping("{id}/permissions")
     public ResponseEntity<String> setPermissionsByIdScheme(
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
-            @RequestBody List<SetPermissionsRequest> request
+            @RequestBody List<SetPermissionsRequest> request,
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        schemeService.addPermission(id, request);
+        if (schemeService.getById(id).getAuthor().getUsername().equals(userDetails.getUsername())) {
+            schemeService.addPermission(id, request);
+        } else {
+            throw new AccessDeniedException();
+        }
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("{id}/permissions")
     public ResponseEntity<String> deletePermissionsByIdScheme(
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
-            @RequestBody DeletePermissionsRequest request
+            @RequestBody DeletePermissionsRequest request,
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        schemeService.removePermission(id, request);
+        if (schemeService.getById(id).getAuthor().getUsername().equals(userDetails.getUsername())) {
+            schemeService.removePermission(id, request);
+        } else {
+            throw new AccessDeniedException();
+        }
         return ResponseEntity.noContent().build();
     }
 

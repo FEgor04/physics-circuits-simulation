@@ -12,10 +12,7 @@ export function useDeletePermissionMutation() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ schemeId, email }: Args) => {
-      return deletePermissionsByIdScheme(schemeId, [
-        { permission: "EDIT", username: email },
-        { permission: "VIEW", username: email },
-      ]).then((it) => it.data);
+      return deletePermissionsByIdScheme(schemeId, { usernames: [email] }).then((it) => it.data);
     },
     onSuccess: (_, args) => {
       queryClient.invalidateQueries(getSchemePermissionsQO(args.schemeId));

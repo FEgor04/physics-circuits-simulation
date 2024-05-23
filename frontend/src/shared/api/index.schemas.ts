@@ -87,16 +87,6 @@ export interface SignUpAdminRequest {
 }
 
 /**
- * Error message model
- */
-export interface ErrorMessage {
-  description?: string;
-  message?: string;
-  statusCode?: number;
-  timestamp?: string;
-}
-
-/**
  * JWT Response
  */
 export interface JwtResponse {
@@ -110,6 +100,16 @@ export interface JwtResponse {
   refreshToken: string;
   /** Username */
   username: string;
+}
+
+/**
+ * Error message model
+ */
+export interface ErrorMessage {
+  description?: string;
+  message?: string;
+  statusCode?: number;
+  timestamp?: string;
 }
 
 export interface SignUpRequest {

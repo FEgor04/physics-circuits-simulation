@@ -41,6 +41,17 @@ public class SchemeMapper {
         );
     }
 
+    public SchemeResponse toResponseWithoutUsername(Scheme scheme) {
+        return new SchemeResponse(
+                scheme.getId(),
+                scheme.getName(),
+                scheme.isEmbedded(),
+                userMapper.toDto(scheme.getAuthor()).getName(),
+                false,
+                toDto(electricalComponentService.getBySchemeId(scheme.getId()))
+        );
+    }
+
     public List<ElectricalComponentDto> toDto(List<ElectricalComponent> list) {
         return list.stream().map(x -> {
             var electricalComponentDto = new ElectricalComponentDto();
