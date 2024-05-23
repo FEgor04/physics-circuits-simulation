@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, Save } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { CanvasPanel } from "@/widgets/canvas";
@@ -86,6 +86,8 @@ export function Simulation({ mode, setMode, scheme: initialScheme }: Props) {
                         selectedComponent?._type == "rheostat" && <RheostatKnob component={selectedComponent} />
                       )}
                       <Button
+                        size="icon"
+                        className="aspect-square w-full"
                         onClick={() => {
                           const toastId = toast.loading("Сохраняем схему...");
                           mutate(
@@ -105,8 +107,7 @@ export function Simulation({ mode, setMode, scheme: initialScheme }: Props) {
                         }}
                         disabled={isPending || !scheme.canEdit}
                       >
-                        {isPending && <RotateCcw className="mr-2 size-4 animate-spin" />}
-                        Сохранить
+                        {isPending ? <RotateCcw className="animate-spin" /> : <Save />}
                       </Button>
                     </div>
                     <ResizableHandle />
