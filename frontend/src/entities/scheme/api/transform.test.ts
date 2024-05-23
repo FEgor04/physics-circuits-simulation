@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { SourceDC, WithID } from "@/shared/simulation";
-import { componentFromDTO } from "./transform";
+import { Rheostat, SourceDC, WithID } from "@/shared/simulation";
+import { componentFromDTO, componentToDTO } from "./transform";
 
 describe("fromDTO function", () => {
   it("correctly parses SOURCE_DC", () => {
@@ -34,5 +34,26 @@ describe("fromDTO function", () => {
       },
     };
     expect(componentFromDTO(source)).toStrictEqual(expected);
+  });
+
+  it("correctly parses rheostat", () => {
+    const from: WithID<Rheostat> = {
+      id: 1,
+      _type: "rheostat",
+      resistance: 5,
+      a: {
+        x: -1,
+        y: 7,
+      },
+      b: {
+        x: -2,
+        y: 7,
+      },
+    };
+    const dto = componentToDTO(from);
+    expect(dto.type).toBe("RHEOSTAT");
+    expect(dto.resistance).toBe(5);
+    const actual = componentFromDTO(dto);
+    expect(actual).toStrictEqual(from);
   });
 });
