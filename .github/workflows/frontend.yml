@@ -57,3 +57,20 @@ jobs:
       run: npm install -g pnpm && pnpm install
     - name: Build
       run: pnpm run build
+  docker:
+    defaults:
+      run:
+        working-directory: ./frontend
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Docker Login
+        run: docker login ${{ secrets.REGISTRY_URI }} -u ${{ secrets.REGISTRY_KEYID }} -p ${{ secrets.REGISTRY_KEY_SECRET }}
+      - name: Build Docker Image
+        run: docker build --tag ${{ secrets.REGISTRY_URI }}/frontend:${{ github.sha }} .
+      - name: Push Docker Image to Registry
+        run: docker push ${{ secrets.REGISTRY_URI  }}/frontend:${{ github.sha }}
