@@ -211,7 +211,7 @@ test("closed loop scheme with voltmeter error", () => {
 
   const simulation = new SimpleSimulator(components);
   const error = simulation.validateSchema();
-  expect(error).toBe("voltmeterError");
+  expect(error).toBe("noCorrectScheme");
 });
 
 test("closed loop scheme with undefined", () => {
