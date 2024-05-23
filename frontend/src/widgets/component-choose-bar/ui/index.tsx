@@ -22,7 +22,7 @@ export function ComponentChooseBar() {
       order={1}
       data-testid="components-choose-bar"
     >
-      <div className="flex flex-row flex-wrap content-start items-center justify-around">
+      <div className="grid grid-cols-1 gap-4 px-1 content-center">
         <Item<Resistor> type="resistor" defaultValues={{ resistance: 10 }} src={resistorSvg} />
         <Item<SourceDC>
           type="sourceDC"

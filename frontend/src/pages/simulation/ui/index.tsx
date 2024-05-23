@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, Save } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { CanvasPanel } from "@/widgets/canvas";
@@ -41,6 +41,7 @@ export function Simulation({ mode, setMode, scheme: initialScheme }: Props) {
 
   const { mutate, isPending } = useUpdateSchemeMutation();
 
+
   const [selected, setSelected] = useState<SelectComponentState["selected"]>(undefined);
   const selectedComponent = useMemo(() => {
     if (selected?.type == "component") {
@@ -81,6 +82,8 @@ export function Simulation({ mode, setMode, scheme: initialScheme }: Props) {
                     <div className="space-y-8 border-r-4 bg-white p-4">
                       {mode == "editing" && <ComponentChooseBar />}
                       <Button
+                        size="icon"
+                        className="aspect-square w-full"
                         onClick={() => {
                           const toastId = toast.loading("Сохраняем схему...");
                           mutate(
@@ -100,8 +103,7 @@ export function Simulation({ mode, setMode, scheme: initialScheme }: Props) {
                         }}
                         disabled={isPending}
                       >
-                        {isPending && <RotateCcw className="mr-2 size-4 animate-spin" />}
-                        Сохранить
+                        {isPending ? <RotateCcw className="animate-spin" /> : <Save />}
                       </Button>
                     </div>
                     <ResizableHandle />
