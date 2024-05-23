@@ -41,7 +41,6 @@ export function Simulation({ mode, setMode, scheme: initialScheme }: Props) {
 
   const { mutate, isPending } = useUpdateSchemeMutation();
 
-
   const [selected, setSelected] = useState<SelectComponentState["selected"]>(undefined);
   const selectedComponent = useMemo(() => {
     if (selected?.type == "component") {
