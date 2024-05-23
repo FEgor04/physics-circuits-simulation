@@ -15,12 +15,12 @@ type Props = {
 export function SchemesPage({ schemes: initialSchemes }: Props) {
   const { data: schemes } = useSuspenseQuery({ ...getSchemesQueryOptions(), initialData: initialSchemes });
   return (
-    <div className="container mx-auto mt-8">
+    <div className="container mx-auto my-8 space-y-4">
       <div className="flex flex-col items-start gap-4 md:flex-row md:justify-between">
         <h3 className="text-2xl font-bold">Ваши схемы</h3>
         <CreateSchemeButton />
       </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
         {schemes.map((scheme) => (
           <SchemeCard
             key={scheme.id}
