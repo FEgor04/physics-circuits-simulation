@@ -59,6 +59,8 @@ export function SVGRenderer<T extends ElectricalComponentWithID>({ component, sr
     getMeasurement(component.id) !== undefined
   ) {
     const measure = getMeasurement(component.id) ?? 0;
+    const units = component._type == "voltmeter" ? "В" : "А";
+    const measureStr = measure != Infinity ? `${Math.round((measure ?? 0) * 100) / 100} ${units}` : "Inf";
     return (
       <svg
         x={aTransformed.x + (transform?.x ?? 0)}
@@ -84,7 +86,7 @@ export function SVGRenderer<T extends ElectricalComponentWithID>({ component, sr
           dominantBaseline={"middle"}
           fontWeight={700}
         >
-          {measure != Infinity ? Math.round((measure ?? 0) * 100) / 100 : "Inf"}
+          {measureStr}
         </text>
       </svg>
     );
