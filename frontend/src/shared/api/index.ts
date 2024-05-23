@@ -6,6 +6,7 @@
  * OpenAPI spec version: 1.0.0
  */
 import type {
+  DeletePermissionsRequest,
   GetAllUsersPermissions,
   GetUserResponse,
   GetUsersPermissionsResponse,
@@ -68,7 +69,7 @@ export const setPermissionsByIdScheme = (
 
 export const deletePermissionsByIdScheme = (
   id: number,
-  setPermissionsRequest: SetPermissionsRequest[],
+  deletePermissionsRequest: DeletePermissionsRequest,
   options?: SecondParameter<typeof customInstance>,
 ) => {
   return customInstance<string>(
@@ -76,7 +77,7 @@ export const deletePermissionsByIdScheme = (
       url: `/api/schemes/${id}/permissions`,
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      data: setPermissionsRequest,
+      data: deletePermissionsRequest,
     },
     options,
   );
