@@ -7,7 +7,7 @@ export function RheostatKnob({ component }: { component: WithID<Rheostat> }) {
   const onUpdate = useOnUpdateComponent();
   return (
     <div className="space-y-4 p-4">
-      <h6>Реостат</h6>
+      <h6>Реостат </h6>
       <div className="space-y-2">
         <Label>Сопротивление: {component.resistance} Ом</Label>
         <Slider
