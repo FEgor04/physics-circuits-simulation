@@ -612,7 +612,7 @@ export class SimpleSimulator implements CircuitSimulator {
             (isBranch1VoltmeterWithOther && isBranch2OnlyAmpermeter) ||
             (isBranch2VoltmeterWithOther && isBranch1OnlyAmpermeter)
           ) {
-            return "voltmeterError";
+            return "noCorrectScheme";
           }
         }
       }
