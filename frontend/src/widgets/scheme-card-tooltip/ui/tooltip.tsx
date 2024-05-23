@@ -25,10 +25,10 @@ export function SchemeCardTooltip(props: Props) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onSelect={() => setShareOpen(true)}>
+          <DropdownMenuItem onSelect={() => setShareOpen(true)} disabled={!props.scheme.canEdit}>
             <Share2 className="mr-2 size-4" /> Поделиться
           </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => setRenameOpen(true)}>
+          <DropdownMenuItem onSelect={() => setRenameOpen(true)} disabled={!props.scheme.canEdit}>
             <PencilLine className="mr-2 size-4" />
             Переименовать
           </DropdownMenuItem>
@@ -51,7 +51,7 @@ function DeleteSchemeItem({ scheme }: Props) {
     mutate({ id: scheme.id });
   }
   return (
-    <DropdownMenuItem onClick={() => onClick()} disabled={isPending}>
+    <DropdownMenuItem onClick={() => onClick()} disabled={isPending || scheme.canEdit}>
       <Trash className="mr-2 size-4" /> Удалить
     </DropdownMenuItem>
   );

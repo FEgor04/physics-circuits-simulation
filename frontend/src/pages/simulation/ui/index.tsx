@@ -98,7 +98,7 @@ export function Simulation({ mode, setMode, scheme: initialScheme }: Props) {
                             },
                           );
                         }}
-                        disabled={isPending}
+                        disabled={isPending || !scheme.canEdit}
                       >
                         {isPending && <RotateCcw className="mr-2 size-4 animate-spin" />}
                         Сохранить
