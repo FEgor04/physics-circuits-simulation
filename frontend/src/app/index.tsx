@@ -4,7 +4,6 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { setupMocks } from "@/shared/mocks/browser";
 import { Toaster } from "@/shared/ui/sonner";
 import { routeTree } from "@/routeTree.gen";
 
@@ -18,13 +17,11 @@ declare module "@tanstack/react-router" {
   }
 }
 
-setupMocks().then(() =>
-  ReactDOM.createRoot(document.getElementById("root")!).render(
-    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-        <Toaster position="bottom-center" />
-      </QueryClientProvider>
-    </React.StrictMode>,
-  ),
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <Toaster position="bottom-center" />
+    </QueryClientProvider>
+  </React.StrictMode>,
 );
