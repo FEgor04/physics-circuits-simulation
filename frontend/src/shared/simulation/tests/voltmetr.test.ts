@@ -46,7 +46,7 @@ test("voltmetr test", () => {
       plus: { x: 6, y: 2 },
       minus: { x: 5, y: 1 },
       internalResistance: 5,
-      electromotiveForce: 40,
+      currentForce: 1,
       id: 22,
     },
 

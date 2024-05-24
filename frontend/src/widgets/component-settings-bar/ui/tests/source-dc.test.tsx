@@ -12,7 +12,7 @@ const setup = () => {
     id: 1,
     plus: { x: 0, y: 0 },
     minus: { x: 1, y: 0 },
-    electromotiveForce: 100,
+    currentForce: 10,
     internalResistance: 5,
   };
   const user = userEvent.setup();

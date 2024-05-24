@@ -91,7 +91,7 @@ test("re build test", () => {
       plus: { x: 5, y: 1 },
       minus: { x: 6, y: 2 },
       internalResistance: 5,
-      electromotiveForce: 40,
+      currentForce: 1,
       id: 22,
     },
     { _type: "wire", a: { x: 5, y: 1 }, b: { x: 4, y: 0 }, id: 13 },
@@ -129,7 +129,7 @@ test("re build test", () => {
       plus: { x: 5, y: 1 },
       minus: { x: 6, y: 2 },
       internalResistance: 5,
-      electromotiveForce: 40,
+      currentForce: 1,
       id: 22,
     },
     {

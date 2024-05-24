@@ -50,7 +50,7 @@ export type SourceDC = {
   _type: "sourceDC";
   plus: Point;
   minus: Point;
-  electromotiveForce: number;
+  currentForce: number;
   internalResistance: number;
 };
 export type Voltmeter = Omit<Wire, "_type"> & {
