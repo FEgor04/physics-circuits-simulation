@@ -38,7 +38,7 @@ jobs:
             git checkout main
             git pull
             git checkout ${{ github.event.release.tag_name }}
-            echo "VERSION=${{ github.event.release.tag_name }}" >> .env
+            echo "VERSION=${{ github.event.release.tag_name }}" > .env
             echo "REGISTRY=${{ secrets.REGISTRY_URI }}" >> .env
             docker compose -f traefik.docker-compose.yaml pull
             docker compose -f traefik.docker-compose.yaml up -d
