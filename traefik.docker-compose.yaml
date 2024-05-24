@@ -21,6 +21,7 @@ services:
       - traefik.enable=false
 
   app:
+    image: "${REGISTRY}/backend:${VERSION}"
     build:
       context: ./backend
     env_file: ./backend/.env
@@ -39,6 +40,7 @@ services:
       - traefik.enable=false
 
   front:
+    image: "${REGISTRY}/frontend:${VERSION}"
     build:
       context: ./frontend
     networks:
