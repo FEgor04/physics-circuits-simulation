@@ -4,18 +4,41 @@ on:
     types: [published]
 
 jobs:
+  docker:
+    name: Tag Docker Images
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker Login
+        run: docker login ${{ secrets.REGISTRY_URI }} -u ${{ secrets.REGISTRY_KEYID }} -p ${{ secrets.REGISTRY_KEY_SECRET }}
+      - name: Pull frontend image from registry
+        run: docker pull ${{ secrets.REGISTRY_URI }}/frontend:${{ github.sha }}
+      - name: Pull backend image from registry
+        run: docker pull ${{ secrets.REGISTRY_URI }}/backend:${{ github.sha }}
+      - name: Tag frontend image
+        run: docker tag ${{ secrets.REGISTRY_URI }}/frontend:${{ github.sha }} ${{ secrets.REGISTRY_URI }}/frontend:${{ github.event.release.tag_name }}
+      - name: Tag backend image
+        run: docker tag ${{ secrets.REGISTRY_URI }}/backend:${{ github.sha }} ${{ secrets.REGISTRY_URI }}/backend:${{ github.event.release.tag_name }}
+      - name: Push frontend image
+        run: docker push ${{ secrets.REGISTRY_URI }}/frontend:${{ github.event.release.tag_name }}
+      - name: Push backend image
+        run: docker tag ${{ secrets.REGISTRY_URI }}/backend:${{ github.event.release.tag_name }}
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-    - name: SSH to server, clone from git and re-deploy docker
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.DEPLOY_HOST }}
-        username: ${{ secrets.DEPLOY_USER }}
-        key: ${{ secrets.SSH_KEY }}
-        script: |
-          cd ${{ secrets.DEPLOY_DIRECTORY }}
-          git checkout main
-          git pull
-          docker compose -f traefik.docker-compose.yaml up -d --build
+      - name: SSH to server, clone from git and re-deploy docker
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ${{ secrets.DEPLOY_DIRECTORY }}
+            docker login ${{ secrets.REGISTRY_URI }} -u ${{ secrets.REGISTRY_KEYID }} -p ${{ secrets.REGISTRY_KEY_SECRET }}
+            git checkout main
+            git pull
+            git checkout ${{ github.event.release.tag_name }}
+            echo "VERSION=${{ github.event.release.tag_name }}" > .env
+            echo "REGISTRY=${{ secrets.REGISTRY_URI }}" >> .env
+            docker compose -f traefik.docker-compose.yaml pull
+            docker compose -f traefik.docker-compose.yaml up -d
