@@ -577,6 +577,11 @@ export class SimpleSimulator implements CircuitSimulator {
   validateSchema(): keyof typeof schemaErrors | undefined {
     const adjacencyList: Map<string, Set<string>> = new Map();
 
+    const nodes = this.findNodes();
+    if (nodes.length == 0) {
+      return "noCorrectScheme";
+    }
+
     const branches = this.findBranches();
     for (const branch of branches) {
       let v = 0;

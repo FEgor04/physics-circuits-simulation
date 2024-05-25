@@ -44,7 +44,7 @@ test("open loop", () => {
 
   const simulation = new SimpleSimulator(components);
   const error = simulation.validateSchema();
-  expect(error).toBe("noClosedLoop");
+  expect(error).toBe("noCorrectScheme");
 });
 
 test("closed loop with not connected wire", () => {
@@ -87,7 +87,7 @@ test("empty scheme", () => {
 
   const simulation = new SimpleSimulator(components);
   const error = simulation.validateSchema();
-  expect(error).toBe("noClosedLoop");
+  expect(error).toBe("noCorrectScheme");
 });
 
 test("closed loop big scheme", () => {
@@ -249,4 +249,30 @@ test("closed loop scheme with undefined", () => {
 
   const error = simulation.validateSchema();
   expect(error).toBe(undefined);
+});
+
+test("closed loop without nodes", () => {
+  const components: ElectricalComponentWithID[] = [
+    { id: 0, _type: "wire", a: { x: 0, y: 0 }, b: { x: 1, y: 0 } },
+    { _type: "resistor", a: { x: 1, y: 0 }, b: { x: 2, y: 0 }, resistance: 7, id: 1 },
+    { id: 2, _type: "wire", a: { x: 2, y: 0 }, b: { x: 3, y: 0 } },
+
+    { id: 3, _type: "wire", a: { x: 3, y: 0 }, b: { x: 3, y: 1 } },
+
+    { id: 4, _type: "wire", a: { x: 3, y: 1 }, b: { x: 2, y: 1 } },
+
+    { id: 5, _type: "wire", a: { x: 2, y: 1 }, b: { x: 1, y: 1 } },
+
+    { id: 6, _type: "wire", a: { x: 1, y: 1 }, b: { x: 0, y: 1 } },
+
+    { id: 7, _type: "wire", a: { x: 0, y: 1 }, b: { x: 0, y: 0 } },
+  ];
+
+  const simulation = new SimpleSimulator(components);
+
+  const nodes = simulation.findNodes();
+  console.log(nodes);
+
+  const error = simulation.validateSchema();
+  expect(error).toBe("noCorrectScheme");
 });
