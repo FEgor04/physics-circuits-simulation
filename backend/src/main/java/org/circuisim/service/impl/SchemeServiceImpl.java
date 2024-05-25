@@ -137,7 +137,7 @@ public class SchemeServiceImpl implements SchemeService {
 
     @Override
     public void deleteById(Long id) {
-        schemeRepository.deleteById(id);
+        schemeRepository.deleteSchemeAndComponents(id);
     }
 
     @Override
