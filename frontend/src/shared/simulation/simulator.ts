@@ -79,15 +79,7 @@ export class SimpleSimulator implements CircuitSimulator {
         nodes.push(nodeMap[key].loc);
       }
     }
-    if (nodes.length == 0) {
-      for (const element of this.components) {
-        if (element._type == "wire") {
-          nodes.push(element.a);
-          nodes.push(element.b);
-          break;
-        }
-      }
-    }
+
     return nodes;
   }
 
