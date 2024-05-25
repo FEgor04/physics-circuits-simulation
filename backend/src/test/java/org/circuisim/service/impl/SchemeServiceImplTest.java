@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -27,8 +28,9 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
+@SpringBootTest
+@AutoConfigureMockMvc
 @RequiredArgsConstructor
-@SpringBootTest(classes = {BackendApplication.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class SchemeServiceImplTest {
 
