@@ -51,10 +51,13 @@ class SchemesControllerTest {
 
     @BeforeAll
     static void setUpOnce(@Autowired UserService userService, @Autowired SchemeService schemeService) {
-        mockUser = new User(2L, "test1", "test@example.com", "123", Set.of(Role.USER));
         userService.create(new UserDto(null, "test1", "test@example.com", "123"));
+
+        mockUser = userService.getByEmail("test@example.com");
+
         Scheme scheme = new Scheme(1L, "Test scheme", false, mockUser, new HashSet<>(), new HashSet<>());
         Scheme schemeWithEmbeddedStatus = new Scheme(2L, "Test scheme", true, mockUser, new HashSet<>(), new HashSet<>());
+
         schemeService.save(scheme);
         schemeService.save(schemeWithEmbeddedStatus);
     }
