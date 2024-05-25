@@ -42,7 +42,7 @@ export function UpdateSourceDC({ defaultValue }: Props) {
           name="electromotiveForce"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Электродвижущая сила</FormLabel>
+              <FormLabel>Сила тока</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>

@@ -119,7 +119,7 @@ test("closed loop big scheme", () => {
       plus: { x: 5, y: 1 },
       minus: { x: 6, y: 2 },
       internalResistance: 5,
-      electromotiveForce: 40,
+      currentForce: 1,
       id: 22,
     },
     {
@@ -160,7 +160,7 @@ test("closed loop scheme with 2 circuit", () => {
       plus: { x: 2, y: 2 },
       minus: { x: 8, y: 2 },
       internalResistance: 5,
-      electromotiveForce: 12,
+      currentForce: 1,
     },
     { id: 5, _type: "ampermeter", a: { x: 8, y: 2 }, b: { x: 8, y: 8 }, currency: 5 },
     { id: 6, _type: "wire", a: { x: 8, y: 8 }, b: { x: 2, y: 8 } },

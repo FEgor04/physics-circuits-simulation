@@ -266,12 +266,23 @@ export class SimpleSimulator implements CircuitSimulator {
     let voltage = 0;
 
     for (const component of branch.components) {
-      if (component._type === "source" || component._type === "sourceDC") {
+      if (component._type === "source") {
         voltage = component.electromotiveForce;
       }
     }
 
     return voltage;
+  }
+  private findCurrentOfBranch(branch: Branch): number {
+    let current = 0;
+
+    for (const component of branch.components) {
+      if (component._type === "sourceDC") {
+        current = component.currentForce;
+      }
+    }
+
+    return current;
   }
 
   public findCurrentForce(nodes: Array<Point>, branches: Branch[]): number[] {
@@ -290,18 +301,34 @@ export class SimpleSimulator implements CircuitSimulator {
         if (branchesDirection[j] != 0) {
           const resistance = this.sumResistanceOfBranchForCurrentForse(tempBranch);
           const voltage = this.findVoltageOfBranch(tempBranch);
-
-          if (branchesDirection[j] == 1) {
-            if (pointsEqual(tempNode, tempBranch.a)) {
-              nodeCurrent += -voltage / resistance;
-            } else if (pointsEqual(tempNode, tempBranch.b)) {
-              nodeCurrent += voltage / resistance;
+          const current: number = this.findCurrentOfBranch(tempBranch);
+          if (current == 0) {
+            if (branchesDirection[j] == 1) {
+              if (pointsEqual(tempNode, tempBranch.a)) {
+                nodeCurrent += -voltage / resistance;
+              } else if (pointsEqual(tempNode, tempBranch.b)) {
+                nodeCurrent += voltage / resistance;
+              }
+            } else {
+              if (pointsEqual(tempNode, tempBranch.a)) {
+                nodeCurrent += voltage / resistance;
+              } else if (pointsEqual(tempNode, tempBranch.b)) {
+                nodeCurrent += -voltage / resistance;
+              }
             }
           } else {
-            if (pointsEqual(tempNode, tempBranch.a)) {
-              nodeCurrent += voltage / resistance;
-            } else if (pointsEqual(tempNode, tempBranch.b)) {
-              nodeCurrent += -voltage / resistance;
+            if (branchesDirection[j] == 1) {
+              if (pointsEqual(tempNode, tempBranch.a)) {
+                nodeCurrent += -current;
+              } else if (pointsEqual(tempNode, tempBranch.b)) {
+                nodeCurrent += current;
+              }
+            } else {
+              if (pointsEqual(tempNode, tempBranch.a)) {
+                nodeCurrent += current;
+              } else if (pointsEqual(tempNode, tempBranch.b)) {
+                nodeCurrent += -current;
+              }
             }
           }
         }

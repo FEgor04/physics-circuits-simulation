@@ -23,7 +23,7 @@ describe("fromDTO function", () => {
       id: 1,
       _type: "sourceDC",
       internalResistance: 5,
-      electromotiveForce: 20,
+      currentForce: 1,
       plus: {
         x: -1,
         y: 7,

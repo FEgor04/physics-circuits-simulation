@@ -8,14 +8,14 @@ import { Button } from "@/shared/ui/button";
 import { UpdateComponentProvider } from "../../model/provider";
 import { UpdateSourceDC } from "../source-dc";
 
-function createSourceDC(internalResistance: number = 5, electromotiveForce: number = 100): WithID<SourceDC> {
+function createSourceDC(internalResistance: number = 5, currentForce: number = 100): WithID<SourceDC> {
   return {
     id: 1,
     _type: "sourceDC",
     plus: { x: 0, y: 0 },
     minus: { x: 1, y: 0 },
     internalResistance,
-    electromotiveForce,
+    currentForce,
   };
 }
 
