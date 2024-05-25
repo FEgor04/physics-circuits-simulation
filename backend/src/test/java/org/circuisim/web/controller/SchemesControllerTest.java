@@ -4,8 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.circuisim.domain.Role;
 import org.circuisim.domain.User;
 import org.circuisim.domain.simulation.Scheme;
+import org.circuisim.service.AuthService;
 import org.circuisim.service.SchemeService;
+import org.circuisim.service.UserService;
+import org.circuisim.web.dto.UserDto;
+import org.circuisim.web.dto.auth.JwtRequest;
 import org.circuisim.web.responseRecord.SchemeResponse;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +26,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -33,17 +39,25 @@ class SchemesControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
+    private AuthService authService;
+
+    @Autowired
     private SchemeService schemeService;
 
-    @BeforeEach
-    void setUp() {
-        User mockUser = new User(1L, "test1", "test@example.com", "123", Set.of(Role.USER));
+    static User mockUser;
+
+    @BeforeAll
+    static void setUpOnce(@Autowired UserService userService, @Autowired SchemeService schemeService) {
+        mockUser = new User(2L, "test1", "test@example.com", "123", Set.of(Role.USER));
+        userService.create(new UserDto(null, "test1", "test@example.com", "123"));
         Scheme scheme = new Scheme(1L, "Test scheme", false, mockUser, new HashSet<>(), new HashSet<>());
         Scheme schemeWithEmbeddedStatus = new Scheme(2L, "Test scheme", true, mockUser, new HashSet<>(), new HashSet<>());
         schemeService.save(scheme);
         schemeService.save(schemeWithEmbeddedStatus);
     }
-
 
     @Test
     void getSchemeByIdWithoutJWT_shouldReturn401Status() throws Exception {
@@ -55,5 +69,14 @@ class SchemesControllerTest {
     void getEmbeddedSchemeByIdWithoutJWT_shouldReturnScheme() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.
                 get("/api/schemes/2")).andExpect(status().is(200));
+    }
+
+    @Test
+    void getEmbeddedSchemeByIdWithJWT_shouldReturnScheme() throws Exception {
+        var token = this.authService.login(new JwtRequest(mockUser.getUsername(), "123"));
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/schemes/1")
+                        .header("Authorization", "Bearer " + token.getAccessToken()))
+                .andExpect(status().is(200));
     }
 }
