@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
@@ -28,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RequiredArgsConstructor
 @SpringBootTest(classes = {BackendApplication.class})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class SchemeServiceImplTest {
 
     @Autowired
