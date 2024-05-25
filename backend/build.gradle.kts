@@ -37,7 +37,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
 
     // https://mvnrepository.com/artifact/com.h2database/h2
-    testImplementation("com.h2database:h2:1.3.148")
+    testImplementation("com.h2database:h2:2.2.220")
 }
 
 tasks.test {
