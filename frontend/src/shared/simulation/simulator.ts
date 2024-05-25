@@ -572,13 +572,21 @@ export class SimpleSimulator implements CircuitSimulator {
   validateSchema(): keyof typeof schemaErrors | undefined {
     const adjacencyList: Map<string, Set<string>> = new Map();
 
+    const components = this.components;
+    if (components.length == 0) {
+      return "emptyScheme";
+    }
+
     const nodes = this.findNodes();
     if (nodes.length == 0) {
-      return "noCorrectScheme";
+      return "noNodes";
     }
 
     const branches = this.findBranches();
     for (const branch of branches) {
+      if (hasOnlyWire(branch.components)) {
+        return "idealWire";
+      }
       let v = 0;
       let a = 0;
       for (const comp of branch.components) {
@@ -603,6 +611,10 @@ export class SimpleSimulator implements CircuitSimulator {
         (a1.x === a2.x && a1.y === a2.y && b1.x === b2.x && b1.y === b2.y) ||
         (a1.x === b2.x && a1.y === b2.y && b1.x === a2.x && b1.y === a2.y)
       );
+    }
+
+    function hasOnlyWire(components: ElectricalComponentWithID[]): boolean {
+      return components.every((component) => component._type === "wire");
     }
 
     function hasOnlyVoltmeterAndWire(components: ElectricalComponentWithID[]): boolean {
