@@ -1,8 +1,7 @@
-import { componentFromDTO, componentToDTO } from "@/entities/scheme/api/transform";
-import { ElectricalComponentDto } from "@/shared/api/index.schemas";
-import { ElectricalComponentWithID } from "@/shared/simulation";
 import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { componentFromDTO } from "@/entities/scheme";
+import { ElectricalComponentDto } from "@/shared/api/index.schemas";
 import { useSimulationState } from "../model/state";
 
 describe("scheme rebuild", () => {
