@@ -23,7 +23,8 @@ type SimulationState = {
 export function useSimulationState(components: Array<ElectricalComponentWithID>): SimulationState {
   const [schema, setSchema] = useState(components);
   const simulator = useMemo(() => {
-    return new SimpleSimulator(schema);
+    const schemaCopy = schema.map((it) => ({ ...it }));
+    return new SimpleSimulator(schemaCopy);
   }, [schema]);
   const errors = useMemo(() => {
     return simulator.validateSchema();
