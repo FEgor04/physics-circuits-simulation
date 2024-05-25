@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { schemaErrors } from "@/shared/simulation/errors";
+import { pointsEqual } from "@/shared/simulation/lib";
 import { SimpleSimulator } from "@/shared/simulation/simulator";
 import {
   ElectricalComponent,
@@ -33,11 +34,14 @@ export function useSimulationState(components: Array<ElectricalComponentWithID>)
     simulator,
     components: schema,
     onAddComponent: function (newComponent: ElectricalComponent): ElectricalComponentWithID {
-      let id = 0;
+      let id = -1;
       setSchema((old) => {
         id = (old.length ? old.map((it) => it.id).sort((a, b) => b - a)[0] : 0) + 1;
 
         if (newComponent._type === "wire") {
+          if (pointsEqual(newComponent.a, newComponent.b)) {
+            return old;
+          }
           const intermediatePoints: Point[] = findIntermediatePoints(newComponent.a, newComponent.b);
 
           if (intermediatePoints.length > 0) {
