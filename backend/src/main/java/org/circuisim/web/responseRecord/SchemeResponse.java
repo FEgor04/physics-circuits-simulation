@@ -9,7 +9,7 @@ import java.util.List;
 @Schema(description = "Response for getting scheme details", accessMode = Schema.AccessMode.READ_ONLY)
 public record SchemeResponse(
         @Schema(description = "Scheme id", example = "1") @NotNull Long id,
-        @Schema(description = "Scheme id", example = "Physics") @NotNull String name,
+        @Schema(description = "Scheme name", example = "Physics") @NotNull String name,
         @Schema(description = "Embedded status", example = "True") @NotNull boolean isEmbedded,
         @Schema(description = "Scheme author name", example = "test@gmail.com") @NotNull String authorName,
         @Schema(description = "User permission", example = "true") @NotNull boolean canEdit,
