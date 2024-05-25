@@ -79,11 +79,16 @@ public class SchemesController {
     @PutMapping("{id}")
     public ResponseEntity<String> updateScheme(
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
-            @RequestBody SchemeUpdateRequest schemeUpdateRequest
+            @RequestBody SchemeUpdateRequest schemeUpdateRequest,
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        schemeService.updateSchemeName(schemeUpdateRequest.schemeName(), id);
-        schemeService.updateSchemeEmbeddedStatus(schemeUpdateRequest.isEmbedded(), id);
-        electricalComponentService.updateComponents(schemeUpdateRequest.electricalComponentDto(), id);
+        if (schemeService.checkAccessByUsername(userDetails.getUsername(), id)) {
+            schemeService.updateSchemeName(schemeUpdateRequest.schemeName(), id);
+            schemeService.updateSchemeEmbeddedStatus(schemeUpdateRequest.isEmbedded(), id);
+            electricalComponentService.updateComponents(schemeUpdateRequest.electricalComponentDto(), id);
+        } else {
+            throw new AccessDeniedException();
+        }
         return ResponseEntity.noContent().build();
     }
 

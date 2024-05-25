@@ -165,6 +165,13 @@ public class SchemeServiceImpl implements SchemeService {
         return list;
     }
 
+    @Override
+    public boolean checkAccessByUsername(String username, Long schemeId) {
+        var user = userService.getByEmail(username);
+        var scheme = getById(schemeId);
+        return scheme.getRedactors().contains(user) || scheme.getAuthor().getUsername().equals(username);
+    }
+
     private boolean checkAccessSchemeForUser(Scheme scheme, User user) {
         return scheme.isEmbedded() ||
                 scheme.getRedactors().contains(user) ||
