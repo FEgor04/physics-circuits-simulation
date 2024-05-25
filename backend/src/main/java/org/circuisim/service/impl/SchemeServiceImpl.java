@@ -137,7 +137,7 @@ public class SchemeServiceImpl implements SchemeService {
 
     @Override
     public void deleteById(Long id) {
-        schemeRepository.deleteById(id);
+        schemeRepository.deleteSchemeAndComponents(id);
     }
 
     @Override
@@ -163,6 +163,13 @@ public class SchemeServiceImpl implements SchemeService {
         var list = createUserResponseListWithPermissionVIEW(users);
         list.addAll(createUserResponseListWithPermissionEDIT(scheme.getRedactors()));
         return list;
+    }
+
+    @Override
+    public boolean checkAccessByUsername(String username, Long schemeId) {
+        var user = userService.getByEmail(username);
+        var scheme = getById(schemeId);
+        return scheme.getRedactors().contains(user) || scheme.getAuthor().getUsername().equals(username);
     }
 
     private boolean checkAccessSchemeForUser(Scheme scheme, User user) {

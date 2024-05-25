@@ -15,7 +15,6 @@ import java.util.List;
 public interface SchemeService {
     Scheme getByIdAndWithoutUserDetails(Long id);
 
-
     Scheme save(Scheme scheme);
 
     Scheme create(SchemeCreateRequest schemeCreateRequest, UserDetails userDetails);
@@ -39,4 +38,6 @@ public interface SchemeService {
     void updateSchemeEmbeddedStatus(boolean newEmbedded, Long schemeId);
 
     List<UserPermissionResponse> getAllUsersPermissionsBySchemeId(String username, Long id);
+
+    boolean checkAccessByUsername(String username, Long schemeId);
 }

@@ -24,6 +24,8 @@ public class Scheme {
     @ManyToOne
     private User author;
 
+
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "schemes_redactors",
             joinColumns = @JoinColumn(name = "scheme_id"),
