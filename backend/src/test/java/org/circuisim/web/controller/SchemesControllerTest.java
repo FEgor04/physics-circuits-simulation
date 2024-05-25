@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -54,6 +55,7 @@ class SchemesControllerTest {
 
 
     static User mockUser;
+    static User mockViewerUser;
     static User mockUserRedactor;
     static User mockEmptyUser;
 
@@ -62,15 +64,19 @@ class SchemesControllerTest {
         userService.create(new UserDto(null, "test1", "test@example.com", "123"));
         userService.create(new UserDto(null, "redactor", "redactor@example.com", "123"));
         userService.create(new UserDto(null, "empty", "empty@example.com", "123"));
+        userService.create(new UserDto(null, "viewer", "viewer@example.com", "123"));
 
         mockUser = userService.getByEmail("test@example.com");
         mockUserRedactor = userService.getByEmail("redactor@example.com");
         mockEmptyUser = userService.getByEmail("empty@example.com");
+        mockViewerUser = userService.getByEmail("viewer@example.com");
 
+        Set<User> viewers = new HashSet<>();
+        viewers.add(mockViewerUser);
         Set<User> redactors = new HashSet<>();
         redactors.add(mockUserRedactor);
 
-        Scheme scheme = new Scheme(1L, "Test scheme", false, mockUser, redactors, new HashSet<>());
+        Scheme scheme = new Scheme(1L, "Test scheme", false, mockUser, redactors, viewers);
         Scheme schemeWithEmbeddedStatus = new Scheme(2L, "Test scheme2", true, mockUser, new HashSet<>(), new HashSet<>());
 
         schemeService.save(scheme);
@@ -80,22 +86,60 @@ class SchemesControllerTest {
     @Test
     void getSchemeByIdWithoutJWT_shouldReturn401Status() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.
-                get("/api/schemes/1")).andExpect(status().is(401));
+                        get("/api/schemes/1"))
+                .andExpect(status().is(401));
     }
 
     @Test
-    void getEmbeddedSchemeByIdWithoutJWT_shouldReturnScheme() throws Exception {
+    void getEmbeddedSchemeByIdWithoutJWT_shouldReturnCorrectScheme() throws Exception {
+        SchemeResponse schemeResponse = new SchemeResponse(2L,
+                "Test scheme2",
+                true,
+                "test1",
+                false,
+                new ArrayList<>()
+        );
+        var json = mapper.writeValueAsString(schemeResponse);
         mockMvc.perform(MockMvcRequestBuilders.
-                get("/api/schemes/2")).andExpect(status().is(200));
+                        get("/api/schemes/2")).andExpect(status().is(200))
+                .andExpect(content().json(json));
+
     }
 
     @Test
-    void getEmbeddedSchemeByIdWithJWT_shouldReturnScheme() throws Exception {
+    void getEmbeddedByIdWithRedactorJWT_shouldReturnSchemeWithTrueCanEditStatus() throws Exception {
+        SchemeResponse schemeResponse = new SchemeResponse(1L,
+                "Test scheme",
+                false,
+                "test1",
+                true,
+                new ArrayList<>()
+        );
+        var json = mapper.writeValueAsString(schemeResponse);
         var token = this.authService.login(new JwtRequest(mockUser.getUsername(), "123"));
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/schemes/1")
                         .header("Authorization", "Bearer " + token.getAccessToken()))
-                .andExpect(status().is(200));
+                .andExpect(status().is(200))
+                .andExpect(content().json(json));
+    }
+
+    @Test
+    void getSchemeByIdWithViewerJWT_shouldReturnSchemeWithFalseCanEditStatus() throws Exception {
+        SchemeResponse schemeResponse = new SchemeResponse(1L,
+                "Test scheme",
+                false,
+                "test1",
+                false,
+                new ArrayList<>()
+        );
+        var json = mapper.writeValueAsString(schemeResponse);
+        var token = this.authService.login(new JwtRequest(mockViewerUser.getUsername(), "123"));
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/schemes/1")
+                        .header("Authorization", "Bearer " + token.getAccessToken()))
+                .andExpect(status().is(200))
+                .andExpect(content().json(json));
     }
 
     @Test
@@ -112,7 +156,7 @@ class SchemesControllerTest {
     }
 
     @Test
-    void newUserUpdateScheme_shouldReturn401StatusCode() throws Exception {
+    void newUserUpdateScheme_shouldReturn403StatusCode() throws Exception {
         var request = new SchemeUpdateRequest("Test scheme", false, new ArrayList<>());
         var json = mapper.writeValueAsString(request);
 
