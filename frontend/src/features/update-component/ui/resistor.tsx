@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Resistor, WithID } from "@/shared/simulation";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/shared/ui/form";
@@ -29,6 +30,7 @@ export function UpdateResistor({ defaultValue }: Props) {
 
   function onSubmit(values: z.infer<typeof schema>) {
     onUpdate({ ...defaultValue, ...values });
+    toast.success("Резистор сохранен!");
   }
 
   return (

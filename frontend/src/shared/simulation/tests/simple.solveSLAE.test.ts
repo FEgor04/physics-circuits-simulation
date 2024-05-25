@@ -3,7 +3,7 @@ import { SimpleSimulator } from "../simulator";
 import { ElectricalComponentWithID } from "../types";
 
 test("solve slae test", () => {
-  const expectedAcrSolve: number[] = [-9.157566302652105, 0.29641185647425866, 0];
+  const expectedAcrSolve: number[] = [-9.414976599063962, -0.23066636951192382, 0];
   const actualNodes = [
     { x: 0, y: 5 },
     { x: 4, y: 0 },
@@ -43,7 +43,7 @@ test("solve slae test", () => {
       plus: { x: 6, y: 2 },
       minus: { x: 5, y: 1 },
       internalResistance: 5,
-      electromotiveForce: 40,
+      currentForce: 1,
       id: 22,
     },
 

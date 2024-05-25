@@ -19,7 +19,6 @@ describe("canvas", () => {
           onAddComponent={console.log}
           onUpdateComponent={console.log}
           onUpdateComponentCoords={console.log}
-          canvasSize={100}
         />
       </SelectComponentProvider>,
     );
@@ -37,7 +36,6 @@ describe("canvas", () => {
           onAddComponent={console.log}
           onUpdateComponent={console.log}
           onUpdateComponentCoords={console.log}
-          canvasSize={100}
         />
       </SelectComponentProvider>,
     );
@@ -54,7 +52,6 @@ describe("canvas", () => {
           onAddComponent={console.log}
           onUpdateComponent={console.log}
           onUpdateComponentCoords={console.log}
-          canvasSize={100}
         />
       </SelectComponentProvider>,
     );

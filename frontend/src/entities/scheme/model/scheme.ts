@@ -8,4 +8,5 @@ export type Scheme = {
   authorName: string;
   canEdit: boolean;
   components: Array<ElectricalComponentWithID>;
+  isEmbedded: boolean;
 };

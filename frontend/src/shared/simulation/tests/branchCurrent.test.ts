@@ -9,7 +9,7 @@ test("branch current test", () => {
     1.831513260530421,
     Infinity,
     0.93603744149766,
-    0.8823019587450165,
+    0.006586930143872414,
   ];
 
   const actualNodes = [
@@ -53,7 +53,7 @@ test("branch current test", () => {
       plus: { x: 5, y: 1 },
       minus: { x: 6, y: 2 },
       internalResistance: 5,
-      electromotiveForce: 40,
+      currentForce: 1,
       id: 22,
     },
     {

@@ -29,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @RequiredArgsConstructor
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class JwtFilterTest {
     @Autowired
     private MockMvc mockMvc;

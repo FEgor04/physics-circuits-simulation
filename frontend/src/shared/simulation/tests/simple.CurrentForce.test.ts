@@ -3,7 +3,7 @@ import { SimpleSimulator } from "../simulator";
 import { Branch, ElectricalComponentWithID } from "../types";
 
 test("current force test", () => {
-  const expectedCurrentVector: number[] = [-3.6363636363636362, 1.797979797979798];
+  const expectedCurrentVector: number[] = [-3.6363636363636362, 1.9090909090909092];
   const actualNodes = [
     { x: 0, y: 5 },
     { x: 8, y: 5 },
@@ -63,7 +63,7 @@ test("current force test", () => {
           plus: { x: 6, y: 2 },
           minus: { x: 5, y: 1 },
           internalResistance: 5,
-          electromotiveForce: 40,
+          currentForce: 1,
           id: 22,
         },
 
@@ -105,7 +105,7 @@ test("current force test", () => {
 });
 
 test("current force test 2", () => {
-  const expectedCurrentVector: number[] = [-3.6363636363636362, 1.8383838383838382];
+  const expectedCurrentVector: number[] = [-3.6363636363636362, 1.727272727272727];
   const actualNodes = [
     { x: 0, y: 5 },
     { x: 4, y: 0 },
@@ -146,7 +146,7 @@ test("current force test 2", () => {
       plus: { x: 6, y: 2 },
       minus: { x: 5, y: 1 },
       internalResistance: 5,
-      electromotiveForce: 40,
+      currentForce: 1,
       id: 22,
     },
 

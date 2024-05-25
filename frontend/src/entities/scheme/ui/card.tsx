@@ -1,14 +1,21 @@
 import { Link } from "@tanstack/react-router";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
-import { Skeleton } from "@/shared/ui/skeleton";
 import { Scheme } from "../model/scheme";
 
-export function SchemeCard({ scheme, tooltip }: { scheme: Scheme; tooltip: React.PropsWithChildren["children"] }) {
+export function SchemeCard({
+  scheme,
+  tooltip,
+  preview,
+}: {
+  scheme: Scheme;
+  tooltip: React.PropsWithChildren["children"];
+  preview: React.PropsWithChildren["children"];
+}) {
   return (
     <Card>
-      <div>
+      <div className="h-80">
         <Link to="/schemes/$scheme" params={{ scheme: String(scheme.id) }} search={{ mode: "editing" }}>
-          <Skeleton className="aspect-square w-full" />
+          {preview}
         </Link>
       </div>
       <CardHeader className="flex flex-row items-start justify-between">

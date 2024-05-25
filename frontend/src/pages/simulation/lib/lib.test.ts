@@ -34,7 +34,7 @@ describe("Update component coords", () => {
         y: 1,
       },
       internalResistance: 5,
-      electromotiveForce: 10,
+      currentForce: 1,
     };
     const actual = updateComponentCoords(before, 10, -10);
     expect(actual.plus).toStrictEqual({ x: 11, y: -9 });

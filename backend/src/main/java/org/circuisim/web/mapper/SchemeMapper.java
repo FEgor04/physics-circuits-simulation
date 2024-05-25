@@ -34,8 +34,20 @@ public class SchemeMapper {
         return new SchemeResponse(
                 scheme.getId(),
                 scheme.getName(),
+                scheme.isEmbedded(),
                 userMapper.toDto(scheme.getAuthor()).getName(),
-                status,
+                status || scheme.getAuthor().getUsername().equals(username),
+                toDto(electricalComponentService.getBySchemeId(scheme.getId()))
+        );
+    }
+
+    public SchemeResponse toResponseWithoutUsername(Scheme scheme) {
+        return new SchemeResponse(
+                scheme.getId(),
+                scheme.getName(),
+                scheme.isEmbedded(),
+                userMapper.toDto(scheme.getAuthor()).getName(),
+                false,
                 toDto(electricalComponentService.getBySchemeId(scheme.getId()))
         );
     }
@@ -69,14 +81,14 @@ public class SchemeMapper {
 
 
     public ElectricalComponent toEntity(ElectricalComponentDto x, Scheme scheme) {
-            var electricalComponent = new ElectricalComponent();
-            electricalComponent.setPk(new ElectricalComponentPK(x.getComponentId(), scheme.getId()));
-            electricalComponent.setScheme(scheme);
-            electricalComponent.setType(x.getType());
-            electricalComponent.setResistance(x.getResistance());
-            electricalComponent.setEMF(x.getEmf());
-            electricalComponent.setA(new Point(x.b.x, x.b.y));
-            electricalComponent.setB(new Point(x.a.x, x.a.y));
-            return electricalComponent;
+        var electricalComponent = new ElectricalComponent();
+        electricalComponent.setPk(new ElectricalComponentPK(x.getComponentId(), scheme.getId()));
+        electricalComponent.setScheme(scheme);
+        electricalComponent.setType(x.getType());
+        electricalComponent.setResistance(x.getResistance());
+        electricalComponent.setEMF(x.getEmf());
+        electricalComponent.setA(new Point(x.b.x, x.b.y));
+        electricalComponent.setB(new Point(x.a.x, x.a.y));
+        return electricalComponent;
     }
 }

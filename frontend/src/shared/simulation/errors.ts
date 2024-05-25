@@ -3,4 +3,8 @@
  **/
 export const schemaErrors = {
   noClosedLoop: "Нет замкнутого контура",
+  voltmeterError: "Вольтметр соединён с амперметром",
+  noCorrectScheme: "Некорректная схема",
+  moreThenOneVoltmeter: "Более одного вольтметра на ветке",
+  moreThenOneAmpermeter: "Более одного амперметра на ветке",
 } as const;

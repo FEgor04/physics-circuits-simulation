@@ -19,6 +19,8 @@ public class Scheme {
 
     private String name;
 
+    private boolean embedded;
+
     @ManyToOne
     private User author;
 

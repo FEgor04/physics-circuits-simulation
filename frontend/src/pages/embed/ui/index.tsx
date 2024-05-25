@@ -1,27 +1,28 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { Canvas } from "@/widgets/canvas";
+import { GetMeasurementProvider } from "@/features/measurment";
 import { SelectComponentProvider } from "@/features/select-component";
-import { ElectricalComponentWithID } from "@/shared/simulation";
+import { GetZoomCoefficientProvider } from "@/features/zoom-provider";
+import { getSchemeByIDQueryOptions, Scheme } from "@/entities/scheme";
 
-export function SimulationEmbedded() {
-  const components: Array<ElectricalComponentWithID> = [
-    {
-      id: 1,
-      _type: "resistor",
-      a: { x: 0, y: 0 },
-      b: { x: 1, y: 0 },
-      resistance: 500,
-    },
-  ];
+export function SimulationEmbedded({ scheme: initialScheme }: { scheme: Scheme }) {
+  const { data: scheme } = useSuspenseQuery({
+    ...getSchemeByIDQueryOptions(initialScheme.id),
+    initialData: initialScheme,
+  });
 
   return (
-    <SelectComponentProvider selected={undefined} onSelect={() => {}}>
-      <Canvas
-        components={components}
-        canvasSize={100}
-        onUpdateComponentCoords={() => {}}
-        onAddComponent={() => {}}
-        onUpdateComponent={() => {}}
-      />
-    </SelectComponentProvider>
+    <GetZoomCoefficientProvider zoomCoefficient={24}>
+      <SelectComponentProvider selected={undefined} onSelect={() => {}}>
+        <GetMeasurementProvider getCurrentMeasurement={() => undefined}>
+          <Canvas
+            components={scheme.components}
+            onUpdateComponentCoords={() => {}}
+            onAddComponent={() => {}}
+            onUpdateComponent={() => {}}
+          />
+        </GetMeasurementProvider>
+      </SelectComponentProvider>
+    </GetZoomCoefficientProvider>
   );
 }
