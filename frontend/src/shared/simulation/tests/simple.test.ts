@@ -84,7 +84,7 @@ test("test 2", () => {
       _type: "sourceDC",
       plus: { x: 4, y: 0 },
       minus: { x: 3, y: 0 },
-      electromotiveForce: 40,
+      currentForce: 40,
       internalResistance: 1,
       id: 1,
     },

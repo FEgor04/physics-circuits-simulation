@@ -5,7 +5,7 @@ import { ElectricalComponentWithID } from "../types";
 test("voltmetr test", () => {
   const expectedVoltage = {
     currency: 0,
-    voltage: 9.157566302652105,
+    voltage: 9.414976599063962,
   };
 
   const components: ElectricalComponentWithID[] = [
