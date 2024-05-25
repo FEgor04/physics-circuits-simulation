@@ -14,15 +14,27 @@ export function WireRenderer({ component }: { component: WithID<Wire> }) {
   const aTransformed = transformer(component.a);
   const bTransformed = transformer(component.b);
   return (
-    <line
-      x1={aTransformed.x}
-      y1={aTransformed.y}
-      x2={bTransformed.x}
-      y2={bTransformed.y}
-      stroke="black"
-      strokeWidth={"3px"}
-      onClick={() => onSelect(selectedComponent)}
-      data-testid={`wire-${a.x}-${a.y}-${b.x}-${b.y}`}
-    />
+    <>
+      <line
+        x1={aTransformed.x}
+        y1={aTransformed.y}
+        x2={bTransformed.x}
+        y2={bTransformed.y}
+        stroke="black"
+        strokeWidth={"4px"}
+      />
+      <line
+        x1={aTransformed.x}
+        y1={aTransformed.y}
+        x2={bTransformed.x}
+        y2={bTransformed.y}
+        visibility="hidden"
+        pointerEvents="all"
+        strokeWidth={"35px"}
+        onClick={() => onSelect(selectedComponent)}
+        data-testid={`wire-${a.x}-${a.y}-${b.x}-${b.y}`}
+        className="cursor-pointer"
+      />
+    </>
   );
 }
