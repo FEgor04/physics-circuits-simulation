@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { schemaErrors } from "@/shared/simulation/errors";
+import { pointsEqual } from "@/shared/simulation/lib";
 import { SimpleSimulator } from "@/shared/simulation/simulator";
 import {
   ElectricalComponent,
@@ -9,7 +10,6 @@ import {
   Point,
 } from "@/shared/simulation/types";
 import { updateComponentCoords } from "../lib";
-import { pointsEqual } from "@/shared/simulation/lib";
 
 type SimulationState = {
   components: Array<ElectricalComponentWithID>;
