@@ -1,6 +1,6 @@
 import path from "path";
 import { TanStackRouterVite } from "@tanstack/router-vite-plugin";
-import react from "@vitejs/plugin-react";
+import react from "@vitejs/plugin-react-swc";
 import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vitest/config";
 
