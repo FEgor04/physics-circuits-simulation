@@ -1,4 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useBlocker } from "@tanstack/react-router";
 import { RotateCcw, Save } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -15,11 +16,10 @@ import { UpdateComponentProvider } from "@/features/update-component";
 import { GetZoomCoefficientProvider } from "@/features/zoom-provider";
 import { Scheme, getSchemeByIDQueryOptions, useUpdateSchemeMutation } from "@/entities/scheme";
 import { schemaErrors } from "@/shared/simulation/errors";
+import { AlertDialog } from "@/shared/ui/alert-dialog";
 import { Button } from "@/shared/ui/button";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 import { useSimulationState } from "../model/state";
-import { useBlocker } from "@tanstack/react-router";
-import { AlertDialog } from "@/shared/ui/alert-dialog";
 import { SimulationBlockDialog } from "./block";
 
 type Props = {
