@@ -17,7 +17,7 @@ import { GetZoomCoefficientProvider } from "@/features/zoom-provider";
 import { Scheme, getSchemeByIDQueryOptions, useUpdateSchemeMutation } from "@/entities/scheme";
 import { schemaErrors } from "@/shared/simulation/errors";
 import { AlertDialog } from "@/shared/ui/alert-dialog";
-import { Button } from "@/shared/ui/button";
+import { Button, PendingButton } from "@/shared/ui/button";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 import { useSimulationState } from "../model/state";
 import { SimulationBlockDialog } from "./block";
@@ -85,13 +85,13 @@ export function Simulation({ mode, setMode, scheme: initialScheme }: Props) {
               <UpdateComponentProvider onUpdateComponent={onUpdateComponent}>
                 <GetMeasurementProvider getCurrentMeasurement={(id: number) => getMeasurementForComponent(id)}>
                   <ResizablePanelGroup direction="horizontal">
-                    <div className="w-60 space-y-8 border-r-4 bg-white p-4">
+                    <div className="space-y-8 border-r-4 bg-white p-4">
                       {mode == "editing" ? (
                         <ComponentChooseBar />
                       ) : (
                         selectedComponent?._type == "rheostat" && <RheostatKnob component={selectedComponent} />
                       )}
-                      <Button
+                      <PendingButton
                         size="icon"
                         className="aspect-square w-full"
                         onClick={() => {
@@ -112,9 +112,8 @@ export function Simulation({ mode, setMode, scheme: initialScheme }: Props) {
                           );
                         }}
                         disabled={isPending || !scheme.canEdit}
-                      >
-                        {isPending ? <RotateCcw className="animate-spin" /> : <Save />}
-                      </Button>
+                        icon={<Save />}
+                      />
                     </div>
                     <ResizableHandle />
                     <CanvasPanel
