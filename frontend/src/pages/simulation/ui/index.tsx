@@ -1,4 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { useBlocker } from "@tanstack/react-router";
 import { RotateCcw, Save } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -15,9 +16,11 @@ import { UpdateComponentProvider } from "@/features/update-component";
 import { GetZoomCoefficientProvider } from "@/features/zoom-provider";
 import { Scheme, getSchemeByIDQueryOptions, useUpdateSchemeMutation } from "@/entities/scheme";
 import { schemaErrors } from "@/shared/simulation/errors";
+import { AlertDialog } from "@/shared/ui/alert-dialog";
 import { Button } from "@/shared/ui/button";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 import { useSimulationState } from "../model/state";
+import { SimulationBlockDialog } from "./block";
 
 type Props = {
   mode: "simulation" | "editing";
@@ -38,7 +41,10 @@ export function Simulation({ mode, setMode, scheme: initialScheme }: Props) {
     onDeleteComponent,
     simulator,
     errors,
+    isDirty,
   } = useSimulationState(scheme.components);
+
+  const { status, proceed, reset } = useBlocker({ condition: isDirty });
 
   const { mutate, isPending } = useUpdateSchemeMutation();
 
@@ -142,6 +148,9 @@ export function Simulation({ mode, setMode, scheme: initialScheme }: Props) {
           </DeleteComponentProvider>
         </GetZoomCoefficientProvider>
       </SelectComponentProvider>
+      <AlertDialog open={status == "blocked"}>
+        <SimulationBlockDialog proceed={proceed} reset={reset} />
+      </AlertDialog>
     </div>
   );
 }
