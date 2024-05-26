@@ -123,7 +123,6 @@ test("test 2", () => {
     { _type: "resistor", a: { x: 5, y: 6 }, b: { x: 6, y: 6 }, resistance: 5, id: 6 },
     { _type: "resistor", a: { x: 3, y: 4 }, b: { x: 4, y: 4 }, resistance: 5, id: 6 },
     { _type: "voltmeter", a: { x: 3, y: 7 }, b: { x: 4, y: 7 }, id: 11, voltage: "unknown" },
-
   ];
 
   const simulator = new SimpleSimulator(components);
