@@ -3,22 +3,11 @@ import { SimpleSimulator } from "../simulator";
 import { ElectricalComponentWithID } from "../types";
 
 test("branch current test", () => {
-  const expectedCurrent: number[] = [
-    2.776911076443058,
-    0.9453978159126365,
-    1.831513260530421,
-    Infinity,
-    0.93603744149766,
-    0.006586930143872414,
-  ];
-
   const actualNodes = [
     { x: 0, y: 5 },
     { x: 4, y: 0 },
     { x: 6, y: 5 },
   ];
-
-  const acrSolve: number[] = [-9.157566302652105, 0.29641185647425866, 0];
 
   const components: ElectricalComponentWithID[] = [
     { _type: "wire", a: { x: 0, y: 1 }, b: { x: 0, y: 0 }, id: 0 },
@@ -50,8 +39,8 @@ test("branch current test", () => {
     { _type: "resistor", a: { x: 8, y: 4 }, b: { x: 8, y: 3 }, resistance: 7, id: 21 },
     {
       _type: "sourceDC",
-      plus: { x: 5, y: 1 },
-      minus: { x: 6, y: 2 },
+      plus: { x: 6, y: 2 },
+      minus: { x: 5, y: 1 },
       internalResistance: 5,
       currentForce: 1,
       id: 22,
@@ -78,6 +67,33 @@ test("branch current test", () => {
   const newComponents = simulator.rebuildShema(simulator.findBranches());
   const newSimulator = new SimpleSimulator(newComponents);
   const actualBranches = newSimulator.findBranches();
-  const branchCurr = newSimulator.branchCurrent(actualBranches, actualNodes, acrSolve);
+  const g = newSimulator.buildGMatrix(actualNodes, actualBranches);
+  const curr = newSimulator.findCurrentForce(actualNodes, actualBranches);
+  const arcSolve = newSimulator.solveSLAE(g, curr);
+  const phi1 = arcSolve[0];
+  const phi2 = arcSolve[1];
+  const phi3 = arcSolve[2];
+  const R1 = 10;
+  const R2 = 10;
+  const R3 = 5;
+  const R4 = 3;
+  const R5 = 7;
+  const R6 = 40;
+  const E1 = 40;
+  const E2 = 10;
+  const r1 = 1;
+  const r2 = 1;
+  const r3 = 5;
+  console.log();
+  const branchCurr = newSimulator.branchCurrent(actualBranches, actualNodes, arcSolve);
+
+  const expectedCurrent: number[] = [
+    (phi1 - phi2 + E1) / (r1 + R1),
+    (phi2 - phi1) / R2,
+    (phi3 - phi1) / R3,
+    Infinity,
+    (phi2 - phi3 + E2) / (r2 + R4 + R5),
+    (phi3 - phi2) / (r3 + R6),
+  ];
   expect(branchCurr).toStrictEqual(expectedCurrent);
 });
