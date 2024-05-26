@@ -1,11 +1,11 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { AxiosError } from "axios";
 import { SignInForm, useSignInByEmailMutation } from "@/features/auth-by-email";
-import { Button } from "@/shared/ui/button.tsx";
+import { Button, PendingButton } from "@/shared/ui/button.tsx";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/shared/ui/card.tsx";
 
 export function SignInPage({ redirect }: { redirect: string | undefined }) {
-  const { mutate, isError, error } = useSignInByEmailMutation();
+  const { mutate, isError, error, isPending } = useSignInByEmailMutation();
   const navigate = useNavigate({});
 
   return (
@@ -25,14 +25,20 @@ export function SignInPage({ redirect }: { redirect: string | undefined }) {
             }}
           />
         </CardContent>
-        <CardFooter className="space-x-4">
-          {isError && <ErrorMessage error={error} />}
-          <Button type="submit" form="sign-in-form">
-            Отправить
-          </Button>
-          <Button asChild variant="link">
-            <Link to="/signup">Регистрация</Link>
-          </Button>
+        <CardFooter className="flex flex-col items-start space-y-4">
+          <div className="flex flex-row items-center space-x-4 space-y-0">
+            <PendingButton type="submit" form="sign-in-form" isPending={isPending}>
+              Отправить
+            </PendingButton>
+            <Button asChild variant="link">
+              <Link to="/signup">Регистрация</Link>
+            </Button>
+          </div>
+          {isError && (
+            <p className="text-destructive">
+              <ErrorMessage error={error} />
+            </p>
+          )}
         </CardFooter>
       </Card>
     </div>
@@ -42,23 +48,11 @@ export function SignInPage({ redirect }: { redirect: string | undefined }) {
 function ErrorMessage({ error }: { error: Error }) {
   if (error instanceof AxiosError) {
     if (error.response?.status == 401) {
-      return (
-        <p id="signin-card-form-error" className="text-destructive">
-          Неверный логин или пароль
-        </p>
-      );
+      return "Неверный логин или пароль";
     }
     if (error.response?.status == 500) {
-      return (
-        <p id="signin-card-form-error" className="text-destructive">
-          Сервер недоступен
-        </p>
-      );
+      return "Сервер недоступен";
     }
   }
-  return (
-    <p id="signin-card-form-error" className="text-destructive">
-      {error.message}
-    </p>
-  );
+  return error.message;
 }
