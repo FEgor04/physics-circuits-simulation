@@ -581,12 +581,8 @@ export class SimpleSimulator implements CircuitSimulator {
     if (nodes.length == 0) {
       return "noNodes";
     }
-
     const branches = this.findBranches();
     for (const branch of branches) {
-      if (hasOnlyWire(branch.components)) {
-        return "idealWire";
-      }
       let v = 0;
       let a = 0;
       for (const comp of branch.components) {
@@ -613,12 +609,11 @@ export class SimpleSimulator implements CircuitSimulator {
       );
     }
 
-    function hasOnlyWire(components: ElectricalComponentWithID[]): boolean {
-      return components.every((component) => component._type === "wire");
-    }
-
     function hasOnlyVoltmeterAndWire(components: ElectricalComponentWithID[]): boolean {
-      return components.every((component) => component._type === "voltmeter" || component._type === "wire");
+      return (
+        components.some((component) => component._type === "voltmeter") &&
+        components.some((component) => component._type !== "voltmeter" && component._type == "wire")
+      );
     }
 
     function hasVoltmeterWithOtherComponents(components: ElectricalComponentWithID[]): boolean {
@@ -655,6 +650,15 @@ export class SimpleSimulator implements CircuitSimulator {
             return "noCorrectScheme";
           }
         }
+      }
+    }
+
+    for (const branch of branches) {
+      if (this.sumResistanceOfBranch(branch) == 0) {
+        if (hasOnlyVoltmeterAndWire(branch.components)) {
+          continue;
+        }
+        return "idealWire";
       }
     }
 
