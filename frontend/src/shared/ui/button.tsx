@@ -3,7 +3,7 @@ import { type VariantProps } from "class-variance-authority";
 import * as React from "react";
 import { cn } from "../lib";
 import { buttonVariants } from "./button-variants";
-import { RotateCcw } from "lucide-react";
+import { RotateCw } from "lucide-react";
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
@@ -26,7 +26,7 @@ const PendingButton = React.forwardRef<HTMLButtonElement, PendingButtonProps>(
   ({ isPending, disabled, children, ...props }, ref) => {
     return (
       <Button {...props} disabled={disabled || isPending} ref={ref}>
-        {isPending && <RotateCcw className="mr-2 size-4 animate-spin" />}
+        {isPending && <RotateCw className="mr-2 size-4 animate-spin" />}
         {children}
       </Button>
     );
