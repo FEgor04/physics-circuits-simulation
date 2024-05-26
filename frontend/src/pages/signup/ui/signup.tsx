@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import { z } from "zod";
 import { SignUpForm, useSignUpByEmailMutation } from "@/features/auth-by-email";
 import { formSchema } from "@/features/auth-by-email";
-import { Button } from "@/shared/ui/button.tsx";
+import { PendingButton } from "@/shared/ui/button.tsx";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/shared/ui/card.tsx";
 
 export function SignUpPage({ redirect }: { redirect: string | undefined }) {
@@ -24,11 +24,17 @@ export function SignUpPage({ redirect }: { redirect: string | undefined }) {
       <CardContent>
         <SignUpForm onSubmit={onSubmit} />
       </CardContent>
-      <CardFooter className="space-x-4">
-        {isError && <ErrorMessage error={error} />}
-        <Button type="submit" form="sign-up-form" disabled={isPending}>
-          Отправить
-        </Button>
+      <CardFooter className="flex flex-col items-start space-y-4">
+        <div className="space-x-4">
+          <PendingButton type="submit" form="sign-up-form" isPending={isPending}>
+            Отправить
+          </PendingButton>
+        </div>
+        {isError && (
+          <p className="text-destructive">
+            <ErrorMessage error={error} />
+          </p>
+        )}
       </CardFooter>
     </Card>
   );
@@ -37,22 +43,10 @@ export function SignUpPage({ redirect }: { redirect: string | undefined }) {
 function ErrorMessage({ error }: { error: Error }) {
   if (error instanceof AxiosError) {
     if (error.response?.status == 409) {
-      return (
-        <p id="signin-card-form-error" className="text-destructive">
-          Пользователь с данной почтой уже существует
-        </p>
-      );
+      return "Пользователь с данной почтой уже существует";
     } else if (error.response?.status == 500) {
-      return (
-        <p id="signin-card-form-error" className="text-destructive">
-          Сервер недоступен
-        </p>
-      );
+      return "Сервер недоступен";
     }
   }
-  return (
-    <p id="signin-card-form-error" className="text-destructive">
-      {error.message}
-    </p>
-  );
+  return error.message;
 }

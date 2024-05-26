@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 import { SchemeID } from "@/entities/scheme";
-import { Button } from "@/shared/ui/button";
+import { PendingButton } from "@/shared/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/shared/ui/form";
 import { Input } from "@/shared/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
@@ -57,10 +57,14 @@ export function InviteUserForm({ schemeId }: Props) {
           if (isAxiosError(err)) {
             if (err.response?.status == 404 && err.response.data.message == "User not found") {
               toast.error("Ошибка! Нет пользователя с такой почтой", { id: toastId });
+              return;
             }
-          } else {
-            toast.error("Ошибка! " + err.message, { id: toastId });
+            if (err.response?.status == 409) {
+              toast.error("Ошибка! Вы не можете изменять собственные права", { id: toastId });
+              return;
+            }
           }
+          toast.error("Ошибка! " + err.message, { id: toastId });
         },
       },
     );
@@ -105,9 +109,9 @@ export function InviteUserForm({ schemeId }: Props) {
           )}
         />
         <FormItem>
-          <Button type="submit" disabled={isPending}>
+          <PendingButton type="submit" isPending={isPending}>
             Добавить
-          </Button>
+          </PendingButton>
         </FormItem>
       </form>
     </Form>
