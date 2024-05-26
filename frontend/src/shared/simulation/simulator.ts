@@ -291,7 +291,6 @@ export class SimpleSimulator implements CircuitSimulator {
       for (let j = 0; j < branches.length; j++) {
         const tempBranch = branches[j];
         if (branchesDirection[j] != 0) {
-
           const resistance = this.sumResistanceOfBranchForCurrentForse(tempBranch);
           const voltage = this.findVoltageOfBranch(tempBranch);
           const current: number = this.findCurrentOfBranch(tempBranch);
@@ -324,7 +323,6 @@ export class SimpleSimulator implements CircuitSimulator {
               }
             }
           }
-
         }
       }
       nodesCurrent.push(nodeCurrent);
