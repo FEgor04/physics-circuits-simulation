@@ -64,7 +64,7 @@ test("ampermetr test", () => {
           plus: { x: 5, y: 1 },
           minus: { x: 6, y: 2 },
           internalResistance: 5,
-          electromotiveForce: 40,
+          currentForce: 1,
           id: 22,
         },
         { _type: "wire", a: { x: 6, y: 2 }, b: { x: 7, y: 3 }, id: 14 },

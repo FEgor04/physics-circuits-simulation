@@ -79,15 +79,7 @@ export class SimpleSimulator implements CircuitSimulator {
         nodes.push(nodeMap[key].loc);
       }
     }
-    if (nodes.length == 0) {
-      for (const element of this.components) {
-        if (element._type == "wire") {
-          nodes.push(element.a);
-          nodes.push(element.b);
-          break;
-        }
-      }
-    }
+
     return nodes;
   }
 
@@ -266,12 +258,23 @@ export class SimpleSimulator implements CircuitSimulator {
     let voltage = 0;
 
     for (const component of branch.components) {
-      if (component._type === "source" || component._type === "sourceDC") {
+      if (component._type === "source") {
         voltage = component.electromotiveForce;
       }
     }
 
     return voltage;
+  }
+  private findCurrentOfBranch(branch: Branch): number {
+    let current = 0;
+
+    for (const component of branch.components) {
+      if (component._type === "sourceDC") {
+        current = component.currentForce;
+      }
+    }
+
+    return current;
   }
 
   public findCurrentForce(nodes: Array<Point>, branches: Branch[]): number[] {
@@ -290,18 +293,34 @@ export class SimpleSimulator implements CircuitSimulator {
         if (branchesDirection[j] != 0) {
           const resistance = this.sumResistanceOfBranchForCurrentForse(tempBranch);
           const voltage = this.findVoltageOfBranch(tempBranch);
-
-          if (branchesDirection[j] == 1) {
-            if (pointsEqual(tempNode, tempBranch.a)) {
-              nodeCurrent += -voltage / resistance;
-            } else if (pointsEqual(tempNode, tempBranch.b)) {
-              nodeCurrent += voltage / resistance;
+          const current: number = this.findCurrentOfBranch(tempBranch);
+          if (current == 0) {
+            if (branchesDirection[j] == 1) {
+              if (pointsEqual(tempNode, tempBranch.a)) {
+                nodeCurrent += -voltage / resistance;
+              } else if (pointsEqual(tempNode, tempBranch.b)) {
+                nodeCurrent += voltage / resistance;
+              }
+            } else {
+              if (pointsEqual(tempNode, tempBranch.a)) {
+                nodeCurrent += voltage / resistance;
+              } else if (pointsEqual(tempNode, tempBranch.b)) {
+                nodeCurrent += -voltage / resistance;
+              }
             }
           } else {
-            if (pointsEqual(tempNode, tempBranch.a)) {
-              nodeCurrent += voltage / resistance;
-            } else if (pointsEqual(tempNode, tempBranch.b)) {
-              nodeCurrent += -voltage / resistance;
+            if (branchesDirection[j] == 1) {
+              if (pointsEqual(tempNode, tempBranch.a)) {
+                nodeCurrent += -current;
+              } else if (pointsEqual(tempNode, tempBranch.b)) {
+                nodeCurrent += current;
+              }
+            } else {
+              if (pointsEqual(tempNode, tempBranch.a)) {
+                nodeCurrent += current;
+              } else if (pointsEqual(tempNode, tempBranch.b)) {
+                nodeCurrent += -current;
+              }
             }
           }
         }
@@ -417,6 +436,10 @@ export class SimpleSimulator implements CircuitSimulator {
         }
       }
     }
+    if (deletedNodesA.length == 0) {
+      return this.components;
+    }
+
     // a <- b
     for (let i = 0; i < deletedNodesA.length; i++) {
       for (let j = 0; j < tempBranches.length; j++) {
@@ -549,6 +572,15 @@ export class SimpleSimulator implements CircuitSimulator {
   validateSchema(): keyof typeof schemaErrors | undefined {
     const adjacencyList: Map<string, Set<string>> = new Map();
 
+    const components = this.components;
+    if (components.length == 0) {
+      return "emptyScheme";
+    }
+
+    const nodes = this.findNodes();
+    if (nodes.length == 0) {
+      return "noNodes";
+    }
     const branches = this.findBranches();
     for (const branch of branches) {
       let v = 0;
@@ -578,7 +610,10 @@ export class SimpleSimulator implements CircuitSimulator {
     }
 
     function hasOnlyVoltmeterAndWire(components: ElectricalComponentWithID[]): boolean {
-      return components.every((component) => component._type === "voltmeter" || component._type === "wire");
+      return (
+        components.some((component) => component._type === "voltmeter") &&
+        components.some((component) => component._type !== "voltmeter" && component._type == "wire")
+      );
     }
 
     function hasVoltmeterWithOtherComponents(components: ElectricalComponentWithID[]): boolean {
@@ -615,6 +650,15 @@ export class SimpleSimulator implements CircuitSimulator {
             return "noCorrectScheme";
           }
         }
+      }
+    }
+
+    for (const branch of branches) {
+      if (this.sumResistanceOfBranch(branch) == 0) {
+        if (hasOnlyVoltmeterAndWire(branch.components)) {
+          continue;
+        }
+        return "idealWire";
       }
     }
 

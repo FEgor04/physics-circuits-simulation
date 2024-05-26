@@ -30,7 +30,7 @@ export function componentFromDTO(dto: ElectricalComponentDto): WithID<Electrical
     return zSourceDC.parse({
       id: dto.componentId,
       _type: "sourceDC",
-      electromotiveForce: dto.emf!,
+      currentForce: dto.emf!,
       internalResistance: dto.resistance!,
       plus: dto.a,
       minus: dto.b,
@@ -87,6 +87,9 @@ function getResistance(entity: ElectricalComponent): number | undefined {
 function getElectromotiveForce(entity: ElectricalComponent): number | undefined {
   if ("electromotiveForce" in entity) {
     return entity.electromotiveForce;
+  }
+  if ("currentForce" in entity) {
+    return entity.currentForce;
   }
   return undefined;
 }

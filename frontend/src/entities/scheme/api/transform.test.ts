@@ -8,7 +8,7 @@ describe("fromDTO function", () => {
       componentId: 1,
       type: "SOURCE_DC",
       resistance: 5.0,
-      emf: 20.0,
+      emf: 1,
       a: {
         x: -1,
         y: 7,
@@ -23,7 +23,7 @@ describe("fromDTO function", () => {
       id: 1,
       _type: "sourceDC",
       internalResistance: 5,
-      electromotiveForce: 20,
+      currentForce: 1,
       plus: {
         x: -1,
         y: 7,

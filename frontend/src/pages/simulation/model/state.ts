@@ -27,7 +27,8 @@ export function useSimulationState(components: Array<ElectricalComponentWithID>)
   const [schema, setSchema] = useState(components);
   const isDirty = useIsArrayDirty(schema, components, componentsEqual);
   const simulator = useMemo(() => {
-    return new SimpleSimulator(schema);
+    const schemaCopy = schema.map((it) => ({ ...it }));
+    return new SimpleSimulator(schemaCopy);
   }, [schema]);
   const errors = useMemo(() => {
     return simulator.validateSchema();

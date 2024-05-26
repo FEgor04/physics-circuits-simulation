@@ -32,8 +32,12 @@ export const zSource = componentBase.extend({
   minus: zPoint,
 });
 
-export const zSourceDC = zSource.extend({
+export const zSourceDC = componentBase.extend({
   _type: z.literal("sourceDC"),
+  internalResistance: z.number(),
+  plus: zPoint,
+  minus: zPoint,
+  currentForce: z.number(),
 });
 
 export const zAmpermeter = zWire.extend({
