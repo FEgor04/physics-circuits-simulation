@@ -20,13 +20,14 @@ Button.displayName = "Button";
 
 type PendingButtonProps = Omit<ButtonProps, "asChild"> & {
   isPending?: boolean;
+  icon?: React.ReactNode;
 };
 
 const PendingButton = React.forwardRef<HTMLButtonElement, PendingButtonProps>(
-  ({ isPending, disabled, children, ...props }, ref) => {
+  ({ isPending, disabled, children, icon, ...props }, ref) => {
     return (
       <Button {...props} disabled={disabled || isPending} ref={ref}>
-        {isPending && <RotateCw className="mr-2 size-4 animate-spin" />}
+        {isPending ? <RotateCw className="mr-2 size-4 animate-spin" /> : icon}
         {children}
       </Button>
     );
