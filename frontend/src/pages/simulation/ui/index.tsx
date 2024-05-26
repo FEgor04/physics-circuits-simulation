@@ -18,6 +18,9 @@ import { schemaErrors } from "@/shared/simulation/errors";
 import { Button } from "@/shared/ui/button";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 import { useSimulationState } from "../model/state";
+import { useBlocker } from "@tanstack/react-router";
+import { AlertDialog } from "@/shared/ui/alert-dialog";
+import { SimulationBlockDialog } from "./block";
 
 type Props = {
   mode: "simulation" | "editing";
@@ -38,7 +41,10 @@ export function Simulation({ mode, setMode, scheme: initialScheme }: Props) {
     onDeleteComponent,
     simulator,
     errors,
+    isDirty,
   } = useSimulationState(scheme.components);
+
+  const { status, proceed, reset } = useBlocker({ condition: isDirty });
 
   const { mutate, isPending } = useUpdateSchemeMutation();
 
@@ -142,6 +148,9 @@ export function Simulation({ mode, setMode, scheme: initialScheme }: Props) {
           </DeleteComponentProvider>
         </GetZoomCoefficientProvider>
       </SelectComponentProvider>
+      <AlertDialog open={status == "blocked"}>
+        <SimulationBlockDialog proceed={proceed} reset={reset} />
+      </AlertDialog>
     </div>
   );
 }
