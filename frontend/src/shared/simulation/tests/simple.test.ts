@@ -43,7 +43,11 @@ test.skip("simple scheme with voltmeter only", () => {
 });
 
 test("test 1", () => {
-  const expectedVoltage = { currency: 0, voltage: 36.36363636363636 };
+  const G11 = 1.1;
+  const I11 = 40;
+  const phi1 = I11 / G11;
+  const phi2 = 0;
+  const expectedVoltage = { currency: 0, voltage: phi1 - phi2 };
 
   const components: ElectricalComponentWithID[] = [
     { _type: "wire", a: { x: 0, y: 0 }, b: { x: 1, y: 0 }, id: 0 },
