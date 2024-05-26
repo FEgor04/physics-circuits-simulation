@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
+import { useIsArrayDirty } from "@/shared/lib/is-dirty";
 import { schemaErrors } from "@/shared/simulation/errors";
-import { pointsEqual } from "@/shared/simulation/lib";
+import { componentsEqual, pointsEqual } from "@/shared/simulation/lib";
 import { SimpleSimulator } from "@/shared/simulation/simulator";
 import {
   ElectricalComponent,
@@ -19,11 +20,12 @@ type SimulationState = {
   onDeleteComponent: (id: ElectricalComponentID) => void;
   simulator: SimpleSimulator;
   errors: keyof typeof schemaErrors | undefined;
-  isDirty: boolean
+  isDirty: boolean;
 };
 
 export function useSimulationState(components: Array<ElectricalComponentWithID>): SimulationState {
   const [schema, setSchema] = useState(components);
+  const isDirty = useIsArrayDirty(schema, components, componentsEqual);
   const simulator = useMemo(() => {
     return new SimpleSimulator(schema);
   }, [schema]);
@@ -34,7 +36,7 @@ export function useSimulationState(components: Array<ElectricalComponentWithID>)
     errors,
     simulator,
     components: schema,
-    isDirty: true,
+    isDirty,
     onAddComponent: function (newComponent: ElectricalComponent): ElectricalComponentWithID {
       let id = -1;
       setSchema((old) => {
