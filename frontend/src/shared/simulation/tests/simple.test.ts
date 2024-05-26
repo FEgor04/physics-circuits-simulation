@@ -43,11 +43,15 @@ test.skip("simple scheme with voltmeter only", () => {
 });
 
 test("test 1", () => {
-  const G11 = 1.1;
-  const I11 = 40;
+  const R1 = 5;
+  const R2 = 5;
+  const r1 = 1;
+  const E1 = 40;
+  const G11 = 1 / (R1 + R2) + 1 / r1;
+  const I11 = -E1;
   const phi1 = I11 / G11;
   const phi2 = 0;
-  const expectedVoltage = { currency: 0, voltage: phi1 - phi2 };
+  const expectedVoltage = { currency: 0, voltage: phi2 - phi1 };
 
   const components: ElectricalComponentWithID[] = [
     { _type: "wire", a: { x: 0, y: 0 }, b: { x: 1, y: 0 }, id: 0 },
@@ -55,17 +59,17 @@ test("test 1", () => {
       _type: "source",
       plus: { x: 1, y: 0 },
       minus: { x: 2, y: 0 },
-      electromotiveForce: 40,
-      internalResistance: 1,
+      electromotiveForce: E1,
+      internalResistance: r1,
       id: 1,
     },
     { _type: "wire", a: { x: 2, y: 0 }, b: { x: 3, y: 0 }, id: 2 },
     { _type: "ampermeter", a: { x: 3, y: 0 }, b: { x: 4, y: 0 }, currency: "unknown", id: 3 },
     { _type: "wire", a: { x: 4, y: 0 }, b: { x: 4, y: 2 }, id: 4 },
     { _type: "wire", a: { x: 4, y: 2 }, b: { x: 3, y: 2 }, id: 5 },
-    { _type: "resistor", a: { x: 3, y: 2 }, b: { x: 2, y: 2 }, resistance: 5, id: 6 },
+    { _type: "resistor", a: { x: 3, y: 2 }, b: { x: 2, y: 2 }, resistance: R1, id: 6 },
     { _type: "wire", a: { x: 2, y: 2 }, b: { x: 1, y: 2 }, id: 7 },
-    { _type: "resistor", a: { x: 1, y: 2 }, b: { x: 0, y: 2 }, resistance: 5, id: 8 },
+    { _type: "resistor", a: { x: 1, y: 2 }, b: { x: 0, y: 2 }, resistance: R2, id: 8 },
     { _type: "wire", a: { x: 0, y: 2 }, b: { x: 0, y: 0 }, id: 9 },
     { _type: "wire", a: { x: 0, y: 2 }, b: { x: 1, y: 3 }, id: 10 },
     { _type: "voltmeter", a: { x: 1, y: 3 }, b: { x: 2, y: 3 }, id: 11, voltage: "unknown" },
@@ -119,7 +123,7 @@ test("test 2", () => {
     { _type: "resistor", a: { x: 5, y: 6 }, b: { x: 6, y: 6 }, resistance: 5, id: 6 },
     { _type: "resistor", a: { x: 3, y: 4 }, b: { x: 4, y: 4 }, resistance: 5, id: 6 },
     { _type: "voltmeter", a: { x: 3, y: 7 }, b: { x: 4, y: 7 }, id: 11, voltage: "unknown" },
-    // { _type: "ampermeter", a: { x: 1, y: 6 }, b: { x: 2, y: 6 }, currency: "unknown", id: 3 },
+
   ];
 
   const simulator = new SimpleSimulator(components);
