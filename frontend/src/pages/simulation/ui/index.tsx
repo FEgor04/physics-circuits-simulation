@@ -1,6 +1,6 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useBlocker } from "@tanstack/react-router";
-import { RotateCcw, Save } from "lucide-react";
+import { Save } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { CanvasPanel } from "@/widgets/canvas";
@@ -17,7 +17,7 @@ import { GetZoomCoefficientProvider } from "@/features/zoom-provider";
 import { Scheme, getSchemeByIDQueryOptions, useUpdateSchemeMutation } from "@/entities/scheme";
 import { schemaErrors } from "@/shared/simulation/errors";
 import { AlertDialog } from "@/shared/ui/alert-dialog";
-import { Button, PendingButton } from "@/shared/ui/button";
+import { PendingButton } from "@/shared/ui/button";
 import { ResizableHandle, ResizablePanelGroup } from "@/shared/ui/resizable.tsx";
 import { useSimulationState } from "../model/state";
 import { SimulationBlockDialog } from "./block";

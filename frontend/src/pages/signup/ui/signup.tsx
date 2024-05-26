@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import { z } from "zod";
 import { SignUpForm, useSignUpByEmailMutation } from "@/features/auth-by-email";
 import { formSchema } from "@/features/auth-by-email";
-import { Button, PendingButton } from "@/shared/ui/button.tsx";
+import { PendingButton } from "@/shared/ui/button.tsx";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/shared/ui/card.tsx";
 
 export function SignUpPage({ redirect }: { redirect: string | undefined }) {
