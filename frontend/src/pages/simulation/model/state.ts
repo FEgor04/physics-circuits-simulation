@@ -19,6 +19,7 @@ type SimulationState = {
   onDeleteComponent: (id: ElectricalComponentID) => void;
   simulator: SimpleSimulator;
   errors: keyof typeof schemaErrors | undefined;
+  isDirty: boolean
 };
 
 export function useSimulationState(components: Array<ElectricalComponentWithID>): SimulationState {
@@ -33,6 +34,7 @@ export function useSimulationState(components: Array<ElectricalComponentWithID>)
     errors,
     simulator,
     components: schema,
+    isDirty: true,
     onAddComponent: function (newComponent: ElectricalComponent): ElectricalComponentWithID {
       let id = -1;
       setSchema((old) => {
