@@ -14,6 +14,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { Route as rootRoute } from "./app/routes/__root";
 import { Route as SigninImport } from "./app/routes/signin";
+import { Route as ArticleImport } from "./app/routes/article";
 import { Route as AuthenticatedRouteImport } from "./app/routes/_authenticated/route";
 import { Route as IndexImport } from "./app/routes/index";
 import { Route as EmbedSchemeImport } from "./app/routes/embed.$scheme";
@@ -33,6 +34,11 @@ const SignupLazyRoute = SignupLazyImport.update({
 
 const SigninRoute = SigninImport.update({
   path: "/signin",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const ArticleRoute = ArticleImport.update({
+  path: "/article",
   getParentRoute: () => rootRoute,
 } as any);
 
@@ -89,6 +95,13 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof AuthenticatedRouteImport;
       parentRoute: typeof rootRoute;
     };
+    "/article": {
+      id: "/article";
+      path: "/article";
+      fullPath: "/article";
+      preLoaderRoute: typeof ArticleImport;
+      parentRoute: typeof rootRoute;
+    };
     "/signin": {
       id: "/signin";
       path: "/signin";
@@ -135,6 +148,7 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedSchemesSchemeRoute,
     AuthenticatedSchemesIndexRoute,
   }),
+  ArticleRoute,
   SigninRoute,
   SignupLazyRoute,
   EmbedSchemeRoute,
@@ -150,6 +164,7 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/_authenticated",
+        "/article",
         "/signin",
         "/signup",
         "/embed/$scheme"
@@ -164,6 +179,9 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/schemes/$scheme",
         "/_authenticated/schemes/"
       ]
+    },
+    "/article": {
+      "filePath": "article.tsx"
     },
     "/signin": {
       "filePath": "signin.tsx"
