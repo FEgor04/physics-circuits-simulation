@@ -4,6 +4,7 @@ export function getComponentContacts(component: ElectricalComponentWithID): Arra
   if (
     component._type === "wire" ||
     component._type === "resistor" ||
+    component._type === "rheostat" ||
     component._type === "voltmeter" ||
     component._type === "ampermeter"
   ) {

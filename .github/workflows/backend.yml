@@ -53,4 +53,3 @@ jobs:
       uses: gradle/actions/dependency-submission@v3
       with:
         build-root-directory: ./backend
-

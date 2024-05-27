@@ -26,9 +26,8 @@ export function RenameSchemeDialogContent({ scheme }: Props) {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     mutate({
-      components: scheme.components,
+      ...scheme,
       name: values.name,
-      id: scheme.id,
     });
   }
 

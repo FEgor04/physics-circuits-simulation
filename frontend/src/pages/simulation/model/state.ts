@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
+import { useIsArrayDirty } from "@/shared/lib/is-dirty";
 import { schemaErrors } from "@/shared/simulation/errors";
+import { componentsEqual, pointsEqual } from "@/shared/simulation/lib";
 import { SimpleSimulator } from "@/shared/simulation/simulator";
 import {
   ElectricalComponent,
@@ -18,12 +20,15 @@ type SimulationState = {
   onDeleteComponent: (id: ElectricalComponentID) => void;
   simulator: SimpleSimulator;
   errors: keyof typeof schemaErrors | undefined;
+  isDirty: boolean;
 };
 
 export function useSimulationState(components: Array<ElectricalComponentWithID>): SimulationState {
   const [schema, setSchema] = useState(components);
+  const isDirty = useIsArrayDirty(schema, components, componentsEqual);
   const simulator = useMemo(() => {
-    return new SimpleSimulator(schema);
+    const schemaCopy = schema.map((it) => ({ ...it }));
+    return new SimpleSimulator(schemaCopy);
   }, [schema]);
   const errors = useMemo(() => {
     return simulator.validateSchema();
@@ -32,12 +37,16 @@ export function useSimulationState(components: Array<ElectricalComponentWithID>)
     errors,
     simulator,
     components: schema,
+    isDirty,
     onAddComponent: function (newComponent: ElectricalComponent): ElectricalComponentWithID {
-      let id = 0;
+      let id = -1;
       setSchema((old) => {
         id = (old.length ? old.map((it) => it.id).sort((a, b) => b - a)[0] : 0) + 1;
 
         if (newComponent._type === "wire") {
+          if (pointsEqual(newComponent.a, newComponent.b)) {
+            return old;
+          }
           const intermediatePoints: Point[] = findIntermediatePoints(newComponent.a, newComponent.b);
 
           if (intermediatePoints.length > 0) {
@@ -58,7 +67,6 @@ export function useSimulationState(components: Array<ElectricalComponentWithID>)
       return { ...newComponent, id };
     },
     onUpdateComponent: function (component: ElectricalComponentWithID): void {
-      console.log("Update component", component);
       setSchema((old) => [...old.filter((it) => it.id != component.id), component]);
     },
     onUpdateComponentCoords: function (id: number, dx: number, dy: number): void {

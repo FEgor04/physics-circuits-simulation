@@ -4,6 +4,7 @@ import {
   ElectricalComponent,
   ElectricalComponentWithID,
   Resistor,
+  Rheostat,
   Voltmeter,
   Wire,
   WithID,
@@ -18,17 +19,18 @@ export function fromDTO(dto: SchemeResponse): Scheme {
     authorName: dto.authorName,
     name: dto.name,
     components: dto.components?.map(componentFromDTO) ?? [],
+    isEmbedded: dto.isEmbedded,
   };
 }
 
-const componentsTypes = ["wire", "resistor", "voltmeter", "ampermeter"] as const;
+const componentsTypes = ["wire", "resistor", "voltmeter", "ampermeter", "rheostat"] as const;
 
 export function componentFromDTO(dto: ElectricalComponentDto): WithID<ElectricalComponentWithID> {
   if (dto.type == "SOURCE_DC") {
     return zSourceDC.parse({
       id: dto.componentId,
       _type: "sourceDC",
-      electromotiveForce: dto.emf!,
+      currentForce: dto.emf!,
       internalResistance: dto.resistance!,
       plus: dto.a,
       minus: dto.b,
@@ -51,7 +53,7 @@ export function componentFromDTO(dto: ElectricalComponentDto): WithID<Electrical
     b: dto.b,
     resistance: dto.resistance,
     electromotiveForce: dto.emf,
-  }) as WithID<Resistor | Wire | Ampermeter | Voltmeter>;
+  }) as WithID<Resistor | Wire | Ampermeter | Voltmeter | Rheostat>;
 }
 
 export function componentToDTO(entity: ElectricalComponentWithID): ElectricalComponentDto {
@@ -85,6 +87,9 @@ function getResistance(entity: ElectricalComponent): number | undefined {
 function getElectromotiveForce(entity: ElectricalComponent): number | undefined {
   if ("electromotiveForce" in entity) {
     return entity.electromotiveForce;
+  }
+  if ("currentForce" in entity) {
+    return entity.currentForce;
   }
   return undefined;
 }

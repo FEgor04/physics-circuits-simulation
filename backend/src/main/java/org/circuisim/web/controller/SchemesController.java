@@ -3,17 +3,17 @@ package org.circuisim.web.controller;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.circuisim.exception.AccessDeniedException;
 import org.circuisim.service.ElectricalComponentService;
 import org.circuisim.service.SchemeService;
-import org.circuisim.web.dto.ElectricalComponentDto;
 import org.circuisim.web.mapper.SchemeMapper;
+import org.circuisim.web.mapper.UserMapper;
+import org.circuisim.web.requestRecord.DeletePermissionsRequest;
 import org.circuisim.web.requestRecord.SchemeCreateRequest;
 import org.circuisim.web.requestRecord.SchemeUpdateRequest;
 import org.circuisim.web.requestRecord.SetPermissionsRequest;
+import org.circuisim.web.responseRecord.GetAllUsersPermissions;
 import org.circuisim.web.responseRecord.GetUsersPermissionsResponse;
 import org.circuisim.web.responseRecord.SchemeResponse;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +54,19 @@ public class SchemesController {
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
             @AuthenticationPrincipal UserDetails userDetails
     ) {
-        return schemeMapper.toResponse(schemeService.getByIdAndUsername(userDetails.getUsername(), id), userDetails.getUsername());
+        if (userDetails != null) {
+            return schemeMapper.toResponse(schemeService.getByIdAndUsername(userDetails.getUsername(), id), userDetails.getUsername());
+        } else {
+            return schemeMapper.toResponseWithoutUsername(schemeService.getByIdAndWithoutUserDetails(id));
+        }
+    }
+
+    @GetMapping("{id}/permissions")
+    public GetAllUsersPermissions getAllUsersPermissionsBySchemeId(
+            @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        return new GetAllUsersPermissions(schemeService.getAllUsersPermissionsBySchemeId(userDetails.getUsername(), id));
     }
 
     @GetMapping("{id}/users")
@@ -67,29 +79,44 @@ public class SchemesController {
     @PutMapping("{id}")
     public ResponseEntity<String> updateScheme(
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
-            @RequestBody SchemeUpdateRequest schemeUpdateRequest
+            @RequestBody SchemeUpdateRequest schemeUpdateRequest,
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        schemeService.updateSchemeName(schemeUpdateRequest.schemeName(), id);
-        schemeService.updateSchemeEmbeddedStatus(schemeUpdateRequest.isEmbedded(), id);
-        electricalComponentService.updateComponents(schemeUpdateRequest.electricalComponentDto(), id);
+        if (schemeService.checkAccessByUsername(userDetails.getUsername(), id)) {
+            schemeService.updateSchemeName(schemeUpdateRequest.schemeName(), id);
+            schemeService.updateSchemeEmbeddedStatus(schemeUpdateRequest.isEmbedded(), id);
+            electricalComponentService.updateComponents(schemeUpdateRequest.electricalComponentDto(), id);
+        } else {
+            throw new AccessDeniedException();
+        }
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("{id}/permissions")
     public ResponseEntity<String> setPermissionsByIdScheme(
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
-            @RequestBody List<SetPermissionsRequest> request
+            @RequestBody List<SetPermissionsRequest> request,
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        schemeService.addPermission(id, request);
+        if (schemeService.getById(id).getAuthor().getUsername().equals(userDetails.getUsername())) {
+            schemeService.addPermission(id, request);
+        } else {
+            throw new AccessDeniedException();
+        }
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("{id}/permissions")
     public ResponseEntity<String> deletePermissionsByIdScheme(
             @PathVariable @Parameter(description = "Scheme id", required = true) Long id,
-            @RequestBody List<SetPermissionsRequest> request
+            @RequestBody DeletePermissionsRequest request,
+            @AuthenticationPrincipal UserDetails userDetails
     ) {
-        schemeService.removePermission(id, request);
+        if (schemeService.getById(id).getAuthor().getUsername().equals(userDetails.getUsername())) {
+            schemeService.removePermission(id, request);
+        } else {
+            throw new AccessDeniedException();
+        }
         return ResponseEntity.noContent().build();
     }
 

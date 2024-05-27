@@ -10,7 +10,7 @@ spring:
 
 security:
   jwt:
-    secret: test_jwt_secret_AAAAAAAAAAAAAAAAAA
+    secret: bnF0amhvaWFob2loanE5ZXdqADlyZWlvZmppZmppc2RqZnBkamZwb3Nkam9zZGZramZvcGpzACD
     access: 1000
     refresh: 10000
   admin:

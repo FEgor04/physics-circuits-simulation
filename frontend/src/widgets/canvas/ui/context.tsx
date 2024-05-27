@@ -1,6 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useContext, createContext } from "react";
-import { svgSize } from "@/shared/assets/circuit";
 import { Point } from "@/shared/simulation/types";
 import { CanvasParams, transformVirtualToCanvas } from "../lib";
 
@@ -26,9 +25,3 @@ export const useTransformVirtualToCanvas = () => {
     return transformVirtualToCanvas(point, canvasParams);
   };
 };
-
-export const useCanvasGrid = () =>
-  useCanvasContext(() => {
-    const coefficient = svgSize;
-    return coefficient;
-  });

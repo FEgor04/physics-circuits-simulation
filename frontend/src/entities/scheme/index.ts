@@ -6,5 +6,6 @@ export * from "./api/get-scheme";
 export * from "./api/get-schemes";
 export * from "./api/update-scheme";
 export * from "./api/delete-scheme";
+export * from "./api/transform";
 
 export * from "./ui/card";

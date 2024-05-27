@@ -6,5 +6,6 @@ public enum TypeElectricalComponent {
     SOURCE,
     SOURCE_DC,
     VOLTMETER,
-    AMPERMETER
+    AMPERMETER,
+    RHEOSTAT,
 }

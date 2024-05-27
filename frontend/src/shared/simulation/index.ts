@@ -7,6 +7,7 @@ export type {
   SourceDC,
   Voltmeter,
   Ampermeter,
+  Rheostat,
   ElectricalComponent,
   ElectricalComponentID,
   ElectricalComponentWithID,

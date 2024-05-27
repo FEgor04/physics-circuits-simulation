@@ -36,7 +36,18 @@ public class SchemeMapper {
                 scheme.getName(),
                 scheme.isEmbedded(),
                 userMapper.toDto(scheme.getAuthor()).getName(),
-                status,
+                status || scheme.getAuthor().getUsername().equals(username),
+                toDto(electricalComponentService.getBySchemeId(scheme.getId()))
+        );
+    }
+
+    public SchemeResponse toResponseWithoutUsername(Scheme scheme) {
+        return new SchemeResponse(
+                scheme.getId(),
+                scheme.getName(),
+                scheme.isEmbedded(),
+                userMapper.toDto(scheme.getAuthor()).getName(),
+                false,
                 toDto(electricalComponentService.getBySchemeId(scheme.getId()))
         );
     }

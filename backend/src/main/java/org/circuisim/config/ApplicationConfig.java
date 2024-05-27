@@ -1,6 +1,7 @@
 package org.circuisim.config;
 
 import lombok.RequiredArgsConstructor;
+import org.circuisim.service.SchemeService;
 import org.circuisim.web.security.JwtTokenFilter;
 import org.circuisim.web.security.JwtTokenProvider;
 import org.circuisim.web.security.expression.CustomSecurityExpressionHandler;
@@ -30,6 +31,7 @@ import org.springframework.security.web.header.writers.frameoptions.XFrameOption
 @RequiredArgsConstructor(onConstructor = @__(@Lazy))
 public class ApplicationConfig {
     private final JwtTokenProvider tokenProvider;
+    private final SchemeService schemeService;
     private final ApplicationContext applicationContext;
 
 
@@ -80,7 +82,7 @@ public class ApplicationConfig {
                 ).headers(headers -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
                 .anonymous(AbstractHttpConfigurer::disable)
-                .addFilterBefore(new JwtTokenFilter(tokenProvider),
+                .addFilterBefore(new JwtTokenFilter(tokenProvider, schemeService),
                         UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
