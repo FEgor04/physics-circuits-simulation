@@ -55,7 +55,6 @@ export function Simulation({ mode, setMode, scheme: initialScheme }: Props) {
     }
     return undefined;
   }, [selected, components]);
-  console.log(JSON.stringify(components));
 
   const getMeasurementForComponent = (id: number) => {
     if (mode == "editing") return undefined;
