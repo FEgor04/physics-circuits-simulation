@@ -13,7 +13,7 @@ export function Header({ principalMenu }: Props) {
       <nav className="container mx-auto flex h-12 flex-row items-center justify-between">
         <MainLink>
           <span className="font-bold text-black md:text-2xl">
-          circui<span className="text-primary">sim</span>
+            circui<span className="text-primary">sim</span>
           </span>
         </MainLink>
         <Button variant={"link"} asChild>
