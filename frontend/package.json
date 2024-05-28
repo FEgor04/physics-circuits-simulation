@@ -51,6 +51,7 @@
   "devDependencies": {
     "@conarti/eslint-plugin-feature-sliced": "^1.0.5",
     "@faker-js/faker": "^8.4.1",
+    "@tailwindcss/typography": "^0.5.13",
     "@tanstack/router-devtools": "^1.34.0",
     "@tanstack/router-vite-plugin": "^1.33.12",
     "@testing-library/jest-dom": "^6.4.5",
