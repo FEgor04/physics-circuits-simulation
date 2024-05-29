@@ -16,7 +16,7 @@
 
 - Postgres в качестве БД
 - Деплой в Docker, Traefik в качестве reverse proxy
-- Бэк: Java , Spring Boot, Gradle
+- Бэк: Java, Spring Boot, Gradle
 - Фронт: React, TypeScript, React Query, Tailwind CSS, shadcn/ui
 
 ## Инструкция по запуску
